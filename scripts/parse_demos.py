@@ -190,9 +190,13 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
             if polars_df is None or (hasattr(polars_df, 'is_empty') and polars_df.is_empty()):
                 return []
             if isinstance(polars_df, pl.DataFrame):
-                df = polars_df.to_pandas()
-                df = df.where(df.notnull(), None)
-                return df.to_dict(orient='records')
+                # Нативный to_dicts() сохраняет UInt64 как точный int, предотвращая float64-округление
+                try:
+                    return polars_df.to_dicts()
+                except Exception:
+                    df = polars_df.to_pandas()
+                    df = df.where(df.notnull(), None)
+                    return df.to_dict(orient='records')
             return []
 
         rounds = df_to_list(demo.rounds)
