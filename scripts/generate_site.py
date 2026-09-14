@@ -557,6 +557,22 @@ def load_data():
                         p_data = json.load(f)
                         sid = clean_steamid(p_data.get("steam_id", filename.replace(".json", "")))
                         faceit_file = FACEIT_DIR / f"{sid}.json"
+                        if not faceit_file.exists():
+                            candidates = []
+                            if sid in PLAYER_ALIASES:
+                                candidates.append(PLAYER_ALIASES[sid][0])
+                            p_name_lower = (p_data.get("name") or "").lower().strip()
+                            if p_name_lower in CANONICAL_PLAYERS:
+                                candidates.append(CANONICAL_PLAYERS[p_name_lower])
+                            if sid == "76561198254267968":
+                                candidates.append("76561198254267961")
+                            elif sid == "76561198254267961":
+                                candidates.append("76561198254267968")
+                            for c in candidates:
+                                cand_file = FACEIT_DIR / f"{c}.json"
+                                if cand_file.exists():
+                                    faceit_file = cand_file
+                                    break
                         if faceit_file.exists():
                             try:
                                 with open(faceit_file, "r", encoding="utf-8") as ff:

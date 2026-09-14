@@ -188,6 +188,7 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
     games = p_res.get("games", {})
     cs2_g = games.get("cs2", {})
     csgo_g = games.get("csgo", {})
+    real_faceit_steamid = clean_steamid(cs2_g.get("game_player_id") or csgo_g.get("game_player_id"))
     elo = cs2_g.get("faceit_elo") or csgo_g.get("faceit_elo") or 1000
     skill_level = cs2_g.get("skill_level") or csgo_g.get("skill_level") or 1
 
@@ -335,6 +336,24 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
     # Сохранение в локальный кэш
     with open(cache_file, "w", encoding="utf-8") as f:
         json.dump(faceit_profile, f, ensure_ascii=False, indent=2)
+
+    # Если реальный Steam ID на Faceit отличается от запрошенного sid (например, float-округление)
+    if real_faceit_steamid and real_faceit_steamid != sid:
+        alt_cache_file = FACEIT_DIR / f"{real_faceit_steamid}.json"
+        try:
+            with open(alt_cache_file, "w", encoding="utf-8") as f:
+                json.dump(faceit_profile, f, ensure_ascii=False, indent=2)
+        except Exception:
+            pass
+
+    # Дублируем для известных вариантов округления (например ...961 <-> ...968)
+    if sid in ("76561198254267961", "76561198254267968") or real_faceit_steamid in ("76561198254267961", "76561198254267968"):
+        for variant in ["76561198254267961", "76561198254267968"]:
+            try:
+                with open(FACEIT_DIR / f"{variant}.json", "w", encoding="utf-8") as f:
+                    json.dump(faceit_profile, f, ensure_ascii=False, indent=2)
+            except Exception:
+                pass
 
     return faceit_profile
 

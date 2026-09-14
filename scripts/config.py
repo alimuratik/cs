@@ -42,7 +42,10 @@ FACEIT_DIR.mkdir(parents=True, exist_ok=True)
 FACEIT_CUSTOM_PLAYERS = {
     "alibonya": "ALIBONYA",
     "mbaliyev": "mbaliyev",
-    "oceanmengo": "Oceanmengo",
+    "oceanmengo": "oceanskyi",
+    "oceanskyi": "oceanskyi",
+    "76561198254267961": "oceanskyi",
+    "76561198254267968": "oceanskyi",
     "altairinthesky": "altairinthesky",
     "yesk0": "Yesk0",
     "matadorra": "matadorra",
@@ -68,6 +71,7 @@ PLAYER_ALIASES = {
     "nay ball": ("76561198083546367", "Saliend"),
     "saliend": ("76561198083546367", "Saliend"),
     # Float precision variant aliases
+    "76561198254267968": ("76561198254267961", "Oceanmengo"),
     "76561198125968237": ("76561198125968240", "qumashasyl"),
     "76561198885191520": ("76561198885191528", "taksist_3"),
     "76561198243149322": ("76561198243149328", "Rayi"),
@@ -88,7 +92,7 @@ CANONICAL_PLAYERS = {
     "folie_1": "76561198100478545",
     "zikayevg": "76561199413542223",
     "altairinthesky": "76561199339730976",
-    "oceanmengo": "76561198254267968",
+    "oceanmengo": "76561198254267961",
     "k--9": "76561199569491960",
     "resone west": "76561199508661466",
     "azki_1": "76561198234120608",
