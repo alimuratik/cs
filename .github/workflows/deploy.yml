@@ -36,6 +36,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install jinja2
 
+      - name: Fetch Faceit statistics
+        env:
+          FACEIT_API_KEY: ${{ secrets.FACEIT_API_KEY }}
+        run: |
+          python run.py --stage faceit
+
       - name: Build static site
         env:
           FACEIT_API_KEY: ${{ secrets.FACEIT_API_KEY }}
