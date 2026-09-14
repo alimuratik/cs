@@ -37,6 +37,20 @@ FACEIT_API_KEY = os.getenv("FACEIT_API_KEY", "")
 FACEIT_DIR = DATA_DIR / "faceit"
 FACEIT_DIR.mkdir(parents=True, exist_ok=True)
 
+# Ручной маппинг профилей Faceit (Steam ID или никнейм в нижнем регистре -> Faceit Nickname или URL профиля)
+# Используется, если Steam ID из демки не привязан к Faceit CS2 напрямую, профиль из эпохи CS:GO, или игрок играет со смурфа
+FACEIT_CUSTOM_PLAYERS = {
+    "alibonya": "ALIBONYA",
+    "mbaliyev": "mbaliyev",
+    "oceanmengo": "Oceanmengo",
+    "altairinthesky": "altairinthesky",
+    "yesk0": "Yesk0",
+    "matadorra": "matadorra",
+    # Если никнейм на Faceit отличается от ника в Steam, укажите его здесь:
+    # "c kaifom": "ник_на_faceit",
+    # "resone west": "ник_на_faceit",
+}
+
 # Настройки публикации сайта (GitHub Pages / Хостинг)
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "")
 

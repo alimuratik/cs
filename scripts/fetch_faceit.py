@@ -3,16 +3,29 @@
 Модуль синхронизации со статистикой официального FACEIT API v4.
 Извлекает реальный Elo, уровень мастерства (1-10), K/D, винрейт, винстрик и историю матчей.
 Кэширует результаты локально в data/faceit/{clean_steamid}.json со сроком жизни TTL.
+Поддерживает каскадный поиск:
+1. Поиск по Steam ID (игра CS2).
+2. Fallback: поиск по Steam ID (игра CS:GO для аккаунтов, созданных до CS2).
+3. Fallback: поиск по маппингу FACEIT_CUSTOM_PLAYERS (никнейм / ссылка).
+4. Fallback: автоматический поиск по игровому никнейму (включая слитное написание).
 """
 
 import os
+import sys
 import json
 import time
+import re
 import urllib.request
 import urllib.error
+import urllib.parse
 from datetime import datetime, timedelta
 from pathlib import Path
 import logging
+
+# Гарантия импорта из корня проекта при прямом вызове
+BASE_DIR = Path(__file__).resolve().parent.parent
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 from scripts.config import (
     FACEIT_API_KEY,
@@ -21,6 +34,7 @@ from scripts.config import (
     clean_steamid,
     CANONICAL_PLAYERS,
     PLAYER_ALIASES,
+    FACEIT_CUSTOM_PLAYERS,
 )
 
 logger = logging.getLogger(__name__)
@@ -28,6 +42,7 @@ logger = logging.getLogger(__name__)
 FACEIT_API_BASE = "https://open.faceit.com/data/v4"
 CACHE_TTL_HOURS = 24
 NOT_FOUND_CACHE_DAYS = 7
+LOOKUP_VERSION = 2  # Версия логики поиска для сброса устаревших отрицательных кэшей
 
 
 def _make_faceit_request(url: str, api_key: str) -> dict | None:
@@ -61,9 +76,9 @@ def _make_faceit_request(url: str, api_key: str) -> dict | None:
     return None
 
 
-def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False) -> dict:
+def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = None, force: bool = False) -> dict:
     """
-    Загружает и кэширует профиль Faceit для конкретного Steam ID.
+    Загружает и кэширует профиль Faceit для конкретного Steam ID с многоуровневым поиском.
     """
     sid = clean_steamid(steam_id)
     cache_file = FACEIT_DIR / f"{sid}.json"
@@ -78,13 +93,14 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
             cached_at_str = old_data.get("cached_at")
             if cached_at_str and not force:
                 cached_at = datetime.fromisoformat(cached_at_str)
-                # Если игрок не найден на Faceit, держим кэш 7 дней
-                if not old_data.get("found", True):
+                # Если найден, обновляем раз в 24 часа
+                if old_data.get("found", False):
+                    if now - cached_at < timedelta(hours=CACHE_TTL_HOURS):
+                        return old_data
+                # Если не найден, но проверялся новой версией поиска, держим кэш 7 дней
+                elif old_data.get("lookup_version") == LOOKUP_VERSION:
                     if now - cached_at < timedelta(days=NOT_FOUND_CACHE_DAYS):
                         return old_data
-                # Если найден, обновляем раз в 24 часа
-                elif now - cached_at < timedelta(hours=CACHE_TTL_HOURS):
-                    return old_data
         except Exception:
             pass
 
@@ -94,35 +110,94 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
             return old_data
         return {"found": False, "steam_id": sid, "reason": "no_api_key"}
 
-    # 1. Поиск профиля игрока по CS2 Steam ID
-    player_url = f"{FACEIT_API_BASE}/players?game=cs2&game_player_id={sid}"
-    p_res = _make_faceit_request(player_url, key)
+    p_res = None
+    matched_by = "none"
 
+    # 1. Шаг 1: Поиск по CS2 Steam ID
+    if sid:
+        player_url_cs2 = f"{FACEIT_API_BASE}/players?game=cs2&game_player_id={sid}"
+        res = _make_faceit_request(player_url_cs2, key)
+        if res and not res.get("error"):
+            p_res = res
+            matched_by = "cs2_steamid"
+
+    # 2. Шаг 2: Fallback — поиск по CS:GO Steam ID (профили, зарегистрированные в эру CS:GO)
+    if not p_res and sid:
+        player_url_csgo = f"{FACEIT_API_BASE}/players?game=csgo&game_player_id={sid}"
+        res = _make_faceit_request(player_url_csgo, key)
+        if res and not res.get("error"):
+            p_res = res
+            matched_by = "csgo_steamid"
+
+    # 3. Шаг 3: Fallback — поиск по пользовательскому маппингу FACEIT_CUSTOM_PLAYERS
+    if not p_res:
+        clean_name = (player_name or "").strip().lower()
+        custom_target = FACEIT_CUSTOM_PLAYERS.get(sid) or FACEIT_CUSTOM_PLAYERS.get(clean_name)
+        if custom_target:
+            # Извлекаем никнейм из строки или ссылки (например https://www.faceit.com/ru/players/mbaliyev)
+            custom_nick = custom_target.strip().rstrip("/").split("/")[-1]
+            custom_url = f"{FACEIT_API_BASE}/players?nickname={urllib.parse.quote(custom_nick)}"
+            res = _make_faceit_request(custom_url, key)
+            if res and not res.get("error"):
+                p_res = res
+                matched_by = f"custom_mapping({custom_nick})"
+
+    # 4. Шаг 4: Fallback — автоматический поиск по игровому никнейму
+    if not p_res and player_name:
+        nick_clean = player_name.strip()
+        # Проверяем никнейм напрямую, если в нем нет пробелов и спецсимволов пути
+        if len(nick_clean) >= 3 and not any(c in nick_clean for c in " \t/\\"):
+            nick_url = f"{FACEIT_API_BASE}/players?nickname={urllib.parse.quote(nick_clean)}"
+            res = _make_faceit_request(nick_url, key)
+            if res and not res.get("error"):
+                p_res = res
+                matched_by = f"nickname({nick_clean})"
+
+        # Если в нике были пробелы (например "c kaifom" -> "ckaifom" или "Resone West" -> "ResoneWest")
+        if not p_res and (" " in nick_clean or "-" in nick_clean or "_" in nick_clean):
+            compressed_nick = re.sub(r'[^a-zA-Z0-9_\-]', '', nick_clean)
+            if len(compressed_nick) >= 3 and compressed_nick.lower() != nick_clean.lower():
+                nick_url = f"{FACEIT_API_BASE}/players?nickname={urllib.parse.quote(compressed_nick)}"
+                res = _make_faceit_request(nick_url, key)
+                if res and not res.get("error"):
+                    p_res = res
+                    matched_by = f"compressed_nickname({compressed_nick})"
+
+    # Если профиль не найден ни по одному из критериев
     if not p_res or p_res.get("error"):
-        # Если 404 или ошибка, кэшируем факт отсутствия
         not_found_res = {
             "found": False,
             "steam_id": sid,
+            "player_name": player_name,
             "cached_at": now.isoformat(),
-            "reason": p_res.get("message") if p_res else "network_error",
+            "lookup_version": LOOKUP_VERSION,
+            "reason": p_res.get("message") if p_res else "not_found",
         }
         with open(cache_file, "w", encoding="utf-8") as f:
             json.dump(not_found_res, f, ensure_ascii=False, indent=2)
         return not_found_res
 
+    # Профиль успешно найден!
     player_id = p_res.get("player_id")
-    nickname = p_res.get("nickname", "Unknown")
+    nickname = p_res.get("nickname", player_name or "Unknown")
     avatar = p_res.get("avatar") or ""
     faceit_url = (p_res.get("faceit_url") or "").replace("{lang}", "ru") or f"https://www.faceit.com/ru/players/{nickname}"
     country = p_res.get("country", "")
 
-    cs2_game = p_res.get("games", {}).get("cs2", {})
-    skill_level = cs2_game.get("skill_level", 1)
-    elo = cs2_game.get("faceit_elo", 1000)
+    # Извлечение уровня и Elo с поддержкой CS2 и CS:GO
+    games = p_res.get("games", {})
+    cs2_g = games.get("cs2", {})
+    csgo_g = games.get("csgo", {})
+    elo = cs2_g.get("faceit_elo") or csgo_g.get("faceit_elo") or 1000
+    skill_level = cs2_g.get("skill_level") or csgo_g.get("skill_level") or 1
 
-    # 2. Пожизненная статистика CS2
+    # 2. Пожизненная статистика (приоритет CS2, fallback на CS:GO)
     stats_url = f"{FACEIT_API_BASE}/players/{player_id}/stats/cs2"
     stats_res = _make_faceit_request(stats_url, key)
+    if not stats_res or stats_res.get("error"):
+        stats_url = f"{FACEIT_API_BASE}/players/{player_id}/stats/csgo"
+        stats_res = _make_faceit_request(stats_url, key)
+
     lifetime = stats_res.get("lifetime", {}) if stats_res and not stats_res.get("error") else {}
 
     try:
@@ -157,19 +232,21 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
 
     recent_results = lifetime.get("Recent Results", [])
 
-    # 3. Последние 5 матчей на Faceit
+    # 3. Последние 5 матчей на Faceit (приоритет CS2, fallback на CS:GO)
     recent_matches = []
     history_url = f"{FACEIT_API_BASE}/players/{player_id}/history?game=cs2&limit=5"
     hist_res = _make_faceit_request(history_url, key)
+    if not hist_res or not hist_res.get("items"):
+        history_url = f"{FACEIT_API_BASE}/players/{player_id}/history?game=csgo&limit=5"
+        hist_res = _make_faceit_request(history_url, key)
+
     if hist_res and isinstance(hist_res.get("items"), list):
         for item in hist_res["items"]:
             try:
                 m_teams = item.get("teams", {})
                 f1 = m_teams.get("faction1", {})
                 f2 = m_teams.get("faction2", {})
-                # Найти в какой команде был игрок
                 player_faction = "faction1" if any(p.get("player_id") == player_id for p in f1.get("roster", [])) else "faction2"
-                opp_faction = "faction2" if player_faction == "faction1" else "faction1"
 
                 winner = item.get("results", {}).get("winner")
                 is_win = (winner == player_faction)
@@ -184,11 +261,11 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
                 started_at = item.get("started_at", 0)
                 match_dt = datetime.fromtimestamp(started_at).strftime("%d.%m.%Y") if started_at else ""
 
-                # Карта
                 map_raw = item.get("voting", {}).get("map", {}).get("pick", ["de_mirage"])
                 map_name = map_raw[0].replace("de_", "").capitalize() if map_raw else "CS2"
 
-                m_url = f"https://www.faceit.com/ru/cs2/room/{item.get('match_id')}"
+                game_type = item.get("game", "cs2")
+                m_url = f"https://www.faceit.com/ru/{game_type}/room/{item.get('match_id')}"
 
                 recent_matches.append({
                     "match_id": item.get("match_id"),
@@ -202,22 +279,21 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
             except Exception:
                 continue
 
-    # Расчет дельты Elo относительно предыдущего сохраненного кэша
+    # Расчет дельты Elo относительно предыдущего кэша
     prev_elo = None
     if old_data and old_data.get("found"):
         prev_elo = old_data.get("elo")
-    
+
     if prev_elo and prev_elo != elo:
         elo_delta = elo - prev_elo
     else:
         elo_delta = old_data.get("elo_delta", 0) if old_data else 0
 
-    # Определение индикатора серии (стрика)
+    # Индикатор серии (стрика)
     streak_badge = ""
     if win_streak >= 2:
         streak_badge = f"🔥 {win_streak}W"
     elif recent_results:
-        # Посчитать текущий лузстрик с конца списка результатов
         loss_streak = 0
         for r in reversed(recent_results):
             if str(r) == "0":
@@ -227,12 +303,13 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
         if loss_streak >= 2:
             streak_badge = f"❄️ {loss_streak}L"
 
-    # Сборка итогового объекта
+    # Сборка итогового объекта Faceit
     faceit_profile = {
         "found": True,
         "steam_id": sid,
         "player_id": player_id,
         "nickname": nickname,
+        "matched_by": matched_by,
         "avatar": avatar,
         "country": country,
         "faceit_url": faceit_url,
@@ -252,9 +329,10 @@ def fetch_player_faceit(steam_id: str, api_key: str = None, force: bool = False)
         },
         "recent_matches": recent_matches,
         "cached_at": now.isoformat(),
+        "lookup_version": LOOKUP_VERSION,
     }
 
-    # Сохранение в кэш
+    # Сохранение в локальный кэш
     with open(cache_file, "w", encoding="utf-8") as f:
         json.dump(faceit_profile, f, ensure_ascii=False, indent=2)
 
@@ -277,36 +355,46 @@ def fetch_all_faceit(force: bool = False) -> dict[str, dict]:
     with open(players_db_file, "r", encoding="utf-8") as f:
         players_db = json.load(f)
 
-    # Собираем уникальные clean_steamid
-    target_sids = set()
+    # Собираем уникальные clean_steamid и актуальные имена игроков
+    target_players = {}  # csid -> pname
     for raw_sid, pdata in players_db.items():
         csid = clean_steamid(raw_sid)
+        pname = pdata.get("name", "")
         if csid in PLAYER_ALIASES:
-            csid, _ = PLAYER_ALIASES[csid]
-        pname = (pdata.get("name") or "").lower().strip()
-        if pname in CANONICAL_PLAYERS:
-            csid = CANONICAL_PLAYERS[pname]
+            csid, alias_name = PLAYER_ALIASES[csid]
+            if not pname:
+                pname = alias_name
+        pname_lower = (pname or "").lower().strip()
+        if pname_lower in CANONICAL_PLAYERS:
+            csid = CANONICAL_PLAYERS[pname_lower]
         if csid and csid.isdigit() and len(csid) >= 10:
-            target_sids.add(csid)
+            if csid not in target_players or (not target_players[csid] and pname):
+                target_players[csid] = pname
 
-    logger.info(f"Начало синхронизации FACEIT API для {len(target_sids)} игроков...")
+    logger.info(f"Начало синхронизации FACEIT API для {len(target_players)} игроков...")
     results = {}
     found_count = 0
 
-    for idx, sid in enumerate(sorted(target_sids), 1):
+    for idx, (sid, pname) in enumerate(sorted(target_players.items()), 1):
         try:
-            p_faceit = fetch_player_faceit(sid, force=force)
+            p_faceit = fetch_player_faceit(sid, player_name=pname, force=force)
             results[sid] = p_faceit
+            display_title = pname or sid
             if p_faceit.get("found"):
                 found_count += 1
-                logger.info(f"[{idx}/{len(target_sids)}] Faceit: {p_faceit.get('nickname')} (Lvl {p_faceit.get('skill_level')}, Elo {p_faceit.get('elo')})")
+                matched = p_faceit.get("matched_by", "direct")
+                logger.info(
+                    f"[{idx}/{len(target_players)}] Faceit: {p_faceit.get('nickname')} "
+                    f"(Lvl {p_faceit.get('skill_level')}, Elo {p_faceit.get('elo')}) "
+                    f"[Игрок: {display_title}, поиск: {matched}]"
+                )
             else:
-                logger.info(f"[{idx}/{len(target_sids)}] Steam ID {sid} — аккаунт Faceit не найден.")
+                logger.info(f"[{idx}/{len(target_players)}] {display_title} — профиль Faceit не найден.")
             time.sleep(0.15)  # Защита от лимитов запросов
         except Exception as e:
-            logger.warning(f"Ошибка получения Faceit для {sid}: {e}")
+            logger.warning(f"Ошибка получения Faceit для {pname or sid}: {e}")
 
-    logger.info(f"Синхронизация Faceit завершена! Найдено активных профилей: {found_count}/{len(target_sids)}")
+    logger.info(f"Синхронизация Faceit завершена! Найдено активных профилей: {found_count}/{len(target_players)}")
     return results
 
 
@@ -315,12 +403,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FACEIT API CS2 Synchronizer")
     parser.add_argument("--force", action="store_true", help="Принудительно обновить весь кэш Faceit")
     parser.add_argument("--steamid", type=str, help="Синхронизировать только один Steam ID")
+    parser.add_argument("--name", type=str, default="", help="Имя игрока для поиска по никнейму")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     if args.steamid:
-        res = fetch_player_faceit(args.steamid, force=args.force)
+        res = fetch_player_faceit(args.steamid, player_name=args.name, force=args.force)
         print(json.dumps(res, ensure_ascii=False, indent=2))
     else:
         fetch_all_faceit(force=args.force)
