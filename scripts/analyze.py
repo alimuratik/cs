@@ -17,7 +17,7 @@ from scripts.config import (
     PLAYER_ALIASES, CANONICAL_PLAYERS, STARTING_MMR, BASE_TEAM_DELTA,
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
-    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS
+    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR
 )
 
 
@@ -1650,9 +1650,9 @@ def run_analysis(force_ai: bool = False):
     """
     Основная функция для запуска анализа.
     """
-    matches_dir = os.path.join("C:\\agent\\csdemo\\data", "matches")
-    players_dir = os.path.join("C:\\agent\\csdemo\\data", "players")
-    players_db_path = os.path.join("C:\\agent\\csdemo\\data", "players_db.json")
+    matches_dir = str(DATA_DIR / "matches")
+    players_dir = str(DATA_DIR / "players")
+    players_db_path = str(DATA_DIR / "players_db.json")
     
     os.makedirs(matches_dir, exist_ok=True)
     os.makedirs(players_dir, exist_ok=True)
@@ -2409,7 +2409,7 @@ def run_analysis(force_ai: bool = False):
             for s1 in team_synergy
         }
     }
-    with open(os.path.join("C:\\agent\\csdemo\\data", "head_to_head.json"), "w", encoding="utf-8") as f:
+    with open(DATA_DIR / "head_to_head.json", "w", encoding="utf-8") as f:
         json.dump(h2h_export, f, ensure_ascii=False, indent=2)
 
     # 7. Расчет 5 сессионных номинаций Зала славы для крайней сессии
@@ -2503,7 +2503,7 @@ def run_analysis(force_ai: bool = False):
                     "icon": "🧲"
                 }
             }
-            with open(os.path.join("C:\\agent\\csdemo\\data", "session_awards.json"), "w", encoding="utf-8") as f:
+            with open(DATA_DIR / "session_awards.json", "w", encoding="utf-8") as f:
                 json.dump(awards, f, ensure_ascii=False, indent=2)
 
     print("Анализ и расчёт непрерывного MMR, рейтингов, связей и достижений успешно завершён!")

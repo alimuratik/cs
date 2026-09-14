@@ -8,7 +8,7 @@ from datetime import datetime
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-ROOT_DIR = Path(r"C:\agent\csdemo")
+ROOT_DIR = Path(__file__).resolve().parent.parent
 MATCHES_DIR = ROOT_DIR / 'data' / 'matches'
 PLAYERS_DIR = ROOT_DIR / 'data' / 'players'
 SITE_DIR = ROOT_DIR / 'site'

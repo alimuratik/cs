@@ -1,9 +1,8 @@
 import os
 from pathlib import Path
 
-# Основные директории проекта
-# Основные директории проекта
-BASE_DIR = Path(r"C:\agent\csdemo")
+# Основные директории проекта (динамический корень проекта для Windows и Linux)
+BASE_DIR = Path(__file__).resolve().parent.parent
 DEMOS_DIR = BASE_DIR / "demos"
 DATA_DIR = BASE_DIR / "data"
 SITE_DIR = BASE_DIR / "site"
