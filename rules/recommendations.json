@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "description": "База знаний правил для генерации персональных рекомендаций игрокам CS2",
+  "rules": [
+    {
+      "id": "aim_low",
+      "condition": "ratings.Aim < 5.0",
+      "category": "training",
+      "text": "Тренируй аим: DM FFA 30 минут в день, карта Aim Botz (1000 ботов), тренировка трекинга в Aimlabs/Kovaaks"
+    },
+    {
+      "id": "aim_high_pos_low",
+      "condition": "ratings.Aim > 7.0 and ratings.Positioning < 5.0",
+      "category": "habits_to_remove",
+      "text": "У тебя хороший аим, но ты часто стоишь в невыгодных позициях. Смотри POV профессионалов своей роли"
+    },
+    {
+      "id": "utility_low",
+      "condition": "ratings.Utility < 4.5",
+      "category": "exercises",
+      "text": "Учи раскидки на основных картах. Минимум 5 дымов и 5 флешек на каждую карту. Используй yprac maps"
+    },
+    {
+      "id": "entry_high_trade_low",
+      "condition": "ratings.Entry > 6.5 and ratings.Trading < 4.5",
+      "category": "habits_to_remove",
+      "text": "Ты хороший entry, но тебя не трейдят. Коммуницируй команде когда выходишь"
+    },
+    {
+      "id": "hs_low",
+      "condition": "metrics.hs_percent < 35.0",
+      "category": "training",
+      "text": "Целься выше — прицел всегда должен быть на уровне головы (crosshair placement). Тренируй на DM с фокусом на one-tap"
+    },
+    {
+      "id": "clutch_high",
+      "condition": "ratings.Clutch > 7.0",
+      "category": "best_role",
+      "text": "Якорный игрок / Клатчер"
+    },
+    {
+      "id": "economy_low",
+      "condition": "ratings.Economy < 5.0",
+      "category": "habits_to_remove",
+      "text": "Следи за экономикой команды. Не форсись один, когда команда на эко"
+    },
+    {
+      "id": "stability_low",
+      "condition": "metrics.stability_score < 5.0",
+      "category": "exercises",
+      "text": "Нестабильная игра. Работай над consistency: разминка перед играми и одинаковый сетап"
+    },
+    {
+      "id": "first_death_high",
+      "condition": "metrics.first_death_rate > 20.0",
+      "category": "habits_to_remove",
+      "text": "Слишком часто умираешь первым. Будь осторожнее с peek'ами, используй jiggle peek"
+    },
+    {
+      "id": "utility_dmg_high",
+      "condition": "metrics.utility_damage > 20.0",
+      "category": "training",
+      "text": "Отличная работа с утилитой! Это твоя сильная сторона, продолжай кошмарить соперников осколочными и молотовами"
+    },
+    {
+      "id": "flash_assists_low",
+      "condition": "metrics.flash_assists < 1.0",
+      "category": "exercises",
+      "text": "Используй флешки для тиммейтов. Учи pop-flash для безопасного входа на сайт"
+    },
+    {
+      "id": "awp_high",
+      "condition": "metrics.awp_kills_percent > 40.0",
+      "category": "best_role",
+      "text": "Основной AWP-ер"
+    },
+    {
+      "id": "trade_low",
+      "condition": "metrics.trade_rate < 20.0",
+      "category": "habits_to_remove",
+      "text": "Держись ближе к тиммейтам для размена. Следи за радаром и заходи сразу за первым номером"
+    },
+    {
+      "id": "pistol_win_low",
+      "condition": "metrics.pistol_win_rate < 35.0",
+      "category": "training",
+      "text": "Пистолетные раунды — твоя слабая сторона. Тренируй USP/Glock на Pistol DM серверах"
+    }
+  ]
+}

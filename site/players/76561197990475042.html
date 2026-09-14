@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глубокий анализ ваших матчей Counter-Strike 2">
+    <title>Профиль GIGABYTE_KZ | CS2 Stats</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="../index.html">
+                    <svg viewBox="0 0 100 86.6" class="logo-pyramid w-7 h-7 shrink-0" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="../index.html" class="nav-item ">
+                    <span class="nav-icon">📊</span> Главная
+                </a>
+                <a href="../index.html#players-section" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Игроки
+                </a>
+                <a href="../skills.html" class="nav-item ">
+                    <span class="nav-icon">🎯</span> Навыки
+                </a>
+                <a href="../index.html#sessions-section" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
+                </a>
+                <a href="../demos.html" class="nav-item ">
+                    <span class="nav-icon">🎬</span> Демки
+                </a>
+                <a href="../compare.html" class="nav-item ">
+                    <span class="nav-icon">⚔️</span> Дуэли
+                </a>
+                <a href="../matchmaker.html" class="nav-item ">
+                    <span class="nav-icon">⚖️</span> Составы
+                </a>
+            </nav>
+
+            <!-- User Personalization Widget ("Кто ты?") -->
+            <div class="relative ml-2 hidden md:block" id="user-profile-widget">
+                <button type="button" id="my-profile-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition shadow-sm focus:outline-none" aria-expanded="false">
+                    <span id="my-profile-icon">👤</span>
+                    <span id="my-profile-label">Кто ты?</span>
+                    <span class="text-[10px] text-slate-500">▼</span>
+                </button>
+                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800 shadow-2xl p-2 z-50 transition-all">
+                    <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5 flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Выберите свой профиль</span>
+                        <button type="button" id="reset-my-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+                    </div>
+                    <div class="max-h-60 overflow-y-auto space-y-1 custom-scrollbar" id="profile-select-list">
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198357586856" data-pname="__9503">
+                            <span class="truncate">__9503</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198431427136" data-pname="ALIBONYA">
+                            <span class="truncate">ALIBONYA</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199339730976" data-pname="altairinthesky">
+                            <span class="truncate">altairinthesky</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198234120608" data-pname="Azki_1">
+                            <span class="truncate">Azki_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198998095904" data-pname="c kaifom">
+                            <span class="truncate">c kaifom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199808571117" data-pname="CHPOKERS">
+                            <span class="truncate">CHPOKERS</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198068831005" data-pname="DarkAtom">
+                            <span class="truncate">DarkAtom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198100478545" data-pname="Folie_1">
+                            <span class="truncate">Folie_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561197990475042" data-pname="GIGABYTE_KZ">
+                            <span class="truncate">GIGABYTE_KZ</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199478211872" data-pname="iamresplendent">
+                            <span class="truncate">iamresplendent</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198356069376" data-pname="insta/Ne7er0cs">
+                            <span class="truncate">insta/Ne7er0cs</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199569491960" data-pname="k--9">
+                            <span class="truncate">k--9</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199153011360" data-pname="matadorra">
+                            <span class="truncate">matadorra</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198686899456" data-pname="mbaliyev">
+                            <span class="truncate">mbaliyev</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198010867824" data-pname="Nakama_4">
+                            <span class="truncate">Nakama_4</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198254267968" data-pname="Oceanmengo">
+                            <span class="truncate">Oceanmengo</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198125968240" data-pname="qumashasyl">
+                            <span class="truncate">qumashasyl</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198243149328" data-pname="Rayi">
+                            <span class="truncate">Rayi</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199508661466" data-pname="Resone West">
+                            <span class="truncate">Resone West</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198083546367" data-pname="Saliend">
+                            <span class="truncate">Saliend</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199438131194" data-pname="SGEM_7">
+                            <span class="truncate">SGEM_7</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198885191528" data-pname="taksist_3">
+                            <span class="truncate">taksist_3</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198402746928" data-pname="Yesk0">
+                            <span class="truncate">Yesk0</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199043039622" data-pname="Zanoza59">
+                            <span class="truncate">Zanoza59</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199413542223" data-pname="zikayevg">
+                            <span class="truncate">zikayevg</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                    </div>
+                    <div id="my-profile-active-actions" class="hidden mt-2 pt-2 border-t border-slate-800 flex items-center justify-between px-2">
+                        <a id="my-profile-link" href="#" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                            <span>Открыть профиль</span> <span>➔</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button type="button" id="mobile-menu-btn" class="hamburger-btn md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Открыть мобильное меню">
+                <span class="text-xl">☰</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div class="logo">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+                ✕
+            </button>
+        </div>
+        <nav class="flex flex-col gap-2.5 mt-6">
+            <a href="../index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📊</span> <span>Главная</span>
+            </a>
+            <a href="../index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            </a>
+            <a href="../skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            </a>
+            <a href="../compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="../matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            </a>
+            <a href="../index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
+            </a>
+            <a href="../demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            </a>
+        </nav>
+
+        <!-- Mobile User Profile Picker -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800" id="mobile-user-profile-widget">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <span id="mobile-profile-icon">👤</span>
+                    <span id="mobile-profile-title">Мой профиль</span>
+                </span>
+                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+            </div>
+            <select id="mobile-player-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                <option value="">-- Выберите профиль --</option>
+                
+                <option value="76561198357586856">__9503</option>
+                
+                <option value="76561198431427136">ALIBONYA</option>
+                
+                <option value="76561199339730976">altairinthesky</option>
+                
+                <option value="76561198234120608">Azki_1</option>
+                
+                <option value="76561198998095904">c kaifom</option>
+                
+                <option value="76561199808571117">CHPOKERS</option>
+                
+                <option value="76561198068831005">DarkAtom</option>
+                
+                <option value="76561198100478545">Folie_1</option>
+                
+                <option value="76561197990475042">GIGABYTE_KZ</option>
+                
+                <option value="76561199478211872">iamresplendent</option>
+                
+                <option value="76561198356069376">insta/Ne7er0cs</option>
+                
+                <option value="76561199569491960">k--9</option>
+                
+                <option value="76561199153011360">matadorra</option>
+                
+                <option value="76561198686899456">mbaliyev</option>
+                
+                <option value="76561198010867824">Nakama_4</option>
+                
+                <option value="76561198254267968">Oceanmengo</option>
+                
+                <option value="76561198125968240">qumashasyl</option>
+                
+                <option value="76561198243149328">Rayi</option>
+                
+                <option value="76561199508661466">Resone West</option>
+                
+                <option value="76561198083546367">Saliend</option>
+                
+                <option value="76561199438131194">SGEM_7</option>
+                
+                <option value="76561198885191528">taksist_3</option>
+                
+                <option value="76561198402746928">Yesk0</option>
+                
+                <option value="76561199043039622">Zanoza59</option>
+                
+                <option value="76561199413542223">zikayevg</option>
+                
+            </select>
+            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-800/80">
+                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700/50 text-xs font-bold">
+                    Открыть мой профиль ➔
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+            KASE CS2 Analytics Platform &bull; Mobile Nav
+        </div>
+    </div>
+
+    
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="../index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <a href="../index.html#players-section" class="hover:text-emerald-400 transition">Игроки</a>
+        <span>/</span>
+        <span class="text-white font-medium">GIGABYTE_KZ</span>
+    </div>
+</div>
+
+
+    <main class="main-content">
+        
+<div class="container mx-auto px-4 py-6">
+    <!-- Player Header Card -->
+    <header class="player-header glassmorphism relative overflow-hidden rounded-2xl p-6 md:p-8 mb-8 border border-emerald-500/20 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/30 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-5">
+            <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl border text-3xl font-black flex items-center justify-center shadow-xl shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                GI
+            </div>
+            <div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight flex items-center gap-2.5">
+                        GIGABYTE_KZ
+                        <span title="Калибровка"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#475569" stroke-width="2.2" stroke-dasharray="4.5 3" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#94a3b8">?</text></svg></span>
+                    </h1>
+                    
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-500/40 font-semibold">Калибровка</span>
+                    
+                    
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-semibold">Неактивен</span>
+                    
+                </div>
+                <div class="text-xs text-slate-400 font-mono mt-1 flex items-center gap-2">
+                    <span>🆔 Steam ID: 76561197990475042</span>
+                </div>
+                <div class="flex items-center gap-2 mt-2 flex-wrap">
+                    
+                    <span class="text-xs px-2.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 font-semibold">Второй номер</span>
+                    
+                    <span class="text-xs px-2.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 font-semibold">Универсал</span>
+                    
+                    
+                    <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border momentum-stable" title="Динамика формы крайней сессии относительно средней формы за карьеру">
+                        ⚖️ Стабильно (+0.00)
+                    </span>
+                    
+                    <span class="text-xs text-slate-400 ml-2">🎮 Сыграно матчей: <strong class="text-white">4</strong></span>
+                </div>
+                <!-- Form dots -->
+                <div class="flex items-center gap-2 mt-2.5">
+                    <span class="text-xs text-slate-400 font-medium">Форма:</span>
+                    <div class="inline-flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1 rounded-full border border-slate-800">
+                        
+                            
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/80 inline-block" title="Поражение"></span>
+                            
+                        
+                            
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/80 inline-block" title="Поражение"></span>
+                            
+                        
+                            
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/80 inline-block" title="Поражение"></span>
+                            
+                        
+                            
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/80 inline-block" title="Поражение"></span>
+                            
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rating & MMR Display Cards -->
+        <div class="flex items-center gap-4 flex-wrap justify-center md:justify-end">
+            <div class="player-mmr-card text-center bg-slate-900/90 p-4 rounded-2xl border border-amber-500/30 min-w-[140px] shadow-xl">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center justify-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#475569" stroke-width="2.2" stroke-dasharray="4.5 3" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#94a3b8">?</text></svg>
+                    <span>Калибровка</span>
+                </div>
+                <div class="text-3xl md:text-4xl font-black font-mono text-slate-400 font-mono tracking-tight">
+                    869
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 mt-1">
+                    Пик: <strong class="text-amber-400">1000</strong> | 
+                    <span class="font-bold text-rose-400">
+                        -34
+                    </span>
+                </div>
+            </div>
+
+            <div class="player-overall-rating text-center bg-slate-900/90 p-4 rounded-2xl border border-slate-800 min-w-[130px] shadow-xl">
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">HLTV 2.0 (Ср.)</div>
+                <div class="text-2xl md:text-3xl font-black font-mono text-amber-300">
+                    0.42
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 mt-1">
+                    Оценка: <strong class="text-white">4.3/10</strong>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Latest Session Progress Block -->
+    
+    <section class="section session-progress-section glassmorphism p-5 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">⚡</span>
+                <div>
+                    <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                        Динамика крайней сессии
+                        <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2 py-0.5 rounded-full">
+                            22 мая 2026
+                        </span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Матчей за день: <strong class="text-slate-200">4</strong> 
+                        &bull; Сравнение: <span class="text-slate-300">дебютная сессия игрока</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Quick Delta Badges -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- HLTV Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">HLTV:</span>
+                    <span class="font-bold text-slate-200">0.42</span>
+                    
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    
+                </div>
+
+                <!-- ADR Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">ADR:</span>
+                    <span class="font-bold text-slate-200">35.6</span>
+                    
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    
+                </div>
+
+                <!-- K/D Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">K/D:</span>
+                    <span class="font-bold text-slate-200">0.28</span>
+                    
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    
+                </div>
+
+                <!-- HS% Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">HS%:</span>
+                    <span class="font-bold text-slate-200">54.6%</span>
+                    
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    
+                </div>
+
+                <!-- MMR Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">MMR:</span>
+                    
+                    <span class="text-rose-400 font-bold">-131</span>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 Columns: Better vs Worse -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- What got better -->
+            <div class="bg-emerald-950/20 border border-emerald-800/40 rounded-xl p-3.5">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-sm">📈</span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300">Что стало лучше (Прогресс)</h3>
+                </div>
+                <ul class="space-y-1.5">
+                    
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-emerald-400 mt-0.5">&bull;</span>
+                        <span>Отличная точность хедшотов: 54.6% HS</span>
+                    </li>
+                    
+                </ul>
+            </div>
+
+            <!-- Areas of improvement / What got worse -->
+            <div class="bg-rose-950/20 border border-rose-800/40 rounded-xl p-3.5">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-sm">📉</span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-rose-300">Зоны внимания (Что просело)</h3>
+                </div>
+                <ul class="space-y-1.5">
+                    
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-rose-400 mt-0.5">&bull;</span>
+                        <span>Отрицательный K/D (0.28) — необходимо меньше рисковать в ранних дуэлях</span>
+                    </li>
+                    
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-rose-400 mt-0.5">&bull;</span>
+                        <span>Низкий урон гранатами (4.5 HP/раунд)</span>
+                    </li>
+                    
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-rose-400 mt-0.5">&bull;</span>
+                        <span>Проигрыш ранних дуэлей: 10 первых смертей при 2 опен-киллах</span>
+                    </li>
+                    
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-rose-400 mt-0.5">&bull;</span>
+                        <span>Отрицательный баланс MMR за сессию: -131</span>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Official FACEIT Profile Section -->
+    
+
+    <!-- Radar & Skill Bars Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Radar Chart Section -->
+        <section class="section radar-section glassmorphism p-5 rounded-2xl border border-slate-800">
+            <h2 class="section-title text-xl font-bold text-white mb-4 flex items-center gap-2">
+                🕸️ Диаграмма 10 навыков
+            </h2>
+            <div class="h-64 md:h-80">
+                <canvas id="ratings-radar"></canvas>
+            </div>
+        </section>
+
+        <!-- Skill Rating Bars -->
+        <section class="section ratings-bars-section glassmorphism p-5 rounded-2xl border border-slate-800">
+            <h2 class="section-title text-xl font-bold text-white mb-4 flex items-center gap-2">
+                📊 Детализация навыков (1-10)
+            </h2>
+            <div class="space-y-3">
+                
+                <a href="../skills.html#aim" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Aim">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Aim
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-amber-500
+                            "
+                             style="width: 53.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-amber-400
+                        ">5.3</span>
+                </a>
+                
+                <a href="../skills.html#positioning" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Positioning">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Positioning
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 42.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">4.2</span>
+                </a>
+                
+                <a href="../skills.html#utility" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Utility">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Utility
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 31.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">3.1</span>
+                </a>
+                
+                <a href="../skills.html#game-sense" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Game Sense">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Game Sense
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 47.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">4.7</span>
+                </a>
+                
+                <a href="../skills.html#entry" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Entry">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Entry
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 16.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">1.6</span>
+                </a>
+                
+                <a href="../skills.html#trading" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Trading">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Trading
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-amber-500
+                            "
+                             style="width: 60.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-amber-400
+                        ">6.0</span>
+                </a>
+                
+                <a href="../skills.html#clutch" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Clutch">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Clutch
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 40.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">4.0</span>
+                </a>
+                
+                <a href="../skills.html#discipline" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Discipline">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Discipline
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-amber-500
+                            "
+                             style="width: 63.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-amber-400
+                        ">6.3</span>
+                </a>
+                
+                <a href="../skills.html#economy" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Economy">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Economy
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 39.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">3.9</span>
+                </a>
+                
+                <a href="../skills.html#overall-impact" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку Overall Impact">
+                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                        Overall Impact
+                        <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
+                    </span>
+                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                        <div class="h-full rounded-full transition-all duration-500
+                            bg-rose-500
+                            "
+                             style="width: 43.0%;"></div>
+                    </div>
+                    <span class="font-mono font-bold text-xs w-8 text-right
+                        text-rose-400
+                        ">4.3</span>
+                </a>
+                
+            </div>
+        </section>
+    </div>
+
+    <!-- Overview Stats Grid -->
+    <section class="section overview-stats-section mb-8">
+        <h2 class="section-title text-xl font-bold text-white mb-4">📈 Общая статистика за все игры</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">K/D Ratio</div>
+                <div class="text-base font-black font-mono text-rose-400">0.28</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">ADR</div>
+                <div class="text-base font-black font-mono text-white">35.6</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">KAST%</div>
+                <div class="text-base font-black font-mono text-white">45.1%</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">HS%</div>
+                <div class="text-base font-black font-mono text-white">54.6%</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Винрейт</div>
+                <div class="text-base font-black font-mono text-emerald-400">0.0%</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">First Kill %</div>
+                <div class="text-base font-black font-mono text-amber-400">2.7%</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Clutch Rate</div>
+                <div class="text-base font-black font-mono text-indigo-400">0.0%</div>
+            </div>
+            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
+                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Util DMG / R</div>
+                <div class="text-base font-black font-mono text-rose-400">4.5</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Highlights: Signature & Kryptonite -->
+    
+    <section class="section map-highlights-section mb-8">
+        <div class="mb-4">
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                🗺️ Анализ пула карт: Сигнатурная крепость и Зона риска
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Векторный разбор карт с максимальным винрейтом и проблемных локаций с персональными советами</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Favorite / Signature Map -->
+            
+            
+            <div class="map-card-banner map-card-favorite border rounded-2xl p-6 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-amber-950/30">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <span class="map-badge-tag badge-favorite">
+                        ⭐ Сигнатурная карта
+                    </span>
+                    <span class="text-xs text-amber-300/80 font-mono font-bold">1 матчей сыграно</span>
+                </div>
+                
+                <div class="map-header-flex flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="map-name-title text-3xl font-black text-white tracking-tight">Mirage</h3>
+                        <span class="text-xs text-emerald-400 font-mono font-bold">Винрейт: 0.0% (0W / 1L)</span>
+                    </div>
+                    <img src="../icons/maps/map_icon_de_mirage.svg" alt="Mirage" class="map-logo-vector w-16 h-16 object-contain drop-shadow-xl">
+                </div>
+
+                <div class="map-mini-stats-row grid grid-cols-3 gap-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 mb-4 text-center">
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-amber-300 font-mono font-black text-lg">0.48</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">HLTV 2.0</div>
+                    </div>
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-white font-mono font-black text-lg">40.2</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">ADR</div>
+                    </div>
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-rose-400 font-mono font-black text-lg">0.38</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">K/D</div>
+                    </div>
+                </div>
+
+                <div class="map-advice-box text-xs text-slate-300 bg-amber-950/20 border-l-2 border-amber-400 p-3 rounded-r-xl leading-relaxed">
+                    <span class="font-bold text-amber-300 block mb-1">💡 Тактическая рекомендация:</span>
+                    Основная карта Mirage по наигрышу в пуле (винрейт 0.0%, HLTV 0.48, ADR 40.2). Потенциал на карте высокий, но пока не хватает командной плотности при ретейках и разменах. Работай над дефолтным позиционированием. Как второй номер, держи дистанцию контакта не более 2 секунд от энтри для моментального размена.
+                </div>
+            </div>
+            
+
+            <!-- Kryptonite / Difficult Map -->
+            
+            
+            <div class="map-card-banner map-card-kryptonite border rounded-2xl p-6 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-rose-950/30">
+                <div class="flex items-center justify-between gap-4 mb-4">
+                    <span class="map-badge-tag badge-kryptonite">
+                        ☠️ Криптонит (Сложная карта)
+                    </span>
+                    <span class="text-xs text-rose-300/80 font-mono font-bold">1 матчей сыграно</span>
+                </div>
+                
+                <div class="map-header-flex flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="map-name-title text-3xl font-black text-white tracking-tight">Nuke</h3>
+                        <span class="text-xs text-rose-400 font-mono font-bold">Винрейт: 0.0% (0W / 1L)</span>
+                    </div>
+                    <img src="../icons/maps/map_icon_de_nuke.svg" alt="Nuke" class="map-logo-vector w-16 h-16 object-contain drop-shadow-xl">
+                </div>
+
+                <div class="map-mini-stats-row grid grid-cols-3 gap-2 bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 mb-4 text-center">
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-slate-200 font-mono font-black text-lg">0.35</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">HLTV 2.0</div>
+                    </div>
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-white font-mono font-black text-lg">29.6</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">ADR</div>
+                    </div>
+                    <div class="mini-stat-cell">
+                        <div class="mini-stat-val text-rose-400 font-mono font-black text-lg">0.2</div>
+                        <div class="mini-stat-lbl text-[10px] text-slate-400 uppercase font-medium">K/D</div>
+                    </div>
+                </div>
+
+                <div class="map-advice-box text-xs text-slate-300 bg-rose-950/20 border-l-2 border-rose-500 p-3 rounded-r-xl leading-relaxed">
+                    <span class="font-bold text-rose-400 block mb-1">🎯 Тактическая рекомендация:</span>
+                    На Nuke низкий KAST (33.3%). Вертикальная структура карты делает размены сложными, если ты упал в Вент или остался на Рампе один. Держи голосовой контакт и не оставайся отрезанным на нижнем пленте. Как второй номер, держи дистанцию контакта не более 2 секунд от энтри для моментального размена.
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+
+    <!-- 2D Player Archetype Matrix -->
+    
+    <section class="section archetype-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800/80">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    🧭 2D Матрица игрового архетипа
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Оси позиционирования: Агрессия/Опенинг (Ось X) и Звездный керри vs Командная опора (Ось Y)</p>
+            </div>
+            <div class="inline-flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
+                <span class="text-emerald-400 text-sm">🎯</span>
+                <span class="text-xs font-bold text-white">Командный разменщик</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <!-- Matrix Visual -->
+            <div class="lg:col-span-6 flex justify-center">
+                <div class="archetype-matrix-wrapper relative w-72 h-72 sm:w-80 sm:h-80 bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-inner overflow-hidden">
+                    <!-- Crosshairs -->
+                    <div class="matrix-crosshair-x absolute left-0 right-0 top-1/2 h-[1px] bg-slate-700/60 border-t border-dashed border-slate-600/50"></div>
+                    <div class="matrix-crosshair-y absolute top-0 bottom-0 left-1/2 w-[1px] bg-slate-700/60 border-l border-dashed border-slate-600/50"></div>
+
+                    <!-- Labels -->
+                    <span class="matrix-label label-top absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-amber-400 tracking-wider">⭐ Звездный керри (+Y)</span>
+                    <span class="matrix-label label-bottom absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-sky-400 tracking-wider">🛡️ Системная опора (-Y)</span>
+                    <span class="matrix-label label-left absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-slate-400 tracking-wider">🧠 Пассив (-X)</span>
+                    <span class="matrix-label label-right absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-rose-400 tracking-wider">⚔️ Агрессия (+X)</span>
+
+                    <!-- Archetype Dot -->
+                    <div class="archetype-dot absolute w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-lg shadow-emerald-400/80 -translate-x-1/2 -translate-y-1/2 z-10"
+                         style="left: 46.3%; top: 69.6%;">
+                        <div class="archetype-pulse absolute inset-0 rounded-full bg-emerald-400/50 animate-ping"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archetype Description & Explanation -->
+            <div class="lg:col-span-6 space-y-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Характеристика профиля</span>
+                    <h3 class="text-lg font-black text-white mt-0.5">Командный разменщик</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mt-2">Держится вторым темпом за энтри и гарантирует моментальный рефраг</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Индекс агрессии (X)</span>
+                        <span class="text-base font-bold text-sky-400">
+                            -9.2
+                        </span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Фактор влияния (Y)</span>
+                        <span class="text-base font-bold text-emerald-400">
+                            -48.9
+                        </span>
+                    </div>
+                </div>
+
+                <div class="text-[11px] text-slate-400 bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
+                    💡 Координаты формируются динамически: ось X рассчитывается по частоте опенинг-дуэлей (FK/FD) и ранней агрессии, ось Y — по вкладу в победы раундов (HLTV, KAST, клатчи).
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Strengths & Weaknesses SWOT Grid -->
+    <section class="section swot-section mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="swot-column glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
+                <h2 class="section-title text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                    💪 Сильные стороны
+                </h2>
+                <ul class="space-y-2 text-sm text-slate-200">
+                    
+                    <li class="flex items-start gap-2"><span class="text-emerald-400">✅</span> Discipline (6.3) — Высокая дисциплина закупок и сдержанность в командной экономике</li>
+                    
+                </ul>
+            </div>
+
+            <div class="swot-column glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-rose-950/10">
+                <h2 class="section-title text-lg font-bold text-rose-400 mb-3 flex items-center gap-2">
+                    ⚠️ Слабые стороны
+                </h2>
+                <ul class="space-y-2 text-sm text-slate-200">
+                    
+                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> Entry (1.6) — Редкие первые дуэли (2.7% First Kills) или проигрыш открывающих стычек</li>
+                    
+                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> Utility (3.1) — Мало урона гранатами (4.5 UD/раунд) и редкие флеш-ассисты</li>
+                    
+                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> Economy (3.9) — Слабая игра с пистолетами и в форс-бай раундах</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommendations Section -->
+    <section class="section personal-recs-section mb-8">
+        <div class="mb-4">
+            <h2 class="section-title text-2xl font-bold text-white">🧠 Персональные рекомендации</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Автоматические советы по тренировкам и роли в команде</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="rec-card glassmorphism p-4 rounded-xl border border-blue-500/30 bg-blue-950/10">
+                <div class="font-bold text-blue-400 text-sm mb-2 flex items-center gap-2">🎯 Что тренировать</div>
+                <ul class="space-y-1.5 text-xs text-slate-300">
+                    
+                    <li>• Пистолетные раунды — твоя слабая сторона. Тренируй USP/Glock в DM</li>
+                    
+                </ul>
+            </div>
+            <div class="rec-card glassmorphism p-4 rounded-xl border border-rose-500/30 bg-rose-950/10">
+                <div class="font-bold text-rose-400 text-sm mb-2 flex items-center gap-2">🚫 Привычки убрать</div>
+                <ul class="space-y-1.5 text-xs text-slate-300">
+                    
+                    <li>• Следи за экономикой команды. Не форсись один, когда команда на эко</li>
+                    
+                </ul>
+            </div>
+            <div class="rec-card glassmorphism p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/10">
+                <div class="font-bold text-emerald-400 text-sm mb-2 flex items-center gap-2">🏋️ Упражнения</div>
+                <ul class="space-y-1.5 text-xs text-slate-300">
+                    
+                    <li>• Учи раскидки на основных картах. Минимум 5 дымов и 5 флешек на каждую карту. Используй yprac maps</li>
+                    
+                    <li>• Используй флешки для тиммейтов. Учи pop-flash для входов на сайт</li>
+                    
+                </ul>
+            </div>
+            <div class="rec-card glassmorphism p-4 rounded-xl border border-amber-500/30 bg-amber-950/10 flex flex-col justify-between">
+                <div>
+                    <div class="font-bold text-amber-400 text-sm mb-2 flex items-center gap-2">🎭 Главная роль</div>
+                    <div class="text-lg font-black text-white font-mono mt-2 px-3 py-2 bg-amber-900/40 rounded-lg border border-amber-500/40 text-amber-300 text-center">
+                        Второй номер
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Connections & Rivalry Section (Связи и Противостояния) -->
+    
+    <section class="section connections-section mb-8">
+        <div class="mb-4">
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                🤝 Связи и Противостояния
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Синергия в одной команде (Dream Team & Размены) и очные дуэли против соперников (Немезида & Жертва)</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- 1. Dream Team -->
+            <div class="connection-card glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-gradient-to-b from-emerald-950/20 to-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                            🌟 Dream Team
+                        </span>
+                        <span class="text-[10px] font-mono text-emerald-300 bg-emerald-950/60 border border-emerald-500/40 px-2 py-0.5 rounded-full">Связка</span>
+                    </div>
+                    
+                    
+                    <a href="76561198254267968.html" class="block group">
+                        <h4 class="text-lg font-black text-white group-hover:text-emerald-400 transition flex items-center justify-between">
+                            Oceanmengo
+                            <span class="text-xs text-slate-500 group-hover:text-emerald-400">➔</span>
+                        </h4>
+                        <div class="text-xs text-slate-300 mt-2 font-mono">
+                            Винрейт вместе: <strong class="text-emerald-400">0.0%</strong>
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-1">
+                            Побед: 0 из 3 матчей
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2.5 mt-3">
+                    Тиммейт с наивысшим процентом общих побед
+                </div>
+            </div>
+
+            <!-- 2. Trade Partner -->
+            <div class="connection-card glassmorphism p-5 rounded-2xl border border-sky-500/30 bg-gradient-to-b from-sky-950/20 to-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1.5">
+                            🔄 Лучший разменщик
+                        </span>
+                        <span class="text-[10px] font-mono text-sky-300 bg-sky-950/60 border border-sky-500/40 px-2 py-0.5 rounded-full">Рефраг</span>
+                    </div>
+                    
+                    
+                    <a href="76561199508661466.html" class="block group">
+                        <h4 class="text-lg font-black text-white group-hover:text-sky-400 transition flex items-center justify-between">
+                            Resone West
+                            <span class="text-xs text-slate-500 group-hover:text-sky-400">➔</span>
+                        </h4>
+                        <div class="text-xs text-slate-300 mt-2 font-mono">
+                            Совершено разменов: <strong class="text-sky-400">1</strong>
+                        </div>
+                        <div class="text-[11px] text-slate-400 mt-1">
+                            Мгновенная реакция при падении
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2.5 mt-3">
+                    Игрок, который чаще всего мстил за твою смерть
+                </div>
+            </div>
+
+            <!-- 3. Nemesis -->
+            <div class="connection-card glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-gradient-to-b from-rose-950/20 to-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                            💀 Немезида
+                        </span>
+                        <span class="text-[10px] font-mono text-rose-300 bg-rose-950/60 border border-rose-500/40 px-2 py-0.5 rounded-full">Опасность</span>
+                    </div>
+                    
+                    
+                    <a href="../compare.html?p1=76561197990475042&p2=76561198686899456" class="block group" title="Смотреть очную дуэль в Бойцовском клубе">
+                        <h4 class="text-lg font-black text-white group-hover:text-rose-400 transition flex items-center justify-between">
+                            mbaliyev
+                            <span class="text-xs text-slate-500 group-hover:text-rose-400">⚔️</span>
+                        </h4>
+                        <div class="text-xs text-slate-300 mt-2 font-mono">
+                            Счёт дуэли: <span class="text-emerald-400 font-bold">6</span> : <span class="text-rose-400 font-bold">17</span>
+                        </div>
+                        <div class="text-[11px] text-rose-400 mt-1 font-mono font-bold">
+                            Разница: -11 фрагов
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2.5 mt-3">
+                    Соперник, который чаще всего выбивал тебя из раунда
+                </div>
+            </div>
+
+            <!-- 4. Favorite Victim -->
+            <div class="connection-card glassmorphism p-5 rounded-2xl border border-amber-500/30 bg-gradient-to-b from-amber-950/20 to-slate-900/60 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                            🎯 Любимая жертва
+                        </span>
+                        <span class="text-[10px] font-mono text-amber-300 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-full">Доминация</span>
+                    </div>
+                    
+                    
+                    <a href="../compare.html?p1=76561197990475042&p2=76561199153011360" class="block group" title="Смотреть очную дуэль в Бойцовском клубе">
+                        <h4 class="text-lg font-black text-white group-hover:text-amber-400 transition flex items-center justify-between">
+                            matadorra
+                            <span class="text-xs text-slate-500 group-hover:text-amber-400">⚔️</span>
+                        </h4>
+                        <div class="text-xs text-slate-300 mt-2 font-mono">
+                            Счёт дуэли: <span class="text-emerald-400 font-bold">4</span> : <span class="text-rose-400 font-bold">2</span>
+                        </div>
+                        <div class="text-[11px] text-emerald-400 mt-1 font-mono font-bold">
+                            Разница: +2 фрагов
+                        </div>
+                    </a>
+                    
+                </div>
+                <div class="text-[10px] text-slate-500 border-t border-slate-800/80 pt-2.5 mt-3">
+                    Соперник, против которого процент побед в дуэлях максимален
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Achievements & Badges Showcase -->
+    
+    <section class="section achievements-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    🏆 Зал славы и Достижения
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">16 знаков отличия за уникальные киберспортивные достижения и стабильность</p>
+            </div>
+            
+            <div class="flex items-center gap-2 font-mono text-xs">
+                <span class="text-slate-400">Разблокировано:</span>
+                <span class="px-2.5 py-1 rounded-full font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+                    3 / 16
+                </span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
+                    ">
+                    🎯
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-white truncate">
+                            Король One-Tap
+                        </h4>
+                        
+                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Средний процент попаданий в голову >= 45%
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-amber-400 font-semibold">
+                        <span>Прогресс:</span>
+                        <span>54.6% / 45%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
+                    ">
+                    💣
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-white truncate">
+                            Мастер осколочных
+                        </h4>
+                        
+                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Нанести более 150 HP урона гранатами
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-amber-400 font-semibold">
+                        <span>Прогресс:</span>
+                        <span>336 / 150 HP</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    👑
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Хладнокровный клатчер
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Выиграть 2 или более клатчей 1vX
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>0 / 2 побед</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    ⚡
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Гроза опенингов
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        5+ первых убийств с винрейтом энтри >= 48%
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>2 фр., 16.7% / 5 фр., 48%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🛡️
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Железный якорь
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Средний показатель полезности KAST >= 70%
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>45.1% / 70%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🔭
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Элитный снайпер
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Совершить 8+ убийств с винтовки AWP
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>1 / 8 фрагов</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
+                    ">
+                    🔄
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-white truncate">
+                            Мастер размена
+                        </h4>
+                        
+                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Совершить 6+ успешных разменов тиммейтов
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-amber-400 font-semibold">
+                        <span>Прогресс:</span>
+                        <span>6 / 6 разменов</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    💥
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Огневой каток
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Средний урон за раунд (ADR) >= 80.0
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>35.6 / 80.0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    ⚖️
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Мистер Стабильность
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Индекс стабильности перформанса >= 6.0
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>5.0 / 6.0</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🔫
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Пистолетный барон
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Совершить 4+ фрагов в пистолетных раундах
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>2 / 4 фрагов</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🧘
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Мастер выживания
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Выживаемость в раундах >= 33%
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>12.2% / 33%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🎖️
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Ветеран полигона
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Сыграть 8 или более официальных матчей
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>4 / 8 матчей</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    ⚔️
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Центурион
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Набрать 80+ фрагов за карьеру
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>18 / 80 фрагов</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    🔥
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            В огне сессии
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Прирост формы крайней сессии >= +0.25 HLTV
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>+0.00 HLTV</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    💡
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Тактический светлячок
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        3+ успешных ослеплений с фрагом тиммейта
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>0 / 3 ассиста</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+                
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                ">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
+                    
+                    bg-slate-800/60 border border-slate-700/50 grayscale
+                    ">
+                    💎
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between gap-1">
+                        <h4 class="text-xs font-bold text-slate-400 truncate">
+                            Элитный эшелон
+                        </h4>
+                        
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
+                        Достичь рейтинга 1040+ MMR
+                    </p>
+                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
+                        text-slate-500">
+                        <span>Прогресс:</span>
+                        <span>869 / 1040 MMR</span>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+
+    <!-- Match History Grouped by Game Days (Sessions) -->
+    <section class="section match-history-section mb-8">
+        <div class="mb-4">
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                🕒 История сыгранных матчей игрока
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Сгруппировано по игровым дням (пятничным сессиям) с прямыми ссылками на разборы</p>
+        </div>
+
+        <!-- Interactive Match History Filters -->
+        <div class="player-match-filters glassmorphism p-3.5 rounded-xl border border-slate-800 mb-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Result Filters -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Исход:</span>
+                    <div class="filter-bar" id="player-result-filters">
+                        <button type="button" class="filter-pill active" data-res-filter="all">Все (4)</button>
+                        <button type="button" class="filter-pill" data-res-filter="win">🟢 Победы ()</button>
+                        <button type="button" class="filter-pill filter-pill-rose" data-res-filter="loss">🔴 Поражения ()</button>
+                    </div>
+                </div>
+
+                <span class="text-slate-700 hidden md:inline">|</span>
+
+                <!-- Map Filters -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Карта:</span>
+                    <div class="filter-bar" id="player-map-filters">
+                        <button type="button" class="filter-pill active" data-player-map="all">Все карты</button>
+                        <button type="button" class="filter-pill" data-player-map="ancient">Ancient</button>
+                        <button type="button" class="filter-pill" data-player-map="mirage">Mirage</button>
+                        <button type="button" class="filter-pill" data-player-map="inferno">Inferno</button>
+                        <button type="button" class="filter-pill" data-player-map="anubis">Anubis</button>
+                        <button type="button" class="filter-pill" data-player-map="dust2">Dust2</button>
+                        <button type="button" class="filter-pill" data-player-map="nuke">Nuke</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counter -->
+            <div class="text-xs text-slate-400 font-mono shrink-0">
+                Показано: <span id="player-matches-count" class="text-emerald-400 font-bold">4</span> из 4
+            </div>
+        </div>
+
+        <!-- Empty Filter State -->
+        <div id="player-matches-empty" class="hidden text-center py-8 glassmorphism rounded-2xl border border-slate-800 mb-6">
+            <span class="text-3xl block mb-2">🔍</span>
+            <h4 class="text-white font-bold text-base">Матчи не найдены</h4>
+            <p class="text-xs text-slate-400 mt-1">Для выбранной комбинации карты и исхода матчей нет</p>
+            <button type="button" onclick="resetPlayerMatchFilters()" class="mt-3 px-3.5 py-1.5 bg-emerald-950 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-semibold hover:bg-emerald-900/50 transition">Сбросить фильтры</button>
+        </div>
+
+        <div class="space-y-6">
+            
+            <div class="session-match-group glassmorphism p-5 rounded-2xl border border-slate-800">
+                <h3 class="text-sm font-bold text-emerald-300 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-800/80 pb-2">
+                    📅 Игровой день: 22 мая 2026
+                </h3>
+
+                <div class="space-y-3">
+                    
+                    <a href="../matches/22052026_dust2_24371608_228.html" 
+                       data-result="loss"
+                       data-map="dust2"
+                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
+                                bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
+                                ">
+                                🔴 ПОРАЖЕНИЕ
+                            </span>
+                            <div>
+                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
+                                    🗺️ Dust2
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                    <span>KDA: <strong class="text-white">6 / 18 / 4</strong></span>
+                                    <span>ADR: <strong class="text-slate-200">34.5</strong></span>
+                                    <span>KAST: <strong class="text-slate-200">50.0%</strong></span>
+                                    <span>HLTV: <strong class="text-white">0.45</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center">
+                            <!-- MMR Delta Pill -->
+                            <div class="text-center font-mono">
+                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
+                                    bg-rose-950/80 text-rose-400 border border-rose-500/50
+                                    "
+                                    title="База (-15) + Импакт (-6.6) = Итог (-32 MMR)">
+                                    -32
+                                </span>
+                            </div>
+
+                            <!-- Rating 1-10 Pill -->
+                            <div class="text-right">
+                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
+                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
+                                    bg-rose-950 text-rose-300 border border-rose-500/50">
+                                    2.2
+                                </span>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../matches/22052026_inferno_24372368_229.html" 
+                       data-result="loss"
+                       data-map="inferno"
+                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
+                                bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
+                                ">
+                                🔴 ПОРАЖЕНИЕ
+                            </span>
+                            <div>
+                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
+                                    🗺️ Inferno
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                    <span>KDA: <strong class="text-white">4 / 19 / 7</strong></span>
+                                    <span>ADR: <strong class="text-slate-200">38.1</strong></span>
+                                    <span>KAST: <strong class="text-slate-200">57.1%</strong></span>
+                                    <span>HLTV: <strong class="text-white">0.41</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center">
+                            <!-- MMR Delta Pill -->
+                            <div class="text-center font-mono">
+                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
+                                    bg-rose-950/80 text-rose-400 border border-rose-500/50
+                                    "
+                                    title="База (-15) + Импакт (-7.1) = Итог (-33 MMR)">
+                                    -33
+                                </span>
+                            </div>
+
+                            <!-- Rating 1-10 Pill -->
+                            <div class="text-right">
+                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
+                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
+                                    bg-rose-950 text-rose-300 border border-rose-500/50">
+                                    2.0
+                                </span>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../matches/22052026_mirage_de_mirage220.html" 
+                       data-result="loss"
+                       data-map="mirage"
+                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
+                                bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
+                                ">
+                                🔴 ПОРАЖЕНИЕ
+                            </span>
+                            <div>
+                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
+                                    🗺️ Mirage
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                    <span>KDA: <strong class="text-white">5 / 13 / 1</strong></span>
+                                    <span>ADR: <strong class="text-slate-200">40.2</strong></span>
+                                    <span>KAST: <strong class="text-slate-200">40.0%</strong></span>
+                                    <span>HLTV: <strong class="text-white">0.48</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center">
+                            <!-- MMR Delta Pill -->
+                            <div class="text-center font-mono">
+                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
+                                    bg-rose-950/80 text-rose-400 border border-rose-500/50
+                                    "
+                                    title="База (-15) + Импакт (-6.2) = Итог (-32 MMR)">
+                                    -32
+                                </span>
+                            </div>
+
+                            <!-- Rating 1-10 Pill -->
+                            <div class="text-right">
+                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
+                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
+                                    bg-rose-950 text-rose-300 border border-rose-500/50">
+                                    2.4
+                                </span>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../matches/22052026_nuke_24373500_229.html" 
+                       data-result="loss"
+                       data-map="nuke"
+                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
+                                bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
+                                ">
+                                🔴 ПОРАЖЕНИЕ
+                            </span>
+                            <div>
+                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
+                                    🗺️ Nuke
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                    <span>KDA: <strong class="text-white">3 / 15 / 1</strong></span>
+                                    <span>ADR: <strong class="text-slate-200">29.6</strong></span>
+                                    <span>KAST: <strong class="text-slate-200">33.3%</strong></span>
+                                    <span>HLTV: <strong class="text-white">0.35</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center">
+                            <!-- MMR Delta Pill -->
+                            <div class="text-center font-mono">
+                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
+                                    bg-rose-950/80 text-rose-400 border border-rose-500/50
+                                    "
+                                    title="База (-15) + Импакт (-7.8) = Итог (-34 MMR)">
+                                    -34
+                                </span>
+                            </div>
+
+                            <!-- Rating 1-10 Pill -->
+                            <div class="text-right">
+                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
+                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
+                                    bg-rose-950 text-rose-300 border border-rose-500/50">
+                                    1.8
+                                </span>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
+                        </div>
+                    </a>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Performance Trends Line Chart -->
+    <section class="section trend-section mb-8">
+        <div class="flex items-center justify-between mb-4">
+            <div>
+                <h2 class="section-title text-xl font-bold text-white">📉 Динамика результатов по матчам</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Матчи сгруппированы по игровым дням с датой на нижней оси графика</p>
+            </div>
+        </div>
+        <div class="glassmorphism p-4 rounded-xl border border-slate-800 h-72 md:h-96">
+            <canvas id="trend-chart"></canvas>
+        </div>
+    </section>
+</div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <p class="footer-title">⚡ CS2 Demo Analytics Platform</p>
+                <p class="footer-timestamp">Данные обновлены: 14.09.2026 17:49</p>
+            </div>
+            <div class="footer-nav">
+                <a href="#" class="back-to-top">⬆️ Наверх</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Chart.js Dark Theme Defaults -->
+    <script>
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+            Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.1)';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+        }
+    </script>
+    
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Radar Chart
+        const radarData = [5.3, 4.2, 3.1, 4.7, 1.6, 6.0, 4.0, 6.3, 3.9, 4.3];
+        const ctxRadar = document.getElementById('ratings-radar').getContext('2d');
+        
+        new Chart(ctxRadar, {
+            type: 'radar',
+            data: {
+                labels: ['Aim', 'Positioning', 'Utility', 'Game Sense', 'Entry', 'Trading', 'Clutch', 'Discipline', 'Economy', 'Overall Impact'],
+                datasets: [{
+                    label: 'Оценка навыка',
+                    data: radarData,
+                    backgroundColor: 'rgba(168, 85, 247, 0.35)',
+                    borderColor: '#c084fc',
+                    pointBackgroundColor: '#c084fc',
+                    pointBorderColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
+                        ticks: { min: 0, max: 10, stepSize: 2, color: '#94a3b8', backdropColor: 'transparent' },
+                        pointLabels: { color: '#cbd5e1', font: { size: 11, weight: 'bold' } }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        // Trend Chart with multi-level grouped dates
+        const trendData = {"adr": [34.5, 38.1, 40.2, 29.6], "hltv": [0.45, 0.41, 0.48, 0.35], "kd": [0.33, 0.21, 0.38, 0.2], "labels": [["\u041c\u0430\u0442\u0447 1 (Dust2)", "\ud83d\udcc5 22.05"], ["\u041c\u0430\u0442\u0447 2 (Inferno)", "\ud83d\udcc5 22.05"], ["\u041c\u0430\u0442\u0447 3 (Mirage)", "\ud83d\udcc5 22.05"], ["\u041c\u0430\u0442\u0447 4 (Nuke)", "\ud83d\udcc5 22.05"]], "rating": [2.2, 2.0, 2.4, 1.8]};
+        const ctxTrend = document.getElementById('trend-chart').getContext('2d');
+        
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: trendData.labels,
+                datasets: [
+                    { label: 'ADR', data: trendData.adr, borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.05)', tension: 0.3, yAxisID: 'y' },
+                    { label: 'K/D', data: trendData.kd, borderColor: '#f43f5e', backgroundColor: 'rgba(244, 63, 94, 0.05)', tension: 0.3, yAxisID: 'y1' },
+                    { label: 'HLTV 2.0', data: trendData.hltv, borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.05)', tension: 0.3, yAxisID: 'y1' },
+                    { label: 'Оценка (1-10)', data: trendData.rating, borderColor: '#34d399', backgroundColor: 'rgba(52, 211, 153, 0.05)', tension: 0.3, yAxisID: 'y2' }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: { color: '#cbd5e1', font: { size: 11 } }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#94a3b8',
+                            font: { size: 10 }
+                        },
+                        grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: { display: true, text: 'ADR', color: '#fbbf24' },
+                        grid: { color: 'rgba(255, 255, 255, 0.06)' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: 'K/D & HLTV', color: '#38bdf8' },
+                        grid: { drawOnChartArea: false },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    y2: {
+                        type: 'linear',
+                        display: false,
+                        min: 1,
+                        max: 10
+                    }
+                }
+            }
+        });
+
+        // ─── Player Match History Filters ───
+        let currentResultFilter = 'all';
+        let currentMapFilter = 'all';
+
+        function setupPlayerMatchFilters() {
+            const resPills = document.querySelectorAll('[data-res-filter]');
+            const mapPills = document.querySelectorAll('[data-player-map]');
+            const cards = document.querySelectorAll('.match-history-card');
+            const sessionGroups = document.querySelectorAll('.session-match-group');
+            const countSpan = document.getElementById('player-matches-count');
+            const emptyState = document.getElementById('player-matches-empty');
+
+            function applyFilters() {
+                let visibleCount = 0;
+
+                cards.forEach(card => {
+                    const res = card.getAttribute('data-result') || '';
+                    const map = (card.getAttribute('data-map') || '').toLowerCase();
+
+                    const matchesRes = (currentResultFilter === 'all') || (res === currentResultFilter);
+                    const matchesMap = (currentMapFilter === 'all') || (map.includes(currentMapFilter));
+
+                    if (matchesRes && matchesMap) {
+                        card.classList.remove('filter-hidden');
+                        visibleCount++;
+                    } else {
+                        card.classList.add('filter-hidden');
+                    }
+                });
+
+                // Hide empty session groups
+                sessionGroups.forEach(group => {
+                    const activeCardsInGroup = group.querySelectorAll('.match-history-card:not(.filter-hidden)');
+                    group.classList.toggle('filter-hidden', activeCardsInGroup.length === 0);
+                });
+
+                if (countSpan) countSpan.textContent = visibleCount;
+                if (emptyState) emptyState.classList.toggle('hidden', visibleCount > 0);
+            }
+
+            resPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    resPills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    currentResultFilter = this.getAttribute('data-res-filter');
+                    applyFilters();
+                });
+            });
+
+            mapPills.forEach(pill => {
+                pill.addEventListener('click', function() {
+                    mapPills.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    currentMapFilter = this.getAttribute('data-player-map');
+                    applyFilters();
+                });
+            });
+
+            window.resetPlayerMatchFilters = function() {
+                currentResultFilter = 'all';
+                currentMapFilter = 'all';
+                resPills.forEach(p => p.classList.toggle('active', p.getAttribute('data-res-filter') === 'all'));
+                mapPills.forEach(p => p.classList.toggle('active', p.getAttribute('data-player-map') === 'all'));
+                applyFilters();
+            };
+        }
+
+        setupPlayerMatchFilters();
+    });
+</script>
+
+    <script src="../js/app.js"></script>
+    <script>
+        (function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const closeBtn = document.getElementById('mobile-menu-close');
+            if (btn && drawer) {
+                function setOpen(isOpen) {
+                    if (isOpen) {
+                        drawer.classList.remove('hidden');
+                        drawer.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        drawer.classList.add('hidden');
+                        drawer.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }
+                }
+                btn.addEventListener('click', () => setOpen(true));
+                if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+                drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => setOpen(false));
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') setOpen(false);
+                });
+            }
+        })();
+
+        // ─── Client-side User Personalization ("Кто ты?") ───
+        (function() {
+            const STORAGE_KEY = 'cs2_my_steamid';
+            const rootPath = '../';
+            
+            const profileBtn = document.getElementById('my-profile-btn');
+            const profileMenu = document.getElementById('my-profile-menu');
+            const profileLabel = document.getElementById('my-profile-label');
+            const profileIcon = document.getElementById('my-profile-icon');
+            const resetBtn = document.getElementById('reset-my-profile-btn');
+            const profileLink = document.getElementById('my-profile-link');
+            const activeActions = document.getElementById('my-profile-active-actions');
+            
+            const mobileSelect = document.getElementById('mobile-player-select');
+            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
+            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
+            const mobileLink = document.getElementById('mobile-profile-link');
+
+            function getMySteamId() {
+                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
+            }
+
+            function setMySteamId(sid) {
+                try {
+                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
+                    else localStorage.removeItem(STORAGE_KEY);
+                } catch(e) {}
+                applyPersonalization();
+            }
+
+            function applyPersonalization() {
+                const currentSid = getMySteamId();
+                let currentName = '';
+
+                // Find player name from list
+                const items = document.querySelectorAll('.profile-select-item');
+                items.forEach(el => {
+                    const sid = el.getAttribute('data-sid');
+                    const check = el.querySelector('.select-active-check');
+                    if (currentSid && sid === currentSid) {
+                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
+                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.remove('hidden');
+                    } else {
+                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.add('hidden');
+                    }
+                });
+
+                // Update Desktop Header Button
+                if (profileBtn && profileLabel) {
+                    if (currentSid && currentName) {
+                        profileLabel.textContent = currentName;
+                        profileIcon.textContent = '⭐';
+                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        if (resetBtn) resetBtn.classList.remove('hidden');
+                        if (activeActions) activeActions.classList.remove('hidden');
+                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        profileLabel.textContent = 'Кто ты?';
+                        profileIcon.textContent = '👤';
+                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        if (resetBtn) resetBtn.classList.add('hidden');
+                        if (activeActions) activeActions.classList.add('hidden');
+                    }
+                }
+
+                // Update Mobile Selector
+                if (mobileSelect) {
+                    mobileSelect.value = currentSid;
+                }
+                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
+                    if (currentSid) {
+                        mobileResetBtn.classList.remove('hidden');
+                        mobileLinkWrap.classList.remove('hidden');
+                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        mobileResetBtn.classList.add('hidden');
+                        mobileLinkWrap.classList.add('hidden');
+                    }
+                }
+
+                // Highlight player rows/cards in tables and leaderboards
+                const targetEls = document.querySelectorAll('[data-steamid]');
+                targetEls.forEach(el => {
+                    const sid = el.getAttribute('data-steamid');
+                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
+                    const existingBadge = el.querySelector('.my-profile-star-badge');
+                    
+                    if (currentSid && sid === currentSid) {
+                        el.classList.add('my-profile-highlight');
+                        if (!existingBadge && badgeContainer) {
+                            const badge = document.createElement('span');
+                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
+                            badge.innerHTML = '⭐ ВЫ';
+                            badgeContainer.appendChild(badge);
+                        }
+                    } else {
+                        el.classList.remove('my-profile-highlight');
+                        if (existingBadge) {
+                            existingBadge.remove();
+                        }
+                    }
+                });
+            }
+
+            // Event Listeners
+            if (profileBtn && profileMenu) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = profileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        profileMenu.classList.remove('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.profile-select-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sid = btn.getAttribute('data-sid');
+                    setMySteamId(sid);
+                    if (profileMenu) profileMenu.classList.add('hidden');
+                });
+            });
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    setMySteamId('');
+                });
+            }
+
+            if (mobileSelect) {
+                mobileSelect.addEventListener('change', (e) => {
+                    setMySteamId(e.target.value);
+                });
+            }
+
+            if (mobileResetBtn) {
+                mobileResetBtn.addEventListener('click', () => {
+                    setMySteamId('');
+                });
+            }
+
+            // Run on initial page load
+            document.addEventListener('DOMContentLoaded', applyPersonalization);
+            applyPersonalization();
+        })();
+    </script>
+</body>
+</html>

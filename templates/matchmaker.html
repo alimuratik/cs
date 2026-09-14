@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+{% set active_page = 'matchmaker' %}
+
+{% block title %}Балансировщик составов 5v5 | Матчмейкер{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">⚖️ Балансировщик 5v5</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/30 mb-8 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/20">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    ⚖️ АЛГОРИТМИЧЕСКИЙ МАТЧМЕЙКЕР
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Генератор сбалансированных составов 5v5
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Отметьте 10 игроков, собравшихся на игровую сессию. Алгоритм переберёт все 252 комбинации и разделит состав на две равные команды с минимальной разницей MMR и гармоничным распределением тактических ролей.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="btn-select-top10" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 transition flex items-center gap-2 shadow-lg cursor-pointer">
+                    <span>👑</span>
+                    <span>Выбрать топ-10</span>
+                </button>
+                <button id="btn-reset-selection" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-500/40 text-xs font-bold text-slate-300 hover:text-rose-300 transition cursor-pointer">
+                    Сбросить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Players Selection Grid -->
+    <section class="section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80">
+            <div>
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    👥 Выбор игроков лобби
+                </h2>
+                <span class="text-xs text-slate-400">Отметьте ровно 10 участников сегодняшнего сбора</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="selection-counter-badge" class="px-3 py-1 rounded-full font-mono text-xs font-bold bg-slate-900 text-slate-400 border border-slate-700">
+                    Выбрано: <span id="selected-count">0</span> / 10
+                </div>
+                <button id="btn-balance-teams" class="px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-emerald-950/40 transition disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer" disabled>
+                    ⚡ Сбалансировать команды
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3" id="player-checkboxes-container">
+            {% for p in players %}
+            <label class="player-select-card p-3 rounded-xl border border-slate-800/80 bg-slate-900/60 hover:bg-slate-900 transition flex items-center justify-between gap-2 cursor-pointer select-none group">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <input type="checkbox" value="{{ p.steam_id }}" class="player-checkbox w-4 h-4 rounded bg-slate-800 border-slate-700 text-emerald-500 focus:ring-0 focus:ring-offset-0 cursor-pointer">
+                    <div class="min-w-0">
+                        <div class="font-bold text-white text-xs truncate group-hover:text-emerald-300 transition">
+                            {{ p.name }}
+                        </div>
+                        <div class="text-[10px] text-slate-400 font-mono mt-0.5">
+                            {{ p.roles[0] if p.roles else 'Рифлер' }}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right shrink-0">
+                    <span class="font-mono font-black text-xs text-amber-300 block">{{ p.current_mmr }}</span>
+                    <span class="text-[9px] text-slate-400 font-mono">MMR</span>
+                </div>
+            </label>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Balanced Result Section (Hidden until generated) -->
+    <section id="matchmaker-results-section" class="section hidden mb-8">
+        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-950/90 shadow-2xl">
+            <!-- Results Header -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        ⚖️ Рекомендованное разделение 5v5
+                    </h2>
+                    <p id="balance-summary-text" class="text-xs font-mono text-emerald-400 mt-1">
+                        Разница MMR: 0 очков • Равные шансы на победу
+                    </p>
+                </div>
+                <button id="btn-rebalance-next" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-200 transition cursor-pointer">
+                    Альтернативный состав ↻
+                </button>
+            </div>
+
+            <!-- Teams Split Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Team 1 (CT Side / Blue) -->
+                <div class="team-result-card bg-slate-950/70 border border-blue-500/40 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-blue-500/30">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-3.5 h-3.5 rounded-full bg-blue-500 shadow-md shadow-blue-500/80"></span>
+                            <h3 class="text-lg font-black text-blue-400 uppercase tracking-wider">
+                                Команда 1 (CT)
+                            </h3>
+                        </div>
+                        <span id="t1-winrate-badge" class="px-2.5 py-0.5 rounded-full font-mono font-bold text-xs bg-blue-950 text-blue-300 border border-blue-500/40">
+                            50.0% Шанс
+                        </span>
+                    </div>
+
+                    <!-- Team 1 Stats Overview -->
+                    <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-900/80 border border-slate-800 mb-4 text-center text-xs font-mono">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Сумма MMR</span>
+                            <span id="t1-total-mmr" class="font-black text-base text-white">0</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Средний MMR</span>
+                            <span id="t1-avg-mmr" class="font-black text-base text-blue-400">0</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Ср. HLTV 2.0</span>
+                            <span id="t1-avg-hltv" class="font-black text-base text-amber-300">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Team 1 Roster -->
+                    <div class="space-y-2" id="t1-roster-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Team 2 (T Side / Gold) -->
+                <div class="team-result-card bg-slate-950/70 border border-amber-500/40 rounded-2xl p-5 shadow-xl">
+                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-amber-500/30">
+                        <div class="flex items-center gap-2.5">
+                            <span class="w-3.5 h-3.5 rounded-full bg-amber-400 shadow-md shadow-amber-400/80"></span>
+                            <h3 class="text-lg font-black text-amber-400 uppercase tracking-wider">
+                                Команда 2 (T)
+                            </h3>
+                        </div>
+                        <span id="t2-winrate-badge" class="px-2.5 py-0.5 rounded-full font-mono font-bold text-xs bg-amber-950 text-amber-300 border border-amber-500/40">
+                            50.0% Шанс
+                        </span>
+                    </div>
+
+                    <!-- Team 2 Stats Overview -->
+                    <div class="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-900/80 border border-slate-800 mb-4 text-center text-xs font-mono">
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Сумма MMR</span>
+                            <span id="t2-total-mmr" class="font-black text-base text-white">0</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Средний MMR</span>
+                            <span id="t2-avg-mmr" class="font-black text-base text-amber-400">0</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] text-slate-400 uppercase block mb-0.5">Ср. HLTV 2.0</span>
+                            <span id="t2-avg-hltv" class="font-black text-base text-amber-300">0.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Team 2 Roster -->
+                    <div class="space-y-2" id="t2-roster-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ALL_PLAYERS = {{ players | tojson }};
+    const PLAYERS_DICT = {};
+    ALL_PLAYERS.forEach(p => {
+        PLAYERS_DICT[p.steam_id] = p;
+    });
+
+    let currentSplitIndex = 0;
+    let allValidSplits = [];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.player-checkbox');
+        const countSpan = document.getElementById('selected-count');
+        const counterBadge = document.getElementById('selection-counter-badge');
+        const balanceBtn = document.getElementById('btn-balance-teams');
+        const resetBtn = document.getElementById('btn-reset-selection');
+        const top10Btn = document.getElementById('btn-select-top10');
+        const resultsSection = document.getElementById('matchmaker-results-section');
+        const rebalanceNextBtn = document.getElementById('btn-rebalance-next');
+
+        function updateSelectionState() {
+            const checked = document.querySelectorAll('.player-checkbox:checked');
+            const count = checked.length;
+            countSpan.textContent = count;
+
+            if (count === 10) {
+                counterBadge.className = 'px-3 py-1 rounded-full font-mono text-xs font-bold bg-emerald-950 text-emerald-300 border border-emerald-500/50';
+                balanceBtn.disabled = false;
+            } else if (count > 10) {
+                counterBadge.className = 'px-3 py-1 rounded-full font-mono text-xs font-bold bg-rose-950 text-rose-300 border border-rose-500/50';
+                balanceBtn.disabled = true;
+            } else {
+                counterBadge.className = 'px-3 py-1 rounded-full font-mono text-xs font-bold bg-slate-900 text-slate-400 border border-slate-700';
+                balanceBtn.disabled = true;
+            }
+
+            // Visual highlight on checked cards
+            checkboxes.forEach(cb => {
+                const card = cb.closest('.player-select-card');
+                if (cb.checked) {
+                    card.classList.add('border-emerald-500/60', 'bg-emerald-950/20');
+                } else {
+                    card.classList.remove('border-emerald-500/60', 'bg-emerald-950/20');
+                }
+            });
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateSelectionState);
+        });
+
+        resetBtn.addEventListener('click', function() {
+            checkboxes.forEach(cb => cb.checked = false);
+            resultsSection.classList.add('hidden');
+            updateSelectionState();
+        });
+
+        top10Btn.addEventListener('click', function() {
+            checkboxes.forEach(cb => cb.checked = false);
+            const sortedByMmr = [...ALL_PLAYERS].filter(p => !p.is_inactive).slice(0, 10);
+            sortedByMmr.forEach(p => {
+                const cb = document.querySelector(`.player-checkbox[value="${p.steam_id}"]`);
+                if (cb) cb.checked = true;
+            });
+            updateSelectionState();
+        });
+
+        // Combinations helper (10 choose 5 = 252 splits)
+        function getCombinations(arr, k) {
+            const result = [];
+            function combine(start, path) {
+                if (path.length === k) {
+                    result.push([...path]);
+                    return;
+                }
+                for (let i = start; i < arr.length; i++) {
+                    path.push(arr[i]);
+                    combine(i + 1, path);
+                    path.pop();
+                }
+            }
+            combine(0, []);
+            return result;
+        }
+
+        balanceBtn.addEventListener('click', function() {
+            const checkedBoxes = Array.from(document.querySelectorAll('.player-checkbox:checked'));
+            if (checkedBoxes.length !== 10) return;
+
+            const selectedPlayers = checkedBoxes.map(cb => PLAYERS_DICT[cb.value]);
+            const allSplits = getCombinations(selectedPlayers, 5);
+
+            // Calculate cost for each split
+            allValidSplits = [];
+            const seenPairs = new Set();
+
+            allSplits.forEach(t1 => {
+                const t1Ids = new Set(t1.map(p => p.steam_id));
+                const t2 = selectedPlayers.filter(p => !t1Ids.has(p.steam_id));
+
+                // Deduplicate symmetric splits (T1 vs T2 is same as T2 vs T1)
+                const key1 = [...t1Ids].sort().join(',');
+                const key2 = t2.map(p => p.steam_id).sort().join(',');
+                if (seenPairs.has(key1) || seenPairs.has(key2)) return;
+                seenPairs.add(key1);
+                seenPairs.add(key2);
+
+                const mmr1 = t1.reduce((sum, p) => sum + (p.current_mmr || 1000), 0);
+                const mmr2 = t2.reduce((sum, p) => sum + (p.current_mmr || 1000), 0);
+                const deltaMmr = Math.abs(mmr1 - mmr2);
+
+                // Role distribution penalty
+                const roles1 = t1.map(p => p.roles[0] || 'Рифлер');
+                const roles2 = t2.map(p => p.roles[0] || 'Рифлер');
+                
+                const awp1 = roles1.filter(r => r.includes('AWP')).length;
+                const awp2 = roles2.filter(r => r.includes('AWP')).length;
+                const entry1 = roles1.filter(r => r.includes('Энтри') || r.includes('Entry')).length;
+                const entry2 = roles2.filter(r => r.includes('Энтри') || r.includes('Entry')).length;
+
+                let rolePenalty = 0;
+                if (Math.abs(awp1 - awp2) > 1) rolePenalty += 15;
+                if (Math.abs(entry1 - entry2) > 1) rolePenalty += 10;
+
+                const cost = deltaMmr + rolePenalty;
+                allValidSplits.push({ t1, t2, mmr1, mmr2, deltaMmr, cost });
+            });
+
+            allValidSplits.sort((a, b) => a.cost - b.cost);
+            currentSplitIndex = 0;
+
+            renderCurrentSplit();
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        rebalanceNextBtn.addEventListener('click', function() {
+            if (allValidSplits.length === 0) return;
+            currentSplitIndex = (currentSplitIndex + 1) % Math.min(10, allValidSplits.length);
+            renderCurrentSplit();
+        });
+
+        function renderCurrentSplit() {
+            if (!allValidSplits[currentSplitIndex]) return;
+            const split = allValidSplits[currentSplitIndex];
+
+            // Win probability formula: 1 / (1 + 10^((MMR2 - MMR1) / 400))
+            const prob1 = 1 / (1 + Math.pow(10, (split.mmr2 - split.mmr1) / 400));
+            const pct1 = (prob1 * 100).toFixed(1);
+            const pct2 = (100 - parseFloat(pct1)).toFixed(1);
+
+            document.getElementById('balance-summary-text').textContent = 
+                `Разница MMR: ${split.deltaMmr} очков • Вариант баланса #${currentSplitIndex + 1} из ${Math.min(10, allValidSplits.length)}`;
+
+            // Team 1
+            document.getElementById('t1-total-mmr').textContent = split.mmr1;
+            document.getElementById('t1-avg-mmr').textContent = Math.round(split.mmr1 / 5);
+            const avgHltv1 = (split.t1.reduce((s, p) => s + (p.hltv_rating || 1.0), 0) / 5).toFixed(2);
+            document.getElementById('t1-avg-hltv').textContent = avgHltv1;
+            document.getElementById('t1-winrate-badge').textContent = `${pct1}% Шанс`;
+
+            // Team 2
+            document.getElementById('t2-total-mmr').textContent = split.mmr2;
+            document.getElementById('t2-avg-mmr').textContent = Math.round(split.mmr2 / 5);
+            const avgHltv2 = (split.t2.reduce((s, p) => s + (p.hltv_rating || 1.0), 0) / 5).toFixed(2);
+            document.getElementById('t2-avg-hltv').textContent = avgHltv2;
+            document.getElementById('t2-winrate-badge').textContent = `${pct2}% Шанс`;
+
+            // Render Rosters
+            renderTeamRoster('t1-roster-list', split.t1, 'blue');
+            renderTeamRoster('t2-roster-list', split.t2, 'amber');
+        }
+
+        function renderTeamRoster(elementId, roster, themeColor) {
+            const container = document.getElementById(elementId);
+            container.innerHTML = '';
+
+            // Sort by MMR descending within team
+            const sorted = [...roster].sort((a, b) => (b.current_mmr || 0) - (a.current_mmr || 0));
+
+            sorted.forEach((p, idx) => {
+                const row = document.createElement('div');
+                row.className = `flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-${themeColor}-500/50 transition`;
+                
+                const isCaptain = (idx === 0);
+                const captainBadge = isCaptain ? `<span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold ml-1.5">Капитан</span>` : '';
+
+                row.innerHTML = `
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <span class="w-5 text-center font-mono text-xs text-slate-500 font-bold">#${idx + 1}</span>
+                        <div class="min-w-0">
+                            <a href="players/${p.steam_id}.html" class="font-bold text-white hover:text-${themeColor}-300 transition text-xs flex items-center truncate">
+                                ${p.name}
+                                ${captainBadge}
+                            </a>
+                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">
+                                ${p.roles[0] || 'Рифлер'} • HLTV: ${p.hltv_rating || 1.0}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="font-mono font-black text-xs text-white">${p.current_mmr}</span>
+                        <span class="text-[9px] text-slate-500 font-mono block">MMR</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+    });
+</script>
+{% endblock %}

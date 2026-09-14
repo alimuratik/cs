@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глубокий анализ ваших матчей Counter-Strike 2">
+    <title>Демки и видеозаписи | CS2 Stats</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <svg viewBox="0 0 100 86.6" class="logo-pyramid w-7 h-7 shrink-0" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-item ">
+                    <span class="nav-icon">📊</span> Главная
+                </a>
+                <a href="index.html#players-section" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Игроки
+                </a>
+                <a href="skills.html" class="nav-item ">
+                    <span class="nav-icon">🎯</span> Навыки
+                </a>
+                <a href="index.html#sessions-section" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
+                </a>
+                <a href="demos.html" class="nav-item active">
+                    <span class="nav-icon">🎬</span> Демки
+                </a>
+                <a href="compare.html" class="nav-item ">
+                    <span class="nav-icon">⚔️</span> Дуэли
+                </a>
+                <a href="matchmaker.html" class="nav-item ">
+                    <span class="nav-icon">⚖️</span> Составы
+                </a>
+            </nav>
+
+            <!-- User Personalization Widget ("Кто ты?") -->
+            <div class="relative ml-2 hidden md:block" id="user-profile-widget">
+                <button type="button" id="my-profile-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition shadow-sm focus:outline-none" aria-expanded="false">
+                    <span id="my-profile-icon">👤</span>
+                    <span id="my-profile-label">Кто ты?</span>
+                    <span class="text-[10px] text-slate-500">▼</span>
+                </button>
+                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800 shadow-2xl p-2 z-50 transition-all">
+                    <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5 flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Выберите свой профиль</span>
+                        <button type="button" id="reset-my-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+                    </div>
+                    <div class="max-h-60 overflow-y-auto space-y-1 custom-scrollbar" id="profile-select-list">
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198357586856" data-pname="__9503">
+                            <span class="truncate">__9503</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198431427136" data-pname="ALIBONYA">
+                            <span class="truncate">ALIBONYA</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199339730976" data-pname="altairinthesky">
+                            <span class="truncate">altairinthesky</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198234120608" data-pname="Azki_1">
+                            <span class="truncate">Azki_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198998095904" data-pname="c kaifom">
+                            <span class="truncate">c kaifom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199808571117" data-pname="CHPOKERS">
+                            <span class="truncate">CHPOKERS</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198068831005" data-pname="DarkAtom">
+                            <span class="truncate">DarkAtom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198100478545" data-pname="Folie_1">
+                            <span class="truncate">Folie_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561197990475042" data-pname="GIGABYTE_KZ">
+                            <span class="truncate">GIGABYTE_KZ</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199478211872" data-pname="iamresplendent">
+                            <span class="truncate">iamresplendent</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198356069376" data-pname="insta/Ne7er0cs">
+                            <span class="truncate">insta/Ne7er0cs</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199569491960" data-pname="k--9">
+                            <span class="truncate">k--9</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199153011360" data-pname="matadorra">
+                            <span class="truncate">matadorra</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198686899456" data-pname="mbaliyev">
+                            <span class="truncate">mbaliyev</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198010867824" data-pname="Nakama_4">
+                            <span class="truncate">Nakama_4</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198254267968" data-pname="Oceanmengo">
+                            <span class="truncate">Oceanmengo</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198125968240" data-pname="qumashasyl">
+                            <span class="truncate">qumashasyl</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198243149328" data-pname="Rayi">
+                            <span class="truncate">Rayi</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199508661466" data-pname="Resone West">
+                            <span class="truncate">Resone West</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198083546367" data-pname="Saliend">
+                            <span class="truncate">Saliend</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199438131194" data-pname="SGEM_7">
+                            <span class="truncate">SGEM_7</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198885191528" data-pname="taksist_3">
+                            <span class="truncate">taksist_3</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198402746928" data-pname="Yesk0">
+                            <span class="truncate">Yesk0</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199043039622" data-pname="Zanoza59">
+                            <span class="truncate">Zanoza59</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199413542223" data-pname="zikayevg">
+                            <span class="truncate">zikayevg</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                    </div>
+                    <div id="my-profile-active-actions" class="hidden mt-2 pt-2 border-t border-slate-800 flex items-center justify-between px-2">
+                        <a id="my-profile-link" href="#" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                            <span>Открыть профиль</span> <span>➔</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button type="button" id="mobile-menu-btn" class="hamburger-btn md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Открыть мобильное меню">
+                <span class="text-xl">☰</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div class="logo">
+                <a href="index.html" class="flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+                ✕
+            </button>
+        </div>
+        <nav class="flex flex-col gap-2.5 mt-6">
+            <a href="index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📊</span> <span>Главная</span>
+            </a>
+            <a href="index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            </a>
+            <a href="skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            </a>
+            <a href="compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            </a>
+            <a href="index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
+            </a>
+            <a href="demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50">
+                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            </a>
+        </nav>
+
+        <!-- Mobile User Profile Picker -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800" id="mobile-user-profile-widget">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <span id="mobile-profile-icon">👤</span>
+                    <span id="mobile-profile-title">Мой профиль</span>
+                </span>
+                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+            </div>
+            <select id="mobile-player-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                <option value="">-- Выберите профиль --</option>
+                
+                <option value="76561198357586856">__9503</option>
+                
+                <option value="76561198431427136">ALIBONYA</option>
+                
+                <option value="76561199339730976">altairinthesky</option>
+                
+                <option value="76561198234120608">Azki_1</option>
+                
+                <option value="76561198998095904">c kaifom</option>
+                
+                <option value="76561199808571117">CHPOKERS</option>
+                
+                <option value="76561198068831005">DarkAtom</option>
+                
+                <option value="76561198100478545">Folie_1</option>
+                
+                <option value="76561197990475042">GIGABYTE_KZ</option>
+                
+                <option value="76561199478211872">iamresplendent</option>
+                
+                <option value="76561198356069376">insta/Ne7er0cs</option>
+                
+                <option value="76561199569491960">k--9</option>
+                
+                <option value="76561199153011360">matadorra</option>
+                
+                <option value="76561198686899456">mbaliyev</option>
+                
+                <option value="76561198010867824">Nakama_4</option>
+                
+                <option value="76561198254267968">Oceanmengo</option>
+                
+                <option value="76561198125968240">qumashasyl</option>
+                
+                <option value="76561198243149328">Rayi</option>
+                
+                <option value="76561199508661466">Resone West</option>
+                
+                <option value="76561198083546367">Saliend</option>
+                
+                <option value="76561199438131194">SGEM_7</option>
+                
+                <option value="76561198885191528">taksist_3</option>
+                
+                <option value="76561198402746928">Yesk0</option>
+                
+                <option value="76561199043039622">Zanoza59</option>
+                
+                <option value="76561199413542223">zikayevg</option>
+                
+            </select>
+            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-800/80">
+                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700/50 text-xs font-bold">
+                    Открыть мой профиль ➔
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+            KASE CS2 Analytics Platform &bull; Mobile Nav
+        </div>
+    </div>
+
+    
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">Демки и видеозаписи</span>
+    </div>
+</div>
+
+
+    <main class="main-content">
+        
+<div class="container mx-auto px-4 py-8">
+    <!-- Header Hero Banner -->
+    <header class="glassmorphism rounded-2xl p-6 md:p-8 mb-8 border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2 text-xs font-mono text-emerald-400 uppercase tracking-wider mb-2 font-semibold">
+                    <span>🎬 Видеоархив</span>
+                    <span>•</span>
+                    <span>YouTube Playlist</span>
+                </div>
+                <h1 class="text-2xl md:text-4xl font-black text-white">Записи матчей и демки</h1>
+                <p class="text-xs md:text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                    Полные записи игровых дней нашей группы. Вы можете смотреть видео прямо на сайте через встроенный плеер или перейти в приложение YouTube для сохранения в избранное.
+                </p>
+            </div>
+            <div class="self-start md:self-auto">
+                <a href="https://youtube.com/playlist?list=PLO_-aOrg8F3I&si=ylbotqsGWnjav7pw" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 px-5 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm transition shadow-lg shadow-red-600/30">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span>Открыть в YouTube</span>
+                    <span class="text-xs">↗</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Embedded YouTube Player Card (16:9 responsive) -->
+    <div class="glassmorphism rounded-2xl p-4 md:p-6 border border-slate-800 shadow-2xl mb-8">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
+            <div class="flex items-center gap-2">
+                <span class="text-red-500 text-xl">▶️</span>
+                <h2 class="text-lg md:text-xl font-bold text-white">Плеер плейлиста матчей</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-mono hidden sm:inline">
+                Список видео доступен в правом верхнем углу плеера (☰)
+            </span>
+        </div>
+
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black border border-slate-800 shadow-inner">
+            <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/videoseries?si=LNp8zRnMQkZOP0Ku&amp;list=PLO_-aOrg8F3I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Instructions / Tips Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="glassmorphism p-5 rounded-xl border border-slate-800">
+            <div class="text-2xl mb-2">🎯</div>
+            <h3 class="text-sm font-bold text-white mb-1">Разбор ошибок (POV)</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Сверяйте текстовый репортаж раундов на странице матча с таймингами в видеозаписи для детального анализа позиционирования.
+            </p>
+        </div>
+        <div class="glassmorphism p-5 rounded-xl border border-slate-800">
+            <div class="text-2xl mb-2">📋</div>
+            <h3 class="text-sm font-bold text-white mb-1">Навигация по плейлисту</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Нажмите значок списка в правом верхнем углу видеоплеера, чтобы выбрать интересующую карту или дату игровой сессии.
+            </p>
+        </div>
+        <div class="glassmorphism p-5 rounded-xl border border-slate-800">
+            <div class="text-2xl mb-2">💾</div>
+            <h3 class="text-sm font-bold text-white mb-1">Исходные демки</h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Все .dem файлы сохраняются в локальном архиве платформы и обрабатываются движком awpy для расчета рейтингов и аналитики.
+            </p>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <p class="footer-title">⚡ CS2 Demo Analytics Platform</p>
+                <p class="footer-timestamp">Данные обновлены: 14.09.2026 17:49</p>
+            </div>
+            <div class="footer-nav">
+                <a href="#" class="back-to-top">⬆️ Наверх</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Chart.js Dark Theme Defaults -->
+    <script>
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+            Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.1)';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+        }
+    </script>
+    
+    
+    <script src="js/app.js"></script>
+    <script>
+        (function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const closeBtn = document.getElementById('mobile-menu-close');
+            if (btn && drawer) {
+                function setOpen(isOpen) {
+                    if (isOpen) {
+                        drawer.classList.remove('hidden');
+                        drawer.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        drawer.classList.add('hidden');
+                        drawer.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }
+                }
+                btn.addEventListener('click', () => setOpen(true));
+                if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+                drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => setOpen(false));
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') setOpen(false);
+                });
+            }
+        })();
+
+        // ─── Client-side User Personalization ("Кто ты?") ───
+        (function() {
+            const STORAGE_KEY = 'cs2_my_steamid';
+            const rootPath = '';
+            
+            const profileBtn = document.getElementById('my-profile-btn');
+            const profileMenu = document.getElementById('my-profile-menu');
+            const profileLabel = document.getElementById('my-profile-label');
+            const profileIcon = document.getElementById('my-profile-icon');
+            const resetBtn = document.getElementById('reset-my-profile-btn');
+            const profileLink = document.getElementById('my-profile-link');
+            const activeActions = document.getElementById('my-profile-active-actions');
+            
+            const mobileSelect = document.getElementById('mobile-player-select');
+            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
+            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
+            const mobileLink = document.getElementById('mobile-profile-link');
+
+            function getMySteamId() {
+                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
+            }
+
+            function setMySteamId(sid) {
+                try {
+                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
+                    else localStorage.removeItem(STORAGE_KEY);
+                } catch(e) {}
+                applyPersonalization();
+            }
+
+            function applyPersonalization() {
+                const currentSid = getMySteamId();
+                let currentName = '';
+
+                // Find player name from list
+                const items = document.querySelectorAll('.profile-select-item');
+                items.forEach(el => {
+                    const sid = el.getAttribute('data-sid');
+                    const check = el.querySelector('.select-active-check');
+                    if (currentSid && sid === currentSid) {
+                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
+                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.remove('hidden');
+                    } else {
+                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.add('hidden');
+                    }
+                });
+
+                // Update Desktop Header Button
+                if (profileBtn && profileLabel) {
+                    if (currentSid && currentName) {
+                        profileLabel.textContent = currentName;
+                        profileIcon.textContent = '⭐';
+                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        if (resetBtn) resetBtn.classList.remove('hidden');
+                        if (activeActions) activeActions.classList.remove('hidden');
+                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        profileLabel.textContent = 'Кто ты?';
+                        profileIcon.textContent = '👤';
+                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        if (resetBtn) resetBtn.classList.add('hidden');
+                        if (activeActions) activeActions.classList.add('hidden');
+                    }
+                }
+
+                // Update Mobile Selector
+                if (mobileSelect) {
+                    mobileSelect.value = currentSid;
+                }
+                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
+                    if (currentSid) {
+                        mobileResetBtn.classList.remove('hidden');
+                        mobileLinkWrap.classList.remove('hidden');
+                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        mobileResetBtn.classList.add('hidden');
+                        mobileLinkWrap.classList.add('hidden');
+                    }
+                }
+
+                // Highlight player rows/cards in tables and leaderboards
+                const targetEls = document.querySelectorAll('[data-steamid]');
+                targetEls.forEach(el => {
+                    const sid = el.getAttribute('data-steamid');
+                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
+                    const existingBadge = el.querySelector('.my-profile-star-badge');
+                    
+                    if (currentSid && sid === currentSid) {
+                        el.classList.add('my-profile-highlight');
+                        if (!existingBadge && badgeContainer) {
+                            const badge = document.createElement('span');
+                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
+                            badge.innerHTML = '⭐ ВЫ';
+                            badgeContainer.appendChild(badge);
+                        }
+                    } else {
+                        el.classList.remove('my-profile-highlight');
+                        if (existingBadge) {
+                            existingBadge.remove();
+                        }
+                    }
+                });
+            }
+
+            // Event Listeners
+            if (profileBtn && profileMenu) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = profileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        profileMenu.classList.remove('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.profile-select-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sid = btn.getAttribute('data-sid');
+                    setMySteamId(sid);
+                    if (profileMenu) profileMenu.classList.add('hidden');
+                });
+            });
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    setMySteamId('');
+                });
+            }
+
+            if (mobileSelect) {
+                mobileSelect.addEventListener('change', (e) => {
+                    setMySteamId(e.target.value);
+                });
+            }
+
+            if (mobileResetBtn) {
+                mobileResetBtn.addEventListener('click', () => {
+                    setMySteamId('');
+                });
+            }
+
+            // Run on initial page load
+            document.addEventListener('DOMContentLoaded', applyPersonalization);
+            applyPersonalization();
+        })();
+    </script>
+</body>
+</html>

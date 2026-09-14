@@ -1,0 +1,413 @@
+{% extends "base.html" %}
+{% set active_page = 'compare' %}
+
+{% block title %}Бойцовский клуб 1v1 | Очные дуэли игроков{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">⚔️ Бойцовский клуб 1v1</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-rose-500/30 mb-8 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-rose-950/20">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    ⚔️ HEAD-TO-HEAD АРЕНА
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Бойцовский клуб: Очные дуэли игроков
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Прямой учет дуэлей за всю историю матчей сообщества. Кто кого перестреливает чаще, баланс личных встреч и сравнительный радар 10 навыков.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="swap-players-btn" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 transition flex items-center gap-2 shadow-lg cursor-pointer">
+                    <span>⇄</span>
+                    <span>Поменять местами</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selectors Row -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center mb-8">
+        <!-- Player 1 Selector -->
+        <div class="md:col-span-5 glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
+            <label for="select-p1" class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-2">
+                Игрок 1 (Слева)
+            </label>
+            <select id="select-p1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+                {% for p in players %}
+                <option value="{{ p.steam_id }}">{{ p.name }} (MMR: {{ p.mmr }} • {{ p.role }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- VS Divider Badge -->
+        <div class="md:col-span-2 text-center flex flex-col items-center justify-center">
+            <div class="w-12 h-12 rounded-full bg-slate-900 border border-slate-700 text-rose-400 font-black text-lg flex items-center justify-center shadow-xl">
+                VS
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono mt-1 uppercase">Очный контакт</span>
+        </div>
+
+        <!-- Player 2 Selector -->
+        <div class="md:col-span-5 glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-rose-950/10">
+            <label for="select-p2" class="text-[11px] font-bold uppercase tracking-wider text-rose-400 block mb-2">
+                Игрок 2 (Справа)
+            </label>
+            <select id="select-p2" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-rose-500 cursor-pointer">
+                {% for p in players %}
+                <option value="{{ p.steam_id }}">{{ p.name }} (MMR: {{ p.mmr }} • {{ p.role }})</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Live Score & Duel Balance Card -->
+    <section class="section h2h-score-card glassmorphism p-6 md:p-8 rounded-2xl border border-slate-800 mb-8 text-center bg-slate-950/60 shadow-2xl">
+        <div class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between gap-4 mb-2">
+                <a id="p1-link-header" href="#" class="text-base md:text-xl font-black text-emerald-400 hover:underline truncate">
+                    Player 1
+                </a>
+                <span class="text-xs text-slate-400 font-mono uppercase tracking-widest">Личный счёт фрагов</span>
+                <a id="p2-link-header" href="#" class="text-base md:text-xl font-black text-rose-400 hover:underline truncate">
+                    Player 2
+                </a>
+            </div>
+
+            <!-- Big Duel Score Display -->
+            <div class="flex items-center justify-center gap-6 py-3">
+                <div id="p1-kills-big" class="text-5xl md:text-7xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-md">
+                    0
+                </div>
+                <div class="text-3xl md:text-4xl font-black text-slate-600 font-mono">:</div>
+                <div id="p2-kills-big" class="text-5xl md:text-7xl font-black font-mono text-rose-400 tracking-tight drop-shadow-md">
+                    0
+                </div>
+            </div>
+
+            <!-- Tug of War Progress Bar -->
+            <div class="w-full bg-slate-900 rounded-full h-4 overflow-hidden border border-slate-800 p-0.5 flex my-3">
+                <div id="p1-duel-bar" class="h-full bg-emerald-500 rounded-l-full transition-all duration-500" style="width: 50%;"></div>
+                <div id="p2-duel-bar" class="h-full bg-rose-500 rounded-r-full transition-all duration-500" style="width: 50%;"></div>
+            </div>
+
+            <!-- Status Banner -->
+            <div id="duel-status-banner" class="text-xs md:text-sm font-bold text-slate-300 mt-2 font-mono">
+                Ничья в личных встречах
+            </div>
+
+            <!-- Teammate Synergy Banner -->
+            <div id="teammate-synergy-banner" class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+                <span class="text-emerald-400">🤝</span>
+                <span id="teammate-synergy-text">Игроки выступали в одной команде: 0 матчей</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Radar & Comparative Stats Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+        <!-- Radar Chart 10 Skills -->
+        <div class="lg:col-span-6 glassmorphism p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-base font-bold text-white mb-4 flex items-center justify-between">
+                <span>🕸️ Сравнение 10 навыков</span>
+                <div class="flex items-center gap-3 text-xs font-mono">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> <span id="radar-p1-label">P1</span></span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> <span id="radar-p2-label">P2</span></span>
+                </div>
+            </h3>
+            <div class="h-72 md:h-96">
+                <canvas id="compare-radar-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Side by Side Metrics Table -->
+        <div class="lg:col-span-6 glassmorphism p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+                <h3 class="text-base font-bold text-white mb-4">
+                    📊 Сравнение ключевых показателей
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 uppercase text-[10px]">
+                                <th id="table-p1-header" class="py-2 px-3 text-left text-emerald-400">Игрок 1</th>
+                                <th class="py-2 px-3 text-center text-slate-400">Метрика</th>
+                                <th id="table-p2-header" class="py-2 px-3 text-right text-rose-400">Игрок 2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-table-body" class="divide-y divide-slate-800/60">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Profile Links Footnote -->
+            <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-800 mt-4 text-xs">
+                <a id="btn-p1-profile" href="#" class="px-3 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-bold hover:bg-emerald-900/60 transition">
+                    Открыть профиль 1 ➔
+                </a>
+                <a id="btn-p2-profile" href="#" class="px-3 py-1.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 font-bold hover:bg-rose-900/60 transition">
+                    Открыть профиль 2 ➔
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Embedded Head-to-Head and players dataset
+    const H2H_DATA = {{ h2h_data | tojson }};
+    const PLAYERS_MAP = {};
+    if (H2H_DATA && H2H_DATA.players) {
+        H2H_DATA.players.forEach(p => {
+            PLAYERS_MAP[p.steam_id] = p;
+        });
+    }
+
+    let radarChart = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectP1 = document.getElementById('select-p1');
+        const selectP2 = document.getElementById('select-p2');
+        const swapBtn = document.getElementById('swap-players-btn');
+
+        // Check URL parameters: ?p1=...&p2=...
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramP1 = urlParams.get('p1');
+        const paramP2 = urlParams.get('p2');
+
+        const playerIds = Object.keys(PLAYERS_MAP);
+        if (playerIds.length >= 2) {
+            if (paramP1 && PLAYERS_MAP[paramP1]) {
+                selectP1.value = paramP1;
+            } else {
+                selectP1.value = playerIds[0];
+            }
+
+            if (paramP2 && PLAYERS_MAP[paramP2] && paramP2 !== selectP1.value) {
+                selectP2.value = paramP2;
+            } else {
+                selectP2.value = playerIds.find(id => id !== selectP1.value) || playerIds[1];
+            }
+        }
+
+        function updateComparison() {
+            const sid1 = selectP1.value;
+            const sid2 = selectP2.value;
+
+            if (sid1 === sid2) {
+                const alt = playerIds.find(id => id !== sid1);
+                if (alt) selectP2.value = alt;
+            }
+
+            const p1 = PLAYERS_MAP[selectP1.value];
+            const p2 = PLAYERS_MAP[selectP2.value];
+            if (!p1 || !p2) return;
+
+            // Update Headers
+            document.getElementById('p1-link-header').textContent = p1.name;
+            document.getElementById('p1-link-header').href = `players/${p1.steam_id}.html`;
+            document.getElementById('p2-link-header').textContent = p2.name;
+            document.getElementById('p2-link-header').href = `players/${p2.steam_id}.html`;
+
+            document.getElementById('radar-p1-label').textContent = p1.name;
+            document.getElementById('radar-p2-label').textContent = p2.name;
+            document.getElementById('table-p1-header').textContent = p1.name;
+            document.getElementById('table-p2-header').textContent = p2.name;
+
+            document.getElementById('btn-p1-profile').href = `players/${p1.steam_id}.html`;
+            document.getElementById('btn-p2-profile').href = `players/${p2.steam_id}.html`;
+
+            // Duel Score Calculation
+            let k1 = 0; // P1 kills on P2
+            let k2 = 0; // P2 kills on P1
+
+            if (H2H_DATA.matrix && H2H_DATA.matrix[p1.steam_id] && H2H_DATA.matrix[p1.steam_id][p2.steam_id]) {
+                k1 = H2H_DATA.matrix[p1.steam_id][p2.steam_id].kills || 0;
+            }
+            if (H2H_DATA.matrix && H2H_DATA.matrix[p2.steam_id] && H2H_DATA.matrix[p2.steam_id][p1.steam_id]) {
+                k2 = H2H_DATA.matrix[p2.steam_id][p1.steam_id].kills || 0;
+            }
+
+            document.getElementById('p1-kills-big').textContent = k1;
+            document.getElementById('p2-kills-big').textContent = k2;
+
+            const totalKills = k1 + k2;
+            let p1Pct = 50;
+            let p2Pct = 50;
+            if (totalKills > 0) {
+                p1Pct = (k1 / totalKills) * 100;
+                p2Pct = (k2 / totalKills) * 100;
+            }
+            document.getElementById('p1-duel-bar').style.width = `${p1Pct}%`;
+            document.getElementById('p2-duel-bar').style.width = `${p2Pct}%`;
+
+            const statusBanner = document.getElementById('duel-status-banner');
+            if (totalKills === 0) {
+                statusBanner.textContent = 'Игроки пока не пересекались в очных дуэлях на противоположных сторонах';
+                statusBanner.className = 'text-xs md:text-sm font-medium text-slate-400 mt-2 font-mono';
+            } else if (k1 > k2) {
+                statusBanner.textContent = `Доминирует ${p1.name} (преимущество +${k1 - k2} очных фрагов)`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-emerald-400 mt-2 font-mono';
+            } else if (k2 > k1) {
+                statusBanner.textContent = `Доминирует ${p2.name} (преимущество +${k2 - k1} очных фрагов)`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-rose-400 mt-2 font-mono';
+            } else {
+                statusBanner.textContent = `Абсолютное равенство в очных перестрелках (${k1} : ${k2})`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-amber-400 mt-2 font-mono';
+            }
+
+            // Teammates Synergy
+            let synMatches = 0;
+            let synWins = 0;
+            if (H2H_DATA.teammates && H2H_DATA.teammates[p1.steam_id] && H2H_DATA.teammates[p1.steam_id][p2.steam_id]) {
+                synMatches = H2H_DATA.teammates[p1.steam_id][p2.steam_id].matches || 0;
+                synWins = H2H_DATA.teammates[p1.steam_id][p2.steam_id].wins || 0;
+            }
+            const synText = document.getElementById('teammate-synergy-text');
+            if (synMatches > 0) {
+                const wr = ((synWins / synMatches) * 100).toFixed(1);
+                synText.innerHTML = `Совместная игра в одной команде: <strong>${synMatches}</strong> матчей • <strong>${synWins}</strong> побед (винрейт <strong>${wr}%</strong>)`;
+            } else {
+                synText.innerHTML = `Игроки пока не играли в одной команде`;
+            }
+
+            // Side by Side Table Rows
+            const metricsConfig = [
+                { label: 'Текущий MMR', v1: p1.mmr, v2: p2.mmr, higherBetter: true },
+                { label: 'Пиковый MMR', v1: p1.peak_mmr, v2: p2.peak_mmr, higherBetter: true },
+                { label: 'HLTV 2.0 (Ср.)', v1: p1.hltv.toFixed(2), v2: p2.hltv.toFixed(2), higherBetter: true },
+                { label: 'Оценка 1-10', v1: p1.score_10.toFixed(1), v2: p2.score_10.toFixed(1), higherBetter: true },
+                { label: 'K/D Ratio', v1: p1.metrics.kd.toFixed(2), v2: p2.metrics.kd.toFixed(2), higherBetter: true },
+                { label: 'ADR (Урон/раунд)', v1: p1.metrics.adr.toFixed(1), v2: p2.metrics.adr.toFixed(1), higherBetter: true },
+                { label: 'HS %', v1: `${p1.metrics.hs.toFixed(1)}%`, v2: `${p2.metrics.hs.toFixed(1)}%`, num1: p1.metrics.hs, num2: p2.metrics.hs, higherBetter: true },
+                { label: 'KAST %', v1: `${p1.metrics.kast.toFixed(1)}%`, v2: `${p2.metrics.kast.toFixed(1)}%`, num1: p1.metrics.kast, num2: p2.metrics.kast, higherBetter: true },
+                { label: 'Винрейт матчей', v1: `${p1.metrics.winrate.toFixed(1)}%`, v2: `${p2.metrics.winrate.toFixed(1)}%`, num1: p1.metrics.winrate, num2: p2.metrics.winrate, higherBetter: true },
+                { label: 'Сыграно матчей', v1: p1.metrics.matches, v2: p2.metrics.matches, higherBetter: true },
+                { label: 'Основная роль', v1: p1.role, v2: p2.role, textOnly: true },
+                { label: '2D Архетип', v1: p1.archetype, v2: p2.archetype, textOnly: true }
+            ];
+
+            const tbody = document.getElementById('metrics-table-body');
+            tbody.innerHTML = '';
+
+            metricsConfig.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/60 transition';
+
+                let p1Class = 'text-left py-2.5 px-3 font-bold ';
+                let p2Class = 'text-right py-2.5 px-3 font-bold ';
+
+                if (!row.textOnly) {
+                    const n1 = row.num1 !== undefined ? row.num1 : parseFloat(row.v1);
+                    const n2 = row.num2 !== undefined ? row.num2 : parseFloat(row.v2);
+                    if (n1 > n2) {
+                        p1Class += 'text-emerald-400';
+                        p2Class += 'text-slate-400';
+                    } else if (n2 > n1) {
+                        p1Class += 'text-slate-400';
+                        p2Class += 'text-rose-400';
+                    } else {
+                        p1Class += 'text-slate-300';
+                        p2Class += 'text-slate-300';
+                    }
+                } else {
+                    p1Class += 'text-slate-300';
+                    p2Class += 'text-slate-300';
+                }
+
+                tr.innerHTML = `
+                    <td class="${p1Class}">${row.v1}</td>
+                    <td class="text-center py-2.5 px-3 text-slate-400 text-[11px] font-sans uppercase">${row.label}</td>
+                    <td class="${p2Class}">${row.v2}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Radar Chart
+            updateRadar(p1, p2);
+        }
+
+        function updateRadar(p1, p2) {
+            const skillKeys = ['Aim', 'Positioning', 'Utility', 'Game Sense', 'Entry', 'Trading', 'Clutch', 'Discipline', 'Economy', 'Overall Impact'];
+            const data1 = skillKeys.map(k => (p1.ratings && p1.ratings[k] !== undefined) ? p1.ratings[k] : 5.0);
+            const data2 = skillKeys.map(k => (p2.ratings && p2.ratings[k] !== undefined) ? p2.ratings[k] : 5.0);
+
+            const ctx = document.getElementById('compare-radar-chart').getContext('2d');
+            if (radarChart) {
+                radarChart.destroy();
+            }
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: skillKeys,
+                    datasets: [
+                        {
+                            label: p1.name,
+                            data: data1,
+                            backgroundColor: 'rgba(16, 185, 129, 0.25)',
+                            borderColor: '#10b981',
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        {
+                            label: p2.name,
+                            data: data2,
+                            backgroundColor: 'rgba(244, 63, 94, 0.25)',
+                            borderColor: '#f43f5e',
+                            pointBackgroundColor: '#f43f5e',
+                            pointBorderColor: '#fff',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.12)' },
+                            ticks: { min: 0, max: 10, stepSize: 2, color: '#94a3b8', backdropColor: 'transparent' },
+                            pointLabels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        selectP1.addEventListener('change', updateComparison);
+        selectP2.addEventListener('change', updateComparison);
+
+        swapBtn.addEventListener('click', function() {
+            const temp = selectP1.value;
+            selectP1.value = selectP2.value;
+            selectP2.value = temp;
+            updateComparison();
+        });
+
+        // Initialize
+        updateComparison();
+    });
+</script>
+{% endblock %}

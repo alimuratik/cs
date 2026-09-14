@@ -1,0 +1,34 @@
+# ─── Секреты и окружение (КРИТИЧНО: не загружать на GitHub!) ───
+.env
+.env.local
+*.env
+
+# ─── Тяжелые бинарные файлы демок и дампы ───
+demos/
+*.dem
+*.dem.gz
+*.zip
+*.tar.gz
+*.rar
+
+# ─── Тяжелые Parquet файлы пространственных тиков ───
+data/ticks/
+*.parquet
+
+# ─── Python кэш и виртуальные окружения ───
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+env/
+ENV/
+
+# ─── IDE и операционная система ───
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

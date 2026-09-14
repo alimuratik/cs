@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block title %}Рейтинг по навыкам (1-10){% endblock %}
+
+{% block breadcrumbs %}
+<div class="container mx-auto px-4 pt-4">
+    <nav class="flex items-center gap-2 text-xs text-slate-400">
+        <a href="{{ root_path }}index.html" class="hover:text-emerald-300 transition">Главная</a>
+        <span>/</span>
+        <span class="text-slate-200 font-medium">Рейтинг навыков</span>
+    </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="mb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between pb-4 border-b border-slate-800">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-black text-white flex items-center gap-3 tracking-tight">
+                    🎯 Рейтинг по навыкам <span class="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full font-normal">Шкала 1.0 — 10.0</span>
+                </h1>
+                <p class="text-slate-400 text-sm mt-1.5">
+                    Сравнительная аналитика всех игроков сообщества по 10 ключевым тактическим дисциплинам
+                </p>
+            </div>
+            <div class="text-xs text-slate-400 mt-2 md:mt-0 font-mono">
+                10 параметров • Все игроки базы
+            </div>
+        </div>
+    </div>
+
+    <!-- Horizontal Skill Tab Selector -->
+    <div class="mb-8 overflow-x-auto pb-2 scrollbar-thin">
+        <div class="flex items-center gap-2 min-w-max" id="skill-tabs-container">
+            {% for s_id, s_info in skills_data.items() %}
+            <button type="button"
+                    onclick="selectSkillTab('{{ s_id }}')"
+                    id="tab-btn-{{ s_id }}"
+                    class="skill-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs md:text-sm font-bold transition border {% if loop.first %}active bg-emerald-900/40 text-white border-emerald-500/60 shadow-lg shadow-emerald-900/20{% else %}bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200 hover:bg-slate-800/80{% endif %}">
+                <span class="text-base">{{ s_info.icon }}</span>
+                <span>{{ s_info.key }}</span>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Skill Content Panels -->
+    {% for s_id, s_info in skills_data.items() %}
+    <div id="skill-panel-{{ s_id }}" class="skill-panel {% if not loop.first %}hidden{% endif %} space-y-8">
+        <!-- Skill Info Card -->
+        <div class="glassmorphism p-5 rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center text-2xl shrink-0">
+                    {{ s_info.icon }}
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        {{ s_info.title_ru }} <span class="text-xs font-mono text-emerald-300 font-normal">({{ s_info.key }})</span>
+                    </h2>
+                    <p class="text-slate-300 text-xs md:text-sm mt-1 leading-relaxed max-w-3xl">
+                        {{ s_info.desc }}
+                    </p>
+                </div>
+            </div>
+            <div class="text-xs text-slate-400 font-mono bg-slate-950/60 px-3 py-2 rounded-xl border border-slate-800 shrink-0">
+                <span>Ключевой фактор: <strong class="text-emerald-300">{{ s_info.stat_label }}</strong></span>
+            </div>
+        </div>
+
+        <!-- Top 3 Podium (if >= 3 players) -->
+        {% if s_info.players|length >= 3 %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- 2nd Place -->
+            {% set p2 = s_info.players[1] %}
+            <div class="order-2 md:order-1 glassmorphism p-4 rounded-2xl border border-slate-400/30 bg-slate-900/60 relative overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded bg-slate-400/20 text-slate-200 border border-slate-400/40">🥈 #2 Место</span>
+                    <span class="text-2xl font-black font-mono text-slate-300">{{ p2.score }}</span>
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 {{ p2.rank_tier.avatar_classes }}">
+                        {{ p2.avatar_initials }}
+                    </div>
+                    <div>
+                        <a href="{{ root_path }}players/{{ p2.steam_id }}.html" class="font-bold text-white hover:text-emerald-300 transition text-sm flex items-center gap-1.5">
+                            {{ p2.name }}
+                        </a>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            {{ p2.rank_tier.badge_svg_small|safe }}
+                            <span class="text-[10px] text-slate-400">{{ p2.roles[:1]|join('') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 bg-slate-950/60 p-2 rounded-lg border border-slate-800/80">
+                    {{ p2.stat_text }}
+                </div>
+            </div>
+
+            <!-- 1st Place (Champion) -->
+            {% set p1 = s_info.players[0] %}
+            <div class="order-1 md:order-2 glassmorphism p-5 rounded-2xl border border-amber-500/50 bg-gradient-to-b from-amber-950/20 to-slate-900/80 relative overflow-hidden flex flex-col justify-between shadow-xl shadow-amber-500/10 scale-[1.02]">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-black px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/50 flex items-center gap-1">👑 #1 Лидер дисциплины</span>
+                    <span class="text-3xl font-black font-mono text-amber-300">{{ p1.score }}</span>
+                </div>
+                <div class="flex items-center gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl font-bold flex items-center justify-center text-sm shrink-0 {{ p1.rank_tier.avatar_classes }} ring-2 ring-amber-400/40">
+                        {{ p1.avatar_initials }}
+                    </div>
+                    <div>
+                        <a href="{{ root_path }}players/{{ p1.steam_id }}.html" class="font-bold text-white hover:text-amber-300 transition text-base flex items-center gap-1.5">
+                            {{ p1.name }}
+                        </a>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            {{ p1.rank_tier.badge_svg_small|safe }}
+                            <span class="text-xs text-amber-300/80 font-medium">{{ p1.roles[:2]|join(' / ') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-xs font-mono text-slate-300 bg-slate-950/80 p-2.5 rounded-lg border border-amber-500/30">
+                    {{ p1.stat_text }}
+                </div>
+            </div>
+
+            <!-- 3rd Place -->
+            {% set p3 = s_info.players[2] %}
+            <div class="order-3 glassmorphism p-4 rounded-2xl border border-amber-700/30 bg-slate-900/60 relative overflow-hidden flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-700/20 text-amber-400 border border-amber-700/40">🥉 #3 Место</span>
+                    <span class="text-2xl font-black font-mono text-amber-400">{{ p3.score }}</span>
+                </div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-10 h-10 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 {{ p3.rank_tier.avatar_classes }}">
+                        {{ p3.avatar_initials }}
+                    </div>
+                    <div>
+                        <a href="{{ root_path }}players/{{ p3.steam_id }}.html" class="font-bold text-white hover:text-emerald-300 transition text-sm flex items-center gap-1.5">
+                            {{ p3.name }}
+                        </a>
+                        <div class="flex items-center gap-1.5 mt-0.5">
+                            {{ p3.rank_tier.badge_svg_small|safe }}
+                            <span class="text-[10px] text-slate-400">{{ p3.roles[:1]|join('') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-[11px] font-mono text-slate-400 bg-slate-950/60 p-2 rounded-lg border border-slate-800/80">
+                    {{ p3.stat_text }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Full Leaderboard Table -->
+        <div class="overflow-x-auto glassmorphism rounded-2xl border border-slate-800 shadow-2xl">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                        <th class="py-3 px-4 text-center w-14">#</th>
+                        <th class="py-3 px-4">Игрок</th>
+                        <th class="py-3 px-4 text-center">Оценка {{ s_info.key }}</th>
+                        <th class="py-3 px-4">Показатели навыка</th>
+                        <th class="py-3 px-3 text-center">HLTV 2.0</th>
+                        <th class="py-3 px-3 text-center">MMR</th>
+                        <th class="py-3 px-3 text-center">Матчей</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-sans text-xs">
+                    {% for p in s_info.players %}
+                    <tr class="hover:bg-slate-800/30 transition {{ p.rank_tier.row_classes }}">
+                        <td class="py-3 px-4 text-center font-mono font-bold">
+                            {% if loop.index == 1 %}<span class="text-amber-400">🥇 1</span>
+                            {% elif loop.index == 2 %}<span class="text-slate-300">🥈 2</span>
+                            {% elif loop.index == 3 %}<span class="text-amber-600">🥉 3</span>
+                            {% else %}<span class="text-slate-500">#{{ loop.index }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-3 px-4">
+                            <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="flex items-center gap-3 transition">
+                                <div class="w-8 h-8 rounded-lg font-bold flex items-center justify-center text-xs shrink-0 {{ p.rank_tier.avatar_classes }}">
+                                    {{ p.avatar_initials }}
+                                </div>
+                                <div>
+                                    <div class="font-bold text-white hover:text-emerald-300 transition flex items-center gap-1.5">
+                                        {{ p.name }}
+                                    </div>
+                                    <div class="flex items-center gap-1.5 mt-0.5">
+                                        {{ p.rank_tier.badge_svg_small|safe }}
+                                        {% for r in p.roles[:2] %}
+                                        <span class="text-[10px] text-slate-400">{{ r }}{% if not loop.last %}<span class="text-slate-600">/</span>{% endif %}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="inline-block px-3 py-1 rounded font-mono font-black text-sm
+                                {% if p.score >= 8.0 %}bg-gradient-to-r from-amber-950 to-yellow-950 text-amber-300 border border-amber-400/60 shadow-sm shadow-amber-500/30 font-bold
+                                {% elif p.score >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50
+                                {% elif p.score >= 5.0 %}bg-amber-950 text-amber-300 border border-amber-500/50
+                                {% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                {{ p.score }}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 font-mono text-slate-300 text-xs">
+                            {{ p.stat_text }}
+                        </td>
+                        <td class="py-3 px-3 text-center font-mono font-semibold text-slate-200">
+                            {{ p.hltv_rating }}
+                        </td>
+                        <td class="py-3 px-3 text-center font-mono font-black text-slate-200">
+                            {{ p.current_mmr }}
+                        </td>
+                        <td class="py-3 px-3 text-center font-mono text-slate-400">
+                            {{ p.total_matches }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function selectSkillTab(skillId) {
+    // Скрываем все панели
+    document.querySelectorAll('.skill-panel').forEach(el => el.classList.add('hidden'));
+    // Убираем активный класс у всех кнопок
+    document.querySelectorAll('.skill-tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-emerald-900/40', 'text-white', 'border-emerald-500/60', 'shadow-lg', 'shadow-emerald-900/20');
+        btn.classList.add('bg-slate-900/80', 'text-slate-400', 'border-slate-800');
+    });
+
+    // Активируем выбранную панель
+    const targetPanel = document.getElementById('skill-panel-' + skillId);
+    if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+    }
+
+    // Активируем выбранную кнопку
+    const targetBtn = document.getElementById('tab-btn-' + skillId);
+    if (targetBtn) {
+        targetBtn.classList.remove('bg-slate-900/80', 'text-slate-400', 'border-slate-800');
+        targetBtn.classList.add('active', 'bg-emerald-900/40', 'text-white', 'border-emerald-500/60', 'shadow-lg', 'shadow-emerald-900/20');
+    }
+
+    // Обновляем хэш URL без перезагрузки страницы
+    if (history.replaceState) {
+        history.replaceState(null, null, '#' + skillId);
+    } else {
+        location.hash = '#' + skillId;
+    }
+}
+
+// Инициализация при загрузке по хэшу URL (#aim, #utility и т.д.)
+window.addEventListener('DOMContentLoaded', () => {
+    let hash = window.location.hash.replace('#', '').toLowerCase();
+    if (hash) {
+        const matchingBtn = document.getElementById('tab-btn-' + hash);
+        if (matchingBtn) {
+            selectSkillTab(hash);
+        }
+    }
+});
+
+window.addEventListener('hashchange', () => {
+    let hash = window.location.hash.replace('#', '').toLowerCase();
+    if (hash) {
+        selectSkillTab(hash);
+    }
+});
+</script>
+{% endblock %}

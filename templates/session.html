@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% set active_page = 'session' %}
+
+{% block title %}Сессия {{ session.date_display }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="../index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <a href="../index.html#sessions-section" class="hover:text-emerald-400 transition">Сессии</a>
+        <span>/</span>
+        <span class="text-white font-medium">{{ session.date_display }}</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Session Header Card -->
+    <header class="session-header glassmorphism relative overflow-hidden rounded-2xl p-6 md:p-8 mb-8 border border-emerald-500/20 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/30 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+            <span class="inline-block px-3 py-1 bg-emerald-500/20 text-emerald-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-2 border border-emerald-500/30">
+                ИГРОВОЙ ДЕНЬ (ПЯТНИЦА)
+            </span>
+            <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">📅 {{ session.date_display }}</h1>
+            <div class="flex items-center gap-4 text-xs text-slate-400 font-mono mt-2">
+                <span>🎮 Матчей: <strong class="text-white">{{ session.total_matches }}</strong></span>
+                <span>⏱️ Раундов: <strong class="text-white">{{ session.total_rounds }}</strong></span>
+            </div>
+        </div>
+
+        {% if session.mvp %}
+        <div class="session-mvp-box text-center bg-amber-500/10 p-4 rounded-2xl border border-amber-500/40 min-w-[160px]">
+            <div class="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-1">⭐ MVP Игрового дня</div>
+            <div class="text-xl font-bold text-white">{{ session.mvp.name }}</div>
+            <div class="text-xs font-mono font-bold text-amber-300 mt-0.5">Impact {{ session.mvp.rating }}</div>
+        </div>
+        {% endif %}
+    </header>
+
+    <!-- Session Summary Stats -->
+    <section class="section summary-stats-section mb-8">
+        <h2 class="section-title text-xl font-bold text-white mb-4">📊 Рекорды сессии</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 flex items-center gap-3">
+                <span class="stat-icon text-3xl">🔫</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-medium">Больше всего убийств</span>
+                    <span class="text-sm font-bold text-white">{{ session.stats.most_kills.name }} <strong class="text-amber-300 font-mono">({{ session.stats.most_kills.value }})</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 flex items-center gap-3">
+                <span class="stat-icon text-3xl">🔥</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-medium">Мастер клатчей</span>
+                    <span class="text-sm font-bold text-white">{{ session.stats.most_clutches.name }} <strong class="text-amber-400 font-mono">({{ session.stats.most_clutches.value }})</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 flex items-center gap-3">
+                <span class="stat-icon text-3xl">🎯</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-medium">Лучший Entry</span>
+                    <span class="text-sm font-bold text-white">{{ session.stats.best_entry.name }} <strong class="text-emerald-400 font-mono">({{ session.stats.best_entry.value }})</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 flex items-center gap-3">
+                <span class="stat-icon text-3xl">💣</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-medium">Урон от гранат</span>
+                    <span class="text-sm font-bold text-white">{{ session.stats.most_util_dmg.name }} <strong class="text-rose-400 font-mono">({{ session.stats.most_util_dmg.value }})</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Structured Matches List (With crisp borders and cards) -->
+    <section class="section matches-section mb-10">
+        <h2 class="section-title text-2xl font-bold text-white mb-4">🎮 Сыгранные матчи дня</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {% for match in session.matches %}
+            <a href="../matches/{{ match.match_id }}.html" 
+               class="match-card glassmorphism rounded-2xl p-5 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition duration-200 group block shadow-lg relative overflow-hidden">
+                
+                <div class="flex items-center justify-between mb-4 border-b border-slate-800/80 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl">🗺️</span>
+                        <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">{{ match.map_name }}</h3>
+                    </div>
+                    <span class="text-xs font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2.5 py-1 rounded-full font-semibold">
+                        DE_{{ match.map_name|upper }}
+                    </span>
+                </div>
+
+                <div class="match-score-row flex items-center justify-between bg-slate-950/80 p-3 rounded-xl border border-slate-800 mb-3">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[35%]" title="{{ match.team1_name }}">{{ match.team1_name }}</span>
+                    <div class="text-2xl font-black font-mono flex items-center gap-2">
+                        <span class="text-blue-400">{{ match.score1 }}</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-amber-400">{{ match.score2 }}</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[35%] text-right" title="{{ match.team2_name }}">{{ match.team2_name }}</span>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-slate-400 font-mono pt-1">
+                    <span>⏱️ Длительность: {{ match.duration or '24 раунда' }}</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Подробнее ➔</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Session Scoreboard -->
+    <section class="section scoreboard-section mb-8">
+        <h2 class="section-title text-2xl font-bold text-white mb-4">📈 Сводная таблица результатов за день</h2>
+        <div class="glassmorphism rounded-2xl border border-slate-800 overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-900/90 text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                        <th class="p-3.5">Игрок</th>
+                        <th class="p-3.5 text-center">Матчи</th>
+                        <th class="p-3.5 text-center">K / D / A</th>
+                        <th class="p-3.5 text-center">Ср. ADR</th>
+                        <th class="p-3.5 text-center">Ср. KAST%</th>
+                        <th class="p-3.5 text-center">Ср. HS%</th>
+                        <th class="p-3.5 text-center">HLTV 2.0</th>
+                        <th class="p-3.5 text-center">Оценка 1-10</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 font-mono text-sm">
+                    {% for player in session.players|sort(attribute='rating', reverse=True) %}
+                    <tr class="hover:bg-slate-800/40 transition">
+                        <td class="p-3.5 font-bold font-sans">
+                            <a href="../players/{{ player.steam_id }}.html" class="text-white hover:text-emerald-300 transition">
+                                {{ player.name }}
+                            </a>
+                        </td>
+                        <td class="p-3.5 text-center text-slate-300">{{ player.matches_played }}</td>
+                        <td class="p-3.5 text-center text-slate-200">{{ player.kills }} / {{ player.deaths }} / {{ player.assists }}</td>
+                        <td class="p-3.5 text-center text-slate-200">{{ player.avg_adr }}</td>
+                        <td class="p-3.5 text-center text-slate-200">{{ player.avg_kast }}%</td>
+                        <td class="p-3.5 text-center text-slate-200">{{ player.avg_hs }}%</td>
+                        <td class="p-3.5 text-center font-bold text-sm {% if player.hltv >= 1.15 %}text-emerald-400{% elif player.hltv < 0.90 %}text-rose-400{% else %}text-slate-200{% endif %}">
+                            {{ player.hltv }}
+                        </td>
+                        <td class="p-3.5 text-center">
+                            <span class="inline-block px-2.5 py-1 rounded font-bold text-xs shadow-md
+                                {% if player.rating >= 8.0 %}bg-gradient-to-r from-amber-950 to-yellow-950 text-amber-300 border border-amber-400/60 font-bold
+                                {% elif player.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50
+                                {% elif player.rating >= 5.0 %}bg-amber-950 text-amber-300 border border-amber-500/50
+                                {% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                {{ player.rating }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}

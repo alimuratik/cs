@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глубокий анализ ваших матчей Counter-Strike 2">
+    <title>Бойцовский клуб 1v1 | Очные дуэли игроков | CS2 Stats</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-theme">
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <svg viewBox="0 0 100 86.6" class="logo-pyramid w-7 h-7 shrink-0" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-item ">
+                    <span class="nav-icon">📊</span> Главная
+                </a>
+                <a href="index.html#players-section" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Игроки
+                </a>
+                <a href="skills.html" class="nav-item ">
+                    <span class="nav-icon">🎯</span> Навыки
+                </a>
+                <a href="index.html#sessions-section" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
+                </a>
+                <a href="demos.html" class="nav-item ">
+                    <span class="nav-icon">🎬</span> Демки
+                </a>
+                <a href="compare.html" class="nav-item active">
+                    <span class="nav-icon">⚔️</span> Дуэли
+                </a>
+                <a href="matchmaker.html" class="nav-item ">
+                    <span class="nav-icon">⚖️</span> Составы
+                </a>
+            </nav>
+
+            <!-- User Personalization Widget ("Кто ты?") -->
+            <div class="relative ml-2 hidden md:block" id="user-profile-widget">
+                <button type="button" id="my-profile-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition shadow-sm focus:outline-none" aria-expanded="false">
+                    <span id="my-profile-icon">👤</span>
+                    <span id="my-profile-label">Кто ты?</span>
+                    <span class="text-[10px] text-slate-500">▼</span>
+                </button>
+                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800 shadow-2xl p-2 z-50 transition-all">
+                    <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5 flex items-center justify-between">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Выберите свой профиль</span>
+                        <button type="button" id="reset-my-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+                    </div>
+                    <div class="max-h-60 overflow-y-auto space-y-1 custom-scrollbar" id="profile-select-list">
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198357586856" data-pname="__9503">
+                            <span class="truncate">__9503</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198431427136" data-pname="ALIBONYA">
+                            <span class="truncate">ALIBONYA</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199339730976" data-pname="altairinthesky">
+                            <span class="truncate">altairinthesky</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198234120608" data-pname="Azki_1">
+                            <span class="truncate">Azki_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198998095904" data-pname="c kaifom">
+                            <span class="truncate">c kaifom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199808571117" data-pname="CHPOKERS">
+                            <span class="truncate">CHPOKERS</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198068831005" data-pname="DarkAtom">
+                            <span class="truncate">DarkAtom</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198100478545" data-pname="Folie_1">
+                            <span class="truncate">Folie_1</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561197990475042" data-pname="GIGABYTE_KZ">
+                            <span class="truncate">GIGABYTE_KZ</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199478211872" data-pname="iamresplendent">
+                            <span class="truncate">iamresplendent</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198356069376" data-pname="insta/Ne7er0cs">
+                            <span class="truncate">insta/Ne7er0cs</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199569491960" data-pname="k--9">
+                            <span class="truncate">k--9</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199153011360" data-pname="matadorra">
+                            <span class="truncate">matadorra</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198686899456" data-pname="mbaliyev">
+                            <span class="truncate">mbaliyev</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198010867824" data-pname="Nakama_4">
+                            <span class="truncate">Nakama_4</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198254267968" data-pname="Oceanmengo">
+                            <span class="truncate">Oceanmengo</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198125968240" data-pname="qumashasyl">
+                            <span class="truncate">qumashasyl</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198243149328" data-pname="Rayi">
+                            <span class="truncate">Rayi</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199508661466" data-pname="Resone West">
+                            <span class="truncate">Resone West</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198083546367" data-pname="Saliend">
+                            <span class="truncate">Saliend</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199438131194" data-pname="SGEM_7">
+                            <span class="truncate">SGEM_7</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198885191528" data-pname="taksist_3">
+                            <span class="truncate">taksist_3</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198402746928" data-pname="Yesk0">
+                            <span class="truncate">Yesk0</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199043039622" data-pname="Zanoza59">
+                            <span class="truncate">Zanoza59</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199413542223" data-pname="zikayevg">
+                            <span class="truncate">zikayevg</span>
+                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
+                        </button>
+                        
+                    </div>
+                    <div id="my-profile-active-actions" class="hidden mt-2 pt-2 border-t border-slate-800 flex items-center justify-between px-2">
+                        <a id="my-profile-link" href="#" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
+                            <span>Открыть профиль</span> <span>➔</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button type="button" id="mobile-menu-btn" class="hamburger-btn md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Открыть мобильное меню">
+                <span class="text-xl">☰</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div class="logo">
+                <a href="index.html" class="flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+                ✕
+            </button>
+        </div>
+        <nav class="flex flex-col gap-2.5 mt-6">
+            <a href="index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📊</span> <span>Главная</span>
+            </a>
+            <a href="index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            </a>
+            <a href="skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            </a>
+            <a href="compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50">
+                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            </a>
+            <a href="index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
+            </a>
+            <a href="demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            </a>
+        </nav>
+
+        <!-- Mobile User Profile Picker -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800" id="mobile-user-profile-widget">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                    <span id="mobile-profile-icon">👤</span>
+                    <span id="mobile-profile-title">Мой профиль</span>
+                </span>
+                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+            </div>
+            <select id="mobile-player-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                <option value="">-- Выберите профиль --</option>
+                
+                <option value="76561198357586856">__9503</option>
+                
+                <option value="76561198431427136">ALIBONYA</option>
+                
+                <option value="76561199339730976">altairinthesky</option>
+                
+                <option value="76561198234120608">Azki_1</option>
+                
+                <option value="76561198998095904">c kaifom</option>
+                
+                <option value="76561199808571117">CHPOKERS</option>
+                
+                <option value="76561198068831005">DarkAtom</option>
+                
+                <option value="76561198100478545">Folie_1</option>
+                
+                <option value="76561197990475042">GIGABYTE_KZ</option>
+                
+                <option value="76561199478211872">iamresplendent</option>
+                
+                <option value="76561198356069376">insta/Ne7er0cs</option>
+                
+                <option value="76561199569491960">k--9</option>
+                
+                <option value="76561199153011360">matadorra</option>
+                
+                <option value="76561198686899456">mbaliyev</option>
+                
+                <option value="76561198010867824">Nakama_4</option>
+                
+                <option value="76561198254267968">Oceanmengo</option>
+                
+                <option value="76561198125968240">qumashasyl</option>
+                
+                <option value="76561198243149328">Rayi</option>
+                
+                <option value="76561199508661466">Resone West</option>
+                
+                <option value="76561198083546367">Saliend</option>
+                
+                <option value="76561199438131194">SGEM_7</option>
+                
+                <option value="76561198885191528">taksist_3</option>
+                
+                <option value="76561198402746928">Yesk0</option>
+                
+                <option value="76561199043039622">Zanoza59</option>
+                
+                <option value="76561199413542223">zikayevg</option>
+                
+            </select>
+            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-800/80">
+                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700/50 text-xs font-bold">
+                    Открыть мой профиль ➔
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+            KASE CS2 Analytics Platform &bull; Mobile Nav
+        </div>
+    </div>
+
+    
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">⚔️ Бойцовский клуб 1v1</span>
+    </div>
+</div>
+
+
+    <main class="main-content">
+        
+<div class="container mx-auto px-4 py-6">
+    <!-- Header Section -->
+    <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-rose-500/30 mb-8 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-rose-950/20">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    ⚔️ HEAD-TO-HEAD АРЕНА
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Бойцовский клуб: Очные дуэли игроков
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Прямой учет дуэлей за всю историю матчей сообщества. Кто кого перестреливает чаще, баланс личных встреч и сравнительный радар 10 навыков.
+                </p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="swap-players-btn" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 transition flex items-center gap-2 shadow-lg cursor-pointer">
+                    <span>⇄</span>
+                    <span>Поменять местами</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Selectors Row -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center mb-8">
+        <!-- Player 1 Selector -->
+        <div class="md:col-span-5 glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
+            <label for="select-p1" class="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block mb-2">
+                Игрок 1 (Слева)
+            </label>
+            <select id="select-p1" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+                
+                <option value="76561198998095904">c kaifom (MMR: 1128 • Энтри-фраггер)</option>
+                
+                <option value="76561199153011360">matadorra (MMR: 1116 • Энтри-фраггер)</option>
+                
+                <option value="76561198431427136">ALIBONYA (MMR: 1115 • Энтри-фраггер)</option>
+                
+                <option value="76561198356069376">insta/Ne7er0cs (MMR: 1095 • Опорник)</option>
+                
+                <option value="76561199508661466">Resone West (MMR: 1090 • Энтри-фраггер)</option>
+                
+                <option value="76561198686899456">mbaliyev (MMR: 1088 • Энтри-фраггер)</option>
+                
+                <option value="76561198243149328">Rayi (MMR: 1079 • Энтри-фраггер)</option>
+                
+                <option value="76561199043039622">Zanoza59 (MMR: 1077 • Энтри-фраггер)</option>
+                
+                <option value="76561199339730976">altairinthesky (MMR: 1047 • Энтри-фраггер)</option>
+                
+                <option value="76561199569491960">k--9 (MMR: 1016 • Второй номер)</option>
+                
+                <option value="76561199478211872">iamresplendent (MMR: 1015 • Снайпер)</option>
+                
+                <option value="76561198402746928">Yesk0 (MMR: 997 • Универсал)</option>
+                
+                <option value="76561198100478545">Folie_1 (MMR: 994 • Энтри-фраггер)</option>
+                
+                <option value="76561198357586856">__9503 (MMR: 994 • Опорник)</option>
+                
+                <option value="76561198125968240">qumashasyl (MMR: 991 • Энтри-фраггер)</option>
+                
+                <option value="76561198083546367">Saliend (MMR: 988 • Второй номер)</option>
+                
+                <option value="76561198010867824">Nakama_4 (MMR: 987 • Энтри-фраггер)</option>
+                
+                <option value="76561199438131194">SGEM_7 (MMR: 984 • Энтри-фраггер)</option>
+                
+                <option value="76561199808571117">CHPOKERS (MMR: 962 • Энтри-фраггер)</option>
+                
+                <option value="76561198068831005">DarkAtom (MMR: 961 • Второй номер)</option>
+                
+                <option value="76561198234120608">Azki_1 (MMR: 961 • Второй номер)</option>
+                
+                <option value="76561198885191528">taksist_3 (MMR: 935 • Универсал)</option>
+                
+                <option value="76561198254267968">Oceanmengo (MMR: 919 • Снайпер)</option>
+                
+                <option value="76561197990475042">GIGABYTE_KZ (MMR: 869 • Второй номер)</option>
+                
+                <option value="76561199413542223">zikayevg (MMR: 827 • Универсал)</option>
+                
+            </select>
+        </div>
+
+        <!-- VS Divider Badge -->
+        <div class="md:col-span-2 text-center flex flex-col items-center justify-center">
+            <div class="w-12 h-12 rounded-full bg-slate-900 border border-slate-700 text-rose-400 font-black text-lg flex items-center justify-center shadow-xl">
+                VS
+            </div>
+            <span class="text-[10px] text-slate-400 font-mono mt-1 uppercase">Очный контакт</span>
+        </div>
+
+        <!-- Player 2 Selector -->
+        <div class="md:col-span-5 glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-rose-950/10">
+            <label for="select-p2" class="text-[11px] font-bold uppercase tracking-wider text-rose-400 block mb-2">
+                Игрок 2 (Справа)
+            </label>
+            <select id="select-p2" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm font-bold text-white focus:outline-none focus:border-rose-500 cursor-pointer">
+                
+                <option value="76561198998095904">c kaifom (MMR: 1128 • Энтри-фраггер)</option>
+                
+                <option value="76561199153011360">matadorra (MMR: 1116 • Энтри-фраггер)</option>
+                
+                <option value="76561198431427136">ALIBONYA (MMR: 1115 • Энтри-фраггер)</option>
+                
+                <option value="76561198356069376">insta/Ne7er0cs (MMR: 1095 • Опорник)</option>
+                
+                <option value="76561199508661466">Resone West (MMR: 1090 • Энтри-фраггер)</option>
+                
+                <option value="76561198686899456">mbaliyev (MMR: 1088 • Энтри-фраггер)</option>
+                
+                <option value="76561198243149328">Rayi (MMR: 1079 • Энтри-фраггер)</option>
+                
+                <option value="76561199043039622">Zanoza59 (MMR: 1077 • Энтри-фраггер)</option>
+                
+                <option value="76561199339730976">altairinthesky (MMR: 1047 • Энтри-фраггер)</option>
+                
+                <option value="76561199569491960">k--9 (MMR: 1016 • Второй номер)</option>
+                
+                <option value="76561199478211872">iamresplendent (MMR: 1015 • Снайпер)</option>
+                
+                <option value="76561198402746928">Yesk0 (MMR: 997 • Универсал)</option>
+                
+                <option value="76561198100478545">Folie_1 (MMR: 994 • Энтри-фраггер)</option>
+                
+                <option value="76561198357586856">__9503 (MMR: 994 • Опорник)</option>
+                
+                <option value="76561198125968240">qumashasyl (MMR: 991 • Энтри-фраггер)</option>
+                
+                <option value="76561198083546367">Saliend (MMR: 988 • Второй номер)</option>
+                
+                <option value="76561198010867824">Nakama_4 (MMR: 987 • Энтри-фраггер)</option>
+                
+                <option value="76561199438131194">SGEM_7 (MMR: 984 • Энтри-фраггер)</option>
+                
+                <option value="76561199808571117">CHPOKERS (MMR: 962 • Энтри-фраггер)</option>
+                
+                <option value="76561198068831005">DarkAtom (MMR: 961 • Второй номер)</option>
+                
+                <option value="76561198234120608">Azki_1 (MMR: 961 • Второй номер)</option>
+                
+                <option value="76561198885191528">taksist_3 (MMR: 935 • Универсал)</option>
+                
+                <option value="76561198254267968">Oceanmengo (MMR: 919 • Снайпер)</option>
+                
+                <option value="76561197990475042">GIGABYTE_KZ (MMR: 869 • Второй номер)</option>
+                
+                <option value="76561199413542223">zikayevg (MMR: 827 • Универсал)</option>
+                
+            </select>
+        </div>
+    </div>
+
+    <!-- Live Score & Duel Balance Card -->
+    <section class="section h2h-score-card glassmorphism p-6 md:p-8 rounded-2xl border border-slate-800 mb-8 text-center bg-slate-950/60 shadow-2xl">
+        <div class="max-w-3xl mx-auto">
+            <div class="flex items-center justify-between gap-4 mb-2">
+                <a id="p1-link-header" href="#" class="text-base md:text-xl font-black text-emerald-400 hover:underline truncate">
+                    Player 1
+                </a>
+                <span class="text-xs text-slate-400 font-mono uppercase tracking-widest">Личный счёт фрагов</span>
+                <a id="p2-link-header" href="#" class="text-base md:text-xl font-black text-rose-400 hover:underline truncate">
+                    Player 2
+                </a>
+            </div>
+
+            <!-- Big Duel Score Display -->
+            <div class="flex items-center justify-center gap-6 py-3">
+                <div id="p1-kills-big" class="text-5xl md:text-7xl font-black font-mono text-emerald-400 tracking-tight drop-shadow-md">
+                    0
+                </div>
+                <div class="text-3xl md:text-4xl font-black text-slate-600 font-mono">:</div>
+                <div id="p2-kills-big" class="text-5xl md:text-7xl font-black font-mono text-rose-400 tracking-tight drop-shadow-md">
+                    0
+                </div>
+            </div>
+
+            <!-- Tug of War Progress Bar -->
+            <div class="w-full bg-slate-900 rounded-full h-4 overflow-hidden border border-slate-800 p-0.5 flex my-3">
+                <div id="p1-duel-bar" class="h-full bg-emerald-500 rounded-l-full transition-all duration-500" style="width: 50%;"></div>
+                <div id="p2-duel-bar" class="h-full bg-rose-500 rounded-r-full transition-all duration-500" style="width: 50%;"></div>
+            </div>
+
+            <!-- Status Banner -->
+            <div id="duel-status-banner" class="text-xs md:text-sm font-bold text-slate-300 mt-2 font-mono">
+                Ничья в личных встречах
+            </div>
+
+            <!-- Teammate Synergy Banner -->
+            <div id="teammate-synergy-banner" class="mt-4 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs text-slate-300 flex items-center justify-center gap-2">
+                <span class="text-emerald-400">🤝</span>
+                <span id="teammate-synergy-text">Игроки выступали в одной команде: 0 матчей</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Radar & Comparative Stats Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-8">
+        <!-- Radar Chart 10 Skills -->
+        <div class="lg:col-span-6 glassmorphism p-6 rounded-2xl border border-slate-800">
+            <h3 class="text-base font-bold text-white mb-4 flex items-center justify-between">
+                <span>🕸️ Сравнение 10 навыков</span>
+                <div class="flex items-center gap-3 text-xs font-mono">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span> <span id="radar-p1-label">P1</span></span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-400"></span> <span id="radar-p2-label">P2</span></span>
+                </div>
+            </h3>
+            <div class="h-72 md:h-96">
+                <canvas id="compare-radar-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Side by Side Metrics Table -->
+        <div class="lg:col-span-6 glassmorphism p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+            <div>
+                <h3 class="text-base font-bold text-white mb-4">
+                    📊 Сравнение ключевых показателей
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs font-mono">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-slate-400 uppercase text-[10px]">
+                                <th id="table-p1-header" class="py-2 px-3 text-left text-emerald-400">Игрок 1</th>
+                                <th class="py-2 px-3 text-center text-slate-400">Метрика</th>
+                                <th id="table-p2-header" class="py-2 px-3 text-right text-rose-400">Игрок 2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-table-body" class="divide-y divide-slate-800/60">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Profile Links Footnote -->
+            <div class="flex items-center justify-between gap-4 pt-4 border-t border-slate-800 mt-4 text-xs">
+                <a id="btn-p1-profile" href="#" class="px-3 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 font-bold hover:bg-emerald-900/60 transition">
+                    Открыть профиль 1 ➔
+                </a>
+                <a id="btn-p2-profile" href="#" class="px-3 py-1.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 font-bold hover:bg-rose-900/60 transition">
+                    Открыть профиль 2 ➔
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <p class="footer-title">⚡ CS2 Demo Analytics Platform</p>
+                <p class="footer-timestamp">Данные обновлены: 14.09.2026 17:49</p>
+            </div>
+            <div class="footer-nav">
+                <a href="#" class="back-to-top">⬆️ Наверх</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared Chart.js Dark Theme Defaults -->
+    <script>
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
+            Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.1)';
+            Chart.defaults.font.family = "'Inter', sans-serif";
+        }
+    </script>
+    
+    
+<script>
+    // Embedded Head-to-Head and players dataset
+    const H2H_DATA = {"matrix": {"76561197990475042": {"76561198083546367": {"deaths": 4, "kills": 3}, "76561198254267968": {"deaths": 3, "kills": 0}, "76561198357586856": {"deaths": 6, "kills": 0}, "76561198402746928": {"deaths": 6, "kills": 1}, "76561198686899456": {"deaths": 17, "kills": 6}, "76561199153011360": {"deaths": 2, "kills": 4}, "76561199339730976": {"deaths": 10, "kills": 3}, "76561199508661466": {"deaths": 5, "kills": 0}, "76561199808571117": {"deaths": 12, "kills": 1}}, "76561198010867824": {"76561198402746928": {"deaths": 8, "kills": 11}, "76561198686899456": {"deaths": 10, "kills": 14}, "76561199153011360": {"deaths": 22, "kills": 6}, "76561199339730976": {"deaths": 6, "kills": 12}, "76561199413542223": {"deaths": 3, "kills": 16}}, "76561198068831005": {"76561198402746928": {"deaths": 8, "kills": 6}, "76561198686899456": {"deaths": 9, "kills": 6}, "76561199153011360": {"deaths": 16, "kills": 6}, "76561199339730976": {"deaths": 7, "kills": 5}, "76561199413542223": {"deaths": 11, "kills": 3}}, "76561198083546367": {"76561197990475042": {"deaths": 3, "kills": 4}, "76561198100478545": {"deaths": 28, "kills": 34}, "76561198125968240": {"deaths": 17, "kills": 12}, "76561198254267968": {"deaths": 50, "kills": 44}, "76561198356069376": {"deaths": 11, "kills": 11}, "76561198402746928": {"deaths": 10, "kills": 8}, "76561198431427136": {"deaths": 15, "kills": 7}, "76561198686899456": {"deaths": 44, "kills": 35}, "76561198885191528": {"deaths": 8, "kills": 10}, "76561198998095904": {"deaths": 6, "kills": 12}, "76561199153011360": {"deaths": 19, "kills": 5}, "76561199339730976": {"deaths": 3, "kills": 1}, "76561199413542223": {"deaths": 10, "kills": 28}, "76561199508661466": {"deaths": 11, "kills": 8}, "76561199569491960": {"deaths": 6, "kills": 8}, "76561199808571117": {"deaths": 18, "kills": 21}}, "76561198100478545": {"76561198083546367": {"deaths": 34, "kills": 28}, "76561198254267968": {"deaths": 9, "kills": 8}, "76561198402746928": {"deaths": 24, "kills": 21}, "76561198431427136": {"deaths": 15, "kills": 9}, "76561198686899456": {"deaths": 37, "kills": 17}, "76561199153011360": {"deaths": 50, "kills": 25}, "76561199339730976": {"deaths": 32, "kills": 55}, "76561199413542223": {"deaths": 17, "kills": 31}, "76561199478211872": {"deaths": 6, "kills": 11}, "76561199508661466": {"deaths": 12, "kills": 8}, "76561199569491960": {"deaths": 25, "kills": 11}}, "76561198125968240": {"76561198083546367": {"deaths": 12, "kills": 17}, "76561198243149328": {"deaths": 17, "kills": 22}, "76561198402746928": {"deaths": 4, "kills": 21}, "76561199043039622": {"deaths": 18, "kills": 18}, "76561199339730976": {"deaths": 8, "kills": 17}}, "76561198234120608": {"76561198686899456": {"deaths": 6, "kills": 8}, "76561199153011360": {"deaths": 20, "kills": 6}, "76561199413542223": {"deaths": 6, "kills": 4}, "76561199478211872": {"deaths": 8, "kills": 2}, "76561199508661466": {"deaths": 14, "kills": 7}}, "76561198243149328": {"76561198125968240": {"deaths": 22, "kills": 17}, "76561198254267968": {"deaths": 8, "kills": 16}, "76561198686899456": {"deaths": 10, "kills": 21}, "76561198885191528": {"deaths": 8, "kills": 27}, "76561199413542223": {"deaths": 4, "kills": 18}}, "76561198254267968": {"76561197990475042": {"deaths": 0, "kills": 3}, "76561198083546367": {"deaths": 44, "kills": 50}, "76561198100478545": {"deaths": 8, "kills": 9}, "76561198243149328": {"deaths": 16, "kills": 8}, "76561198357586856": {"deaths": 8, "kills": 10}, "76561198402746928": {"deaths": 10, "kills": 47}, "76561198431427136": {"deaths": 48, "kills": 25}, "76561198686899456": {"deaths": 48, "kills": 62}, "76561198998095904": {"deaths": 15, "kills": 14}, "76561199043039622": {"deaths": 17, "kills": 20}, "76561199153011360": {"deaths": 56, "kills": 25}, "76561199339730976": {"deaths": 50, "kills": 75}, "76561199413542223": {"deaths": 27, "kills": 54}, "76561199478211872": {"deaths": 6, "kills": 16}, "76561199508661466": {"deaths": 34, "kills": 23}, "76561199569491960": {"deaths": 12, "kills": 17}, "76561199808571117": {"deaths": 6, "kills": 4}}, "76561198356069376": {"76561198083546367": {"deaths": 11, "kills": 11}, "76561198686899456": {"deaths": 6, "kills": 14}, "76561199153011360": {"deaths": 7, "kills": 8}, "76561199339730976": {"deaths": 5, "kills": 11}, "76561199413542223": {"deaths": 2, "kills": 18}}, "76561198357586856": {"76561197990475042": {"deaths": 0, "kills": 6}, "76561198254267968": {"deaths": 10, "kills": 8}, "76561198402746928": {"deaths": 7, "kills": 7}, "76561198686899456": {"deaths": 5, "kills": 3}, "76561199153011360": {"deaths": 19, "kills": 9}, "76561199339730976": {"deaths": 5, "kills": 4}, "76561199808571117": {"deaths": 7, "kills": 10}}, "76561198402746928": {"76561197990475042": {"deaths": 1, "kills": 6}, "76561198010867824": {"deaths": 11, "kills": 8}, "76561198068831005": {"deaths": 6, "kills": 8}, "76561198083546367": {"deaths": 8, "kills": 10}, "76561198100478545": {"deaths": 21, "kills": 24}, "76561198125968240": {"deaths": 21, "kills": 4}, "76561198254267968": {"deaths": 47, "kills": 10}, "76561198357586856": {"deaths": 7, "kills": 7}, "76561198431427136": {"deaths": 29, "kills": 14}, "76561198686899456": {"deaths": 42, "kills": 23}, "76561198885191528": {"deaths": 8, "kills": 8}, "76561199339730976": {"deaths": 12, "kills": 6}, "76561199413542223": {"deaths": 22, "kills": 21}, "76561199508661466": {"deaths": 22, "kills": 22}, "76561199569491960": {"deaths": 11, "kills": 3}, "76561199808571117": {"deaths": 15, "kills": 10}}, "76561198431427136": {"76561198083546367": {"deaths": 7, "kills": 15}, "76561198100478545": {"deaths": 9, "kills": 15}, "76561198254267968": {"deaths": 25, "kills": 48}, "76561198402746928": {"deaths": 14, "kills": 29}, "76561198686899456": {"deaths": 39, "kills": 54}, "76561198998095904": {"deaths": 19, "kills": 21}, "76561199153011360": {"deaths": 61, "kills": 35}, "76561199339730976": {"deaths": 23, "kills": 32}, "76561199413542223": {"deaths": 23, "kills": 58}, "76561199478211872": {"deaths": 8, "kills": 14}, "76561199508661466": {"deaths": 9, "kills": 15}, "76561199569491960": {"deaths": 10, "kills": 12}, "76561199808571117": {"deaths": 13, "kills": 11}}, "76561198686899456": {"76561197990475042": {"deaths": 6, "kills": 17}, "76561198010867824": {"deaths": 14, "kills": 10}, "76561198068831005": {"deaths": 6, "kills": 9}, "76561198083546367": {"deaths": 35, "kills": 44}, "76561198100478545": {"deaths": 17, "kills": 37}, "76561198234120608": {"deaths": 8, "kills": 6}, "76561198243149328": {"deaths": 21, "kills": 10}, "76561198254267968": {"deaths": 62, "kills": 48}, "76561198356069376": {"deaths": 14, "kills": 6}, "76561198357586856": {"deaths": 3, "kills": 5}, "76561198402746928": {"deaths": 23, "kills": 42}, "76561198431427136": {"deaths": 54, "kills": 39}, "76561198998095904": {"deaths": 13, "kills": 5}, "76561199043039622": {"deaths": 18, "kills": 12}, "76561199153011360": {"deaths": 8, "kills": 6}, "76561199339730976": {"deaths": 40, "kills": 35}, "76561199438131194": {"deaths": 12, "kills": 11}, "76561199508661466": {"deaths": 7, "kills": 3}, "76561199569491960": {"deaths": 63, "kills": 85}, "76561199808571117": {"deaths": 16, "kills": 24}}, "76561198885191528": {"76561198083546367": {"deaths": 10, "kills": 8}, "76561198243149328": {"deaths": 27, "kills": 8}, "76561198402746928": {"deaths": 8, "kills": 8}, "76561199043039622": {"deaths": 11, "kills": 4}, "76561199339730976": {"deaths": 12, "kills": 10}}, "76561198998095904": {"76561198083546367": {"deaths": 12, "kills": 6}, "76561198254267968": {"deaths": 14, "kills": 15}, "76561198431427136": {"deaths": 21, "kills": 19}, "76561198686899456": {"deaths": 5, "kills": 13}, "76561199153011360": {"deaths": 7, "kills": 12}, "76561199339730976": {"deaths": 5, "kills": 8}, "76561199413542223": {"deaths": 6, "kills": 12}, "76561199438131194": {"deaths": 11, "kills": 18}, "76561199569491960": {"deaths": 14, "kills": 19}, "76561199808571117": {"deaths": 13, "kills": 15}}, "76561199043039622": {"76561198125968240": {"deaths": 18, "kills": 18}, "76561198254267968": {"deaths": 20, "kills": 17}, "76561198686899456": {"deaths": 12, "kills": 18}, "76561198885191528": {"deaths": 4, "kills": 11}, "76561199413542223": {"deaths": 3, "kills": 22}}, "76561199153011360": {"76561197990475042": {"deaths": 4, "kills": 2}, "76561198010867824": {"deaths": 6, "kills": 22}, "76561198068831005": {"deaths": 6, "kills": 16}, "76561198083546367": {"deaths": 5, "kills": 19}, "76561198100478545": {"deaths": 25, "kills": 50}, "76561198234120608": {"deaths": 6, "kills": 20}, "76561198254267968": {"deaths": 25, "kills": 56}, "76561198356069376": {"deaths": 8, "kills": 7}, "76561198357586856": {"deaths": 9, "kills": 19}, "76561198431427136": {"deaths": 35, "kills": 61}, "76561198686899456": {"deaths": 6, "kills": 8}, "76561198998095904": {"deaths": 12, "kills": 7}, "76561199339730976": {"deaths": 10, "kills": 13}, "76561199438131194": {"deaths": 15, "kills": 19}, "76561199508661466": {"deaths": 16, "kills": 14}, "76561199569491960": {"deaths": 35, "kills": 62}, "76561199808571117": {"deaths": 14, "kills": 21}}, "76561199339730976": {"76561197990475042": {"deaths": 3, "kills": 10}, "76561198010867824": {"deaths": 12, "kills": 6}, "76561198068831005": {"deaths": 5, "kills": 7}, "76561198083546367": {"deaths": 1, "kills": 3}, "76561198100478545": {"deaths": 55, "kills": 32}, "76561198125968240": {"deaths": 17, "kills": 8}, "76561198254267968": {"deaths": 75, "kills": 50}, "76561198356069376": {"deaths": 11, "kills": 5}, "76561198357586856": {"deaths": 4, "kills": 5}, "76561198402746928": {"deaths": 6, "kills": 12}, "76561198431427136": {"deaths": 32, "kills": 23}, "76561198686899456": {"deaths": 35, "kills": 40}, "76561198885191528": {"deaths": 10, "kills": 12}, "76561198998095904": {"deaths": 8, "kills": 5}, "76561199153011360": {"deaths": 13, "kills": 10}, "76561199413542223": {"deaths": 9, "kills": 36}, "76561199438131194": {"deaths": 10, "kills": 8}, "76561199508661466": {"deaths": 15, "kills": 8}, "76561199569491960": {"deaths": 33, "kills": 17}, "76561199808571117": {"deaths": 31, "kills": 38}}, "76561199413542223": {"76561198010867824": {"deaths": 16, "kills": 3}, "76561198068831005": {"deaths": 3, "kills": 11}, "76561198083546367": {"deaths": 28, "kills": 10}, "76561198100478545": {"deaths": 31, "kills": 17}, "76561198234120608": {"deaths": 4, "kills": 6}, "76561198243149328": {"deaths": 18, "kills": 4}, "76561198254267968": {"deaths": 54, "kills": 27}, "76561198356069376": {"deaths": 18, "kills": 2}, "76561198402746928": {"deaths": 21, "kills": 22}, "76561198431427136": {"deaths": 58, "kills": 23}, "76561198998095904": {"deaths": 12, "kills": 6}, "76561199043039622": {"deaths": 22, "kills": 3}, "76561199339730976": {"deaths": 36, "kills": 9}, "76561199438131194": {"deaths": 13, "kills": 10}, "76561199569491960": {"deaths": 54, "kills": 39}, "76561199808571117": {"deaths": 16, "kills": 6}}, "76561199438131194": {"76561198686899456": {"deaths": 11, "kills": 12}, "76561198998095904": {"deaths": 18, "kills": 11}, "76561199153011360": {"deaths": 19, "kills": 15}, "76561199339730976": {"deaths": 8, "kills": 10}, "76561199413542223": {"deaths": 10, "kills": 13}}, "76561199478211872": {"76561198100478545": {"deaths": 11, "kills": 6}, "76561198234120608": {"deaths": 2, "kills": 8}, "76561198254267968": {"deaths": 16, "kills": 6}, "76561198431427136": {"deaths": 14, "kills": 8}, "76561199569491960": {"deaths": 8, "kills": 12}}, "76561199508661466": {"76561197990475042": {"deaths": 0, "kills": 5}, "76561198083546367": {"deaths": 8, "kills": 11}, "76561198100478545": {"deaths": 8, "kills": 12}, "76561198234120608": {"deaths": 7, "kills": 14}, "76561198254267968": {"deaths": 23, "kills": 34}, "76561198402746928": {"deaths": 22, "kills": 22}, "76561198431427136": {"deaths": 15, "kills": 9}, "76561198686899456": {"deaths": 3, "kills": 7}, "76561199153011360": {"deaths": 14, "kills": 16}, "76561199339730976": {"deaths": 8, "kills": 15}, "76561199569491960": {"deaths": 21, "kills": 16}, "76561199808571117": {"deaths": 15, "kills": 15}}, "76561199569491960": {"76561198083546367": {"deaths": 8, "kills": 6}, "76561198100478545": {"deaths": 11, "kills": 25}, "76561198254267968": {"deaths": 17, "kills": 12}, "76561198402746928": {"deaths": 3, "kills": 11}, "76561198431427136": {"deaths": 12, "kills": 10}, "76561198686899456": {"deaths": 85, "kills": 63}, "76561198998095904": {"deaths": 19, "kills": 14}, "76561199153011360": {"deaths": 62, "kills": 35}, "76561199339730976": {"deaths": 17, "kills": 33}, "76561199413542223": {"deaths": 39, "kills": 54}, "76561199478211872": {"deaths": 12, "kills": 8}, "76561199508661466": {"deaths": 16, "kills": 21}, "76561199808571117": {"deaths": 12, "kills": 13}}, "76561199808571117": {"76561197990475042": {"deaths": 1, "kills": 12}, "76561198083546367": {"deaths": 21, "kills": 18}, "76561198254267968": {"deaths": 4, "kills": 6}, "76561198357586856": {"deaths": 10, "kills": 7}, "76561198402746928": {"deaths": 10, "kills": 15}, "76561198431427136": {"deaths": 11, "kills": 13}, "76561198686899456": {"deaths": 24, "kills": 16}, "76561198998095904": {"deaths": 15, "kills": 13}, "76561199153011360": {"deaths": 21, "kills": 14}, "76561199339730976": {"deaths": 38, "kills": 31}, "76561199413542223": {"deaths": 6, "kills": 16}, "76561199508661466": {"deaths": 15, "kills": 15}, "76561199569491960": {"deaths": 13, "kills": 12}}}, "players": [{"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.24, "metrics": {"adr": 97.6, "hs": 44.0, "kast": 80.1, "kd": 1.27, "matches": 8, "winrate": 75.0}, "mmr": 1128, "name": "c kaifom", "peak_mmr": 1146, "ratings": {"Aim": 7.574999999999999, "Clutch": 9.29, "Discipline": 7.55, "Economy": 7.970624999999999, "Entry": 7.754166666666666, "Game Sense": 6.993142857142857, "Overall Impact": 6.619992724867725, "Positioning": 5.3500000000000005, "Trading": 3.572, "Utility": 3.525}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 6.619992724867725, "steam_id": "76561198998095904"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.49, "metrics": {"adr": 116.2, "hs": 40.0, "kast": 84.1, "kd": 1.73, "matches": 18, "winrate": 50.0}, "mmr": 1116, "name": "matadorra", "peak_mmr": 1128, "ratings": {"Aim": 7.5, "Clutch": 7.24, "Discipline": 8.975, "Economy": 10.0, "Entry": 6.995833333333334, "Game Sense": 7.795428571428571, "Overall Impact": 7.077973544973545, "Positioning": 6.0325, "Trading": 4.148, "Utility": 5.015}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 7.077973544973545, "steam_id": "76561199153011360"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.31, "metrics": {"adr": 103.1, "hs": 46.0, "kast": 80.0, "kd": 1.36, "matches": 19, "winrate": 52.6}, "mmr": 1115, "name": "ALIBONYA", "peak_mmr": 1137, "ratings": {"Aim": 7.984999999999999, "Clutch": 7.199999999999999, "Discipline": 8.3, "Economy": 9.129999999999999, "Entry": 9.020833333333334, "Game Sense": 7.214285714285714, "Overall Impact": 6.901124338624339, "Positioning": 5.819999999999999, "Trading": 3.8, "Utility": 3.6399999999999997}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 6.901124338624339, "steam_id": "76561198431427136"}, {"archetype": "\u0421\u043a\u0440\u044b\u0442\u043d\u044b\u0439 \u0441\u043d\u0430\u0439\u043f\u0435\u0440 / \u041b\u044e\u0440\u043a\u0435\u0440", "hltv": 1.52, "metrics": {"adr": 109.2, "hs": 40.3, "kast": 93.6, "kd": 1.94, "matches": 3, "winrate": 100.0}, "mmr": 1095, "name": "insta/Ne7er0cs", "peak_mmr": 1095, "ratings": {"Aim": 7.529999999999999, "Clutch": 5.5, "Discipline": 9.274999999999999, "Economy": 9.93, "Entry": 7.125, "Game Sense": 7.997714285714286, "Overall Impact": 7.043523809523809, "Positioning": 8.285, "Trading": 4.1240000000000006, "Utility": 3.625}, "role": "\u041e\u043f\u043e\u0440\u043d\u0438\u043a", "score_10": 7.043523809523809, "steam_id": "76561198356069376"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.21, "metrics": {"adr": 92.4, "hs": 38.9, "kast": 81.5, "kd": 1.22, "matches": 11, "winrate": 63.6}, "mmr": 1090, "name": "Resone West", "peak_mmr": 1103, "ratings": {"Aim": 6.79625, "Clutch": 7.73, "Discipline": 8.55, "Economy": 8.82, "Entry": 7.308333333333334, "Game Sense": 7.136285714285714, "Overall Impact": 6.7033187830687835, "Positioning": 6.184999999999999, "Trading": 3.944, "Utility": 3.86}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 6.7033187830687835, "steam_id": "76561199508661466"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.08, "metrics": {"adr": 86.3, "hs": 42.6, "kast": 73.1, "kd": 1.02, "matches": 30, "winrate": 53.3}, "mmr": 1088, "name": "mbaliyev", "peak_mmr": 1109, "ratings": {"Aim": 6.6, "Clutch": 7.380000000000001, "Discipline": 7.283333333333333, "Economy": 7.605, "Entry": 5.9625, "Game Sense": 5.81, "Overall Impact": 5.864537037037037, "Positioning": 5.2, "Trading": 3.56, "Utility": 3.38}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 5.864537037037037, "steam_id": "76561198686899456"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.64, "metrics": {"adr": 131.7, "hs": 55.4, "kast": 82.5, "kd": 1.82, "matches": 4, "winrate": 75.0}, "mmr": 1079, "name": "Rayi", "peak_mmr": 1079, "ratings": {"Aim": 9.04, "Clutch": 8.33, "Discipline": 7.791666666666667, "Economy": 10.0, "Entry": 9.837499999999999, "Game Sense": 7.647142857142857, "Overall Impact": 7.41042328042328, "Positioning": 6.017499999999999, "Trading": 3.68, "Utility": 4.35}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 7.41042328042328, "steam_id": "76561198243149328"}, {"archetype": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0440\u0438\u0444\u043b\u0435\u0440", "hltv": 1.44, "metrics": {"adr": 114.1, "hs": 45.1, "kast": 91.6, "kd": 1.48, "matches": 4, "winrate": 75.0}, "mmr": 1077, "name": "Zanoza59", "peak_mmr": 1077, "ratings": {"Aim": 7.995, "Clutch": 8.33, "Discipline": 7.7666666666666675, "Economy": 9.405000000000001, "Entry": 7.041666666666666, "Game Sense": 7.987857142857143, "Overall Impact": 7.059798941798942, "Positioning": 5.44, "Trading": 5.072, "Utility": 4.5}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 7.059798941798942, "steam_id": "76561199043039622"}, {"archetype": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0440\u0438\u0444\u043b\u0435\u0440", "hltv": 0.92, "metrics": {"adr": 66.5, "hs": 42.6, "kast": 70.4, "kd": 0.86, "matches": 27, "winrate": 55.6}, "mmr": 1047, "name": "altairinthesky", "peak_mmr": 1131, "ratings": {"Aim": 5.5, "Clutch": 7.0, "Discipline": 8.066666666666666, "Economy": 6.193125, "Entry": 5.5375, "Game Sense": 5.374571428571429, "Overall Impact": 5.4520958994708995, "Positioning": 5.215, "Trading": 3.752, "Utility": 2.4299999999999997}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 5.4520958994708995, "steam_id": "76561199339730976"}, {"archetype": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u043a\u0442\u0438\u043a", "hltv": 1.02, "metrics": {"adr": 73.6, "hs": 50.6, "kast": 75.7, "kd": 0.97, "matches": 22, "winrate": 50.0}, "mmr": 1016, "name": "k--9", "peak_mmr": 1054, "ratings": {"Aim": 6.699999999999999, "Clutch": 5.904999999999999, "Discipline": 8.458333333333334, "Economy": 7.160624999999999, "Entry": 4.887499999999999, "Game Sense": 6.819880952380952, "Overall Impact": 5.962037698412698, "Positioning": 5.415, "Trading": 5.0120000000000005, "Utility": 3.3}, "role": "\u0412\u0442\u043e\u0440\u043e\u0439 \u043d\u043e\u043c\u0435\u0440", "score_10": 5.962037698412698, "steam_id": "76561199569491960"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043f\u0435\u0439\u0441\u043c\u0435\u0439\u043a\u0435\u0440", "hltv": 0.86, "metrics": {"adr": 59.1, "hs": 39.8, "kast": 72.8, "kd": 0.78, "matches": 3, "winrate": 66.7}, "mmr": 1015, "name": "iamresplendent", "peak_mmr": 1039, "ratings": {"Aim": 4.9539285714285715, "Clutch": 4.0, "Discipline": 7.441666666666667, "Economy": 5.05625, "Entry": 3.022222222222222, "Game Sense": 6.082857142857142, "Overall Impact": 4.857158289241622, "Positioning": 5.5075, "Trading": 4.699999999999999, "Utility": 2.9499999999999997}, "role": "\u0421\u043d\u0430\u0439\u043f\u0435\u0440", "score_10": 4.857158289241622, "steam_id": "76561199478211872"}, {"archetype": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u043a\u0442\u0438\u043a", "hltv": 0.77, "metrics": {"adr": 53.5, "hs": 46.9, "kast": 64.6, "kd": 0.64, "matches": 19, "winrate": 57.9}, "mmr": 997, "name": "Yesk0", "peak_mmr": 1037, "ratings": {"Aim": 5.313928571428572, "Clutch": 5.575, "Discipline": 6.950000000000001, "Economy": 4.885625, "Entry": 3.311111111111111, "Game Sense": 4.5745494505494495, "Overall Impact": 4.700357125898793, "Positioning": 5.065, "Trading": 4.087999999999999, "Utility": 2.54}, "role": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b", "score_10": 4.700357125898793, "steam_id": "76561198402746928"}, {"archetype": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u043a\u0442\u0438\u043a", "hltv": 0.97, "metrics": {"adr": 75.2, "hs": 31.1, "kast": 77.4, "kd": 0.85, "matches": 17, "winrate": 52.9}, "mmr": 994, "name": "Folie_1", "peak_mmr": 1010, "ratings": {"Aim": 4.99375, "Clutch": 7.8100000000000005, "Discipline": 7.266666666666666, "Economy": 6.696875, "Entry": 4.5874999999999995, "Game Sense": 6.977976190476191, "Overall Impact": 5.851751984126984, "Positioning": 5.13, "Trading": 5.108, "Utility": 4.095}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 5.851751984126984, "steam_id": "76561198100478545"}, {"archetype": "\u0421\u043a\u0440\u044b\u0442\u043d\u044b\u0439 \u0441\u043d\u0430\u0439\u043f\u0435\u0440 / \u041b\u044e\u0440\u043a\u0435\u0440", "hltv": 0.92, "metrics": {"adr": 66.0, "hs": 68.6, "kast": 68.5, "kd": 0.87, "matches": 4, "winrate": 50.0}, "mmr": 994, "name": "__9503", "peak_mmr": 1000, "ratings": {"Aim": 7.739285714285715, "Clutch": 6.505, "Discipline": 8.275, "Economy": 4.810625, "Entry": 2.5250000000000004, "Game Sense": 5.034666666666666, "Overall Impact": 5.11673082010582, "Positioning": 5.2749999999999995, "Trading": 3.536, "Utility": 2.3499999999999996}, "role": "\u041e\u043f\u043e\u0440\u043d\u0438\u043a", "score_10": 5.11673082010582, "steam_id": "76561198357586856"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.49, "metrics": {"adr": 126.8, "hs": 50.9, "kast": 82.7, "kd": 1.58, "matches": 4, "winrate": 25.0}, "mmr": 991, "name": "qumashasyl", "peak_mmr": 1007, "ratings": {"Aim": 8.59, "Clutch": 8.850000000000001, "Discipline": 8.366666666666667, "Economy": 9.93, "Entry": 8.883333333333333, "Game Sense": 7.372, "Overall Impact": 7.219555555555555, "Positioning": 5.265, "Trading": 3.644, "Utility": 4.075}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 7.219555555555555, "steam_id": "76561198125968240"}, {"archetype": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u043a\u0442\u0438\u043a", "hltv": 0.98, "metrics": {"adr": 71.3, "hs": 44.0, "kast": 75.1, "kd": 0.94, "matches": 19, "winrate": 47.4}, "mmr": 988, "name": "Saliend", "peak_mmr": 1059, "ratings": {"Aim": 5.885, "Clutch": 6.505, "Discipline": 8.008333333333333, "Economy": 7.223125, "Entry": 3.3777777777777778, "Game Sense": 6.41695238095238, "Overall Impact": 5.61202094356261, "Positioning": 5.415, "Trading": 4.412000000000001, "Utility": 3.2649999999999997}, "role": "\u0412\u0442\u043e\u0440\u043e\u0439 \u043d\u043e\u043c\u0435\u0440", "score_10": 5.61202094356261, "steam_id": "76561198083546367"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.2, "metrics": {"adr": 100.1, "hs": 51.4, "kast": 71.8, "kd": 1.18, "matches": 3, "winrate": 33.3}, "mmr": 987, "name": "Nakama_4", "peak_mmr": 1013, "ratings": {"Aim": 8.344999999999999, "Clutch": 4.0, "Discipline": 7.191666666666666, "Economy": 7.9312499999999995, "Entry": 9.241666666666667, "Game Sense": 6.426095238095238, "Overall Impact": 6.2946309523809525, "Positioning": 4.875, "Trading": 4.795999999999999, "Utility": 3.8449999999999998}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 6.2946309523809525, "steam_id": "76561198010867824"}, {"archetype": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0440\u0438\u0444\u043b\u0435\u0440", "hltv": 1.07, "metrics": {"adr": 72.4, "hs": 44.3, "kast": 100.0, "kd": 0.92, "matches": 5, "winrate": 40.0}, "mmr": 984, "name": "SGEM_7", "peak_mmr": 1008, "ratings": {"Aim": 5.95, "Clutch": 5.995, "Discipline": 7.958333333333333, "Economy": 7.335624999999999, "Entry": 8.033333333333333, "Game Sense": 6.8268571428571425, "Overall Impact": 6.004683201058201, "Positioning": 5.3, "Trading": 3.9679999999999995, "Utility": 2.675}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 6.004683201058201, "steam_id": "76561199438131194"}, {"archetype": "\u041e\u0441\u043d\u043e\u0432\u043d\u043e\u0439 \u0440\u0438\u0444\u043b\u0435\u0440", "hltv": 1.07, "metrics": {"adr": 83.3, "hs": 36.6, "kast": 81.4, "kd": 0.98, "matches": 13, "winrate": 38.5}, "mmr": 962, "name": "CHPOKERS", "peak_mmr": 1032, "ratings": {"Aim": 5.932500000000001, "Clutch": 6.25, "Discipline": 6.875, "Economy": 7.3500000000000005, "Entry": 5.1875, "Game Sense": 6.927142857142856, "Overall Impact": 5.546904761904762, "Positioning": 4.96, "Trading": 4.04, "Utility": 2.4}, "role": "\u042d\u043d\u0442\u0440\u0438-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "score_10": 5.546904761904762, "steam_id": "76561199808571117"}, {"archetype": "\u0416\u0435\u043b\u0435\u0437\u043d\u044b\u0439 \u0441\u0430\u043f\u043f\u043e\u0440\u0442-\u043e\u043f\u043e\u0440\u043d\u0438\u043a", "hltv": 0.69, "metrics": {"adr": 48.1, "hs": 54.5, "kast": 73.1, "kd": 0.51, "matches": 3, "winrate": 33.3}, "mmr": 961, "name": "DarkAtom", "peak_mmr": 1000, "ratings": {"Aim": 5.825714285714286, "Clutch": 7.5, "Discipline": 6.741666666666667, "Economy": 5.88625, "Entry": 1.0, "Game Sense": 6.998749999999999, "Overall Impact": 5.324708994708995, "Positioning": 4.875, "Trading": 6.62, "Utility": 2.4749999999999996}, "role": "\u0412\u0442\u043e\u0440\u043e\u0439 \u043d\u043e\u043c\u0435\u0440", "score_10": 5.324708994708995, "steam_id": "76561198068831005"}, {"archetype": "\u0416\u0435\u043b\u0435\u0437\u043d\u044b\u0439 \u0441\u0430\u043f\u043f\u043e\u0440\u0442-\u043e\u043f\u043e\u0440\u043d\u0438\u043a", "hltv": 0.68, "metrics": {"adr": 45.0, "hs": 44.4, "kast": 68.3, "kd": 0.5, "matches": 3, "winrate": 33.3}, "mmr": 961, "name": "Azki_1", "peak_mmr": 1000, "ratings": {"Aim": 4.736785714285714, "Clutch": 4.0, "Discipline": 8.283333333333333, "Economy": 4.965, "Entry": 1.0, "Game Sense": 5.178249999999999, "Overall Impact": 4.486374338624339, "Positioning": 5.2, "Trading": 4.664, "Utility": 2.3499999999999996}, "role": "\u0412\u0442\u043e\u0440\u043e\u0439 \u043d\u043e\u043c\u0435\u0440", "score_10": 4.486374338624339, "steam_id": "76561198234120608"}, {"archetype": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u043a\u0442\u0438\u043a", "hltv": 0.72, "metrics": {"adr": 58.8, "hs": 60.0, "kast": 65.3, "kd": 0.56, "matches": 4, "winrate": 25.0}, "mmr": 935, "name": "taksist_3", "peak_mmr": 1000, "ratings": {"Aim": 6.654999999999999, "Clutch": 4.0, "Discipline": 6.404999999999999, "Economy": 4.705, "Entry": 3.2472222222222222, "Game Sense": 4.294499999999999, "Overall Impact": 4.416191358024691, "Positioning": 4.53, "Trading": 3.584, "Utility": 2.3249999999999997}, "role": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b", "score_10": 4.416191358024691, "steam_id": "76561198885191528"}, {"archetype": "\u0410\u0433\u0440\u0435\u0441\u0441\u0438\u0432\u043d\u044b\u0439 \u0441\u043e\u043b\u043e-\u0444\u0440\u0430\u0433\u0433\u0435\u0440", "hltv": 1.13, "metrics": {"adr": 88.8, "hs": 37.2, "kast": 72.6, "kd": 1.12, "matches": 27, "winrate": 37.0}, "mmr": 919, "name": "Oceanmengo", "peak_mmr": 1000, "ratings": {"Aim": 6.41, "Clutch": 6.535, "Discipline": 7.0249999999999995, "Economy": 8.405, "Entry": 6.958333333333334, "Game Sense": 5.85047619047619, "Overall Impact": 5.90042328042328, "Positioning": 4.97, "Trading": 3.56, "Utility": 3.3899999999999997}, "role": "\u0421\u043d\u0430\u0439\u043f\u0435\u0440", "score_10": 5.90042328042328, "steam_id": "76561198254267968"}, {"archetype": "\u041a\u043e\u043c\u0430\u043d\u0434\u043d\u044b\u0439 \u0440\u0430\u0437\u043c\u0435\u043d\u0449\u0438\u043a", "hltv": 0.42, "metrics": {"adr": 35.6, "hs": 54.6, "kast": 45.1, "kd": 0.28, "matches": 4, "winrate": 0.0}, "mmr": 869, "name": "GIGABYTE_KZ", "peak_mmr": 1000, "ratings": {"Aim": 5.265357142857143, "Clutch": 4.0, "Discipline": 6.328333333333333, "Economy": 3.8649999999999998, "Entry": 1.6027777777777779, "Game Sense": 4.7101923076923065, "Overall Impact": 4.339184506851173, "Positioning": 4.159999999999999, "Trading": 5.9959999999999996, "Utility": 3.125}, "role": "\u0412\u0442\u043e\u0440\u043e\u0439 \u043d\u043e\u043c\u0435\u0440", "score_10": 4.339184506851173, "steam_id": "76561197990475042"}, {"archetype": "\u0416\u0435\u043b\u0435\u0437\u043d\u044b\u0439 \u0441\u0430\u043f\u043f\u043e\u0440\u0442-\u043e\u043f\u043e\u0440\u043d\u0438\u043a", "hltv": 0.66, "metrics": {"adr": 47.9, "hs": 40.8, "kast": 68.0, "kd": 0.48, "matches": 26, "winrate": 46.2}, "mmr": 827, "name": "zikayevg", "peak_mmr": 1000, "ratings": {"Aim": 4.421428571428571, "Clutch": 4.825, "Discipline": 6.791666666666666, "Economy": 4.1499999999999995, "Entry": 2.2555555555555555, "Game Sense": 4.873500000000001, "Overall Impact": 4.3899056437389765, "Positioning": 4.8999999999999995, "Trading": 4.172000000000001, "Utility": 3.12}, "role": "\u0423\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b", "score_10": 4.3899056437389765, "steam_id": "76561199413542223"}], "teammates": {"76561197990475042": {"76561198083546367": {"matches": 2, "wins": 0}, "76561198254267968": {"matches": 3, "wins": 0}, "76561198357586856": {"matches": 2, "wins": 0}, "76561198402746928": {"matches": 2, "wins": 0}, "76561199153011360": {"matches": 2, "wins": 0}, "76561199339730976": {"matches": 1, "wins": 0}, "76561199508661466": {"matches": 2, "wins": 0}, "76561199808571117": {"matches": 2, "wins": 0}}, "76561198010867824": {"76561198068831005": {"matches": 3, "wins": 1}, "76561198100478545": {"matches": 3, "wins": 1}, "76561198431427136": {"matches": 3, "wins": 1}, "76561199569491960": {"matches": 3, "wins": 1}}, "76561198068831005": {"76561198010867824": {"matches": 3, "wins": 1}, "76561198100478545": {"matches": 3, "wins": 1}, "76561198431427136": {"matches": 3, "wins": 1}, "76561199569491960": {"matches": 3, "wins": 1}}, "76561198083546367": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198243149328": {"matches": 4, "wins": 3}, "76561198254267968": {"matches": 5, "wins": 1}, "76561198357586856": {"matches": 4, "wins": 2}, "76561198402746928": {"matches": 12, "wins": 7}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 5, "wins": 2}, "76561199043039622": {"matches": 4, "wins": 3}, "76561199153011360": {"matches": 3, "wins": 0}, "76561199339730976": {"matches": 18, "wins": 9}, "76561199413542223": {"matches": 3, "wins": 0}, "76561199508661466": {"matches": 4, "wins": 2}, "76561199569491960": {"matches": 8, "wins": 4}}, "76561198100478545": {"76561198010867824": {"matches": 3, "wins": 1}, "76561198068831005": {"matches": 3, "wins": 1}, "76561198234120608": {"matches": 3, "wins": 1}, "76561198254267968": {"matches": 10, "wins": 5}, "76561198356069376": {"matches": 3, "wins": 3}, "76561198431427136": {"matches": 10, "wins": 5}, "76561198686899456": {"matches": 8, "wins": 4}, "76561198998095904": {"matches": 3, "wins": 3}, "76561199413542223": {"matches": 8, "wins": 4}, "76561199508661466": {"matches": 4, "wins": 3}, "76561199569491960": {"matches": 9, "wins": 5}, "76561199808571117": {"matches": 4, "wins": 1}}, "76561198125968240": {"76561198254267968": {"matches": 4, "wins": 1}, "76561198686899456": {"matches": 4, "wins": 1}, "76561198885191528": {"matches": 4, "wins": 1}, "76561199413542223": {"matches": 4, "wins": 1}}, "76561198234120608": {"76561198100478545": {"matches": 3, "wins": 1}, "76561198254267968": {"matches": 3, "wins": 1}, "76561198431427136": {"matches": 3, "wins": 1}, "76561199569491960": {"matches": 3, "wins": 1}}, "76561198243149328": {"76561198083546367": {"matches": 4, "wins": 3}, "76561198402746928": {"matches": 4, "wins": 3}, "76561199043039622": {"matches": 4, "wins": 3}, "76561199339730976": {"matches": 4, "wins": 3}}, "76561198254267968": {"76561197990475042": {"matches": 3, "wins": 0}, "76561198083546367": {"matches": 5, "wins": 1}, "76561198100478545": {"matches": 10, "wins": 5}, "76561198125968240": {"matches": 4, "wins": 1}, "76561198234120608": {"matches": 3, "wins": 1}, "76561198356069376": {"matches": 3, "wins": 3}, "76561198357586856": {"matches": 1, "wins": 0}, "76561198402746928": {"matches": 7, "wins": 2}, "76561198431427136": {"matches": 8, "wins": 3}, "76561198686899456": {"matches": 9, "wins": 3}, "76561198885191528": {"matches": 4, "wins": 1}, "76561198998095904": {"matches": 3, "wins": 3}, "76561199153011360": {"matches": 3, "wins": 1}, "76561199339730976": {"matches": 4, "wins": 1}, "76561199413542223": {"matches": 8, "wins": 2}, "76561199438131194": {"matches": 5, "wins": 2}, "76561199508661466": {"matches": 1, "wins": 0}, "76561199569491960": {"matches": 15, "wins": 7}, "76561199808571117": {"matches": 12, "wins": 4}}, "76561198356069376": {"76561198100478545": {"matches": 3, "wins": 3}, "76561198254267968": {"matches": 3, "wins": 3}, "76561198998095904": {"matches": 3, "wins": 3}, "76561199569491960": {"matches": 3, "wins": 3}}, "76561198357586856": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198083546367": {"matches": 4, "wins": 2}, "76561198254267968": {"matches": 1, "wins": 0}, "76561198686899456": {"matches": 2, "wins": 2}, "76561199339730976": {"matches": 3, "wins": 2}, "76561199508661466": {"matches": 4, "wins": 2}}, "76561198402746928": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198083546367": {"matches": 12, "wins": 7}, "76561198243149328": {"matches": 4, "wins": 3}, "76561198254267968": {"matches": 7, "wins": 2}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 5, "wins": 4}, "76561199043039622": {"matches": 4, "wins": 3}, "76561199153011360": {"matches": 7, "wins": 4}, "76561199339730976": {"matches": 16, "wins": 10}, "76561199413542223": {"matches": 3, "wins": 2}, "76561199569491960": {"matches": 8, "wins": 4}, "76561199808571117": {"matches": 4, "wins": 2}}, "76561198431427136": {"76561198010867824": {"matches": 3, "wins": 1}, "76561198068831005": {"matches": 3, "wins": 1}, "76561198083546367": {"matches": 4, "wins": 3}, "76561198100478545": {"matches": 10, "wins": 5}, "76561198234120608": {"matches": 3, "wins": 1}, "76561198254267968": {"matches": 8, "wins": 3}, "76561198402746928": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 4, "wins": 3}, "76561199339730976": {"matches": 4, "wins": 3}, "76561199413542223": {"matches": 4, "wins": 3}, "76561199438131194": {"matches": 5, "wins": 2}, "76561199508661466": {"matches": 4, "wins": 3}, "76561199569491960": {"matches": 15, "wins": 7}, "76561199808571117": {"matches": 5, "wins": 2}}, "76561198686899456": {"76561198083546367": {"matches": 5, "wins": 2}, "76561198100478545": {"matches": 8, "wins": 4}, "76561198125968240": {"matches": 4, "wins": 1}, "76561198254267968": {"matches": 9, "wins": 3}, "76561198357586856": {"matches": 2, "wins": 2}, "76561198402746928": {"matches": 5, "wins": 4}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198885191528": {"matches": 4, "wins": 1}, "76561198998095904": {"matches": 5, "wins": 3}, "76561199153011360": {"matches": 16, "wins": 9}, "76561199339730976": {"matches": 14, "wins": 8}, "76561199413542223": {"matches": 26, "wins": 12}, "76561199478211872": {"matches": 3, "wins": 2}, "76561199508661466": {"matches": 9, "wins": 7}, "76561199808571117": {"matches": 6, "wins": 3}}, "76561198885191528": {"76561198125968240": {"matches": 4, "wins": 1}, "76561198254267968": {"matches": 4, "wins": 1}, "76561198686899456": {"matches": 4, "wins": 1}, "76561199413542223": {"matches": 4, "wins": 1}}, "76561198998095904": {"76561198100478545": {"matches": 3, "wins": 3}, "76561198254267968": {"matches": 3, "wins": 3}, "76561198356069376": {"matches": 3, "wins": 3}, "76561198686899456": {"matches": 5, "wins": 3}, "76561199153011360": {"matches": 5, "wins": 3}, "76561199339730976": {"matches": 5, "wins": 3}, "76561199413542223": {"matches": 5, "wins": 3}, "76561199569491960": {"matches": 3, "wins": 3}}, "76561199043039622": {"76561198083546367": {"matches": 4, "wins": 3}, "76561198243149328": {"matches": 4, "wins": 3}, "76561198402746928": {"matches": 4, "wins": 3}, "76561199339730976": {"matches": 4, "wins": 3}}, "76561199153011360": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198083546367": {"matches": 3, "wins": 0}, "76561198254267968": {"matches": 3, "wins": 1}, "76561198402746928": {"matches": 7, "wins": 4}, "76561198686899456": {"matches": 16, "wins": 9}, "76561198998095904": {"matches": 5, "wins": 3}, "76561199339730976": {"matches": 12, "wins": 6}, "76561199413542223": {"matches": 14, "wins": 7}, "76561199478211872": {"matches": 3, "wins": 2}, "76561199508661466": {"matches": 3, "wins": 2}, "76561199808571117": {"matches": 4, "wins": 2}}, "76561199339730976": {"76561197990475042": {"matches": 1, "wins": 0}, "76561198083546367": {"matches": 18, "wins": 9}, "76561198243149328": {"matches": 4, "wins": 3}, "76561198254267968": {"matches": 4, "wins": 1}, "76561198357586856": {"matches": 3, "wins": 2}, "76561198402746928": {"matches": 16, "wins": 10}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 14, "wins": 8}, "76561198998095904": {"matches": 5, "wins": 3}, "76561199043039622": {"matches": 4, "wins": 3}, "76561199153011360": {"matches": 12, "wins": 6}, "76561199413542223": {"matches": 11, "wins": 5}, "76561199508661466": {"matches": 3, "wins": 2}, "76561199569491960": {"matches": 8, "wins": 4}, "76561199808571117": {"matches": 1, "wins": 1}}, "76561199413542223": {"76561198083546367": {"matches": 3, "wins": 0}, "76561198100478545": {"matches": 8, "wins": 4}, "76561198125968240": {"matches": 4, "wins": 1}, "76561198254267968": {"matches": 8, "wins": 2}, "76561198402746928": {"matches": 3, "wins": 2}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 26, "wins": 12}, "76561198885191528": {"matches": 4, "wins": 1}, "76561198998095904": {"matches": 5, "wins": 3}, "76561199153011360": {"matches": 14, "wins": 7}, "76561199339730976": {"matches": 11, "wins": 5}, "76561199478211872": {"matches": 3, "wins": 2}, "76561199508661466": {"matches": 7, "wins": 5}, "76561199808571117": {"matches": 4, "wins": 1}}, "76561199438131194": {"76561198254267968": {"matches": 5, "wins": 2}, "76561198431427136": {"matches": 5, "wins": 2}, "76561199569491960": {"matches": 5, "wins": 2}, "76561199808571117": {"matches": 5, "wins": 2}}, "76561199478211872": {"76561198686899456": {"matches": 3, "wins": 2}, "76561199153011360": {"matches": 3, "wins": 2}, "76561199413542223": {"matches": 3, "wins": 2}, "76561199508661466": {"matches": 3, "wins": 2}}, "76561199508661466": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198083546367": {"matches": 4, "wins": 2}, "76561198100478545": {"matches": 4, "wins": 3}, "76561198254267968": {"matches": 1, "wins": 0}, "76561198357586856": {"matches": 4, "wins": 2}, "76561198431427136": {"matches": 4, "wins": 3}, "76561198686899456": {"matches": 9, "wins": 7}, "76561199153011360": {"matches": 3, "wins": 2}, "76561199339730976": {"matches": 3, "wins": 2}, "76561199413542223": {"matches": 7, "wins": 5}, "76561199478211872": {"matches": 3, "wins": 2}}, "76561199569491960": {"76561198010867824": {"matches": 3, "wins": 1}, "76561198068831005": {"matches": 3, "wins": 1}, "76561198083546367": {"matches": 8, "wins": 4}, "76561198100478545": {"matches": 9, "wins": 5}, "76561198234120608": {"matches": 3, "wins": 1}, "76561198254267968": {"matches": 15, "wins": 7}, "76561198356069376": {"matches": 3, "wins": 3}, "76561198402746928": {"matches": 8, "wins": 4}, "76561198431427136": {"matches": 15, "wins": 7}, "76561198998095904": {"matches": 3, "wins": 3}, "76561199339730976": {"matches": 8, "wins": 4}, "76561199438131194": {"matches": 5, "wins": 2}, "76561199808571117": {"matches": 5, "wins": 2}}, "76561199808571117": {"76561197990475042": {"matches": 2, "wins": 0}, "76561198100478545": {"matches": 4, "wins": 1}, "76561198254267968": {"matches": 12, "wins": 4}, "76561198402746928": {"matches": 4, "wins": 2}, "76561198431427136": {"matches": 5, "wins": 2}, "76561198686899456": {"matches": 6, "wins": 3}, "76561199153011360": {"matches": 4, "wins": 2}, "76561199339730976": {"matches": 1, "wins": 1}, "76561199413542223": {"matches": 4, "wins": 1}, "76561199438131194": {"matches": 5, "wins": 2}, "76561199569491960": {"matches": 5, "wins": 2}}}};
+    const PLAYERS_MAP = {};
+    if (H2H_DATA && H2H_DATA.players) {
+        H2H_DATA.players.forEach(p => {
+            PLAYERS_MAP[p.steam_id] = p;
+        });
+    }
+
+    let radarChart = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectP1 = document.getElementById('select-p1');
+        const selectP2 = document.getElementById('select-p2');
+        const swapBtn = document.getElementById('swap-players-btn');
+
+        // Check URL parameters: ?p1=...&p2=...
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramP1 = urlParams.get('p1');
+        const paramP2 = urlParams.get('p2');
+
+        const playerIds = Object.keys(PLAYERS_MAP);
+        if (playerIds.length >= 2) {
+            if (paramP1 && PLAYERS_MAP[paramP1]) {
+                selectP1.value = paramP1;
+            } else {
+                selectP1.value = playerIds[0];
+            }
+
+            if (paramP2 && PLAYERS_MAP[paramP2] && paramP2 !== selectP1.value) {
+                selectP2.value = paramP2;
+            } else {
+                selectP2.value = playerIds.find(id => id !== selectP1.value) || playerIds[1];
+            }
+        }
+
+        function updateComparison() {
+            const sid1 = selectP1.value;
+            const sid2 = selectP2.value;
+
+            if (sid1 === sid2) {
+                const alt = playerIds.find(id => id !== sid1);
+                if (alt) selectP2.value = alt;
+            }
+
+            const p1 = PLAYERS_MAP[selectP1.value];
+            const p2 = PLAYERS_MAP[selectP2.value];
+            if (!p1 || !p2) return;
+
+            // Update Headers
+            document.getElementById('p1-link-header').textContent = p1.name;
+            document.getElementById('p1-link-header').href = `players/${p1.steam_id}.html`;
+            document.getElementById('p2-link-header').textContent = p2.name;
+            document.getElementById('p2-link-header').href = `players/${p2.steam_id}.html`;
+
+            document.getElementById('radar-p1-label').textContent = p1.name;
+            document.getElementById('radar-p2-label').textContent = p2.name;
+            document.getElementById('table-p1-header').textContent = p1.name;
+            document.getElementById('table-p2-header').textContent = p2.name;
+
+            document.getElementById('btn-p1-profile').href = `players/${p1.steam_id}.html`;
+            document.getElementById('btn-p2-profile').href = `players/${p2.steam_id}.html`;
+
+            // Duel Score Calculation
+            let k1 = 0; // P1 kills on P2
+            let k2 = 0; // P2 kills on P1
+
+            if (H2H_DATA.matrix && H2H_DATA.matrix[p1.steam_id] && H2H_DATA.matrix[p1.steam_id][p2.steam_id]) {
+                k1 = H2H_DATA.matrix[p1.steam_id][p2.steam_id].kills || 0;
+            }
+            if (H2H_DATA.matrix && H2H_DATA.matrix[p2.steam_id] && H2H_DATA.matrix[p2.steam_id][p1.steam_id]) {
+                k2 = H2H_DATA.matrix[p2.steam_id][p1.steam_id].kills || 0;
+            }
+
+            document.getElementById('p1-kills-big').textContent = k1;
+            document.getElementById('p2-kills-big').textContent = k2;
+
+            const totalKills = k1 + k2;
+            let p1Pct = 50;
+            let p2Pct = 50;
+            if (totalKills > 0) {
+                p1Pct = (k1 / totalKills) * 100;
+                p2Pct = (k2 / totalKills) * 100;
+            }
+            document.getElementById('p1-duel-bar').style.width = `${p1Pct}%`;
+            document.getElementById('p2-duel-bar').style.width = `${p2Pct}%`;
+
+            const statusBanner = document.getElementById('duel-status-banner');
+            if (totalKills === 0) {
+                statusBanner.textContent = 'Игроки пока не пересекались в очных дуэлях на противоположных сторонах';
+                statusBanner.className = 'text-xs md:text-sm font-medium text-slate-400 mt-2 font-mono';
+            } else if (k1 > k2) {
+                statusBanner.textContent = `Доминирует ${p1.name} (преимущество +${k1 - k2} очных фрагов)`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-emerald-400 mt-2 font-mono';
+            } else if (k2 > k1) {
+                statusBanner.textContent = `Доминирует ${p2.name} (преимущество +${k2 - k1} очных фрагов)`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-rose-400 mt-2 font-mono';
+            } else {
+                statusBanner.textContent = `Абсолютное равенство в очных перестрелках (${k1} : ${k2})`;
+                statusBanner.className = 'text-xs md:text-sm font-black text-amber-400 mt-2 font-mono';
+            }
+
+            // Teammates Synergy
+            let synMatches = 0;
+            let synWins = 0;
+            if (H2H_DATA.teammates && H2H_DATA.teammates[p1.steam_id] && H2H_DATA.teammates[p1.steam_id][p2.steam_id]) {
+                synMatches = H2H_DATA.teammates[p1.steam_id][p2.steam_id].matches || 0;
+                synWins = H2H_DATA.teammates[p1.steam_id][p2.steam_id].wins || 0;
+            }
+            const synText = document.getElementById('teammate-synergy-text');
+            if (synMatches > 0) {
+                const wr = ((synWins / synMatches) * 100).toFixed(1);
+                synText.innerHTML = `Совместная игра в одной команде: <strong>${synMatches}</strong> матчей • <strong>${synWins}</strong> побед (винрейт <strong>${wr}%</strong>)`;
+            } else {
+                synText.innerHTML = `Игроки пока не играли в одной команде`;
+            }
+
+            // Side by Side Table Rows
+            const metricsConfig = [
+                { label: 'Текущий MMR', v1: p1.mmr, v2: p2.mmr, higherBetter: true },
+                { label: 'Пиковый MMR', v1: p1.peak_mmr, v2: p2.peak_mmr, higherBetter: true },
+                { label: 'HLTV 2.0 (Ср.)', v1: p1.hltv.toFixed(2), v2: p2.hltv.toFixed(2), higherBetter: true },
+                { label: 'Оценка 1-10', v1: p1.score_10.toFixed(1), v2: p2.score_10.toFixed(1), higherBetter: true },
+                { label: 'K/D Ratio', v1: p1.metrics.kd.toFixed(2), v2: p2.metrics.kd.toFixed(2), higherBetter: true },
+                { label: 'ADR (Урон/раунд)', v1: p1.metrics.adr.toFixed(1), v2: p2.metrics.adr.toFixed(1), higherBetter: true },
+                { label: 'HS %', v1: `${p1.metrics.hs.toFixed(1)}%`, v2: `${p2.metrics.hs.toFixed(1)}%`, num1: p1.metrics.hs, num2: p2.metrics.hs, higherBetter: true },
+                { label: 'KAST %', v1: `${p1.metrics.kast.toFixed(1)}%`, v2: `${p2.metrics.kast.toFixed(1)}%`, num1: p1.metrics.kast, num2: p2.metrics.kast, higherBetter: true },
+                { label: 'Винрейт матчей', v1: `${p1.metrics.winrate.toFixed(1)}%`, v2: `${p2.metrics.winrate.toFixed(1)}%`, num1: p1.metrics.winrate, num2: p2.metrics.winrate, higherBetter: true },
+                { label: 'Сыграно матчей', v1: p1.metrics.matches, v2: p2.metrics.matches, higherBetter: true },
+                { label: 'Основная роль', v1: p1.role, v2: p2.role, textOnly: true },
+                { label: '2D Архетип', v1: p1.archetype, v2: p2.archetype, textOnly: true }
+            ];
+
+            const tbody = document.getElementById('metrics-table-body');
+            tbody.innerHTML = '';
+
+            metricsConfig.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-900/60 transition';
+
+                let p1Class = 'text-left py-2.5 px-3 font-bold ';
+                let p2Class = 'text-right py-2.5 px-3 font-bold ';
+
+                if (!row.textOnly) {
+                    const n1 = row.num1 !== undefined ? row.num1 : parseFloat(row.v1);
+                    const n2 = row.num2 !== undefined ? row.num2 : parseFloat(row.v2);
+                    if (n1 > n2) {
+                        p1Class += 'text-emerald-400';
+                        p2Class += 'text-slate-400';
+                    } else if (n2 > n1) {
+                        p1Class += 'text-slate-400';
+                        p2Class += 'text-rose-400';
+                    } else {
+                        p1Class += 'text-slate-300';
+                        p2Class += 'text-slate-300';
+                    }
+                } else {
+                    p1Class += 'text-slate-300';
+                    p2Class += 'text-slate-300';
+                }
+
+                tr.innerHTML = `
+                    <td class="${p1Class}">${row.v1}</td>
+                    <td class="text-center py-2.5 px-3 text-slate-400 text-[11px] font-sans uppercase">${row.label}</td>
+                    <td class="${p2Class}">${row.v2}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update Radar Chart
+            updateRadar(p1, p2);
+        }
+
+        function updateRadar(p1, p2) {
+            const skillKeys = ['Aim', 'Positioning', 'Utility', 'Game Sense', 'Entry', 'Trading', 'Clutch', 'Discipline', 'Economy', 'Overall Impact'];
+            const data1 = skillKeys.map(k => (p1.ratings && p1.ratings[k] !== undefined) ? p1.ratings[k] : 5.0);
+            const data2 = skillKeys.map(k => (p2.ratings && p2.ratings[k] !== undefined) ? p2.ratings[k] : 5.0);
+
+            const ctx = document.getElementById('compare-radar-chart').getContext('2d');
+            if (radarChart) {
+                radarChart.destroy();
+            }
+
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: skillKeys,
+                    datasets: [
+                        {
+                            label: p1.name,
+                            data: data1,
+                            backgroundColor: 'rgba(16, 185, 129, 0.25)',
+                            borderColor: '#10b981',
+                            pointBackgroundColor: '#10b981',
+                            pointBorderColor: '#fff',
+                            borderWidth: 2
+                        },
+                        {
+                            label: p2.name,
+                            data: data2,
+                            backgroundColor: 'rgba(244, 63, 94, 0.25)',
+                            borderColor: '#f43f5e',
+                            pointBackgroundColor: '#f43f5e',
+                            pointBorderColor: '#fff',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
+                            grid: { color: 'rgba(255, 255, 255, 0.12)' },
+                            ticks: { min: 0, max: 10, stepSize: 2, color: '#94a3b8', backdropColor: 'transparent' },
+                            pointLabels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        selectP1.addEventListener('change', updateComparison);
+        selectP2.addEventListener('change', updateComparison);
+
+        swapBtn.addEventListener('click', function() {
+            const temp = selectP1.value;
+            selectP1.value = selectP2.value;
+            selectP2.value = temp;
+            updateComparison();
+        });
+
+        // Initialize
+        updateComparison();
+    });
+</script>
+
+    <script src="js/app.js"></script>
+    <script>
+        (function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const closeBtn = document.getElementById('mobile-menu-close');
+            if (btn && drawer) {
+                function setOpen(isOpen) {
+                    if (isOpen) {
+                        drawer.classList.remove('hidden');
+                        drawer.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        drawer.classList.add('hidden');
+                        drawer.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }
+                }
+                btn.addEventListener('click', () => setOpen(true));
+                if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+                drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => setOpen(false));
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') setOpen(false);
+                });
+            }
+        })();
+
+        // ─── Client-side User Personalization ("Кто ты?") ───
+        (function() {
+            const STORAGE_KEY = 'cs2_my_steamid';
+            const rootPath = '';
+            
+            const profileBtn = document.getElementById('my-profile-btn');
+            const profileMenu = document.getElementById('my-profile-menu');
+            const profileLabel = document.getElementById('my-profile-label');
+            const profileIcon = document.getElementById('my-profile-icon');
+            const resetBtn = document.getElementById('reset-my-profile-btn');
+            const profileLink = document.getElementById('my-profile-link');
+            const activeActions = document.getElementById('my-profile-active-actions');
+            
+            const mobileSelect = document.getElementById('mobile-player-select');
+            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
+            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
+            const mobileLink = document.getElementById('mobile-profile-link');
+
+            function getMySteamId() {
+                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
+            }
+
+            function setMySteamId(sid) {
+                try {
+                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
+                    else localStorage.removeItem(STORAGE_KEY);
+                } catch(e) {}
+                applyPersonalization();
+            }
+
+            function applyPersonalization() {
+                const currentSid = getMySteamId();
+                let currentName = '';
+
+                // Find player name from list
+                const items = document.querySelectorAll('.profile-select-item');
+                items.forEach(el => {
+                    const sid = el.getAttribute('data-sid');
+                    const check = el.querySelector('.select-active-check');
+                    if (currentSid && sid === currentSid) {
+                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
+                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.remove('hidden');
+                    } else {
+                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.add('hidden');
+                    }
+                });
+
+                // Update Desktop Header Button
+                if (profileBtn && profileLabel) {
+                    if (currentSid && currentName) {
+                        profileLabel.textContent = currentName;
+                        profileIcon.textContent = '⭐';
+                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        if (resetBtn) resetBtn.classList.remove('hidden');
+                        if (activeActions) activeActions.classList.remove('hidden');
+                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        profileLabel.textContent = 'Кто ты?';
+                        profileIcon.textContent = '👤';
+                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
+                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        if (resetBtn) resetBtn.classList.add('hidden');
+                        if (activeActions) activeActions.classList.add('hidden');
+                    }
+                }
+
+                // Update Mobile Selector
+                if (mobileSelect) {
+                    mobileSelect.value = currentSid;
+                }
+                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
+                    if (currentSid) {
+                        mobileResetBtn.classList.remove('hidden');
+                        mobileLinkWrap.classList.remove('hidden');
+                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        mobileResetBtn.classList.add('hidden');
+                        mobileLinkWrap.classList.add('hidden');
+                    }
+                }
+
+                // Highlight player rows/cards in tables and leaderboards
+                const targetEls = document.querySelectorAll('[data-steamid]');
+                targetEls.forEach(el => {
+                    const sid = el.getAttribute('data-steamid');
+                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
+                    const existingBadge = el.querySelector('.my-profile-star-badge');
+                    
+                    if (currentSid && sid === currentSid) {
+                        el.classList.add('my-profile-highlight');
+                        if (!existingBadge && badgeContainer) {
+                            const badge = document.createElement('span');
+                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
+                            badge.innerHTML = '⭐ ВЫ';
+                            badgeContainer.appendChild(badge);
+                        }
+                    } else {
+                        el.classList.remove('my-profile-highlight');
+                        if (existingBadge) {
+                            existingBadge.remove();
+                        }
+                    }
+                });
+            }
+
+            // Event Listeners
+            if (profileBtn && profileMenu) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = profileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        profileMenu.classList.remove('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.profile-select-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sid = btn.getAttribute('data-sid');
+                    setMySteamId(sid);
+                    if (profileMenu) profileMenu.classList.add('hidden');
+                });
+            });
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    setMySteamId('');
+                });
+            }
+
+            if (mobileSelect) {
+                mobileSelect.addEventListener('change', (e) => {
+                    setMySteamId(e.target.value);
+                });
+            }
+
+            if (mobileResetBtn) {
+                mobileResetBtn.addEventListener('click', () => {
+                    setMySteamId('');
+                });
+            }
+
+            // Run on initial page load
+            document.addEventListener('DOMContentLoaded', applyPersonalization);
+            applyPersonalization();
+        })();
+    </script>
+</body>
+</html>
