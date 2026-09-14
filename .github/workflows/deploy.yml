@@ -6,6 +6,9 @@ on:
       - main
       - master
   workflow_dispatch:
+  schedule:
+    # Автообновление каждый день в 08:00 (03:00 UTC)
+    - cron: '0 3 * * *'
 
 permissions:
   contents: read

@@ -349,37 +349,37 @@
         </div>
 
         <!-- Reality Check: Пачка в демках vs FACEIT -->
-        {% if player.overall_stats %}
+        {% if player.faceit and player.faceit.stats %}
         <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-6">
             <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span class="flex items-center gap-1.5 text-slate-300">
-                    <span>⚖️</span> <span>Бенчмарк: Команда в демках vs Открытый FACEIT</span>
+                    <span>⚖️</span> <span>Бенчмарк: Пачка в демках vs Соло FACEIT</span>
                 </span>
                 <span class="text-[10px] text-slate-500 font-normal">Сравнение эффективности в стаке и открытых играх</span>
             </div>
             <div class="grid grid-cols-3 gap-2.5 text-center text-xs font-mono">
                 <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
-                    <span class="text-[10px] text-slate-400 block mb-0.5">K/D (Демки vs Faceit)</span>
+                    <span class="text-[10px] text-slate-400 block mb-0.5">K/D (Пачка vs Faceit)</span>
                     <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white">{{ player.overall_stats.kd_ratio }}</span>
+                        <span class="font-bold text-white text-sm">{{ player.stats.kd if player.stats else (player.overall_stats.kd_ratio if player.overall_stats else 1.0) }}</span>
                         <span class="text-slate-500 text-[10px]">vs</span>
-                        <span class="font-bold text-orange-400">{{ player.faceit.stats.kd }}</span>
+                        <span class="font-bold text-orange-400 text-sm">{{ player.faceit.stats.kd }}</span>
                     </div>
                 </div>
                 <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
-                    <span class="text-[10px] text-slate-400 block mb-0.5">HS% (Демки vs Faceit)</span>
+                    <span class="text-[10px] text-slate-400 block mb-0.5">HS% (Пачка vs Faceit)</span>
                     <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white">{{ player.overall_stats.avg_hs }}%</span>
+                        <span class="font-bold text-white text-sm">{{ player.stats.hs if player.stats else (player.overall_stats.avg_hs if player.overall_stats else 40.0) }}%</span>
                         <span class="text-slate-500 text-[10px]">vs</span>
-                        <span class="font-bold text-amber-300">{{ player.faceit.stats.hs_rate }}%</span>
+                        <span class="font-bold text-amber-300 text-sm">{{ player.faceit.stats.hs_rate }}%</span>
                     </div>
                 </div>
                 <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
                     <span class="text-[10px] text-slate-400 block mb-0.5">Матчей (Демки / Faceit)</span>
                     <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white">{{ player.overall_stats.total_matches }}</span>
+                        <span class="font-bold text-white text-sm">{{ player.total_matches }}</span>
                         <span class="text-slate-500 text-[10px]">/</span>
-                        <span class="font-bold text-slate-300">{{ player.faceit.stats.matches }}</span>
+                        <span class="font-bold text-slate-300 text-sm">{{ player.faceit.stats.matches }}</span>
                     </div>
                 </div>
             </div>
@@ -663,6 +663,29 @@
                         </span>
                     </div>
                 </div>
+
+                <!-- Ролевой анализ: Командная роль vs Соло-класс Faceit -->
+                {% if player.faceit and player.faceit.found %}
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-orange-500/30">
+                    <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-orange-500/20">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
+                            <span>⚖️</span> <span>Командная роль vs Соло-класс Faceit</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">Level {{ player.faceit.skill_level }} • {{ player.faceit.elo }} ELO</span>
+                    </div>
+                    <div class="text-xs text-slate-300 leading-relaxed">
+                        {% if player.faceit.skill_level >= 7 and player.archetype.y < 0 %}
+                        <p>В пачке игрок выполняет системную черновую работу и дисциплинированно закрывает опорные позиции (<strong class="text-sky-300">{{ player.archetype.title }}</strong>), но высокий уровень на Faceit (<strong class="text-amber-300">{{ player.faceit.elo }} Elo, K/D {{ player.faceit.stats.kd }}</strong>) указывает на мощный скрытый потенциал индивидуального керри.</p>
+                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd >= 1.15 %}
+                        <p>Сбалансированный энтри-фрагер: высокий индивидуальный класс на Faceit (<strong class="text-emerald-400">K/D {{ player.faceit.stats.kd }}</strong>) подтверждает, что агрессивные опенинг-дуэли в пачке подкреплены стабильной механикой стрельбы.</p>
+                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd < 1.0 %}
+                        <p>Командно-зависимая агрессия: высокая активность на первых дуэлях эффективна в пачке с командным разменом, но в открытых соло-играх (<strong class="text-rose-400">Faceit K/D {{ player.faceit.stats.kd }}</strong>) игрок чаще оказывается уязвимым без командных флешек.</p>
+                        {% else %}
+                        <p>Сбалансированная синергия: стиль позиционирования в команде (<strong class="text-emerald-300">{{ player.archetype.title }}</strong>) гармонично сочетается с личной эффективностью в открытом ладдере Faceit (<strong class="text-white">{{ player.faceit.elo }} Elo</strong>).</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
 
                 <div class="text-[11px] text-slate-400 bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
                     💡 Координаты формируются динамически: ось X рассчитывается по частоте опенинг-дуэлей (FK/FD) и ранней агрессии, ось Y — по вкладу в победы раундов (HLTV, KAST, клатчи).

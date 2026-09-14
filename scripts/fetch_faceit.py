@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 FACEIT_API_BASE = "https://open.faceit.com/data/v4"
 CACHE_TTL_HOURS = 24
 NOT_FOUND_CACHE_DAYS = 7
-LOOKUP_VERSION = 2  # Версия логики поиска для сброса устаревших отрицательных кэшей
+LOOKUP_VERSION = 3  # Версия логики поиска для сброса устаревших кэшей и обновления карт
 
 # Диапазоны ELO для уровней Faceit CS2
 FACEIT_LEVEL_BRACKETS = {
@@ -107,8 +107,8 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
             cached_at_str = old_data.get("cached_at")
             if cached_at_str and not force:
                 cached_at = datetime.fromisoformat(cached_at_str)
-                # Если найден, обновляем раз в 24 часа
-                if old_data.get("found", False):
+                # Если найден, обновляем раз в 24 часа (при совпадении версии логики)
+                if old_data.get("found", False) and old_data.get("lookup_version") == LOOKUP_VERSION:
                     if now - cached_at < timedelta(hours=CACHE_TTL_HOURS):
                         return old_data
                 # Если не найден, но проверялся новой версией поиска, держим кэш 7 дней
@@ -276,8 +276,26 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
                 started_at = item.get("started_at", 0)
                 match_dt = datetime.fromtimestamp(started_at).strftime("%d.%m.%Y") if started_at else ""
 
-                map_raw = item.get("voting", {}).get("map", {}).get("pick", ["de_mirage"])
-                map_name = map_raw[0].replace("de_", "").capitalize() if map_raw else "CS2"
+                m_id = item.get("match_id")
+                map_name = "CS2"
+                if m_id:
+                    # Запрашиваем детали матча для получения точной выбранной карты
+                    m_detail = _make_faceit_request(f"{FACEIT_API_BASE}/matches/{m_id}", key)
+                    if m_detail:
+                        m_voting = m_detail.get("voting", {}).get("map", {})
+                        picks = m_voting.get("pick") or []
+                        if picks and isinstance(picks, list) and len(picks) > 0:
+                            map_name = picks[0].replace("de_", "").capitalize()
+                        elif isinstance(picks, str):
+                            map_name = picks.replace("de_", "").capitalize()
+                        elif m_voting.get("entities") and isinstance(m_voting["entities"], list) and len(m_voting["entities"]) > 0:
+                            map_name = m_voting["entities"][0].get("name", "CS2").replace("de_", "").capitalize()
+
+                # Fallback если API не ответил
+                if map_name == "CS2":
+                    map_raw = item.get("voting", {}).get("map", {}).get("pick", [])
+                    if map_raw and isinstance(map_raw, list) and len(map_raw) > 0:
+                        map_name = map_raw[0].replace("de_", "").capitalize()
 
                 game_type = item.get("game", "cs2")
                 m_url = f"https://www.faceit.com/ru/{game_type}/room/{item.get('match_id')}"

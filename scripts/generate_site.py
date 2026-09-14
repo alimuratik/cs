@@ -1153,6 +1153,7 @@ def format_player_data(p: dict) -> dict:
         "connections": p.get("connections", {}),
         "achievements": p.get("achievements", []),
         "ai_analysis": p.get("ai_analysis", ""),
+        "overall_stats": ov_stats,
         "faceit": p.get("faceit")
     }
 
