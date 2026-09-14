@@ -44,6 +44,20 @@ CACHE_TTL_HOURS = 24
 NOT_FOUND_CACHE_DAYS = 7
 LOOKUP_VERSION = 2  # Версия логики поиска для сброса устаревших отрицательных кэшей
 
+# Диапазоны ELO для уровней Faceit CS2
+FACEIT_LEVEL_BRACKETS = {
+    1: (1, 500),
+    2: (501, 750),
+    3: (751, 900),
+    4: (901, 1050),
+    5: (1051, 1200),
+    6: (1201, 1350),
+    7: (1351, 1530),
+    8: (1531, 1750),
+    9: (1751, 2000),
+    10: (2001, 3000),
+}
+
 
 def _make_faceit_request(url: str, api_key: str) -> dict | None:
     """Выполняет авторизованный запрос к Faceit API с обработкой ошибок."""
@@ -290,10 +304,53 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
     else:
         elo_delta = old_data.get("elo_delta", 0) if old_data else 0
 
-    # Индикатор серии (стрика)
+    # Расчет прогресса до следующего уровня Faceit
+    lvl = int(skill_level or 1)
+    min_elo, max_elo = FACEIT_LEVEL_BRACKETS.get(lvl, (1000, 1200))
+    if lvl < 10:
+        next_level = lvl + 1
+        next_level_elo = max_elo + 1
+        elo_to_next = max(0, next_level_elo - elo)
+        span = max(1, max_elo - min_elo)
+        progress_percent = max(0.0, min(100.0, round(((elo - min_elo) / span) * 100, 1)))
+    else:
+        next_level = 10
+        next_level_elo = None
+        elo_to_next = 0
+        progress_percent = 100.0
+
+    # Извлечение статистики по картам из Faceit API (segments)
+    faceit_map_stats = {}
+    for seg in (stats_res.get("segments") or []):
+        seg_label = (seg.get("label") or "").lower()
+        if "de_" in seg_label or seg.get("type") in ("duplicated_maps", "Map", "map"):
+            map_key = seg_label.replace("de_", "").strip()
+            s_data = seg.get("stats", {})
+            try:
+                m_cnt = int(s_data.get("Matches", 0))
+                m_wr = round(float(str(s_data.get("Win Rate %", "0")).replace("%", "")), 1)
+                m_kd = round(float(s_data.get("Average K/D Ratio", "1.0")), 2)
+                faceit_map_stats[map_key] = {
+                    "matches": m_cnt,
+                    "win_rate": m_wr,
+                    "kd": m_kd
+                }
+            except Exception:
+                continue
+
+    # Анализ соревновательного тренда формы и серии (стрика) — без снежинок
     streak_badge = ""
+    trend_type = "stable"
+    trend_icon = "●"
+    trend_label = "Стабильно"
+    trend_color = "slate"
+
     if win_streak >= 2:
-        streak_badge = f"🔥 {win_streak}W"
+        streak_badge = f"▲ {win_streak}W"
+        trend_type = "up"
+        trend_icon = "▲"
+        trend_label = "На подъёме"
+        trend_color = "emerald"
     elif recent_results:
         loss_streak = 0
         for r in reversed(recent_results):
@@ -302,7 +359,19 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
             else:
                 break
         if loss_streak >= 2:
-            streak_badge = f"❄️ {loss_streak}L"
+            streak_badge = f"▼ {loss_streak}L"
+            trend_type = "down"
+            trend_icon = "▼"
+            trend_label = "Спад"
+            trend_color = "rose"
+        elif win_streak == 1:
+            streak_badge = "▲ 1W"
+            trend_type = "stable"
+            trend_icon = "●"
+            trend_label = "Стабильно"
+            trend_color = "slate"
+    elif win_streak == 1:
+        streak_badge = "▲ 1W"
 
     # Сборка итогового объекта Faceit
     faceit_profile = {
@@ -320,6 +389,16 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
         "elo_delta": elo_delta,
         "elo_delta_text": f"+{elo_delta}" if elo_delta > 0 else (str(elo_delta) if elo_delta < 0 else "0"),
         "streak_badge": streak_badge,
+        "trend_type": trend_type,
+        "trend_icon": trend_icon,
+        "trend_label": trend_label,
+        "trend_color": trend_color,
+        "next_level": next_level,
+        "next_level_elo": next_level_elo,
+        "elo_to_next": elo_to_next,
+        "progress_percent": progress_percent,
+        "bracket_min": min_elo,
+        "bracket_max": max_elo,
         "stats": {
             "kd": kd_ratio,
             "win_rate": win_rate,
@@ -328,6 +407,7 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
             "longest_win_streak": longest_win_streak,
             "hs_rate": hs_rate,
         },
+        "map_stats": faceit_map_stats,
         "recent_matches": recent_matches,
         "cached_at": now.isoformat(),
         "lookup_version": LOOKUP_VERSION,

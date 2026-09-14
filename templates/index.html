@@ -361,7 +361,7 @@
                                 FACEIT <span class="help-circle">?</span>
                                 <span class="tooltip-box">
                                     <strong>Официальный FACEIT</strong><br>
-                                    Уровень (1-10), текущий Elo, изменение рейтинга и стрик побед (🔥) или поражений (❄️).
+                                    Уровень (1-10), текущий Elo, изменение рейтинга и динамика формы: на подъёме (▲), спад (▼) или стабильно (●).
                                 </span>
                             </span>
                         </th>
@@ -529,9 +529,22 @@
                                         </span>
                                         {% endif %}
                                     </div>
-                                    {% if player.faceit.streak_badge %}
-                                    <div class="text-[9px] font-bold font-mono {% if '🔥' in player.faceit.streak_badge %}text-amber-400{% else %}text-sky-400{% endif %}">
-                                        {{ player.faceit.streak_badge }}
+                                    {% if player.faceit.trend_type == 'up' %}
+                                    <div class="text-[9px] font-bold font-mono text-emerald-400 flex items-center gap-0.5" title="На подъёме на Faceit">
+                                        <span class="text-[8px]">▲</span>
+                                        <span>На подъёме</span>
+                                        {% if player.faceit.streak_badge %}<span class="text-[8px] text-emerald-300 font-normal">({{ player.faceit.streak_badge.replace('▲ ', '').replace('🔥 ', '') }})</span>{% endif %}
+                                    </div>
+                                    {% elif player.faceit.trend_type == 'down' %}
+                                    <div class="text-[9px] font-bold font-mono text-rose-400 flex items-center gap-0.5" title="Спад формы на Faceit">
+                                        <span class="text-[8px]">▼</span>
+                                        <span>Спад</span>
+                                        {% if player.faceit.streak_badge %}<span class="text-[8px] text-rose-300 font-normal">({{ player.faceit.streak_badge.replace('▼ ', '') }})</span>{% endif %}
+                                    </div>
+                                    {% else %}
+                                    <div class="text-[9px] font-semibold font-mono text-slate-400 flex items-center gap-0.5" title="Стабильная форма на Faceit">
+                                        <span class="text-[7px]">●</span>
+                                        <span>Стабильно</span>
                                     </div>
                                     {% endif %}
                                 </div>

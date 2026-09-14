@@ -254,9 +254,19 @@
                             {{ player.faceit.country }}
                         </span>
                         {% endif %}
-                        {% if player.faceit.streak_badge %}
-                        <span class="text-xs font-bold font-mono px-2 py-0.5 rounded-full border {% if '🔥' in player.faceit.streak_badge %}bg-amber-950/70 text-amber-300 border-amber-500/40{% else %}bg-sky-950/70 text-sky-300 border-sky-500/40{% endif %}">
-                            {{ player.faceit.streak_badge }}
+                        {% if player.faceit.trend_type == 'up' %}
+                        <span class="text-xs font-bold font-mono px-2 py-0.5 rounded-full border bg-emerald-950/70 text-emerald-300 border-emerald-500/40 flex items-center gap-1">
+                            <span>▲</span> <span>На подъёме</span>
+                            {% if player.faceit.streak_badge %}<span class="text-emerald-400 font-normal">({{ player.faceit.streak_badge.replace('▲ ', '').replace('🔥 ', '') }})</span>{% endif %}
+                        </span>
+                        {% elif player.faceit.trend_type == 'down' %}
+                        <span class="text-xs font-bold font-mono px-2 py-0.5 rounded-full border bg-rose-950/70 text-rose-300 border-rose-500/40 flex items-center gap-1">
+                            <span>▼</span> <span>Спад</span>
+                            {% if player.faceit.streak_badge %}<span class="text-rose-400 font-normal">({{ player.faceit.streak_badge.replace('▼ ', '') }})</span>{% endif %}
+                        </span>
+                        {% else %}
+                        <span class="text-xs font-semibold font-mono px-2 py-0.5 rounded-full border bg-slate-900/80 text-slate-300 border-slate-700 flex items-center gap-1">
+                            <span class="text-[7px]">●</span> <span>Стабильно</span>
                         </span>
                         {% endif %}
                     </div>
@@ -285,8 +295,32 @@
             </div>
         </div>
 
+        <!-- Faceit Level Progress Bar -->
+        {% if player.faceit.skill_level < 10 and player.faceit.next_level_elo %}
+        <div class="mb-5 p-3 rounded-xl bg-slate-900/70 border border-orange-500/20">
+            <div class="flex items-center justify-between text-xs mb-1.5 font-mono">
+                <span class="text-slate-300 flex items-center gap-2">
+                    <span class="text-orange-400 font-bold">Прогресс до Level {{ player.faceit.next_level }}</span>
+                    <span class="text-slate-500">•</span>
+                    <span class="text-slate-400">{{ player.faceit.elo }} / {{ player.faceit.next_level_elo }} ELO</span>
+                </span>
+                <span class="text-orange-300 font-bold">Осталось {{ player.faceit.elo_to_next }} ELO ({{ player.faceit.progress_percent }}%)</span>
+            </div>
+            <div class="w-full bg-slate-950 rounded-full h-2.5 p-0.5 border border-slate-800 overflow-hidden">
+                <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500" style="width: {{ player.faceit.progress_percent }}%;"></div>
+            </div>
+        </div>
+        {% elif player.faceit.skill_level == 10 %}
+        <div class="mb-5 p-2.5 px-3.5 rounded-xl bg-red-950/30 border border-red-500/30 flex items-center justify-between text-xs font-mono">
+            <span class="text-red-300 font-bold flex items-center gap-1.5">
+                <span>👑</span> <span>Максимальный уровень FACEIT (Level 10)</span>
+            </span>
+            <span class="text-slate-300 font-bold">{{ player.faceit.elo }} ELO</span>
+        </div>
+        {% endif %}
+
         <!-- Faceit Stats Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
             <div class="bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
                 <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">K/D Ratio</div>
                 <div class="text-xl font-black font-mono text-white mt-0.5">{{ player.faceit.stats.kd }}</div>
@@ -313,6 +347,44 @@
                 <div class="text-[10px] text-slate-500">Побед подряд</div>
             </div>
         </div>
+
+        <!-- Reality Check: Пачка в демках vs FACEIT -->
+        {% if player.overall_stats %}
+        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-6">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <span class="flex items-center gap-1.5 text-slate-300">
+                    <span>⚖️</span> <span>Бенчмарк: Команда в демках vs Открытый FACEIT</span>
+                </span>
+                <span class="text-[10px] text-slate-500 font-normal">Сравнение эффективности в стаке и открытых играх</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2.5 text-center text-xs font-mono">
+                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
+                    <span class="text-[10px] text-slate-400 block mb-0.5">K/D (Демки vs Faceit)</span>
+                    <div class="flex items-center justify-center gap-1.5">
+                        <span class="font-bold text-white">{{ player.overall_stats.kd_ratio }}</span>
+                        <span class="text-slate-500 text-[10px]">vs</span>
+                        <span class="font-bold text-orange-400">{{ player.faceit.stats.kd }}</span>
+                    </div>
+                </div>
+                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
+                    <span class="text-[10px] text-slate-400 block mb-0.5">HS% (Демки vs Faceit)</span>
+                    <div class="flex items-center justify-center gap-1.5">
+                        <span class="font-bold text-white">{{ player.overall_stats.avg_hs }}%</span>
+                        <span class="text-slate-500 text-[10px]">vs</span>
+                        <span class="font-bold text-amber-300">{{ player.faceit.stats.hs_rate }}%</span>
+                    </div>
+                </div>
+                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
+                    <span class="text-[10px] text-slate-400 block mb-0.5">Матчей (Демки / Faceit)</span>
+                    <div class="flex items-center justify-center gap-1.5">
+                        <span class="font-bold text-white">{{ player.overall_stats.total_matches }}</span>
+                        <span class="text-slate-500 text-[10px]">/</span>
+                        <span class="font-bold text-slate-300">{{ player.faceit.stats.matches }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 
         <!-- Recent 5 Faceit Matches -->
         {% if player.faceit.recent_matches %}
@@ -442,7 +514,13 @@
                     <span class="map-badge-tag badge-favorite">
                         ⭐ Сигнатурная карта
                     </span>
-                    <span class="text-xs text-amber-300/80 font-mono font-bold">{{ fav.matches }} матчей сыграно</span>
+                    <div class="text-right">
+                        <span class="text-xs text-amber-300/80 font-mono font-bold block">{{ fav.matches }} матчей сыграно</span>
+                        {% if player.faceit and player.faceit.map_stats and fav.name.lower() in player.faceit.map_stats %}
+                        {% set fm = player.faceit.map_stats[fav.name.lower()] %}
+                        <span class="text-[10px] text-slate-400 font-mono block mt-0.5" title="Статистика на платформе FACEIT">Faceit: {{ fm.win_rate }}% WR ({{ fm.matches }} матчей)</span>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <div class="map-header-flex flex items-center justify-between mb-4">
@@ -483,7 +561,13 @@
                     <span class="map-badge-tag badge-kryptonite">
                         ☠️ Криптонит (Сложная карта)
                     </span>
-                    <span class="text-xs text-rose-300/80 font-mono font-bold">{{ kry.matches }} матчей сыграно</span>
+                    <div class="text-right">
+                        <span class="text-xs text-rose-300/80 font-mono font-bold block">{{ kry.matches }} матчей сыграно</span>
+                        {% if player.faceit and player.faceit.map_stats and kry.name.lower() in player.faceit.map_stats %}
+                        {% set fm = player.faceit.map_stats[kry.name.lower()] %}
+                        <span class="text-[10px] text-slate-400 font-mono block mt-0.5" title="Статистика на платформе FACEIT">Faceit: {{ fm.win_rate }}% WR ({{ fm.matches }} матчей)</span>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <div class="map-header-flex flex items-center justify-between mb-4">
