@@ -361,18 +361,26 @@
 
     <!-- Embedded YouTube Player Card (16:9 responsive) -->
     <div class="glassmorphism rounded-2xl p-4 md:p-6 border border-slate-800 shadow-2xl mb-8">
-        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
+        <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80 flex-wrap gap-2">
             <div class="flex items-center gap-2">
                 <span class="text-red-500 text-xl">▶️</span>
                 <h2 class="text-lg md:text-xl font-bold text-white">Плеер плейлиста матчей</h2>
             </div>
-            <span class="text-xs text-slate-400 font-mono hidden sm:inline">
-                Список видео доступен в правом верхнем углу плеера (☰)
-            </span>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-amber-300 font-mono px-3 py-1 rounded-full bg-amber-950/50 border border-amber-500/30">
+                    💡 Нажмите ☰ в верхнем правом углу плеера для списка всех сессий
+                </span>
+            </div>
         </div>
 
         <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black border border-slate-800 shadow-inner">
-            <iframe class="w-full h-full absolute inset-0" src="https://www.youtube.com/embed/videoseries?si=LNp8zRnMQkZOP0Ku&amp;list=PLO_-aOrg8F3I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe class="w-full h-full absolute inset-0" 
+                    src="https://www.youtube.com/embed/videoseries?list=PLO_-aOrg8F3I&amp;listType=playlist&amp;enablejsapi=1&amp;rel=0" 
+                    title="YouTube playlist player" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin" 
+                    allowfullscreen></iframe>
         </div>
     </div>
 
@@ -408,7 +416,7 @@
         <div class="container footer-content">
             <div class="footer-info">
                 <p class="footer-title">⚡ CS2 Demo Analytics Platform</p>
-                <p class="footer-timestamp">Данные обновлены: 14.09.2026 20:39</p>
+                <p class="footer-timestamp">Данные обновлены: 15.09.2026 13:35</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

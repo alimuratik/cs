@@ -997,8 +997,8 @@ def format_player_data(p: dict) -> dict:
         m_delta = m.get("mmr_delta", 0)
         m_breakdown = m.get("mmr_breakdown", "")
         
-        # Двухуровневая подпись для Chart.js (Матч X, 📅 DD.MM) для объединения в игровые дни
-        labels.append([f"Матч {idx} ({map_n})", f"📅 {date_short}"])
+        # Подпись точки графика для Chart.js: Карта и Дата (без номера матча)
+        labels.append([f"{map_n}", f"📅 {date_short}"])
         hist_adr.append(round(adr_val, 1))
         hist_kd.append(kd)
         hist_rating.append(round(r_val, 1))
@@ -1076,6 +1076,7 @@ def format_player_data(p: dict) -> dict:
         exercises_items = ["Используй yprac карты для изучения раскидок"]
 
     role_text = raw_recs.get("best_role", "Универсал")
+    current_role_text = raw_recs.get("current_role", roles[0] if roles else "Универсал")
 
     return {
         "steam_id": p.get("steam_id"),
@@ -1144,7 +1145,10 @@ def format_player_data(p: dict) -> dict:
             "train": train_items,
             "habits": habits_items,
             "exercises": exercises_items,
-            "role": role_text
+            "role": role_text,
+            "best_role": role_text,
+            "current_role": current_role_text,
+            "role_comparison": raw_recs.get("role_comparison", f"Текущий стиль: {current_role_text} ➔ Рекомендуется: {role_text}")
         },
         "session_progress": p.get("session_progress"),
         "map_performance": p.get("map_performance", {}),
@@ -1347,6 +1351,10 @@ def generate_site():
             "ties": ties,
             "win_rate": win_rate,
             "roles": p.get("play_style", ["Рифлер"]),
+            "current_role": p.get("recommendations", {}).get("current_role", p.get("play_style", ["Рифлер"])[0] if p.get("play_style") else "Рифлер"),
+            "best_role": p.get("recommendations", {}).get("best_role", p.get("play_style", ["Рифлер"])[0] if p.get("play_style") else "Рифлер"),
+            "ratings": p.get("ratings", {}),
+            "recommendations": p.get("recommendations", {}),
             "is_calibrating": is_cal,
             "is_inactive": is_inac,
             "form_dots": mmr_data.get("form_dots", []),

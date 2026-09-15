@@ -40,9 +40,14 @@
                     <span>🆔 Steam ID: {{ player.steam_id }}</span>
                 </div>
                 <div class="flex items-center gap-2 mt-2 flex-wrap">
-                    {% for role in player.roles %}
-                    <span class="text-xs px-2.5 py-0.5 rounded bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 font-semibold">{{ role }}</span>
-                    {% endfor %}
+                    <span class="text-xs px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700 font-mono" title="Фактический стиль игры по событиям в демках">
+                        🎮 Стиль: <strong class="text-emerald-400">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
+                    </span>
+                    {% if player.recommendations and player.recommendations.best_role and player.recommendations.best_role != (player.roles[0] if player.roles else '') %}
+                    <span class="text-xs px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-mono" title="Рекомендуемая роль на основе пиковых навыков из 10 рейтингов">
+                        🎯 Рекомендуется: <strong class="text-amber-200">{{ player.recommendations.best_role }}</strong>
+                    </span>
+                    {% endif %}
                     {% if player.momentum and player.momentum.label %}
                     <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border {{ player.momentum.badge_class }}" title="Динамика формы крайней сессии относительно средней формы за карьеру">
                         {{ player.momentum.icon }} {{ player.momentum.label }}
@@ -348,43 +353,7 @@
             </div>
         </div>
 
-        <!-- Reality Check: Пачка в демках vs FACEIT -->
-        {% if player.faceit and player.faceit.stats %}
-        <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80 mb-6">
-            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center justify-between">
-                <span class="flex items-center gap-1.5 text-slate-300">
-                    <span>⚖️</span> <span>Бенчмарк: Пачка в демках vs Соло FACEIT</span>
-                </span>
-                <span class="text-[10px] text-slate-500 font-normal">Сравнение эффективности в стаке и открытых играх</span>
-            </div>
-            <div class="grid grid-cols-3 gap-2.5 text-center text-xs font-mono">
-                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
-                    <span class="text-[10px] text-slate-400 block mb-0.5">K/D (Пачка vs Faceit)</span>
-                    <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white text-sm">{{ player.stats.kd if player.stats else (player.overall_stats.kd_ratio if player.overall_stats else 1.0) }}</span>
-                        <span class="text-slate-500 text-[10px]">vs</span>
-                        <span class="font-bold text-orange-400 text-sm">{{ player.faceit.stats.kd }}</span>
-                    </div>
-                </div>
-                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
-                    <span class="text-[10px] text-slate-400 block mb-0.5">HS% (Пачка vs Faceit)</span>
-                    <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white text-sm">{{ player.stats.hs if player.stats else (player.overall_stats.avg_hs if player.overall_stats else 40.0) }}%</span>
-                        <span class="text-slate-500 text-[10px]">vs</span>
-                        <span class="font-bold text-amber-300 text-sm">{{ player.faceit.stats.hs_rate }}%</span>
-                    </div>
-                </div>
-                <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/50">
-                    <span class="text-[10px] text-slate-400 block mb-0.5">Матчей (Демки / Faceit)</span>
-                    <div class="flex items-center justify-center gap-1.5">
-                        <span class="font-bold text-white text-sm">{{ player.total_matches }}</span>
-                        <span class="text-slate-500 text-[10px]">/</span>
-                        <span class="font-bold text-slate-300 text-sm">{{ player.faceit.stats.matches }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+
 
         <!-- Recent 5 Faceit Matches -->
         {% if player.faceit.recent_matches %}
@@ -664,6 +633,19 @@
                     </div>
                 </div>
 
+                <!-- Связка: Фактический стиль ➔ Рекомендуемая роль -->
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль (демки)</span>
+                        <strong class="text-emerald-400 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
+                    </div>
+                    <span class="text-slate-500 font-mono text-base px-2">➔</span>
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 block uppercase">Рекомендуемая роль</span>
+                        <strong class="text-amber-300 font-mono">{{ player.recommendations.best_role if player.recommendations else 'Универсал' }}</strong>
+                    </div>
+                </div>
+
                 <!-- Ролевой анализ: Командная роль vs Соло-класс Faceit -->
                 {% if player.faceit and player.faceit.found %}
                 <div class="bg-slate-900/80 p-4 rounded-xl border border-orange-500/30">
@@ -759,9 +741,16 @@
             </div>
             <div class="rec-card glassmorphism p-4 rounded-xl border border-amber-500/30 bg-amber-950/10 flex flex-col justify-between">
                 <div>
-                    <div class="font-bold text-amber-400 text-sm mb-2 flex items-center gap-2">🎭 Главная роль</div>
-                    <div class="text-lg font-black text-white font-mono mt-2 px-3 py-2 bg-amber-900/40 rounded-lg border border-amber-500/40 text-amber-300 text-center">
-                        {{ player.recommendations.role }}
+                    <div class="font-bold text-amber-400 text-sm mb-2 flex items-center gap-2">🎭 Ролевое позиционирование</div>
+                    <div class="space-y-2 mt-2">
+                        <div class="p-2 bg-slate-900/80 rounded-lg border border-slate-800 text-center">
+                            <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль</span>
+                            <span class="text-sm font-bold text-emerald-300 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</span>
+                        </div>
+                        <div class="p-2 bg-amber-900/30 rounded-lg border border-amber-500/40 text-center">
+                            <span class="text-[10px] text-amber-400/80 block uppercase">Рекомендуемая роль</span>
+                            <span class="text-sm font-black text-amber-300 font-mono">{{ player.recommendations.best_role }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -918,13 +907,13 @@
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
                     🏆 Зал славы и Достижения
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">16 знаков отличия за уникальные киберспортивные достижения и стабильность</p>
+                <p class="text-xs text-slate-400 mt-1">24 знака отличия: киберспортивные испытания, стабильность и мастерство</p>
             </div>
             {% set unlocked_cnt = player.achievements|selectattr('unlocked')|list|length %}
             <div class="flex items-center gap-2 font-mono text-xs">
                 <span class="text-slate-400">Разблокировано:</span>
                 <span class="px-2.5 py-1 rounded-full font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
-                    {{ unlocked_cnt }} / 16
+                    {{ unlocked_cnt }} / 24
                 </span>
             </div>
         </div>

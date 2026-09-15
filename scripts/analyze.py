@@ -1144,189 +1144,344 @@ def calculate_player_momentum(career_avg_hltv: float, session_progress: dict | N
         "career_hltv": career_avg_hltv
     }
 
-def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: dict, momentum_info: dict) -> list[dict]:
+def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: dict, momentum_info: dict, matches: list = None, ratings: dict = None, map_perf: dict = None) -> list[dict]:
     """
-    Проверяет разблокировку 16 киберспортивных достижений и бейджей игрока.
+    Проверяет разблокировку 24 киберспортивных (про-уровень) и фановых достижений игрока.
     """
     achievements = []
+    matches = matches or []
+    ratings = ratings or {}
+    map_perf = map_perf or {}
     
-    # 1. Король One-Tap
+    # Подсчет киллов с ножа, зевса и матчей с 25+ / 30+ фрагами
+    knife_zeus_total = 0
+    knife_zeus_in_match_max = 0
+    multi_kz_matches = 0
+    matches_25k = 0
+    matches_30k = 0
+    for m in matches:
+        wk = m.get("weapon_kills", {})
+        kz = wk.get("knife", 0) + wk.get("taser", 0) + wk.get("zeus", 0)
+        knife_zeus_total += kz
+        if kz > knife_zeus_in_match_max:
+            knife_zeus_in_match_max = kz
+        if kz >= 2:
+            multi_kz_matches += 1
+        k_cnt = m.get("kills", 0)
+        if k_cnt >= 25:
+            matches_25k += 1
+        if k_cnt >= 30:
+            matches_30k += 1
+            
+    # Подсчет максимального винстрика в истории матчей
+    max_streak = 0
+    cur_streak = 0
+    for h in mmr_info.get("history", []):
+        if h.get("team_result") == "win":
+            cur_streak += 1
+            if cur_streak > max_streak:
+                max_streak = cur_streak
+        else:
+            cur_streak = 0
+
+    tot_m = overall_stats.get("total_matches", len(matches))
+    tk = overall_stats.get("total_kills", 0)
+    actual_rounds = overall_stats.get("total_rounds", max(1, tot_m * 22))
+
+    # 1. 🔪 Мастер унижений (Meme / Hardcore Fun)
+    unlocked_kz = (multi_kz_matches >= 2) or (knife_zeus_in_match_max >= 3) or (multi_kz_matches >= 1 and knife_zeus_total >= 5)
+    achievements.append({
+        "id": "humiliation_master",
+        "title": "Мастер унижений",
+        "desc": "Совершить по 2+ убийства с ножа/Zeus минимум в 2 матчах (или 3+ за одну игру)",
+        "icon": "🔪",
+        "unlocked": unlocked_kz,
+        "progress": f"{multi_kz_matches}/2 матчей с 2+ kill с ножа/Zeus (всего {knife_zeus_total} фрагов)"
+    })
+
+    # 2. 🎯 One-Tap Хирург (Pro / Hard)
     hs = metrics.get("hs_percent", 0.0)
+    unlocked_hs = (hs >= 52.0 and tk >= 80) or (hs >= 56.0 and tk >= 40)
     achievements.append({
         "id": "headshot_king",
-        "title": "Король One-Tap",
-        "desc": "Средний процент попаданий в голову >= 45%",
+        "title": "One-Tap Хирург",
+        "desc": "Средний процент попаданий в голову >= 52% при 80+ фрагах за карьеру",
         "icon": "🎯",
-        "unlocked": hs >= 45.0,
-        "progress": f"{hs}% / 45%"
+        "unlocked": unlocked_hs,
+        "progress": f"{hs}% HS ({tk}/80 фрагов)"
     })
-    
-    # 2. Мастер осколочных
-    ud = overall_stats.get("total_utility_damage", 0)
-    achievements.append({
-        "id": "grenadier",
-        "title": "Мастер осколочных",
-        "desc": "Нанести более 150 HP урона гранатами",
-        "icon": "💣",
-        "unlocked": ud >= 150,
-        "progress": f"{ud} / 150 HP"
-    })
-    
-    # 3. Хладнокровный клатчер
-    cw = overall_stats.get("total_clutch_wins", 0)
-    achievements.append({
-        "id": "clutch_master",
-        "title": "Хладнокровный клатчер",
-        "desc": "Выиграть 2 или более клатчей 1vX",
-        "icon": "👑",
-        "unlocked": cw >= 2,
-        "progress": f"{cw} / 2 побед"
-    })
-    
-    # 4. Гроза опенингов
+
+    # 3. ⚡ Гроза опенингов (Pro / Hard)
     fk = overall_stats.get("total_first_kills", 0)
     es = metrics.get("entry_success", 0.0)
+    unlocked_entry = (fk >= 18 and es >= 52.0) or (fk >= 25 and es >= 48.0)
     achievements.append({
         "id": "entry_demon",
         "title": "Гроза опенингов",
-        "desc": "5+ первых убийств с винрейтом энтри >= 48%",
+        "desc": "18+ первых убийств с винрейтом энтри-дуэлей >= 52%",
         "icon": "⚡",
-        "unlocked": fk >= 5 and es >= 48.0,
-        "progress": f"{fk} фр., {es}% / 5 фр., 48%"
+        "unlocked": unlocked_entry,
+        "progress": f"{fk} первых фрагов (WR: {es}%)"
     })
-    
-    # 5. Железный якорь
+
+    # 4. 🛡️ Железный занавес (Pro / Hard)
     kast = metrics.get("kast", 0.0)
+    pos_r = ratings.get("Positioning", 5.0)
+    unlocked_wall = kast >= 75.0 and tot_m >= 5 and pos_r >= 6.5
     achievements.append({
         "id": "iron_wall",
-        "title": "Железный якорь",
-        "desc": "Средний показатель полезности KAST >= 70%",
+        "title": "Железный занавес",
+        "desc": "Командная полезность KAST >= 75.0% и позиционка >= 6.5 (от 5 матчей)",
         "icon": "🛡️",
-        "unlocked": kast >= 70.0,
-        "progress": f"{kast}% / 70%"
+        "unlocked": unlocked_wall,
+        "progress": f"{kast}% KAST, Позиционка {pos_r} ({tot_m}/5 матчей)"
     })
-    
-    # 6. Элитный снайпер
+
+    # 5. 👑 Клатч-министр (Pro / Hard)
+    cw = overall_stats.get("total_clutch_wins", 0)
+    cwr = metrics.get("clutch_win_rate", 0.0)
+    unlocked_clutch = (cw >= 5 and cwr >= 35.0) or (cw >= 8)
+    achievements.append({
+        "id": "clutch_master",
+        "title": "Клатч-министр",
+        "desc": "Выиграть 5+ клатчей 1vX с винрейтом клатчей >= 35% (или 8+ суммарно)",
+        "icon": "👑",
+        "unlocked": unlocked_clutch,
+        "progress": f"{cw} клатчей (WR: {cwr}%)"
+    })
+
+    # 6. 🔭 Снайперская элита (Pro / Hard)
     awp_k = metrics.get("awp_kills", 0)
+    awp_pct = metrics.get("awp_kills_percent", 0.0)
+    aim_r = ratings.get("Aim", 5.0)
+    unlocked_awp = (awp_k >= 35 and awp_pct >= 25.0 and aim_r >= 6.5) or (awp_k >= 50)
     achievements.append({
         "id": "sniper_elite",
-        "title": "Элитный снайпер",
-        "desc": "Совершить 8+ убийств с винтовки AWP",
+        "title": "Снайперская элита",
+        "desc": "35+ фрагов с винтовки AWP (доля AWP >= 25%) и рейтинг Aim >= 6.5",
         "icon": "🔭",
-        "unlocked": awp_k >= 8,
-        "progress": f"{awp_k} / 8 фрагов"
+        "unlocked": unlocked_awp,
+        "progress": f"{awp_k} фрагов AWP ({awp_pct}%), Aim {aim_r}"
     })
-    
-    # 7. Мастер размена
-    tr = overall_stats.get("total_trades", 0)
-    achievements.append({
-        "id": "refrag_king",
-        "title": "Мастер размена",
-        "desc": "Совершить 6+ успешных разменов тиммейтов",
-        "icon": "🔄",
-        "unlocked": tr >= 6,
-        "progress": f"{tr} / 6 разменов"
-    })
-    
-    # 8. Огневой каток
+
+    # 7. 💥 Огневой каток (Pro / Hard)
     adr = metrics.get("adr", 0.0)
+    unlocked_adr = adr >= 88.0 and tot_m >= 5
     achievements.append({
         "id": "damage_machine",
         "title": "Огневой каток",
-        "desc": "Средний урон за раунд (ADR) >= 80.0",
+        "desc": "Средний урон за раунд (ADR) >= 88.0 на дистанции от 5 матчей",
         "icon": "💥",
-        "unlocked": adr >= 80.0,
-        "progress": f"{adr} / 80.0"
+        "unlocked": unlocked_adr,
+        "progress": f"{adr} ADR ({tot_m}/5 матчей)"
     })
-    
-    # 9. Мистер Стабильность
-    stab = metrics.get("stability_score", 5.0)
-    achievements.append({
-        "id": "mr_consistent",
-        "title": "Мистер Стабильность",
-        "desc": "Индекс стабильности перформанса >= 6.0",
-        "icon": "⚖️",
-        "unlocked": stab >= 6.0,
-        "progress": f"{stab} / 6.0"
-    })
-    
-    # 10. Пистолетный барон
-    pk = overall_stats.get("pistol_round_kills", 0)
-    achievements.append({
-        "id": "pistol_king",
-        "title": "Пистолетный барон",
-        "desc": "Совершить 4+ фрагов в пистолетных раундах",
-        "icon": "🔫",
-        "unlocked": pk >= 4,
-        "progress": f"{pk} / 4 фрагов"
-    })
-    
-    # 11. Мастер выживания
-    surv = metrics.get("survival_rate", 0.0)
-    achievements.append({
-        "id": "unbroken",
-        "title": "Мастер выживания",
-        "desc": "Выживаемость в раундах >= 33%",
-        "icon": "🧘",
-        "unlocked": surv >= 33.0,
-        "progress": f"{surv}% / 33%"
-    })
-    
-    # 12. Ветеран полигона
-    tot_m = overall_stats.get("total_matches", 0)
-    achievements.append({
-        "id": "veteran",
-        "title": "Ветеран полигона",
-        "desc": "Сыграть 8 или более официальных матчей",
-        "icon": "🎖️",
-        "unlocked": tot_m >= 8,
-        "progress": f"{tot_m} / 8 матчей"
-    })
-    
-    # 13. Центурион
-    tk = overall_stats.get("total_kills", 0)
-    achievements.append({
-        "id": "centurion",
-        "title": "Центурион",
-        "desc": "Набрать 80+ фрагов за карьеру",
-        "icon": "⚔️",
-        "unlocked": tk >= 80,
-        "progress": f"{tk} / 80 фрагов"
-    })
-    
-    # 14. В огне сессии
+
+    # 8. 🔥 В абсолютном огне (Form / Trend)
     is_fire = momentum_info.get("status") == "on_fire"
     achievements.append({
         "id": "on_fire_badge",
-        "title": "В огне сессии",
-        "desc": "Прирост формы крайней сессии >= +0.25 HLTV",
+        "title": "В абсолютном огне",
+        "desc": "Сессионный рывок формы >= +0.25 HLTV 2.0 относительно среднего",
         "icon": "🔥",
         "unlocked": is_fire,
         "progress": f"{momentum_info.get('delta', 0.0):+.2f} HLTV"
     })
-    
-    # 15. Тактический светлячок
+
+    # 9. 📈 Неприкасаемый (Streak / Grit)
+    unlocked_streak = max_streak >= 4
+    achievements.append({
+        "id": "untouchable",
+        "title": "Неприкасаемый",
+        "desc": "Серия из 4 или более побед подряд в официальных играх",
+        "icon": "📈",
+        "unlocked": unlocked_streak,
+        "progress": f"{max_streak} побед подряд (цель 4)"
+    })
+
+    # 10. 🧨 Артиллерийский полк (Utility / Pro)
+    ud = overall_stats.get("total_utility_damage", 0)
+    ud_per_r = round(ud / max(1, actual_rounds), 1)
+    unlocked_ud = ud >= 320 and ud_per_r >= 6.5
+    achievements.append({
+        "id": "grenadier",
+        "title": "Артиллерийский полк",
+        "desc": "Нанести 320+ HP урона гранатами (в среднем >= 6.5 за раунд)",
+        "icon": "🧨",
+        "unlocked": unlocked_ud,
+        "progress": f"{ud} HP ({ud_per_r}/раунд)"
+    })
+
+    # 11. 💡 Ослепляющий свет (Support / Pro)
     fa = overall_stats.get("total_flash_assists", 0)
+    fa_avg = round(fa / max(1, tot_m), 1)
+    unlocked_fa = fa >= 10 and fa_avg >= 1.2
     achievements.append({
         "id": "flash_tactician",
-        "title": "Тактический светлячок",
-        "desc": "3+ успешных ослеплений с фрагом тиммейта",
+        "title": "Ослепляющий свет",
+        "desc": "10+ флеш-ассистов (в среднем >= 1.2 ослепления с фрагом за матч)",
         "icon": "💡",
-        "unlocked": fa >= 3,
-        "progress": f"{fa} / 3 ассиста"
+        "unlocked": unlocked_fa,
+        "progress": f"{fa} ассистов ({fa_avg}/матч)"
     })
-    
-    # 16. Элитный эшелон
-    mmr = mmr_info.get("current_mmr", 1000)
+
+    # 12. 🔄 Машина размена (Teamwork / Pro)
+    tr = overall_stats.get("total_trades", 0)
+    tr_rate = metrics.get("trade_rate", 0.0)
+    unlocked_tr = tr >= 16 and tr_rate >= 23.0
+    achievements.append({
+        "id": "refrag_king",
+        "title": "Машина размена",
+        "desc": "16+ успешных разменов тиммейтов (доля разменов >= 23%)",
+        "icon": "🔄",
+        "unlocked": unlocked_tr,
+        "progress": f"{tr} разменов ({tr_rate}%)"
+    })
+
+    # 13. 🔫 Пистолетный маэстро (Pistol / Pro)
+    pk = overall_stats.get("pistol_round_kills", 0)
+    p_wr = metrics.get("pistol_win_rate", 0.0)
+    unlocked_pk = pk >= 10 and p_wr >= 50.0
+    achievements.append({
+        "id": "pistol_king",
+        "title": "Пистолетный маэстро",
+        "desc": "10+ фрагов в пистолетных раундах с винрейтом раундов >= 50%",
+        "icon": "🔫",
+        "unlocked": unlocked_pk,
+        "progress": f"{pk} фрагов (WR: {p_wr}%)"
+    })
+
+    # 14. 💰 Экономический диверсант (Tactical / Hard)
+    vs_full = metrics.get("vs_full_buy_kd", 1.0)
+    unlocked_eco = vs_full >= 1.30 and tot_m >= 4
+    achievements.append({
+        "id": "eco_raider",
+        "title": "Экономический диверсант",
+        "desc": "K/D >= 1.30 в раундах против полного закупа соперника (Full Buy)",
+        "icon": "💰",
+        "unlocked": unlocked_eco,
+        "progress": f"{vs_full} K/D vs Full Buy"
+    })
+
+    # 15. 🏆 Царь горы (Peak MMR / Pro)
+    peak_mmr = mmr_info.get("peak_mmr", 1000)
+    unlocked_peak = peak_mmr >= 1100
     achievements.append({
         "id": "high_roller",
-        "title": "Элитный эшелон",
-        "desc": "Достичь рейтинга 1040+ MMR",
-        "icon": "💎",
-        "unlocked": mmr >= 1040,
-        "progress": f"{mmr} / 1040 MMR"
+        "title": "Царь горы",
+        "desc": "Достичь пикового рейтинга 1100+ MMR в соревновательном ладдере",
+        "icon": "🏆",
+        "unlocked": unlocked_peak,
+        "progress": f"{peak_mmr} / 1100 MMR"
     })
-    
+
+    # 16. 🎩 Шляпный фокус (Ace Hunter / 25+ Bomb)
+    unlocked_25k = matches_25k >= 2
+    achievements.append({
+        "id": "ace_hunter",
+        "title": "Шляпный фокус (25+ бомбардир)",
+        "desc": "Оформить 25+ фрагов за одну карту как минимум в 2 матчах",
+        "icon": "🎩",
+        "unlocked": unlocked_25k,
+        "progress": f"{matches_25k} / 2 матчей с 25+ фрагами"
+    })
+
+    # 17. 🧘 Мастер выживания (Positioning / Pro)
+    surv = metrics.get("survival_rate", 0.0)
+    unlocked_surv = surv >= 35.0 and tot_m >= 5
+    achievements.append({
+        "id": "unbroken",
+        "title": "Мастер выживания",
+        "desc": "Выживаемость в раундах >= 35.0% на дистанции от 5 матчей",
+        "icon": "🧘",
+        "unlocked": unlocked_surv,
+        "progress": f"{surv}% выживаемости"
+    })
+
+    # 18. 🎖️ Ветеран дивизиона (Longevity)
+    unlocked_vet = tot_m >= 15
+    achievements.append({
+        "id": "veteran",
+        "title": "Ветеран дивизиона",
+        "desc": "Сыграть 15 или более официальных матчей на платформе",
+        "icon": "🎖️",
+        "unlocked": unlocked_vet,
+        "progress": f"{tot_m} / 15 матчей"
+    })
+
+    # 19. 👑 Император клатчей (Clutch Elite)
+    unlocked_clutch_god = (cw >= 6 and cwr >= 40.0) or (cw >= 9)
+    achievements.append({
+        "id": "clutch_god",
+        "title": "Император клатчей",
+        "desc": "Выиграть 6+ клатчей при феноменальном винрейте >= 40% (или 9+ суммарно)",
+        "icon": "👑",
+        "unlocked": unlocked_clutch_god,
+        "progress": f"{cw} клатчей (WR: {cwr}%)"
+    })
+
+    # 20. 🎯 Абсолютный хедхантер (Pure Precision)
+    unlocked_perfect_aim = (aim_r >= 8.2) or (hs >= 58.0 and tk >= 80)
+    achievements.append({
+        "id": "perfect_aim",
+        "title": "Абсолютный хедхантер",
+        "desc": "Рейтинг Aim >= 8.2 или 58%+ HS при 80+ фрагах за карьеру",
+        "icon": "🎯",
+        "unlocked": unlocked_perfect_aim,
+        "progress": f"Aim: {aim_r} / 8.2, HS: {hs}%"
+    })
+
+    # 21. 🌪️ Хозяин карты (Map Ruler)
+    map_stats = map_perf.get("maps", {}) if isinstance(map_perf, dict) else {}
+    best_map_entry = None
+    for mn, m_st in map_stats.items():
+        if m_st.get("matches", 0) >= 3 and m_st.get("win_rate", 0) >= 70.0:
+            best_map_entry = (mn, m_st)
+            break
+    unlocked_map_conq = best_map_entry is not None
+    m_conq_prog = f"{best_map_entry[0]} (WR: {best_map_entry[1].get('win_rate')}%)" if best_map_entry else "Нет карт с 3+ играми и WR>=70%"
+    achievements.append({
+        "id": "map_conqueror",
+        "title": "Хозяин карты",
+        "desc": "Выиграть 70%+ матчей на конкретной карте при минимуме 3 сыгранных играх",
+        "icon": "🌪️",
+        "unlocked": unlocked_map_conq,
+        "progress": m_conq_prog
+    })
+
+    # 22. 🛡️ Непробиваемый якорь (Anchor Titan)
+    unlocked_anchor = (pos_r >= 7.6 and surv >= 35.0 and tot_m >= 4)
+    achievements.append({
+        "id": "anchor_titan",
+        "title": "Непробиваемый якорь",
+        "desc": "Рейтинг Positioning >= 7.6 и выживаемость >= 35% при 4+ матчах",
+        "icon": "🛡️",
+        "unlocked": unlocked_anchor,
+        "progress": f"Позиционка: {pos_r}, Выживание: {surv}%"
+    })
+
+    # 23. 🧨 Тактический гроссмейстер (Utility Pro)
+    ut_r = ratings.get("Utility", 5.0)
+    unlocked_tactician = (ut_r >= 7.2 and fa >= 10)
+    achievements.append({
+        "id": "tactical_overlord",
+        "title": "Тактический гроссмейстер",
+        "desc": "Рейтинг Utility >= 7.2 и 10+ флеш-ассистов за карьеру",
+        "icon": "🧨",
+        "unlocked": unlocked_tactician,
+        "progress": f"Utility: {ut_r}, Флеш-ассисты: {fa}"
+    })
+
+    # 24. 💀 Аннигилятор (30+ бомба)
+    unlocked_30k = matches_30k >= 1
+    achievements.append({
+        "id": "thirty_bomb",
+        "title": "Аннигилятор (30+ бомба)",
+        "desc": "Оформить 30 или более фрагов за одну карту в официальном матче",
+        "icon": "💀",
+        "unlocked": unlocked_30k,
+        "progress": f"{matches_30k} матчей с 30+ фрагами (цель 1)"
+    })
+
     return achievements
 
 
@@ -1579,16 +1734,102 @@ def compute_session_progress(player_matches: list[dict]) -> dict | None:
         "worse": worse
     }
 
-def generate_recommendations(player_data: dict, ratings: dict, style: list[str]) -> dict:
+def generate_recommendations(player_data: dict, ratings: dict, style: list[str], map_perf: dict = None, matches: list = None) -> dict:
     """
-    Генерирует советы и рекомендации на основе правил и реального стиля игры.
-    Роль жестко синхронизирована с определенным стилем (style[0]).
+    Генерирует советы и рекомендации на основе правил, 10 рейтингов и худших карт.
+    Разграничивает:
+    - current_role (фактический игровой стиль из демок, style[0])
+    - best_role (рекомендуемая роль на основе пикового потенциала из 10 навыков)
     """
     m = player_data.get("metrics", {})
     primary_role = style[0] if style else "Универсал"
-    recs = {"training": [], "habits_to_remove": [], "exercises": [], "best_role": primary_role}
-    
-    # Ролевая специфика
+    map_perf = map_perf or {}
+    matches = matches or []
+
+    # Расчет рекомендуемой роли по пиковому профилю 10 навыков
+    aim_v = ratings.get("Aim", 5.0)
+    ent_v = ratings.get("Entry", 5.0)
+    pos_v = ratings.get("Positioning", 5.0)
+    ut_v = ratings.get("Utility", 5.0)
+    tr_v = ratings.get("Trading", 5.0)
+    cl_v = ratings.get("Clutch", 5.0)
+    gs_v = ratings.get("Game Sense", 5.0)
+    eco_v = ratings.get("Economy", 5.0)
+    disc_v = ratings.get("Discipline", 5.0)
+    awp_pct = m.get("awp_kills_percent", 0.0)
+
+    role_candidates = []
+    if awp_pct >= 20.0 or (aim_v >= 6.5 and m.get("awp_kills", 0) >= 15):
+        role_candidates.append(("Основной снайпер (Main AWP)", aim_v * 0.6 + pos_v * 0.4 + (awp_pct / 10.0)))
+    if ent_v >= 6.0:
+        role_candidates.append(("Главный энтри-фрагер (First Entry)", ent_v * 0.7 + aim_v * 0.3))
+    if ut_v >= 6.0 or disc_v >= 6.0:
+        role_candidates.append(("Координатор / Главный саппорт", ut_v * 0.6 + disc_v * 0.4))
+    if pos_v >= 6.0 and gs_v >= 5.5:
+        role_candidates.append(("Опорник / Якорь плента (Site Anchor)", pos_v * 0.6 + gs_v * 0.4))
+    if tr_v >= 6.0 or cl_v >= 6.0:
+        role_candidates.append(("Второй номер / Трейдер (Refragger)", tr_v * 0.6 + cl_v * 0.4))
+    if gs_v >= 6.5 and eco_v >= 6.0:
+        role_candidates.append(("Ин-гейм лидер (IGL / Капитан)", gs_v * 0.6 + eco_v * 0.4))
+
+    if role_candidates:
+        best_role = max(role_candidates, key=lambda x: x[1])[0]
+    else:
+        skill_role_map = {
+            "Entry": "Главный энтри-фрагер (First Entry)",
+            "Aim": "Агрессивный рифлер (Aggressive Rifler)",
+            "Positioning": "Опорник / Якорь плента (Site Anchor)",
+            "Utility": "Координатор / Главный саппорт",
+            "Trading": "Второй номер / Трейдер (Refragger)",
+            "Clutch": "Клатч-мастер / Люркер (Lurker)",
+            "Game Sense": "Ин-гейм лидер (IGL / Капитан)"
+        }
+        cand_keys = [k for k in skill_role_map if k in ratings]
+        if cand_keys:
+            top_k = max(cand_keys, key=lambda k: ratings.get(k, 0))
+            best_role = skill_role_map[top_k]
+        else:
+            best_role = primary_role
+
+    recs = {
+        "training": [],
+        "habits_to_remove": [],
+        "exercises": [],
+        "current_role": primary_role,
+        "best_role": best_role,
+        "role_comparison": f"Текущий стиль: {primary_role} ➔ Рекомендуемая роль: {best_role}"
+    }
+
+    # 1. Персональная привязка к слабейшему навыку (Точка роста)
+    valid_ratings = [(k, v) for k, v in ratings.items() if k != "Overall Impact"]
+    if valid_ratings:
+        weakest_skill, weakest_val = min(valid_ratings, key=lambda x: x[1])
+        weak_skill_advice = {
+            "Aim": f"Твой слабейший параметр — Aim ({weakest_val}/10). Рекомендуется ежедневная разминка в Aim Botz (500 тапов, 500 спреев) и фокус на стрельбу в голову на FFA DM.",
+            "Positioning": f"Твой слабейший параметр — Positioning ({weakest_val}/10). Слишком много открытых дуэлей без укрытия. Отрабатывай углы обзора (angle isolation) и не пикай повторно одну линию.",
+            "Utility": f"Твой слабейший параметр — Utility ({weakest_val}/10). Дефицит полезного урона и тиммейт-флешек. Заучи по 2 ключевые моменталки и ретейк-смока на каждой соревновательной карте.",
+            "Game Sense": f"Твой слабейший параметр — Game Sense ({weakest_val}/10). Частая потеря таймингов. Следи за радаром при сменах плента и читай экономику оппонента.",
+            "Entry": f"Твой слабейший параметр — Entry ({weakest_val}/10). Низкий винрейт в опенинг-дуэлях. Никогда не выходи первым без звукового фейка или саппорт-флешки.",
+            "Trading": f"Твой слабейший параметр — Trading ({weakest_val}/10). Тиммейты погибают без размена. Сокращай тайминг пика после смерти тиммейта до 1-1.5 секунды.",
+            "Clutch": f"Твой слабейший параметр — Clutch ({weakest_val}/10). В ситуациях 1vX форсируешь бой. Разделяй оппонентов на серию изолированных дуэлей 1v1.",
+            "Discipline": f"Твой слабейший параметр — Discipline ({weakest_val}/10). Ненужная агрессия при численном преимуществе (5v3, 4v2). Играй на удержание и время.",
+            "Economy": f"Твой слабейший параметр — Economy ({weakest_val}/10). Рассинхрон закупок с командой. Не докупай пистолеты и девайсы на командном эко."
+        }
+        if weakest_skill in weak_skill_advice:
+            recs["training"].append(weak_skill_advice[weakest_skill])
+
+    # 2. Персональная привязка к худшей карте (Криптонит)
+    worst_m = map_perf.get("worst_map")
+    if worst_m:
+        worst_disp = map_perf.get("worst_map_display", worst_m.replace("de_", "").capitalize())
+        w_stats = map_perf.get("maps", {}).get(worst_m, {})
+        w_wr = w_stats.get("win_rate", 0)
+        w_kd = w_stats.get("kd_ratio", 1.0)
+        recs["habits_to_remove"].append(
+            f"Криптонит-карта: {worst_disp}. Винрейт всего {w_wr}% (K/D {w_kd}). Изучи тайминги раскидок и безопасные углы удержания именно для этой карты."
+        )
+
+    # 3. Ролевая специфика
     if "Entry" in primary_role or "Агрессивный" in primary_role:
         recs["training"].append("Фокусируйся на таймингах первых пиков и префаерах в стандартные углы на Faceit/Yprac.")
     elif "AWP" in primary_role:
@@ -1598,51 +1839,30 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str])
     elif "Клатчер" in primary_role or "Люркер" in primary_role:
         recs["training"].append("Анализируй звуковые подсказки и тайминги фейков при игре в меньшинстве 1v2/1v3.")
 
-    if ratings.get("Aim", 5.0) < 5:
-        recs["training"].append("Тренируй аим: DM FFA 30 минут в день, карта Aim Botz (1000 ботов), тренировка трекинга в Aimlabs/Kovaak's")
-        
+    # 4. Базовые правила
     if ratings.get("Aim", 5.0) > 7 and ratings.get("Positioning", 5.0) < 4:
-        recs["habits_to_remove"].append("У тебя хороший аим, но ты часто стоишь в невыгодных позициях. Смотри POV профессионалов своей роли")
-        
-    if ratings.get("Utility", 5.0) < 4:
-        recs["exercises"].append("Учи раскидки на основных картах. Минимум 5 дымов и 5 флешек на каждую карту. Используй yprac maps")
-        
+        recs["habits_to_remove"].append("У тебя хороший аим, но ты часто стоишь в невыгодных позициях. Смотри POV профессионалов своей роли.")
     if ratings.get("Entry", 5.0) > 7 and ratings.get("Trading", 5.0) < 4:
-        recs["habits_to_remove"].append("Ты хороший entry, но тебя не трейдят. Коммуницируй команде когда выходишь")
-        
+        recs["habits_to_remove"].append("Ты хороший entry, но тебя не трейдят. Коммуницируй команде когда выходишь.")
     if m.get("hs_percent", 0) < 35:
-        recs["training"].append("Целься выше — crosshair placement на уровне головы. Тренируй на DM с фокусом на one-tap")
-        
+        recs["training"].append("Целься выше — crosshair placement строго на уровне головы. Тренируй на DM с фокусом на one-tap.")
     if ratings.get("Clutch", 5.0) > 7:
         recs["exercises"].append("Клатч-мастерство: сохраняй хладнокровие, используй звук бомбы для выманивания оппонентов.")
-        
     if ratings.get("Economy", 5.0) < 5:
-        recs["habits_to_remove"].append("Следи за экономикой команды. Не форсись один, когда команда на эко")
-        
-    if m.get("stability_score", 5.0) < 5:
-        recs["exercises"].append("Нестабильная игра. Работай над consistency: режим дня, разминка перед играми")
-        
+        recs["habits_to_remove"].append("Следи за экономикой команды. Не форсись один, когда команда на эко.")
     if m.get("first_death_rate", 0) > 20:
-        recs["habits_to_remove"].append("Слишком часто умираешь первым. Будь осторожнее с peek'ами, используй jiggle peek")
-        
+        recs["habits_to_remove"].append("Слишком часто умираешь первым (FDR > 20%). Будь осторожнее с peek'ами, используй jiggle peek.")
     if m.get("utility_damage", 0) > 20:
-        recs["training"].append("Отличная работа с утилитой! Это твоя сильная сторона")
-        
+        recs["training"].append("Отличная работа с утилитой! Это твоя сильная сторона.")
     if m.get("flash_assists_per_match", 0) < 1:
-        recs["exercises"].append("Используй флешки для тиммейтов. Учи pop-flash для входов на сайт")
-        
-    if m.get("awp_kills_percent", 0) > 40:
-        recs["training"].append("Ты AWP-ер. Тренируй флики и ноускопы. Учи позиции для AWP на каждой карте")
-        
+        recs["exercises"].append("Используй флешки для тиммейтов. Учи pop-flash для входов на сайт.")
     if m.get("trade_rate", 0) < 20:
-        recs["habits_to_remove"].append("Держись ближе к тиммейтам для размена. Следи за радаром")
-        
+        recs["habits_to_remove"].append("Держись ближе к тиммейтам для размена. Следи за радаром.")
     if m.get("pistol_win_rate", 0) < 30:
-        recs["training"].append("Пистолетные раунды — твоя слабая сторона. Тренируй USP/Glock в DM")
-        
+        recs["training"].append("Пистолетные раунды — твоя слабая сторона. Тренируй USP/Glock в DM.")
     if m.get("entry_success", 0) < 40 and m.get("first_kill_rate", 0) > 15:
-        recs["habits_to_remove"].append("Ты часто входишь первым, но неэффективно. Проси у тиммейтов флешку перед входом")
-        
+        recs["habits_to_remove"].append("Ты часто входишь первым, но неэффективно. Проси у тиммейтов флешку перед входом.")
+
     return recs
 
 
@@ -2202,10 +2422,10 @@ def run_analysis(force_ai: bool = False):
         ratings = calculate_player_ratings(p_data_temp)
         style = detect_play_style(p_data_temp)
         strengths, weaknesses = identify_strengths_weaknesses(ratings, metrics)
-        recs = generate_recommendations(p_data_temp, ratings, style)
-        stability = calculate_stability(matches)
         weapons = analyze_weapons(p_data_temp)
         map_perf = analyze_map_performance(matches, player_style=style, player_ratings=ratings, player_metrics=metrics)
+        recs = generate_recommendations(p_data_temp, ratings, style, map_perf=map_perf, matches=matches)
+        stability = calculate_stability(matches)
         pistols = analyze_pistol_rounds(matches)
         economy_stats = analyze_vs_economy(matches, metrics=metrics)
 
@@ -2322,7 +2542,7 @@ def run_analysis(force_ai: bool = False):
             "pistol_round_kills": sum(m.get("pistol_round_kills", 0) for m in matches)
         }
 
-        achievements = calculate_player_achievements(metrics, overall_stats_dict, p_mmr, momentum)
+        achievements = calculate_player_achievements(metrics, overall_stats_dict, p_mmr, momentum, matches=matches, ratings=ratings, map_perf=map_perf)
 
         player_obj = {
             "steam_id": steam_id,
@@ -2376,6 +2596,9 @@ def run_analysis(force_ai: bool = False):
                 try:
                     with open(os.path.join(players_dir, pf), "r", encoding="utf-8") as f:
                         po = json.load(f)
+                    recs_p = po.get("recommendations", {})
+                    c_role = recs_p.get("current_role", po["play_style"][0] if po.get("play_style") else "Универсал")
+                    b_role = recs_p.get("best_role", c_role)
                     all_players_summary.append({
                         "steam_id": po["steam_id"],
                         "name": po["name"],
@@ -2383,7 +2606,9 @@ def run_analysis(force_ai: bool = False):
                         "peak_mmr": po["mmr"]["peak_mmr"],
                         "hltv": po["mmr"]["avg_hltv"],
                         "score_10": po["ratings"].get("Overall Impact", 5.0),
-                        "role": po["play_style"][0] if po.get("play_style") else "Универсал",
+                        "role": c_role,
+                        "current_role": c_role,
+                        "best_role": b_role,
                         "archetype": po.get("archetype", {}).get("title", "Универсальный тактик"),
                         "ratings": po.get("ratings", {}),
                         "metrics": {

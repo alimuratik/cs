@@ -266,6 +266,82 @@
             return result;
         }
 
+        // Effective competitive power blending internal MMR and Faceit Elo
+        function getPlayerEffectivePower(p) {
+            const baseMmr = p.current_mmr || 1000;
+            if (p.faceit && p.faceit.elo && p.faceit.elo > 0) {
+                const faceitWeight = 750 + (p.faceit.elo * 0.25);
+                return Math.round(baseMmr * 0.75 + faceitWeight * 0.25);
+            }
+            return baseMmr;
+        }
+
+        // Assign 5 distinct tactical roles to a 5-player squad based on their 10 ratings
+        function assignSquadRoles(players) {
+            const roleDefinitions = [
+                {
+                    id: 'awp',
+                    title: '🔭 Снайпер (AWP)',
+                    badgeClass: 'bg-rose-950/70 text-rose-300 border-rose-500/50',
+                    score: p => {
+                        const r = p.ratings || {};
+                        const isAwp = (p.roles && p.roles.some(x => x.includes('AWP'))) ? 3.5 : 0;
+                        return (r.Aim || 5) * 0.6 + (r.Positioning || 5) * 0.4 + isAwp;
+                    }
+                },
+                {
+                    id: 'entry',
+                    title: '⚡ Entry-фрагер',
+                    badgeClass: 'bg-amber-950/70 text-amber-300 border-amber-500/50',
+                    score: p => {
+                        const r = p.ratings || {};
+                        const isEntry = (p.roles && p.roles.some(x => x.includes('Entry') || x.includes('Энтри'))) ? 3.5 : 0;
+                        return (r.Entry || 5) * 0.7 + (r.Aim || 5) * 0.3 + isEntry;
+                    }
+                },
+                {
+                    id: 'anchor',
+                    title: '🛡️ Опорник (Anchor)',
+                    badgeClass: 'bg-sky-950/70 text-sky-300 border-sky-500/50',
+                    score: p => {
+                        const r = p.ratings || {};
+                        return (r.Positioning || 5) * 0.6 + (r['Game Sense'] || 5) * 0.4;
+                    }
+                },
+                {
+                    id: 'support',
+                    title: '💣 Саппорт (Support)',
+                    badgeClass: 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50',
+                    score: p => {
+                        const r = p.ratings || {};
+                        return (r.Utility || 5) * 0.6 + (r.Discipline || 5) * 0.4;
+                    }
+                },
+                {
+                    id: 'igl',
+                    title: '🧠 IGL / Трейдер',
+                    badgeClass: 'bg-purple-950/70 text-purple-300 border-purple-500/50',
+                    score: p => {
+                        const r = p.ratings || {};
+                        return (r['Game Sense'] || 5) * 0.5 + (r.Trading || 5) * 0.5;
+                    }
+                }
+            ];
+
+            const unassigned = [...players];
+            const roleMap = {};
+
+            roleDefinitions.forEach(roleDef => {
+                unassigned.sort((a, b) => roleDef.score(b) - roleDef.score(a));
+                const best = unassigned.shift();
+                if (best) {
+                    roleMap[best.steam_id] = roleDef;
+                }
+            });
+
+            return roleMap;
+        }
+
         balanceBtn.addEventListener('click', function() {
             const checkedBoxes = Array.from(document.querySelectorAll('.player-checkbox:checked'));
             if (checkedBoxes.length !== 10) return;
@@ -273,7 +349,6 @@
             const selectedPlayers = checkedBoxes.map(cb => PLAYERS_DICT[cb.value]);
             const allSplits = getCombinations(selectedPlayers, 5);
 
-            // Calculate cost for each split
             allValidSplits = [];
             const seenPairs = new Set();
 
@@ -281,7 +356,6 @@
                 const t1Ids = new Set(t1.map(p => p.steam_id));
                 const t2 = selectedPlayers.filter(p => !t1Ids.has(p.steam_id));
 
-                // Deduplicate symmetric splits (T1 vs T2 is same as T2 vs T1)
                 const key1 = [...t1Ids].sort().join(',');
                 const key2 = t2.map(p => p.steam_id).sort().join(',');
                 if (seenPairs.has(key1) || seenPairs.has(key2)) return;
@@ -291,6 +365,10 @@
                 const mmr1 = t1.reduce((sum, p) => sum + (p.current_mmr || 1000), 0);
                 const mmr2 = t2.reduce((sum, p) => sum + (p.current_mmr || 1000), 0);
                 const deltaMmr = Math.abs(mmr1 - mmr2);
+
+                const power1 = t1.reduce((sum, p) => sum + getPlayerEffectivePower(p), 0);
+                const power2 = t2.reduce((sum, p) => sum + getPlayerEffectivePower(p), 0);
+                const deltaPower = Math.abs(power1 - power2);
 
                 // Role distribution penalty
                 const roles1 = t1.map(p => p.roles[0] || 'Рифлер');
@@ -302,11 +380,12 @@
                 const entry2 = roles2.filter(r => r.includes('Энтри') || r.includes('Entry')).length;
 
                 let rolePenalty = 0;
-                if (Math.abs(awp1 - awp2) > 1) rolePenalty += 15;
-                if (Math.abs(entry1 - entry2) > 1) rolePenalty += 10;
+                if (Math.abs(awp1 - awp2) > 1) rolePenalty += 12;
+                if (Math.abs(entry1 - entry2) > 1) rolePenalty += 8;
 
-                const cost = deltaMmr + rolePenalty;
-                allValidSplits.push({ t1, t2, mmr1, mmr2, deltaMmr, cost });
+                // Combined cost minimizing both MMR delta and effective Faceit-adjusted power delta
+                const cost = deltaPower * 0.7 + deltaMmr * 0.3 + rolePenalty;
+                allValidSplits.push({ t1, t2, mmr1, mmr2, power1, power2, deltaMmr, deltaPower, cost });
             });
 
             allValidSplits.sort((a, b) => a.cost - b.cost);
@@ -327,13 +406,13 @@
             if (!allValidSplits[currentSplitIndex]) return;
             const split = allValidSplits[currentSplitIndex];
 
-            // Win probability formula: 1 / (1 + 10^((MMR2 - MMR1) / 400))
-            const prob1 = 1 / (1 + Math.pow(10, (split.mmr2 - split.mmr1) / 400));
+            // Win probability based on effective power
+            const prob1 = 1 / (1 + Math.pow(10, (split.power2 - split.power1) / 400));
             const pct1 = (prob1 * 100).toFixed(1);
             const pct2 = (100 - parseFloat(pct1)).toFixed(1);
 
             document.getElementById('balance-summary-text').textContent = 
-                `Разница MMR: ${split.deltaMmr} очков • Вариант баланса #${currentSplitIndex + 1} из ${Math.min(10, allValidSplits.length)}`;
+                `Разница MMR: ${split.deltaMmr} • Разница с учетом FACEIT: ${split.deltaPower} • Вариант #${currentSplitIndex + 1} из ${Math.min(10, allValidSplits.length)}`;
 
             // Team 1
             document.getElementById('t1-total-mmr').textContent = split.mmr1;
@@ -349,41 +428,60 @@
             document.getElementById('t2-avg-hltv').textContent = avgHltv2;
             document.getElementById('t2-winrate-badge').textContent = `${pct2}% Шанс`;
 
+            // Assign 5 roles for each squad
+            const rolesT1 = assignSquadRoles(split.t1);
+            const rolesT2 = assignSquadRoles(split.t2);
+
             // Render Rosters
-            renderTeamRoster('t1-roster-list', split.t1, 'blue');
-            renderTeamRoster('t2-roster-list', split.t2, 'amber');
+            renderTeamRoster('t1-roster-list', split.t1, rolesT1, 'blue');
+            renderTeamRoster('t2-roster-list', split.t2, rolesT2, 'amber');
         }
 
-        function renderTeamRoster(elementId, roster, themeColor) {
+        function renderTeamRoster(elementId, roster, assignedRoles, themeColor) {
             const container = document.getElementById(elementId);
             container.innerHTML = '';
 
-            // Sort by MMR descending within team
-            const sorted = [...roster].sort((a, b) => (b.current_mmr || 0) - (a.current_mmr || 0));
+            // Sort by effective power descending within team
+            const sorted = [...roster].sort((a, b) => getPlayerEffectivePower(b) - getPlayerEffectivePower(a));
 
             sorted.forEach((p, idx) => {
                 const row = document.createElement('div');
-                row.className = `flex items-center justify-between p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-${themeColor}-500/50 transition`;
+                row.className = `flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-${themeColor}-500/50 transition gap-2`;
                 
                 const isCaptain = (idx === 0);
-                const captainBadge = isCaptain ? `<span class="text-[10px] px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold ml-1.5">Капитан</span>` : '';
+                const captainBadge = isCaptain ? `<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold ml-1.5">Капитан</span>` : '';
+                
+                const roleObj = assignedRoles[p.steam_id] || { title: p.roles[0] || 'Рифлер', badgeClass: 'bg-slate-800 text-slate-300 border-slate-700' };
+
+                let faceitBadge = '';
+                if (p.faceit && p.faceit.skill_level) {
+                    faceitBadge = `<span class="text-[10px] px-1.5 py-0.5 rounded bg-orange-950/60 text-orange-300 border border-orange-500/40 font-mono font-bold" title="Faceit ELO: ${p.faceit.elo || '—'}">LVL ${p.faceit.skill_level}</span>`;
+                }
 
                 row.innerHTML = `
                     <div class="flex items-center gap-2.5 min-w-0">
                         <span class="w-5 text-center font-mono text-xs text-slate-500 font-bold">#${idx + 1}</span>
                         <div class="min-w-0">
-                            <a href="players/${p.steam_id}.html" class="font-bold text-white hover:text-${themeColor}-300 transition text-xs flex items-center truncate">
-                                ${p.name}
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <a href="players/${p.steam_id}.html" class="font-bold text-white hover:text-${themeColor}-300 transition text-xs truncate">
+                                    ${p.name}
+                                </a>
                                 ${captainBadge}
-                            </a>
-                            <div class="text-[10px] text-slate-400 font-mono mt-0.5">
-                                ${p.roles[0] || 'Рифлер'} • HLTV: ${p.hltv_rating || 1.0}
+                                ${faceitBadge}
+                            </div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded border font-semibold ${roleObj.badgeClass}">
+                                    ${roleObj.title}
+                                </span>
+                                <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">
+                                    HLTV: ${p.hltv_rating || 1.0}
+                                </span>
                             </div>
                         </div>
                     </div>
                     <div class="text-right shrink-0">
                         <span class="font-mono font-black text-xs text-white">${p.current_mmr}</span>
-                        <span class="text-[9px] text-slate-500 font-mono block">MMR</span>
+                        <span class="text-[9px] text-slate-400 font-mono block">Power: ${getPlayerEffectivePower(p)}</span>
                     </div>
                 `;
                 container.appendChild(row);
