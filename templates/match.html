@@ -440,9 +440,20 @@
 
     <!-- Economy Graph -->
     <section class="section economy-section mb-10">
-        <h2 class="section-title text-2xl font-bold text-white mb-4">💰 Динамика экономики по раундам</h2>
-        <div class="glassmorphism p-4 rounded-xl border border-slate-800 h-64 md:h-80">
-            <canvas id="economy-chart"></canvas>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h2 class="section-title text-2xl font-bold text-white">💰 Динамика экономики по раундам</h2>
+            <div class="flex items-center gap-3 text-xs">
+                <span class="inline-flex items-center gap-1.5 font-bold text-blue-400"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> {{ match.team1_name }}</span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-amber-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> {{ match.team2_name }}</span>
+                <span class="text-slate-400 md:hidden text-[11px]">↔️ Свайп</span>
+            </div>
+        </div>
+        <div class="glassmorphism p-4 rounded-xl border border-slate-800">
+            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-emerald-600 pb-2">
+                <div class="h-64 md:h-80" style="min-width: {{ [match.rounds|length * 46, 680]|max }}px;">
+                    <canvas id="economy-chart"></canvas>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -607,39 +618,72 @@
 
         const ecoData = {{ match.economy | tojson }};
         const ctx = document.getElementById('economy-chart').getContext('2d');
-        
+        const team1Name = {{ match.team1_name | tojson }};
+        const team2Name = {{ match.team2_name | tojson }};
+        const roundsMeta = ecoData.rounds_meta || [];
+
+        // Двухстрочные подписи: ['R1', 'CT'] или ['R1', 'T']
+        const chartLabels = roundsMeta.length > 0 
+            ? roundsMeta.map(r => ['R' + r.number, r.winner || ''])
+            : ecoData.labels;
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ecoData.labels,
+                labels: chartLabels,
                 datasets: [
                     {
-                        label: 'Команда 1 (CT)',
+                        label: team1Name,
                         data: ecoData.team1,
                         borderColor: '#2563eb',
                         backgroundColor: isLight ? 'rgba(37, 99, 235, 0.12)' : 'rgba(96, 165, 250, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     },
                     {
-                        label: 'Команда 2 (T)',
+                        label: team2Name,
                         data: ecoData.team2,
                         borderColor: '#d97706',
                         backgroundColor: isLight ? 'rgba(217, 119, 6, 0.12)' : 'rgba(251, 191, 36, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
                 plugins: {
                     legend: {
                         position: 'top',
                         labels: {
                             color: chartColor,
                             font: { weight: '600', size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                if (!items || !items.length) return '';
+                                const idx = items[0].dataIndex;
+                                const r = roundsMeta[idx];
+                                if (r) {
+                                    const winTeam = r.winning_team === 'team1' ? team1Name : team2Name;
+                                    return `Раунд ${r.number} (${r.winner}) • Победитель: ${winTeam}`;
+                                }
+                                return `Раунд ${items[0].label}`;
+                            },
+                            label: function(item) {
+                                return ` ${item.dataset.label}: $${Number(item.raw || 0).toLocaleString()}`;
+                            }
                         }
                     }
                 },
@@ -654,7 +698,10 @@
                         },
                         ticks: {
                             color: chartSubColor,
-                            font: { weight: '500' }
+                            font: { weight: '500' },
+                            callback: function(val) {
+                                return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                            }
                         },
                         grid: {
                             color: chartGridColor
@@ -663,13 +710,28 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Раунд',
+                            text: 'Номер раунда (цвет победной команды)',
                             color: chartColor,
                             font: { weight: 'bold', size: 11 }
                         },
                         ticks: {
-                            color: chartSubColor,
-                            font: { weight: '500' }
+                            autoSkip: false,
+                            maxRotation: 0,
+                            minRotation: 0,
+                            color: function(context) {
+                                const idx = context.index;
+                                const r = roundsMeta[idx];
+                                if (!r) return chartSubColor;
+                                if (r.winning_team === 'team1') {
+                                    return isLight ? '#1d4ed8' : '#60a5fa';
+                                } else {
+                                    return isLight ? '#b45309' : '#fbbf24';
+                                }
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 11
+                            }
                         },
                         grid: {
                             color: chartGridColor

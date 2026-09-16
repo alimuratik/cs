@@ -53,8 +53,8 @@
                 <a href="../index.html#sessions-section" class="nav-item ">
                     <span class="nav-icon">📅</span> Сессии
                 </a>
-                <a href="../demos.html" class="nav-item ">
-                    <span class="nav-icon">🎬</span> Демки
+                <a href="../achievements.html" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="../compare.html" class="nav-item ">
                     <span class="nav-icon">⚔️</span> Дуэли
@@ -120,8 +120,8 @@
             <a href="../index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
                 <span class="text-lg">📅</span> <span>Сессии и матчи</span>
             </a>
-            <a href="../demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            <a href="../achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
@@ -1865,8 +1865,8 @@
                 <span class="text-2xl">🎙️</span>
                 <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1"><strong class='text-white'>Добро пожаловать в студию تحلیل HLTV!</strong> На ваших экранах завершился разгромный поединок на раскаленной арене Inferno, где «SGEM_7» не оставили ни единого шанса оппонентам из «c kaifom», закрыв карту со счетом 13:4. Судьба встречи решилась еще в первой половине: после равного старта коллектив «SGEM_7» нашел ключи к обороне соперника за атакующей стороной, выдав серию из безупречных раундов. Переломным моментом стал феноменальный эко-раунд от будущих победителей в исполнении их звездного лидера, который полностью сломал экономику и моральный дух «c kaifom», превратив оставшуюся часть матча в бенефис одной команды.</p>
-<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Триумфаторы из «SGEM_7» показали образцовый CS: современный, агрессивный и тактически выверенный, где MVP матча буквально уничтожал соперников на каждом клочке карты, читая их перемещения как открытую книгу. В то же время «c kaifom» после потери инициативы полностью посыпались: команда так и не смогла адаптировать свой напалм на Banana под темп оппонента, увязая в индивидуальных ошибках и проигранных микродуэлях. Итоговый разрыв в счете абсолютно справедливо отражает пропасть в текущей форме коллективов на этой карте.</p></p>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добро пожаловать в аналитическую студию! Inferno в этот раз превратился в театр одного актера: <strong class='text-white'>SGEM_7</strong> буквально стер соперника с сервера, приведя свою команду к разгромной победе со счетом <strong class='text-white'>13:4</strong>. Ключевым моментом встречи стал безупречный старт <strong class='text-white'>SGEM_7</strong> за атакующую сторону, когда он выиграл несколько невозможных дуэлей на «банане», полностью деморализовав защиту оппонента и задав непосильный темп всему матчу.</p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Победители из <strong class='text-white'>SGEM_7</strong> продемонстрировали идеальный CS2-классицизм: гроссмейстерский контроль карты, четкие ротации и абсолютное доминирование своего лидера, который заслуженно забрал звание MVP матча. В свою очередь, <strong class='text-white'>«c kaifom»</strong> так и не смогли найти противоядие агрессивному стилю соперника — после проигранных стартовых раундов команда посыпалась ментально, растеряла экономику и оказалась неспособна переломить ход игры на столь тактически сложной карте.</p></p>
         </div>
     </section>
     
@@ -1906,9 +1906,20 @@
 
     <!-- Economy Graph -->
     <section class="section economy-section mb-10">
-        <h2 class="section-title text-2xl font-bold text-white mb-4">💰 Динамика экономики по раундам</h2>
-        <div class="glassmorphism p-4 rounded-xl border border-slate-800 h-64 md:h-80">
-            <canvas id="economy-chart"></canvas>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h2 class="section-title text-2xl font-bold text-white">💰 Динамика экономики по раундам</h2>
+            <div class="flex items-center gap-3 text-xs">
+                <span class="inline-flex items-center gap-1.5 font-bold text-blue-400"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Команда 1 (c kaifom)</span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-amber-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Команда 2 (SGEM_7)</span>
+                <span class="text-slate-400 md:hidden text-[11px]">↔️ Свайп</span>
+            </div>
+        </div>
+        <div class="glassmorphism p-4 rounded-xl border border-slate-800">
+            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-emerald-600 pb-2">
+                <div class="h-64 md:h-80" style="min-width: 782px;">
+                    <canvas id="economy-chart"></canvas>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -6276,7 +6287,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 18:31</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -6413,41 +6424,74 @@
         const chartSubColor = isLight ? '#334155' : '#94a3b8';
         const chartGridColor = isLight ? 'rgba(15, 23, 42, 0.1)' : 'rgba(255, 255, 255, 0.08)';
 
-        const ecoData = {"labels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], "team1": [6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200], "team2": [7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400]};
+        const ecoData = {"labels": ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17"], "rounds_meta": [{"number": 1, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 2, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 3, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 4, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 5, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 6, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 7, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 8, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 9, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 10, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 11, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 12, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 13, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 14, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 15, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 16, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 17, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}], "team1": [4000, 2200, 11800, 12400, 18900, 12800, 8400, 9400, 6100, 20400, 24000, 9300, 4000, 19800, 20500, 6600, 7400], "team2": [4000, 15600, 18200, 23500, 19000, 25600, 25600, 23500, 25800, 25600, 19600, 21200, 4000, 1200, 9500, 24400, 24600]};
         const ctx = document.getElementById('economy-chart').getContext('2d');
-        
+        const team1Name = "\u041a\u043e\u043c\u0430\u043d\u0434\u0430 1 (c kaifom)";
+        const team2Name = "\u041a\u043e\u043c\u0430\u043d\u0434\u0430 2 (SGEM_7)";
+        const roundsMeta = ecoData.rounds_meta || [];
+
+        // Двухстрочные подписи: ['R1', 'CT'] или ['R1', 'T']
+        const chartLabels = roundsMeta.length > 0 
+            ? roundsMeta.map(r => ['R' + r.number, r.winner || ''])
+            : ecoData.labels;
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ecoData.labels,
+                labels: chartLabels,
                 datasets: [
                     {
-                        label: 'Команда 1 (CT)',
+                        label: team1Name,
                         data: ecoData.team1,
                         borderColor: '#2563eb',
                         backgroundColor: isLight ? 'rgba(37, 99, 235, 0.12)' : 'rgba(96, 165, 250, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     },
                     {
-                        label: 'Команда 2 (T)',
+                        label: team2Name,
                         data: ecoData.team2,
                         borderColor: '#d97706',
                         backgroundColor: isLight ? 'rgba(217, 119, 6, 0.12)' : 'rgba(251, 191, 36, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
                 plugins: {
                     legend: {
                         position: 'top',
                         labels: {
                             color: chartColor,
                             font: { weight: '600', size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                if (!items || !items.length) return '';
+                                const idx = items[0].dataIndex;
+                                const r = roundsMeta[idx];
+                                if (r) {
+                                    const winTeam = r.winning_team === 'team1' ? team1Name : team2Name;
+                                    return `Раунд ${r.number} (${r.winner}) • Победитель: ${winTeam}`;
+                                }
+                                return `Раунд ${items[0].label}`;
+                            },
+                            label: function(item) {
+                                return ` ${item.dataset.label}: $${Number(item.raw || 0).toLocaleString()}`;
+                            }
                         }
                     }
                 },
@@ -6462,7 +6506,10 @@
                         },
                         ticks: {
                             color: chartSubColor,
-                            font: { weight: '500' }
+                            font: { weight: '500' },
+                            callback: function(val) {
+                                return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                            }
                         },
                         grid: {
                             color: chartGridColor
@@ -6471,13 +6518,28 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Раунд',
+                            text: 'Номер раунда (цвет победной команды)',
                             color: chartColor,
                             font: { weight: 'bold', size: 11 }
                         },
                         ticks: {
-                            color: chartSubColor,
-                            font: { weight: '500' }
+                            autoSkip: false,
+                            maxRotation: 0,
+                            minRotation: 0,
+                            color: function(context) {
+                                const idx = context.index;
+                                const r = roundsMeta[idx];
+                                if (!r) return chartSubColor;
+                                if (r.winning_team === 'team1') {
+                                    return isLight ? '#1d4ed8' : '#60a5fa';
+                                } else {
+                                    return isLight ? '#b45309' : '#fbbf24';
+                                }
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 11
+                            }
                         },
                         grid: {
                             color: chartGridColor
@@ -6560,7 +6622,10 @@
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => setOpen(true));
+                btn.addEventListener('click', () => {
+                    const isOpen = !drawer.classList.contains('hidden');
+                    setOpen(!isOpen);
+                });
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));

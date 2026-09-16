@@ -53,8 +53,8 @@
                 <a href="../index.html#sessions-section" class="nav-item ">
                     <span class="nav-icon">📅</span> Сессии
                 </a>
-                <a href="../demos.html" class="nav-item ">
-                    <span class="nav-icon">🎬</span> Демки
+                <a href="../achievements.html" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="../compare.html" class="nav-item ">
                     <span class="nav-icon">⚔️</span> Дуэли
@@ -120,8 +120,8 @@
             <a href="../index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
                 <span class="text-lg">📅</span> <span>Сессии и матчи</span>
             </a>
-            <a href="../demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            <a href="../achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
@@ -1913,8 +1913,9 @@
                 <span class="text-2xl">🎙️</span>
                 <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добro пожаловать в аналитическую студию! Классика соревновательного CS — Dust2 — подарила нам ярчайшее зрелище, в котором <strong class='text-white'>Oceanmengo</strong> перетерпели соперников и закрыли карту со счетом <strong class='text-white'>13:9</strong>. Судьба встречи решилась в середине второй половины, когда <strong class='text-white'>ALIBONYA</strong> попытались перехватить инициативу за атакующую сторону, сравняв счет. Однако ключевым моментом стал невероятный эко-раунд от Oceanmengo, сломавший экономику оппонента и позволивший триумфаторам совершить победный рывок из четырех раундов подряд.</p>
-<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Победители полностью оправдали свой статус фаворитов благодаря феноменальной индивидуальной форме своего капитана и главной звезды: <strong class='text-white'>Oceanmengo</strong> выдал мастер-класс по игре на ключевых позициях, заслуженно забрал медаль MVP и стал непреодолимой стеной для оппонента. Что касается <strong class='text-white'>ALIBONYA</strong>, то коллектив показал плотную борьбу и отличные заготовки на плентах, но катастрофически проиграл ключевые дуэли в концовках раундов и не смог справиться с давлением в защите, что в итоге и привело их к обидному поражению.</p></p>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1"><strong class='text-white'>[АНАЛИТИЧЕСКАЯ СТУДИЯ HLTV / BLAST]</strong></p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добрый вечер, любители Counter-Strike 2! Классический песчаный карьер Dust2 сегодня стал ареной бескомпромиссной борьбы, из которой триумфатором вышла команда <strong class='text-white'>Oceanmengo</strong>, закрывшая оппонентов со счетом <strong class='text-white'>13:9</strong>. Судьба встречи решилась во второй половине матча при счете 8:7 в пользу ALIBONYA: ключевым моментом стал невероятный эко-раунд от Oceanmengo, после которого оборона проигравших посыпалась под натиском жестких и выверенных тейков. Неудержимый лидер сервера и абсолютный MVP матча, <strong class='text-white'>Oceanmengo</strong>, провел мастер-класс индивидуального перформанса, в одиночку закрывая ключевые зоны и уничтожая любые попытки оппонентов зайти на точки.</p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Анализируя игру команд, стоит отметить, что победа Oceanmengo строилась на железной дисциплине, своевременных перетяжках и невероятной силе духа их капитана, буквально тащившего коллектив на протяжении всей карты. ALIBONYA показали достойный CS в атаке в первой половине встречи, грамотно используя раскидку и агрессивные выходы, однако во время защиты им катастрофически не хватило гибкости в тактиках и хладнокровия в дуэлях на средней линии. Итоговые 13:9 полностью отражают расстановку сил: Oceanmengo сегодня были на шаг впереди во всех аспектах меты Dust2.</p></p>
         </div>
     </section>
     
@@ -1954,9 +1955,20 @@
 
     <!-- Economy Graph -->
     <section class="section economy-section mb-10">
-        <h2 class="section-title text-2xl font-bold text-white mb-4">💰 Динамика экономики по раундам</h2>
-        <div class="glassmorphism p-4 rounded-xl border border-slate-800 h-64 md:h-80">
-            <canvas id="economy-chart"></canvas>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <h2 class="section-title text-2xl font-bold text-white">💰 Динамика экономики по раундам</h2>
+            <div class="flex items-center gap-3 text-xs">
+                <span class="inline-flex items-center gap-1.5 font-bold text-blue-400"><span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span> Команда 1 (Oceanmengo)</span>
+                <span class="inline-flex items-center gap-1.5 font-bold text-amber-400"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Команда 2 (ALIBONYA)</span>
+                <span class="text-slate-400 md:hidden text-[11px]">↔️ Свайп</span>
+            </div>
+        </div>
+        <div class="glassmorphism p-4 rounded-xl border border-slate-800">
+            <div class="overflow-x-auto scrollbar-thin scrollbar-thumb-emerald-600 pb-2">
+                <div class="h-64 md:h-80" style="min-width: 1012px;">
+                    <canvas id="economy-chart"></canvas>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -7601,7 +7613,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 18:31</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -7738,41 +7750,74 @@
         const chartSubColor = isLight ? '#334155' : '#94a3b8';
         const chartGridColor = isLight ? 'rgba(15, 23, 42, 0.1)' : 'rgba(255, 255, 255, 0.08)';
 
-        const ecoData = {"labels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], "team1": [6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200], "team2": [7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200]};
+        const ecoData = {"labels": ["R1", "R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15", "R16", "R17", "R18", "R19", "R20", "R21", "R22"], "rounds_meta": [{"number": 1, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 2, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 3, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 4, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 5, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 6, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 7, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 8, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 9, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 10, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 11, "winner": "CT", "winning_side": "CT", "winning_team": "team1"}, {"number": 12, "winner": "T", "winning_side": "T", "winning_team": "team2"}, {"number": 13, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 14, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 15, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 16, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 17, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 18, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 19, "winner": "T", "winning_side": "T", "winning_team": "team1"}, {"number": 20, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 21, "winner": "CT", "winning_side": "CT", "winning_team": "team2"}, {"number": 22, "winner": "T", "winning_side": "T", "winning_team": "team1"}], "team1": [4000, 23500, 2400, 2200, 12800, 24200, 29800, 13400, 27800, 28000, 22400, 26600, 4000, 21700, 14000, 22000, 22600, 17500, 8200, 23500, 5600, 10200], "team2": [4000, 11100, 23700, 21900, 20700, 7600, 14200, 23500, 1000, 1000, 8500, 10000, 4000, 5900, 26100, 8400, 6100, 18000, 22600, 14400, 25700, 25700]};
         const ctx = document.getElementById('economy-chart').getContext('2d');
-        
+        const team1Name = "\u041a\u043e\u043c\u0430\u043d\u0434\u0430 1 (Oceanmengo)";
+        const team2Name = "\u041a\u043e\u043c\u0430\u043d\u0434\u0430 2 (ALIBONYA)";
+        const roundsMeta = ecoData.rounds_meta || [];
+
+        // Двухстрочные подписи: ['R1', 'CT'] или ['R1', 'T']
+        const chartLabels = roundsMeta.length > 0 
+            ? roundsMeta.map(r => ['R' + r.number, r.winner || ''])
+            : ecoData.labels;
+
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ecoData.labels,
+                labels: chartLabels,
                 datasets: [
                     {
-                        label: 'Команда 1 (CT)',
+                        label: team1Name,
                         data: ecoData.team1,
                         borderColor: '#2563eb',
                         backgroundColor: isLight ? 'rgba(37, 99, 235, 0.12)' : 'rgba(96, 165, 250, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     },
                     {
-                        label: 'Команда 2 (T)',
+                        label: team2Name,
                         data: ecoData.team2,
                         borderColor: '#d97706',
                         backgroundColor: isLight ? 'rgba(217, 119, 6, 0.12)' : 'rgba(251, 191, 36, 0.15)',
                         tension: 0.3,
-                        fill: true
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 6
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
                 plugins: {
                     legend: {
                         position: 'top',
                         labels: {
                             color: chartColor,
                             font: { weight: '600', size: 12 }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                if (!items || !items.length) return '';
+                                const idx = items[0].dataIndex;
+                                const r = roundsMeta[idx];
+                                if (r) {
+                                    const winTeam = r.winning_team === 'team1' ? team1Name : team2Name;
+                                    return `Раунд ${r.number} (${r.winner}) • Победитель: ${winTeam}`;
+                                }
+                                return `Раунд ${items[0].label}`;
+                            },
+                            label: function(item) {
+                                return ` ${item.dataset.label}: $${Number(item.raw || 0).toLocaleString()}`;
+                            }
                         }
                     }
                 },
@@ -7787,7 +7832,10 @@
                         },
                         ticks: {
                             color: chartSubColor,
-                            font: { weight: '500' }
+                            font: { weight: '500' },
+                            callback: function(val) {
+                                return '$' + (val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val);
+                            }
                         },
                         grid: {
                             color: chartGridColor
@@ -7796,13 +7844,28 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Раунд',
+                            text: 'Номер раунда (цвет победной команды)',
                             color: chartColor,
                             font: { weight: 'bold', size: 11 }
                         },
                         ticks: {
-                            color: chartSubColor,
-                            font: { weight: '500' }
+                            autoSkip: false,
+                            maxRotation: 0,
+                            minRotation: 0,
+                            color: function(context) {
+                                const idx = context.index;
+                                const r = roundsMeta[idx];
+                                if (!r) return chartSubColor;
+                                if (r.winning_team === 'team1') {
+                                    return isLight ? '#1d4ed8' : '#60a5fa';
+                                } else {
+                                    return isLight ? '#b45309' : '#fbbf24';
+                                }
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 11
+                            }
                         },
                         grid: {
                             color: chartGridColor
@@ -7885,7 +7948,10 @@
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => setOpen(true));
+                btn.addEventListener('click', () => {
+                    const isOpen = !drawer.classList.contains('hidden');
+                    setOpen(!isOpen);
+                });
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));

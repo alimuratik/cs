@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% set active_page = 'achievements' %}
+
+{% block title %}Зал славы и Достижения{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="{{ root_path }}index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">Зал славы и Достижения</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Hero Header -->
+    <section class="hero-section glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/30 mb-8 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/70 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold mb-3 shadow-sm">
+                    <span>🌟</span> <span>HALL OF FAME & CS2 GLORY SYSTEM</span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight flex items-center gap-3">
+                    🏆 Зал славы и Достижения
+                </h1>
+                <p class="text-sm md:text-base text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                    24 соревновательных киберспортивных испытания. Каждое достижение имеет 3 ступени мастерства: 
+                    <strong class="text-amber-500">🥉 Бронза</strong> (+100 очков), 
+                    <strong class="text-slate-300">🥈 Серебро</strong> (+250 очков) и 
+                    <strong class="text-amber-300">🥇 Золото</strong> (+500 очков).
+                </p>
+            </div>
+
+            <!-- Global Stats Summary -->
+            <div class="flex items-center gap-3 flex-wrap">
+                <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 text-center min-w-[120px] shadow-lg">
+                    <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">Всего испытаний</div>
+                    <div class="text-3xl font-black font-mono text-white">24</div>
+                    <div class="text-[10px] text-amber-400 font-mono mt-0.5">72 уровня наград</div>
+                </div>
+                <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 text-center min-w-[130px] shadow-lg">
+                    <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">Макс. Очков Славы</div>
+                    <div class="text-3xl font-black font-mono text-amber-300">12 000</div>
+                    <div class="text-[10px] text-emerald-400 font-mono mt-0.5">Glory Points</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top-3 Podium Section -->
+    {% if glory_leaderboard|length >= 3 %}
+    <section class="podium-section mb-10">
+        <h2 class="section-title text-2xl font-bold text-white mb-6 flex items-center gap-2.5">
+            <span>👑</span> <span>Пьедестал триумфаторов</span>
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+            <!-- Rank 2: Silver Runner-Up -->
+            {% set p2 = glory_leaderboard[1] %}
+            <div class="podium-card order-2 md:order-1 glassmorphism p-6 rounded-2xl border border-slate-400/50 bg-gradient-to-t from-slate-950 via-slate-900 to-slate-800/40 shadow-xl text-center relative overflow-hidden flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-slate-700 border-2 border-slate-300 text-slate-100 flex items-center justify-center font-black text-xl mb-3 shadow-md">
+                    2
+                </div>
+                <div class="text-2xl mb-1">🥈</div>
+                <h3 class="text-xl font-black text-white">
+                    <a href="{{ root_path }}players/{{ p2.steam_id }}.html" class="hover:text-emerald-400 transition">{{ p2.name }}</a>
+                </h3>
+                <div class="text-xs text-slate-400 font-mono mt-0.5">{{ p2.current_mmr }} MMR</div>
+                <div class="my-3 px-4 py-1.5 rounded-xl bg-slate-800/80 border border-slate-600 text-slate-200 font-mono font-black text-lg shadow-inner">
+                    🌟 {{ p2.glory_points }} <span class="text-xs font-normal text-slate-400">pts</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs text-slate-300">
+                    <span>🥇 {{ p2.gold_count }}</span> • 
+                    <span>🥈 {{ p2.silver_count }}</span> • 
+                    <span>🥉 {{ p2.bronze_count }}</span>
+                </div>
+                <div class="mt-3 text-xs text-slate-400">
+                    Открыто: <strong class="text-white">{{ p2.unlocked_count }}</strong> / {{ p2.total_count }} ({{ p2.completion_pct }}%)
+                </div>
+            </div>
+
+            <!-- Rank 1: Gold Champion -->
+            {% set p1 = glory_leaderboard[0] %}
+            <div class="podium-card order-1 md:order-2 glassmorphism p-7 rounded-2xl border-2 border-amber-400/80 bg-gradient-to-t from-slate-950 via-slate-900 to-amber-950/40 shadow-2xl text-center relative overflow-hidden flex flex-col items-center transform md:-translate-y-3">
+                <div class="absolute top-2 right-2 text-2xl animate-pulse">👑</div>
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 border-2 border-white text-slate-950 flex items-center justify-center font-black text-2xl mb-3 shadow-lg shadow-amber-400/50 ring-4 ring-amber-400/30">
+                    1
+                </div>
+                <div class="text-3xl mb-1">🥇</div>
+                <h3 class="text-2xl font-black text-amber-300">
+                    <a href="{{ root_path }}players/{{ p1.steam_id }}.html" class="hover:underline">{{ p1.name }}</a>
+                </h3>
+                <div class="text-xs text-slate-400 font-mono mt-0.5">{{ p1.current_mmr }} MMR</div>
+                <div class="my-3.5 px-5 py-2 rounded-xl bg-amber-950/70 border border-amber-400/60 text-amber-300 font-mono font-black text-2xl shadow-lg shadow-amber-950/40">
+                    🌟 {{ p1.glory_points }} <span class="text-sm font-normal text-amber-400">pts</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-sm font-bold text-amber-200">
+                    <span>🥇 {{ p1.gold_count }}</span> • 
+                    <span>🥈 {{ p1.silver_count }}</span> • 
+                    <span>🥉 {{ p1.bronze_count }}</span>
+                </div>
+                <div class="mt-3 text-xs text-slate-300">
+                    Открыто: <strong class="text-amber-300 font-bold">{{ p1.unlocked_count }}</strong> / {{ p1.total_count }} ({{ p1.completion_pct }}%)
+                </div>
+            </div>
+
+            <!-- Rank 3: Bronze 3rd Place -->
+            {% set p3 = glory_leaderboard[2] %}
+            <div class="podium-card order-3 md:order-3 glassmorphism p-6 rounded-2xl border border-amber-700/50 bg-gradient-to-t from-slate-950 via-slate-900 to-amber-950/20 shadow-xl text-center relative overflow-hidden flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-amber-900 border-2 border-amber-600 text-amber-200 flex items-center justify-center font-black text-xl mb-3 shadow-md">
+                    3
+                </div>
+                <div class="text-2xl mb-1">🥉</div>
+                <h3 class="text-xl font-black text-white">
+                    <a href="{{ root_path }}players/{{ p3.steam_id }}.html" class="hover:text-emerald-400 transition">{{ p3.name }}</a>
+                </h3>
+                <div class="text-xs text-slate-400 font-mono mt-0.5">{{ p3.current_mmr }} MMR</div>
+                <div class="my-3 px-4 py-1.5 rounded-xl bg-slate-800/80 border border-amber-800/40 text-amber-400 font-mono font-black text-lg shadow-inner">
+                    🌟 {{ p3.glory_points }} <span class="text-xs font-normal text-slate-400">pts</span>
+                </div>
+                <div class="flex items-center gap-2 font-mono text-xs text-slate-300">
+                    <span>🥇 {{ p3.gold_count }}</span> • 
+                    <span>🥈 {{ p3.silver_count }}</span> • 
+                    <span>🥉 {{ p3.bronze_count }}</span>
+                </div>
+                <div class="mt-3 text-xs text-slate-400">
+                    Открыто: <strong class="text-white">{{ p3.unlocked_count }}</strong> / {{ p3.total_count }} ({{ p3.completion_pct }}%)
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Full Glory Leaderboard Table -->
+    <section class="leaderboard-section mb-12">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    <span>📊</span> <span>Таблица Зала Славы</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Ранжирование игроков сообщества по сумме Очков Славы за выполненные испытания</p>
+            </div>
+            
+            <div class="relative min-w-[240px]">
+                <input type="text" id="glory-search" placeholder="Поиск игрока..." 
+                       class="w-full px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-sans" />
+            </div>
+        </div>
+
+        <div class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse" id="glory-table">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-slate-800 text-[11px] font-bold font-mono text-slate-400 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">Ранг</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-right">Очки Славы</th>
+                            <th class="py-3 px-4 text-center">Медали (🥇/🥈/🥉)</th>
+                            <th class="py-3 px-4 text-center">Прогресс</th>
+                            <th class="py-3 px-4">Полученные награды</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        {% for p in glory_leaderboard %}
+                        <tr class="glory-row hover:bg-slate-800/40 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black">
+                                {% if p.glory_rank == 1 %}
+                                <span class="text-amber-300 text-base">🥇 #1</span>
+                                {% elif p.glory_rank == 2 %}
+                                <span class="text-slate-300 text-base">🥈 #2</span>
+                                {% elif p.glory_rank == 3 %}
+                                <span class="text-amber-500 text-base">🥉 #3</span>
+                                {% else %}
+                                <span class="text-slate-400">#{{ p.glory_rank }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            {{ p.name }}
+                                        </a>
+                                        <span class="text-[11px] font-mono text-slate-400">{{ p.current_mmr }} MMR</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-right">
+                                <span class="font-mono font-black text-base text-amber-300">
+                                    🌟 {{ p.glory_points }}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center">
+                                <div class="inline-flex items-center gap-1.5 font-mono text-xs">
+                                    <span class="px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-bold" title="Золотых наград">🥇 {{ p.gold_count }}</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-bold" title="Серебряных наград">🥈 {{ p.silver_count }}</span>
+                                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 border border-amber-800/40 font-bold" title="Бронзовых наград">🥉 {{ p.bronze_count }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="font-bold text-white">{{ p.unlocked_count }}</span>
+                                <span class="text-slate-500">/ {{ p.total_count }}</span>
+                                <div class="w-20 mx-auto bg-slate-800 rounded-full h-1.5 mt-1 overflow-hidden">
+                                    <div class="bg-gradient-to-r from-emerald-500 to-amber-400 h-full rounded-full" style="width: {{ p.completion_pct }}%;"></div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <details class="cursor-pointer group">
+                                    <summary class="text-xs text-slate-400 hover:text-white font-medium flex items-center gap-1 select-none">
+                                        <span>Бейджи ({{ p.unlocked_achievements|length }})</span>
+                                        <span class="transition-transform group-open:rotate-180 text-[10px]">▼</span>
+                                    </summary>
+                                    <div class="flex flex-wrap gap-1.5 mt-2 max-w-md">
+                                        {% for ach in p.unlocked_achievements %}
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold
+                                            {% if ach.tier == 3 %}bg-amber-950/60 text-amber-300 border border-amber-400/50
+                                            {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-600
+                                            {% else %}bg-amber-950/30 text-amber-500 border border-amber-700/40{% endif %}"
+                                            title="{{ ach.title }} — {{ ach.tier_name }}: {{ ach.desc }}">
+                                            <span>{{ ach.icon }}</span>
+                                            <span>{{ ach.title }}</span>
+                                            <span>{{ ach.stars }}</span>
+                                        </span>
+                                        {% endfor %}
+                                    </div>
+                                </details>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog of all 24 Achievements -->
+    <section class="catalog-section mb-10">
+        <div class="mb-6">
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                <span>📖</span> <span>Каталог испытаний (24 достижения)</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Описания условий для получения Бронзового, Серебряного и Золотого уровней</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {% for ach in all_achievements_catalog %}
+            <div class="glassmorphism p-5 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+                <div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 text-2xl flex items-center justify-center shrink-0">
+                            {{ ach.icon }}
+                        </div>
+                        <div>
+                            <h3 class="text-base font-black text-white">{{ ach.title }}</h3>
+                            <p class="text-xs text-slate-400 leading-snug mt-0.5">{{ ach.desc }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Tiers Info List -->
+                    <div class="space-y-2 mt-4 text-xs font-sans border-t border-slate-800/80 pt-3">
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/20 border border-amber-900/40">
+                            <span class="font-bold text-amber-500 flex items-center gap-1.5">
+                                <span>🥉</span> <span>Бронза (Tier 1)</span>
+                            </span>
+                            <span class="font-mono text-amber-400 font-bold">+100 pts</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/80 border border-slate-700/60">
+                            <span class="font-bold text-slate-300 flex items-center gap-1.5">
+                                <span>🥈</span> <span>Серебро (Tier 2)</span>
+                            </span>
+                            <span class="font-mono text-slate-200 font-bold">+250 pts</span>
+                        </div>
+                        <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/40 border border-amber-500/40">
+                            <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                                <span>🥇</span> <span>Золото (Tier 3)</span>
+                            </span>
+                            <span class="font-mono text-amber-300 font-black">+500 pts</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Holders Footer -->
+                <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                    <span>Обладателей:</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-amber-300 font-bold" title="Золото">🥇 {{ ach.holders[3]|length }}</span>
+                        <span class="text-slate-300 font-bold" title="Серебро">🥈 {{ ach.holders[2]|length }}</span>
+                        <span class="text-amber-500 font-bold" title="Бронза">🥉 {{ ach.holders[1]|length }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Live Search for Glory Table
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('glory-search');
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#glory-table tbody tr');
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}

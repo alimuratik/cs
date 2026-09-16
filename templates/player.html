@@ -302,25 +302,25 @@
 
         <!-- Faceit Level Progress Bar -->
         {% if player.faceit.skill_level < 10 and player.faceit.next_level_elo %}
-        <div class="mb-5 p-3 rounded-xl bg-slate-900/70 border border-orange-500/20">
-            <div class="flex items-center justify-between text-xs mb-1.5 font-mono">
-                <span class="text-slate-300 flex items-center gap-2">
-                    <span class="text-orange-400 font-bold">Прогресс до Level {{ player.faceit.next_level }}</span>
+        <div class="faceit-level-progress-box mb-5 p-3.5 rounded-xl bg-slate-900/70 border border-orange-500/30 shadow-inner">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs mb-2 font-mono">
+                <span class="faceit-progress-title flex items-center gap-2">
+                    <span class="text-orange-500 font-bold">Прогресс до Level {{ player.faceit.next_level }}</span>
                     <span class="text-slate-500">•</span>
-                    <span class="text-slate-400">{{ player.faceit.elo }} / {{ player.faceit.next_level_elo }} ELO</span>
+                    <span class="faceit-progress-elo text-slate-300 font-bold">{{ player.faceit.elo }} / {{ player.faceit.next_level_elo }} ELO</span>
                 </span>
-                <span class="text-orange-300 font-bold">Осталось {{ player.faceit.elo_to_next }} ELO ({{ player.faceit.progress_percent }}%)</span>
+                <span class="faceit-progress-remaining font-bold text-orange-400">Осталось {{ player.faceit.elo_to_next }} ELO ({{ player.faceit.progress_percent }}%)</span>
             </div>
-            <div class="w-full bg-slate-950 rounded-full h-2.5 p-0.5 border border-slate-800 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 to-orange-500 h-full rounded-full transition-all duration-500" style="width: {{ player.faceit.progress_percent }}%;"></div>
+            <div class="faceit-track w-full bg-slate-950 rounded-full h-2.5 p-0.5 border border-slate-800 overflow-hidden">
+                <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style="width: {{ player.faceit.progress_percent }}%;"></div>
             </div>
         </div>
         {% elif player.faceit.skill_level == 10 %}
-        <div class="mb-5 p-2.5 px-3.5 rounded-xl bg-red-950/30 border border-red-500/30 flex items-center justify-between text-xs font-mono">
-            <span class="text-red-300 font-bold flex items-center gap-1.5">
+        <div class="faceit-level-progress-box mb-5 p-3 px-4 rounded-xl bg-red-950/30 border border-red-500/40 flex items-center justify-between text-xs font-mono">
+            <span class="text-red-400 font-bold flex items-center gap-2">
                 <span>👑</span> <span>Максимальный уровень FACEIT (Level 10)</span>
             </span>
-            <span class="text-slate-300 font-bold">{{ player.faceit.elo }} ELO</span>
+            <span class="text-white font-bold">{{ player.faceit.elo }} ELO</span>
         </div>
         {% endif %}
 
@@ -401,12 +401,12 @@
             </h2>
             <div class="space-y-3">
                 {% for key, val in player.ratings_dict.items() %}
-                <a href="../skills.html#{{ key|lower|replace(' ', '-') }}" class="flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку {{ key }}">
-                    <span class="text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-300 transition flex items-center gap-1">
+                <a href="../skills.html#{{ key|lower|replace(' ', '-') }}" class="rating-bar-row flex items-center gap-3 group p-1.5 -mx-1.5 rounded-xl hover:bg-slate-800/50 transition cursor-pointer" title="Смотреть таблицу лидеров по навыку {{ key }}">
+                    <span class="rating-bar-label text-xs font-semibold text-slate-300 min-w-[100px] group-hover:text-emerald-400 transition flex items-center gap-1">
                         {{ key }}
                         <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
                     </span>
-                    <div class="flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
+                    <div class="rating-bar-track flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
                         <div class="h-full rounded-full transition-all duration-500
                             {% if val < 5.0 %}bg-rose-500
                             {% elif val < 7.0 %}bg-amber-500
@@ -414,7 +414,7 @@
                             {% else %}bg-gradient-to-r from-amber-400 to-yellow-400{% endif %}"
                              style="width: {{ val * 10 }}%;"></div>
                     </div>
-                    <span class="font-mono font-bold text-xs w-8 text-right
+                    <span class="rating-bar-val font-mono font-bold text-xs w-8 text-right
                         {% if val < 5.0 %}text-rose-400
                         {% elif val < 7.0 %}text-amber-400
                         {% elif val < 8.0 %}text-emerald-400
@@ -694,16 +694,26 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             <!-- Matrix Visual -->
             <div class="lg:col-span-6 flex justify-center">
-                <div class="archetype-matrix-wrapper relative w-72 h-72 sm:w-80 sm:h-80 bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-inner overflow-hidden">
+                <div class="archetype-matrix-wrapper relative w-full max-w-[300px] sm:max-w-[340px] aspect-square bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-inner overflow-hidden">
                     <!-- Crosshairs -->
                     <div class="matrix-crosshair-x absolute left-0 right-0 top-1/2 h-[1px] bg-slate-700/60 border-t border-dashed border-slate-600/50"></div>
                     <div class="matrix-crosshair-y absolute top-0 bottom-0 left-1/2 w-[1px] bg-slate-700/60 border-l border-dashed border-slate-600/50"></div>
 
                     <!-- Labels -->
-                    <span class="matrix-label label-top absolute top-2 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-amber-400 tracking-wider">⭐ Звездный керри (+Y)</span>
-                    <span class="matrix-label label-bottom absolute bottom-2 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-sky-400 tracking-wider">🛡️ Системная опора (-Y)</span>
-                    <span class="matrix-label label-left absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-slate-400 tracking-wider">🧠 Пассив (-X)</span>
-                    <span class="matrix-label label-right absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase text-rose-400 tracking-wider">⚔️ Агрессия (+X)</span>
+                    <span class="matrix-label label-top absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-amber-400 tracking-wider">
+                        <span class="sm:hidden">⭐ Керри (+Y)</span>
+                        <span class="hidden sm:inline">⭐ Звездный керри (+Y)</span>
+                    </span>
+                    <span class="matrix-label label-bottom absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-sky-400 tracking-wider">
+                        <span class="sm:hidden">🛡️ Опора (-Y)</span>
+                        <span class="hidden sm:inline">🛡️ Системная опора (-Y)</span>
+                    </span>
+                    <span class="matrix-label label-left absolute left-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                        🧠 Пассив (-X)
+                    </span>
+                    <span class="matrix-label label-right absolute right-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-rose-400 tracking-wider">
+                        ⚔️ Агрессия (+X)
+                    </span>
 
                     <!-- Archetype Dot -->
                     <div class="archetype-dot absolute w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-lg shadow-emerald-400/80 -translate-x-1/2 -translate-y-1/2 z-10"
@@ -1042,32 +1052,31 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {% for ach in player.achievements %}
             <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
-                {% if ach.is_max %}
-                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
-                {% elif ach.unlocked %}
-                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
+                {% if ach.tier == 3 %}
+                bg-gradient-to-b from-amber-950/40 via-slate-900/95 to-slate-950 border-amber-400/70 shadow-lg shadow-amber-950/30 hover:border-amber-300
+                {% elif ach.tier == 2 %}
+                bg-gradient-to-b from-slate-800/40 via-slate-900/95 to-slate-950 border-slate-400/60 shadow-md shadow-slate-900/40 hover:border-slate-300
+                {% elif ach.tier == 1 %}
+                bg-gradient-to-b from-amber-950/25 via-slate-900/95 to-slate-950 border-amber-600/50 shadow-md shadow-amber-950/20 hover:border-amber-500
                 {% else %}
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
+                bg-slate-950/50 border-slate-800/60 opacity-65 hover:opacity-95 hover:border-slate-700
                 {% endif %}">
                 
-                <!-- Card Header: Pips + Glory Points Tag -->
+                <!-- Card Header: 3 Stars + Glory Points Tag -->
                 <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
-                    <!-- 3 Level Pips -->
-                    <div class="flex items-center gap-1.5">
-                        {% for pip in ach.pips %}
-                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
-                            {% if pip.status == 'completed' %}
-                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
-                            {% else %}
-                            bg-slate-800/90 text-slate-500 border border-slate-700
-                            {% endif %}" title="Уровень {{ pip.level }}: {% if pip.status == 'completed' %}Пройден{% else %}Заблокирован{% endif %}">
-                            {% if pip.status == 'completed' %}✓{% else %}🔒{% endif %}
+                    <!-- 3 Stars Display (Bronze, Silver, Gold) -->
+                    <div class="flex items-center gap-1">
+                        {% for star in ach.stars_data %}
+                        <span class="text-sm font-black transition-all leading-none"
+                              style="color: {{ star.css_color }};"
+                              title="Уровень {{ star.level }} ({{ star.name }}): {% if star.unlocked %}Получено ★{% else %}Не открыто ☆{% endif %}">
+                            {{ star.symbol }}
                         </span>
                         {% endfor %}
-                        <span class="text-[11px] font-bold font-mono ml-1
-                            {% if ach.tier == 3 %}text-amber-300 font-extrabold
-                            {% elif ach.tier == 2 %}text-slate-200
-                            {% elif ach.tier == 1 %}text-amber-400
+                        <span class="text-[11px] font-bold font-mono ml-1.5
+                            {% if ach.tier == 3 %}text-amber-400 font-extrabold
+                            {% elif ach.tier == 2 %}text-slate-300 font-bold
+                            {% elif ach.tier == 1 %}text-amber-500 font-semibold
                             {% else %}text-slate-500{% endif %}">
                             {{ ach.tier_name }}
                         </span>
@@ -1085,17 +1094,27 @@
                 <!-- Card Body: Icon Frame + Title & Descriptions -->
                 <div class="flex items-start gap-3.5 mb-3">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
-                        {% if ach.is_max %}
-                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
-                        {% elif ach.unlocked %}
-                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        {% if ach.tier == 3 %}
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/70 shadow-lg shadow-amber-400/25
+                        {% elif ach.tier == 2 %}
+                        bg-gradient-to-br from-slate-400/25 to-slate-600/15 border border-slate-400/60 shadow-sm shadow-slate-400/20
+                        {% elif ach.tier == 1 %}
+                        bg-gradient-to-br from-amber-700/25 to-amber-900/15 border border-amber-600/50 shadow-sm shadow-amber-700/20
                         {% else %}
                         bg-slate-900/80 border border-slate-800 grayscale
                         {% endif %}">
                         {{ ach.icon }}
-                        {% if ach.unlocked %}
-                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
-                            T{{ ach.tier }}
+                        {% if ach.tier == 3 %}
+                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-amber-950 px-1 rounded border border-amber-400 text-amber-300 shadow-sm">
+                            🥇 ЗОЛОТО
+                        </span>
+                        {% elif ach.tier == 2 %}
+                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-slate-900 px-1 rounded border border-slate-400 text-slate-200 shadow-sm">
+                            🥈 СЕРЕБРО
+                        </span>
+                        {% elif ach.tier == 1 %}
+                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-amber-950 px-1 rounded border border-amber-600 text-amber-400 shadow-sm">
+                            🥉 БРОНЗА
                         </span>
                         {% endif %}
                     </div>
@@ -1105,41 +1124,45 @@
                             <h4 class="text-xs font-black uppercase tracking-tight truncate {% if ach.unlocked %}text-white{% else %}text-slate-400{% endif %}">
                                 {{ ach.title }}
                             </h4>
-                            {% if ach.is_max %}
-                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
-                            {% elif ach.unlocked %}
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            {% if ach.tier == 3 %}
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/90 border border-amber-400/60 px-1.5 py-0.5 rounded shrink-0">👑 ЗОЛОТО</span>
+                            {% elif ach.tier == 2 %}
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-slate-200 bg-slate-800/90 border border-slate-400/50 px-1.5 py-0.5 rounded shrink-0">🥈 СЕРЕБРО</span>
+                            {% elif ach.tier == 1 %}
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-950/80 border border-amber-600/50 px-1.5 py-0.5 rounded shrink-0">🥉 БРОНЗА</span>
                             {% else %}
                             <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
                             {% endif %}
                         </div>
                         
-                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                        <p class="text-[11px] text-slate-300 mt-1.5 leading-snug">
                             {{ ach.desc }}
                         </p>
 
-                        {% if not ach.is_max and ach.unlocked %}
-                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
-                            ➔ Цель T{{ ach.tier + 1 }}: {{ ach.next_goal }}
-                        </p>
+                        {% if ach.next_goal %}
+                        <div class="text-[11px] font-medium mt-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-amber-300 leading-snug">
+                            <span class="text-slate-400 font-bold">🎯 Следующая цель:</span> {{ ach.next_goal }}
+                        </div>
                         {% endif %}
                     </div>
                 </div>
 
                 <!-- Card Footer: Detailed Progress Bar -->
-                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                <div class="mt-auto pt-2.5 border-t border-slate-800/50">
                     <div class="flex items-center justify-between text-[11px] font-mono mb-1">
                         <span class="text-slate-400 text-[10px]">Прогресс:</span>
-                        <span class="font-bold {% if ach.unlocked %}text-cyan-300{% else %}text-slate-400{% endif %}">
+                        <span class="font-bold achievement-progress-text {% if ach.tier == 3 %}text-amber-400{% elif ach.tier == 2 %}text-slate-200{% elif ach.tier == 1 %}text-amber-400{% else %}text-slate-400{% endif %}">
                             {{ ach.progress }}
                         </span>
                     </div>
-                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative achievement-progress-track">
                         <div class="h-full rounded-full transition-all duration-500
-                            {% if ach.is_max %}
+                            {% if ach.tier == 3 %}
                             bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
-                            {% elif ach.unlocked %}
-                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            {% elif ach.tier == 2 %}
+                            bg-gradient-to-r from-slate-300 via-sky-200 to-slate-200 shadow-sm shadow-slate-300/60
+                            {% elif ach.tier == 1 %}
+                            bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 shadow-sm shadow-amber-500/50
                             {% else %}
                             bg-slate-600
                             {% endif %}" style="width: {{ ach.progress_pct }}%;"></div>

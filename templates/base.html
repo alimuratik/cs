@@ -53,8 +53,8 @@
                 <a href="{{ root_path }}index.html#sessions-section" class="nav-item {% if active_page == 'sessions' %}active{% endif %}">
                     <span class="nav-icon">📅</span> Сессии
                 </a>
-                <a href="{{ root_path }}demos.html" class="nav-item {% if active_page == 'demos' %}active{% endif %}">
-                    <span class="nav-icon">🎬</span> Демки
+                <a href="{{ root_path }}achievements.html" class="nav-item {% if active_page == 'achievements' %}active{% endif %}">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="{{ root_path }}compare.html" class="nav-item {% if active_page == 'compare' %}active{% endif %}">
                     <span class="nav-icon">⚔️</span> Дуэли
@@ -120,8 +120,8 @@
             <a href="{{ root_path }}index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm {% if active_page == 'sessions' %}bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50{% else %}text-slate-300 hover:bg-slate-800/60{% endif %}">
                 <span class="text-lg">📅</span> <span>Сессии и матчи</span>
             </a>
-            <a href="{{ root_path }}demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm {% if active_page == 'demos' %}bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50{% else %}text-slate-300 hover:bg-slate-800/60{% endif %}">
-                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            <a href="{{ root_path }}achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm {% if active_page == 'achievements' %}bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50{% else %}text-slate-300 hover:bg-slate-800/60{% endif %}">
+                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
@@ -306,7 +306,10 @@
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => setOpen(true));
+                btn.addEventListener('click', () => {
+                    const isOpen = !drawer.classList.contains('hidden');
+                    setOpen(!isOpen);
+                });
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));

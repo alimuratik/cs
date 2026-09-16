@@ -53,8 +53,8 @@
                 <a href="index.html#sessions-section" class="nav-item ">
                     <span class="nav-icon">📅</span> Сессии
                 </a>
-                <a href="demos.html" class="nav-item ">
-                    <span class="nav-icon">🎬</span> Демки
+                <a href="achievements.html" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="compare.html" class="nav-item ">
                     <span class="nav-icon">⚔️</span> Дуэли
@@ -120,8 +120,8 @@
             <a href="index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
                 <span class="text-lg">📅</span> <span>Сессии и матчи</span>
             </a>
-            <a href="demos.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
+            <a href="achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
@@ -184,37 +184,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Quick Interactive Modules Banner -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-        <a href="compare.html" class="glassmorphism p-5 rounded-2xl border border-rose-500/30 hover:border-rose-500/70 transition bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-rose-950/20 group flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
-                    ⚔️
-                </div>
-                <div>
-                    <div class="text-xs font-bold uppercase tracking-wider text-rose-400">Бойцовский клуб 1v1</div>
-                    <h3 class="text-lg font-black text-white group-hover:text-rose-300 transition">Личные дуэли игроков</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Очный счёт фрагов, баланс дуэлей и сравнение навыков 1 на 1</p>
-                </div>
-            </div>
-            <span class="text-slate-500 group-hover:text-rose-400 transition text-lg pr-2">➔</span>
-        </a>
-
-        <a href="matchmaker.html" class="glassmorphism p-5 rounded-2xl border border-emerald-500/30 hover:border-emerald-500/70 transition bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/20 group flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition">
-                    ⚖️
-                </div>
-                <div>
-                    <div class="text-xs font-bold uppercase tracking-wider text-emerald-400">Балансировщик 5v5</div>
-                    <h3 class="text-lg font-black text-white group-hover:text-emerald-300 transition">Генератор честных составов</h3>
-                    <p class="text-xs text-slate-400 mt-0.5">Умное разбиение 10 игроков с минимизацией разницы MMR и синергией ролей</p>
-                </div>
-            </div>
-            <span class="text-slate-500 group-hover:text-emerald-400 transition text-lg pr-2">➔</span>
-        </a>
-    </div>
 
     <!-- 5 Hall of Fame Session Nominations -->
     
@@ -7737,7 +7706,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 18:31</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -8054,7 +8023,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => setOpen(true));
+                btn.addEventListener('click', () => {
+                    const isOpen = !drawer.classList.contains('hidden');
+                    setOpen(!isOpen);
+                });
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));

@@ -148,15 +148,16 @@ def compute_faceit_map_performance(faceit_data: dict) -> dict:
         return {"has_data": False, "favorite": None, "kryptonite": None, "all_maps": []}
 
     map_icons = {
-        "mirage": "mirage.svg",
-        "dust2": "dust2.svg",
-        "inferno": "inferno.svg",
-        "nuke": "nuke.svg",
-        "ancient": "ancient.svg",
-        "anubis": "anubis.svg",
-        "vertigo": "vertigo.svg",
-        "overpass": "overpass.svg",
-        "train": "train.svg"
+        "mirage": "map_icon_de_mirage.svg",
+        "dust2": "map_icon_de_dust2.svg",
+        "inferno": "map_icon_de_inferno.svg",
+        "nuke": "map_icon_de_nuke.svg",
+        "ancient": "map_icon_de_ancient.svg",
+        "anubis": "map_icon_de_anubis.svg",
+        "vertigo": "map_icon_de_vertigo.svg",
+        "overpass": "map_icon_de_overpass.svg",
+        "train": "map_icon_de_train.svg",
+        "cache": "map_icon_de_cache.svg"
     }
 
     parsed_maps = []
@@ -173,7 +174,7 @@ def compute_faceit_map_performance(faceit_data: dict) -> dict:
             "matches": cnt,
             "win_rate": wr,
             "kd": kd,
-            "icon": map_icons.get(m_clean, "mirage.svg")
+            "icon": map_icons.get(m_clean, f"map_icon_de_{m_clean}.svg")
         })
 
     if not parsed_maps:
@@ -948,6 +949,17 @@ def format_match_data(m: dict) -> dict:
         ct_val_disp = r.get("ct_economy_val_display") or ""
         t_val_disp = r.get("t_economy_val_display") or ""
 
+        t1_val = r.get("ct_economy_val", 4000) if t1_side == "ct" else r.get("t_economy_val", 4000)
+        t2_val = r.get("t_economy_val", 4000) if t1_side == "ct" else r.get("ct_economy_val", 4000)
+        try:
+            t1_val = int(t1_val)
+        except Exception:
+            t1_val = 4000
+        try:
+            t2_val = int(t2_val)
+        except Exception:
+            t2_val = 4000
+
         formatted_rounds.append({
             "number": idx,
             "winner": w,
@@ -956,6 +968,8 @@ def format_match_data(m: dict) -> dict:
             "win_icon": icon,
             "ct_team_name": ct_t_name,
             "t_team_name": t_t_name,
+            "team1_eco_val": t1_val,
+            "team2_eco_val": t2_val,
             "ct_economy_badge": ct_badge,
             "ct_economy_val_display": ct_val_disp,
             "ct_economy": str(ct_eco),
@@ -970,12 +984,17 @@ def format_match_data(m: dict) -> dict:
             "ai_analysis": clean_ai_html
         })
 
-    # Экономика (заглушка графиков)
-    round_nums = list(range(1, len(formatted_rounds) + 1))
+    # Экономика по раундам
     economy_chart = {
-        "labels": round_nums,
-        "team1": [4200 + (i % 3) * 2000 for i in round_nums],
-        "team2": [3800 + ((i + 1) % 4) * 1800 for i in round_nums]
+        "labels": [f"R{fr['number']}" for fr in formatted_rounds],
+        "rounds_meta": [{
+            "number": fr["number"],
+            "winner": fr["winner"],
+            "winning_team": fr["winning_team"],
+            "winning_side": fr["winner"]
+        } for fr in formatted_rounds],
+        "team1": [fr.get("team1_eco_val", 4000) for fr in formatted_rounds],
+        "team2": [fr.get("team2_eco_val", 4000) for fr in formatted_rounds]
     }
 
     # Расчет дуэлей между игроками (Head-to-Head Duel Matrix)
@@ -1780,7 +1799,89 @@ def generate_site():
     )
     logging.info("Сгенерирована страница навыков: site/skills.html")
 
-    # 6. Генерация страницы демок site/demos.html
+    # 6. Генерация страницы Зала славы и достижений site/achievements.html
+    glory_leaderboard = []
+    ach_catalog_map = {}
+
+    for p in players:
+        sid = clean_steamid(p.get("steam_id"))
+        if not sid:
+            continue
+        p_name = clean_name(p.get("name", f"Player_{sid[-4:]}"))
+        ach_list = p.get("achievements", [])
+        ach_summary = p.get("achievements_summary", {})
+        
+        for a in ach_list:
+            aid = a.get("id")
+            if aid and aid not in ach_catalog_map:
+                ach_catalog_map[aid] = {
+                    "id": aid,
+                    "title": a.get("title"),
+                    "icon": a.get("icon"),
+                    "desc": a.get("desc"),
+                    "max_tier": a.get("max_tier", 3),
+                    "holders": {1: [], 2: [], 3: []}
+                }
+            if aid and a.get("tier", 0) > 0:
+                tier = a.get("tier")
+                if tier in (1, 2, 3):
+                    ach_catalog_map[aid]["holders"][tier].append({
+                        "steam_id": sid,
+                        "name": p_name,
+                        "tier_name": a.get("tier_name")
+                    })
+
+        mmr_d = p.get("mmr", {})
+        curr_m = mmr_d.get("current_mmr", STARTING_MMR)
+        is_cal = mmr_d.get("is_calibrating", len(p.get("matches", [])) <= CALIBRATION_MATCH_LIMIT)
+        is_inac = mmr_d.get("is_inactive", False)
+        rt = get_player_rank_tier(curr_m, is_calibrating=is_cal, is_inactive=is_inac)
+
+        glory_pts = ach_summary.get("total_points", 0)
+        gold_c = ach_summary.get("tier3_count", ach_summary.get("gold_count", 0))
+        silver_c = ach_summary.get("tier2_count", ach_summary.get("silver_count", 0))
+        bronze_c = ach_summary.get("tier1_count", ach_summary.get("bronze_count", 0))
+        unlocked_c = ach_summary.get("total_unlocked", 0)
+
+        glory_leaderboard.append({
+            "steam_id": sid,
+            "name": p_name,
+            "avatar_classes": rt.get("avatar_classes", ""),
+            "rank_tier": rt,
+            "current_mmr": curr_m,
+            "glory_points": glory_pts,
+            "gold_count": gold_c,
+            "silver_count": silver_c,
+            "bronze_count": bronze_c,
+            "unlocked_count": unlocked_c,
+            "total_count": len(ach_list) or 24,
+            "completion_pct": round((unlocked_c / max(1, len(ach_list) or 24)) * 100, 1),
+            "achievements": ach_list,
+            "unlocked_achievements": [a for a in ach_list if a.get("tier", 0) > 0]
+        })
+
+    glory_leaderboard.sort(key=lambda x: (x["glory_points"], x["gold_count"], x["silver_count"], x["current_mmr"]), reverse=True)
+    for idx, pl in enumerate(glory_leaderboard, start=1):
+        pl["glory_rank"] = idx
+
+    all_achievements_catalog = list(ach_catalog_map.values())
+
+    achievements_template = env.get_template("achievements.html")
+    safe_dump(
+        achievements_template.stream(
+            active_page="achievements",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            glory_leaderboard=glory_leaderboard,
+            all_achievements_catalog=all_achievements_catalog,
+            generated_at=generated_at
+        ),
+        SITE_DIR / "achievements.html"
+    )
+    logging.info("Сгенерирована страница достижений: site/achievements.html")
+
+    # 7. Генерация страницы демок site/demos.html
     demos_template = env.get_template("demos.html")
     safe_dump(
         demos_template.stream(

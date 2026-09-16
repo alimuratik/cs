@@ -299,7 +299,8 @@ MAP_DISPLAY_NAMES = {
     "de_nuke": "Nuke",
     "de_vertigo": "Vertigo",
     "de_overpass": "Overpass",
-    "de_train": "Train"
+    "de_train": "Train",
+    "de_cache": "Cache"
 }
 
 MAP_ICONS = {
@@ -311,7 +312,8 @@ MAP_ICONS = {
     "de_nuke": "map_icon_de_nuke.svg",
     "de_vertigo": "map_icon_de_vertigo.svg",
     "de_overpass": "map_icon_de_overpass.svg",
-    "de_train": "map_icon_de_train.svg"
+    "de_train": "map_icon_de_train.svg",
+    "de_cache": "map_icon_de_cache.svg"
 }
 
 # Константы для порогов рейтинга
