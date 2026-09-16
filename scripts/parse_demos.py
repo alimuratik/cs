@@ -699,6 +699,14 @@ def parse_all_new() -> list[dict]:
     with open(players_db_path, "w", encoding="utf-8") as f:
         json.dump(players_db, f, indent=4, ensure_ascii=False)
         
+    if parsed_results:
+        try:
+            from scripts.generate_site import sync_match_videos
+            all_mids = [f.stem for f in matches_dir.glob("*.json")]
+            sync_match_videos(all_mids)
+        except Exception as ve:
+            logging.debug(f"Синхронизация match_videos.json пропущена: {ve}")
+
     logging.info("Парсинг новых демок завершен.")
     return parsed_results
 

@@ -1913,11 +1913,44 @@
                 <span class="text-2xl">🎙️</span>
                 <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1"><strong class='text-white'>Добро пожаловать в аналитическую студию!</strong> На экране только что завершилась жаркая битва на легендарном Dust2, где сошлись Oceanmengo и ALIBONYA. Со счетом 13:9 победу празднует первый коллектив, а безупречным MVP поединка заслуженно признан сам лидер команды-победительницы — Oceanmengo, чьё индивидуальное мастерство не оставило шансов оппонентам. Ключевым переломным моментом матча стал невероятный эко-раунд в исполнении Oceanmengo при счете 8:7 в их пользу: выигранная на тонкого перестрелка на точке «B» полностью сломала экономику ALIBONYA и позволила будущим триумфаторам перехватить инициативу, загнав соперника в глухую оборону.</p>
-<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Анализируя игру команд, стоит отметить тактическую гибкость победителей: Oceanmengo продемонстрировали образцовый контроль миддла и молниеносные ротации, а их звездный лидер стабильно реализовывал ключевые дуэли, не оставляя ALIBONYA пространства для маневра. Проигравшие же провели неплохую первую половину за атаку, но во втором тайме начали буксовать из-за предсказуемых раскидок и проигранных первых столкновений на ковре. Несмотря на старания снайпера ALIBONYA, команда так и не нашла противоядие против агрессивного прессинга соперника на длинной позиции, что и привело их к обидному поражению со счетом 9:13.</p></p>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добro пожаловать в аналитическую студию! Классика соревновательного CS — Dust2 — подарила нам ярчайшее зрелище, в котором <strong class='text-white'>Oceanmengo</strong> перетерпели соперников и закрыли карту со счетом <strong class='text-white'>13:9</strong>. Судьба встречи решилась в середине второй половины, когда <strong class='text-white'>ALIBONYA</strong> попытались перехватить инициативу за атакующую сторону, сравняв счет. Однако ключевым моментом стал невероятный эко-раунд от Oceanmengo, сломавший экономику оппонента и позволивший триумфаторам совершить победный рывок из четырех раундов подряд.</p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Победители полностью оправдали свой статус фаворитов благодаря феноменальной индивидуальной форме своего капитана и главной звезды: <strong class='text-white'>Oceanmengo</strong> выдал мастер-класс по игре на ключевых позициях, заслуженно забрал медаль MVP и стал непреодолимой стеной для оппонента. Что касается <strong class='text-white'>ALIBONYA</strong>, то коллектив показал плотную борьбу и отличные заготовки на плентах, но катастрофически проиграл ключевые дуэли в концовках раундов и не смог справиться с давлением в защите, что в итоге и привело их к обидному поражению.</p></p>
         </div>
     </section>
     
+
+    <!-- Match Video Recording Accordion -->
+    <section class="section match-video-section mb-10">
+        <details class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden group shadow-lg" id="match-video-accordion" >
+            <summary class="p-5 bg-slate-900/90 hover:bg-slate-800/70 transition flex items-center justify-between cursor-pointer select-none border-b border-slate-800/60">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl shrink-0">🎬</span>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="text-lg font-bold text-white">Видеозапись и трансляция матча</h3>
+                            
+                            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Ожидается видео</span>
+                            
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">Полноэкранный видеоповтор карты Dust2 от лица игроков</p>
+                    </div>
+                </div>
+                <span class="text-slate-400 text-sm font-bold transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+
+            <div class="p-5 md:p-6 bg-slate-950/50">
+                
+                <div class="text-center py-8 px-4 rounded-xl border border-dashed border-slate-800/80 bg-slate-900/30">
+                    <div class="text-3xl mb-2">🎥</div>
+                    <h4 class="text-sm font-bold text-white mb-1">Видеозапись к этому матчу пока не прикреплена</h4>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+                        Вы можете вставить ссылку на YouTube в файл <code class="text-emerald-400 font-mono bg-slate-800 px-1.5 py-0.5 rounded">data/match_videos.json</code> под ключом <code class="text-amber-300 font-mono bg-slate-800 px-1.5 py-0.5 rounded">"03072026_dust2_25566313_235"</code>.
+                    </p>
+                </div>
+                
+            </div>
+        </details>
+    </section>
 
     <!-- Economy Graph -->
     <section class="section economy-section mb-10">
@@ -7568,7 +7601,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:47</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

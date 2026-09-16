@@ -603,24 +603,36 @@
         </div>
     </section>
 
-    <!-- Map Highlights: Signature & Kryptonite -->
+    <!-- Map Highlights: Signature Fortress & Kryptonite (KASE vs FACEIT Tabs) -->
     
     <section class="section map-highlights-section mb-8">
-        <div class="mb-4">
-            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                🗺️ Анализ пула карт: Сигнатурная крепость и Зона риска
-            </h2>
-            <p class="text-xs text-slate-400 mt-0.5">Векторный разбор карт с максимальным винрейтом и проблемных локаций с персональными советами</p>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    🗺️ Анализ пула карт: Сигнатурная крепость и Зона риска
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">Векторный разбор лучших и проблемных карт с персональными тактическими рекомендациями</p>
+            </div>
+            <!-- Interactive Environment Tabs: KASE vs FACEIT -->
+            <div class="inline-flex items-center p-1 bg-slate-900/90 rounded-xl border border-slate-800 self-start sm:self-auto gap-1">
+                <button type="button" onclick="switchMapPoolTab('kase')" id="map-tab-btn-kase" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                    <span>🏢</span> <span>Игры KASE</span>
+                </button>
+                <button type="button" onclick="switchMapPoolTab('faceit')" id="map-tab-btn-faceit" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                    <span>🌐</span> <span>Матчи FACEIT</span>
+                </button>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Favorite / Signature Map -->
+        <!-- 1. Tab KASE Games Content -->
+        <div id="map-tab-content-kase" class="grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-200">
+            <!-- Favorite / Signature Map KASE -->
             
             
             <div class="map-card-banner map-card-favorite border rounded-2xl p-6 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-amber-950/30">
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <span class="map-badge-tag badge-favorite">
-                        ⭐ Сигнатурная карта
+                        ⭐ Сигнатурная крепость (KASE)
                     </span>
                     <div class="text-right">
                         <span class="text-xs text-amber-300/80 font-mono font-bold block">5 матчей сыграно</span>
@@ -658,13 +670,13 @@
             </div>
             
 
-            <!-- Kryptonite / Difficult Map -->
+            <!-- Kryptonite / Difficult Map KASE -->
             
             
             <div class="map-card-banner map-card-kryptonite border rounded-2xl p-6 relative overflow-hidden bg-gradient-to-br from-slate-900/90 via-slate-900/70 to-rose-950/30">
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <span class="map-badge-tag badge-kryptonite">
-                        ☠️ Криптонит (Сложная карта)
+                        ☠️ Зона риска (KASE)
                     </span>
                     <div class="text-right">
                         <span class="text-xs text-rose-300/80 font-mono font-bold block">3 матчей сыграно</span>
@@ -700,6 +712,19 @@
                     Главная зона роста в пуле на Ancient (винрейт 0.0%, HLTV 1.04, ADR 80.6). На этой карте не хватает позиционной плотности и командных разменов. Рекомендуется глубже разобрать раскидки и избегать открытых соло-дуэлей. В роли опорника фокус на максимальной затяжке времени и задерживающем молотове под первый контакт.
                 </div>
             </div>
+            
+        </div>
+
+        <!-- 2. Tab FACEIT Matches Content -->
+        <div id="map-tab-content-faceit" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6 transition-all duration-200">
+            
+                <div class="col-span-2 text-center py-10 px-6 rounded-2xl border border-dashed border-slate-800/80 bg-slate-900/30">
+                    <div class="text-3xl mb-2">🌐</div>
+                    <h4 class="text-base font-bold text-white mb-1">Статистика карт FACEIT пока недоступна</h4>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+                        Для этого игрока еще не подтянута статистика по картам с официального FACEIT API или сыграно недостаточно матчей.
+                    </p>
+                </div>
             
         </div>
     </section>
@@ -1008,707 +1033,2333 @@
     </section>
     
 
-    <!-- Achievements & Badges Showcase -->
+    <!-- Achievements & Badges Showcase (Gamified 3-Tier System) -->
     
     <section class="section achievements-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+        <!-- Glory Header (Dota 2 / Shooter Style) -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-800/80">
             <div>
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
                     🏆 Зал славы и Достижения
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">24 знака отличия: киберспортивные испытания, стабильность и мастерство</p>
+                <p class="text-xs text-slate-400 mt-1">24 киберспортивных испытания: 3 ступени мастерства (Tier I · II · III), система звёзд и прогресс</p>
             </div>
             
-            <div class="flex items-center gap-2 font-mono text-xs">
-                <span class="text-slate-400">Разблокировано:</span>
-                <span class="px-2.5 py-1 rounded-full font-bold bg-amber-950/60 text-amber-300 border border-amber-500/40">
-                    5 / 24
-                </span>
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Summary Pill: Unlocked Count -->
+                <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-slate-700/80 text-xs font-mono font-bold">
+                    <span class="text-slate-400 uppercase tracking-wider text-[11px]">ПОЛУЧЕНО:</span>
+                    <span class="text-emerald-400 font-extrabold text-sm">13</span>
+                    <span class="text-slate-500">из 24</span>
+                </div>
+
+                <!-- Summary Pill: Glory Points -->
+                <div class="flex items-center gap-2 bg-amber-950/40 px-3.5 py-1.5 rounded-xl border border-amber-500/40 text-xs font-mono font-bold shadow-sm shadow-amber-950/20">
+                    <span class="text-amber-400 text-sm">🌟</span>
+                    <span class="text-amber-300 font-black text-sm">4000</span>
+                    <span class="text-amber-500/80 uppercase text-[10px]">ОЧКОВ СЛАВЫ</span>
+                </div>
+
+                <!-- Tier Badges Counter -->
+                <div class="hidden sm:flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
+                    <span class="px-2 py-0.5 rounded bg-amber-900/40 text-amber-300 font-bold border border-amber-500/30" title="Tier III (Золото)">★★★ 6</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-700" title="Tier II (Серебро)">★★ 2</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Tier I (Бронза)">★ 5</span>
+                </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Tiered Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🔪
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Мастер унижений
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🔪
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Совершить по 2+ убийства с ножа/Zeus минимум в 2 матчах (или 3+ за одну игру)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>0/2 матчей с 2+ kill с ножа/Zeus (всего 0 фрагов)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Мастер унижений
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            2 фрага с ножа или Zeus
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0 фрагов (0 матчей с 2+ kill)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 0.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🎯
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-400
+                            ">
+                            Tier I · Бронза
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+100</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            One-Tap Хирург
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        🎯
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T1
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Средний процент попаданий в голову >= 52% при 80+ фрагах за карьеру
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>50.6% HS (307/80 фрагов)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                One-Tap Хирург
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            45.0% попаданий в голову (от 15 фрагов)
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T2: 52.0% попаданий в голову (от 25 фрагов)
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            50.6% HS (307 фрагов)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 97.3%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
-                    ">
-                    ⚡
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-white truncate">
-                            Гроза опенингов
-                        </h4>
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
                         
-                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-200
+                            ">
+                            Tier II · Серебро
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+250</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
+                </div>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        ⚡
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T2
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        18+ первых убийств с винрейтом энтри-дуэлей >= 52%
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-amber-400 font-semibold">
-                        <span>Прогресс:</span>
-                        <span>24 первых фрагов (WR: 53.3%)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Гроза опенингов
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            15 первых убийств в раундах
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T3: 25 первых убийств в раундах
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            24 / 25 первых фрагов
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 96.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🛡️
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-400
+                            ">
+                            Tier I · Бронза
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+100</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Железный занавес
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        🛡️
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T1
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Командная полезность KAST >= 75.0% и позиционка >= 6.5 (от 5 матчей)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>75.7% KAST, Позиционка 5.415 (22/5 матчей)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Железный занавес
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Полезность KAST >= 67.0%
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T2: KAST >= 72.0% и Позиционирование >= 6.0
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            75.7% KAST (Поз. 5.4)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
-                    ">
-                    👑
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-white truncate">
-                            Клатч-министр
-                        </h4>
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
                         
-                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
+                </div>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        👑
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Выиграть 5+ клатчей 1vX с винрейтом клатчей >= 35% (или 8+ суммарно)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-amber-400 font-semibold">
-                        <span>Прогресс:</span>
-                        <span>8 клатчей (WR: 12.7%)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Клатч-министр
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Выиграть 8 клатчей 1vX
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            8 / 8 клатчей
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🔭
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Снайперская элита
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🔭
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        35+ фрагов с винтовки AWP (доля AWP >= 25%) и рейтинг Aim >= 6.5
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>0 фрагов AWP (0.0%), Aim 6.699999999999999</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Снайперская элита
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            10 фрагов с винтовки AWP
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0 / 10 фрагов AWP
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 0.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    💥
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Огневой каток
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        💥
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Средний урон за раунд (ADR) >= 88.0 на дистанции от 5 матчей
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>73.6 ADR (22/5 матчей)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Огневой каток
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Средний урон за раунд ADR >= 75.0
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            73.6 / 75.0 ADR
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 98.1%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🔥
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            В абсолютном огне
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🔥
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Сессионный рывок формы >= +0.25 HLTV 2.0 относительно среднего
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>+0.05 HLTV</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                В абсолютном огне
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Сессионный рывок формы >= +0.08 HLTV
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            +0.05 HLTV
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
-                    ">
-                    📈
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-white truncate">
-                            Неприкасаемый
-                        </h4>
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
                         
-                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-200
+                            ">
+                            Tier II · Серебро
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+250</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
+                </div>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        📈
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T2
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Серия из 4 или более побед подряд в официальных играх
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-amber-400 font-semibold">
-                        <span>Прогресс:</span>
-                        <span>4 побед подряд (цель 4)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Неприкасаемый
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Серия из 4 побед подряд
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T3: Серия из 6 побед подряд
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            4 / 6 побед подряд
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 66.7%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🧨
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Артиллерийский полк
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        🧨
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Нанести 320+ HP урона гранатами (в среднем >= 6.5 за раунд)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>2178 HP (4.9/раунд)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Артиллерийский полк
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            600 HP урона гранатами
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            600 / 600 HP
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    💡
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Ослепляющий свет
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        💡
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        10+ флеш-ассистов (в среднем >= 1.2 ослепления с фрагом за матч)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>1 ассистов (0.0/матч)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Ослепляющий свет
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            3 флеш-ассиста
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            1 / 3 ассистов
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 33.3%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
-                    ">
-                    🔄
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-white truncate">
-                            Машина размена
-                        </h4>
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
                         
-                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
+                </div>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        🔄
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        16+ успешных разменов тиммейтов (доля разменов >= 23%)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-amber-400 font-semibold">
-                        <span>Прогресс:</span>
-                        <span>77 разменов (25.1%)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Машина размена
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            25 успешных разменов тиммейтов
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            25 / 25 разменов
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🔫
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Пистолетный маэстро
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        🔫
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        10+ фрагов в пистолетных раундах с винрейтом раундов >= 50%
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>28 фрагов (WR: 0.0%)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Пистолетный маэстро
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            16 фрагов в пистолетных раундах
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            16 / 16 фрагов
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    💰
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Экономический диверсант
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        💰
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        K/D >= 1.30 в раундах против полного закупа соперника (Full Buy)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>0.73 K/D vs Full Buy</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Экономический диверсант
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            K/D >= 1.05 против Full Buy
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0.73 K/D vs Full Buy
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 66.7%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🏆
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-400
+                            ">
+                            Tier I · Бронза
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+100</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Царь горы
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        🏆
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T1
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Достичь пикового рейтинга 1100+ MMR в соревновательном ладдере
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>1054 / 1100 MMR</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Царь горы
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Пиковый рейтинг 1030+ MMR
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T2: Пиковый рейтинг 1080+ MMR
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            1054 / 1080 MMR
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 97.6%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🎩
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Шляпный фокус (25+ бомбардир)
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🎩
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Оформить 25+ фрагов за одну карту как минимум в 2 матчах
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>0 / 2 матчей с 25+ фрагами</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Шляпный фокус (25+ фрагов)
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            1 матч с 25+ фрагами за карту
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0 / 1 матчей
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 0.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🧘
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-400
+                            ">
+                            Tier I · Бронза
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+100</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Мастер выживания
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        🧘
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T1
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Выживаемость в раундах >= 35.0% на дистанции от 5 матчей
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>28.8% выживаемости</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Мастер выживания
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Выживаемость в раундах >= 26.0%
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T2: Выживаемость в раундах >= 32.0%
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            28.8% / 32.0%
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 90.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-900/90 border-amber-500/40 shadow-lg shadow-amber-950/20 hover:border-amber-400
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-gradient-to-br from-amber-500/20 to-yellow-500/10 border border-amber-500/40
-                    ">
-                    🎖️
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-white truncate">
-                            Ветеран дивизиона
-                        </h4>
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
                         
-                        <span class="text-emerald-400 text-xs font-bold shrink-0">✓</span>
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
+                </div>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        🎖️
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Сыграть 15 или более официальных матчей на платформе
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-amber-400 font-semibold">
-                        <span>Прогресс:</span>
-                        <span>22 / 15 матчей</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Ветеран дивизиона
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Сыграть 15 официальных матчей
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            15 / 15 матчей
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-lg shadow-amber-950/25 hover:border-amber-300
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    👑
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 2: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 3: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-300 font-extrabold
+                            ">
+                            Tier III · Золото
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+500</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Император клатчей
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/60 shadow-lg shadow-amber-400/20
+                        ">
+                        👑
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T3
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Выиграть 6+ клатчей при феноменальном винрейте >= 40% (или 9+ суммарно)
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>8 клатчей (WR: 12.7%)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Император клатчей
+                            </h4>
+                            
+                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/80 border border-amber-400/50 px-1.5 py-0.5 rounded shrink-0">👑 МАКС</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            6 клатчей с винрейтом клатчей >= 35%
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            8 клатчей (WR: 12.7%)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
+                            " style="width: 100.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-gradient-to-b from-emerald-950/20 via-slate-900/90 to-slate-950 border-emerald-500/40 shadow-md shadow-emerald-950/20 hover:border-emerald-400
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🎯
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-amber-400 text-slate-950 shadow-sm shadow-amber-400/60 ring-1 ring-amber-300
+                            " title="Уровень 1: Пройден">
+                            ✓
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-amber-400
+                            ">
+                            Tier I · Бронза
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
+                        ">
+                        <span>+100</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Абсолютный хедхантер
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-500/40 shadow-sm shadow-emerald-500/20
+                        ">
+                        🎯
+                        
+                        <span class="absolute -bottom-1 -right-1 text-[9px] font-black font-mono bg-slate-950 px-1 py-0.2 rounded border border-amber-500/50 text-amber-300">
+                            T1
+                        </span>
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Рейтинг Aim >= 8.2 или 58%+ HS при 80+ фрагах за карьеру
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>Aim: 6.699999999999999 / 8.2, HS: 50.6%</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-white">
+                                Абсолютный хедхантер
+                            </h4>
+                            
+                            <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 border border-emerald-500/40 px-1.5 py-0.5 rounded shrink-0">✓ ГОТОВО</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Рейтинг Aim >= 6.5
+                        </p>
+
+                        
+                        <p class="text-[10px] text-amber-400/90 mt-1 font-medium truncate">
+                            ➔ Цель T2: Рейтинг Aim >= 7.3
+                        </p>
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-cyan-300">
+                            Aim: 6.7 / 8.0 (HS: 50.6%)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 shadow-sm shadow-cyan-400/50
+                            " style="width: 91.8%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🌪️
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Хозяин карты
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🌪️
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Выиграть 70%+ матчей на конкретной карте при минимуме 3 сыгранных играх
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>Нет карт с 3+ играми и WR>=70%</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Хозяин карты
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            1 карта с WR >= 55% (от 2 матчей)
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0 карт с WR >= 66%
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 0.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🛡️
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Непробиваемый якорь
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🛡️
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Рейтинг Positioning >= 7.6 и выживаемость >= 35% при 4+ матчах
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>Позиционка: 5.415, Выживание: 28.8%</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Непробиваемый якорь
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Рейтинг Positioning >= 6.3
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            5.4 / 6.3 Позиционирование
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 85.7%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    🧨
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Тактический гроссмейстер
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        🧨
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Рейтинг Utility >= 7.2 и 10+ флеш-ассистов за карьеру
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>Utility: 3.3, Флеш-ассисты: 1</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Тактический гроссмейстер
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            Рейтинг Utility >= 6.0
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            Utility: 3.3 (Флеши: 1)
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 55.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
-            <div class="achievement-card p-4 rounded-xl border transition-all duration-200 flex items-start gap-3.5
+            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
                 
-                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90
+                bg-slate-950/50 border-slate-800/60 opacity-60 hover:opacity-90 hover:border-slate-700
                 ">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0
-                    
-                    bg-slate-800/60 border border-slate-700/50 grayscale
-                    ">
-                    💀
+                
+                <!-- Card Header: Pips + Glory Points Tag -->
+                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
+                    <!-- 3 Level Pips -->
+                    <div class="flex items-center gap-1.5">
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 1: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 2: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-black transition-all
+                            
+                            bg-slate-800/90 text-slate-500 border border-slate-700
+                            " title="Уровень 3: Заблокирован">
+                            🔒
+                        </span>
+                        
+                        <span class="text-[11px] font-bold font-mono ml-1
+                            text-slate-500">
+                            Не получено
+                        </span>
+                    </div>
+
+                    <!-- Points Reward Tag -->
+                    <div class="flex items-center gap-1 font-mono text-xs font-black
+                        text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg">
+                        <span>+0</span>
+                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                    </div>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center justify-between gap-1">
-                        <h4 class="text-xs font-bold text-slate-400 truncate">
-                            Аннигилятор (30+ бомба)
-                        </h4>
+
+                <!-- Card Body: Icon Frame + Title & Descriptions -->
+                <div class="flex items-start gap-3.5 mb-3">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
+                        
+                        bg-slate-900/80 border border-slate-800 grayscale
+                        ">
+                        💀
                         
                     </div>
-                    <p class="text-[11px] text-slate-400 mt-1 leading-snug line-clamp-2">
-                        Оформить 30 или более фрагов за одну карту в официальном матче
-                    </p>
-                    <div class="text-[10px] font-mono mt-2 flex items-center justify-between
-                        text-slate-500">
-                        <span>Прогресс:</span>
-                        <span>0 матчей с 30+ фрагами (цель 1)</span>
+
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-1">
+                            <h4 class="text-xs font-black uppercase tracking-tight truncate text-slate-400">
+                                Аннигилятор (30+ бомба)
+                            </h4>
+                            
+                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
+                            
+                        </div>
+                        
+                        <p class="text-[11px] text-slate-300 mt-1 leading-snug line-clamp-2">
+                            1 матч с 30+ фрагами за карту
+                        </p>
+
+                        
                     </div>
                 </div>
+
+                <!-- Card Footer: Detailed Progress Bar -->
+                <div class="mt-auto pt-2 border-t border-slate-800/40">
+                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
+                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
+                        <span class="font-bold text-slate-400">
+                            0 / 1 матчей
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative">
+                        <div class="h-full rounded-full transition-all duration-500
+                            
+                            bg-slate-600
+                            " style="width: 0.0%;"></div>
+                    </div>
+                </div>
+
             </div>
             
         </div>
@@ -2905,7 +4556,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:47</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -3201,6 +4852,26 @@
 
         setupPlayerMatchFilters();
     });
+
+    window.switchMapPoolTab = function(tab) {
+        const kaseContent = document.getElementById('map-tab-content-kase');
+        const faceitContent = document.getElementById('map-tab-content-faceit');
+        const kaseBtn = document.getElementById('map-tab-btn-kase');
+        const faceitBtn = document.getElementById('map-tab-btn-faceit');
+        if (!kaseContent || !faceitContent || !kaseBtn || !faceitBtn) return;
+
+        if (tab === 'faceit') {
+            kaseContent.classList.add('hidden');
+            faceitContent.classList.remove('hidden');
+            kaseBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer';
+            faceitBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer';
+        } else {
+            faceitContent.classList.add('hidden');
+            kaseContent.classList.remove('hidden');
+            faceitBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer';
+            kaseBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer';
+        }
+    };
 </script>
 
     <script src="../js/app.js"></script>

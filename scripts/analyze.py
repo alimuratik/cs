@@ -1144,15 +1144,107 @@ def calculate_player_momentum(career_avg_hltv: float, session_progress: dict | N
         "career_hltv": career_avg_hltv
     }
 
-def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: dict, momentum_info: dict, matches: list = None, ratings: dict = None, map_perf: dict = None) -> list[dict]:
+def _build_tiered_achievement(
+    id_str: str,
+    title: str,
+    icon: str,
+    tier: int,
+    thresholds: list,
+    descriptions: list,
+    current_val: float | int,
+    unit: str = "",
+    custom_progress_text: str = None
+) -> dict:
+    """Вспомогательная функция для сборки 3-уровневого достижения с прогрессом и очками славы."""
+    tier = max(0, min(3, int(tier)))
+    unlocked = (tier >= 1)
+    is_max = (tier == 3)
+
+    # Очки славы: Tier 0 = 0, Tier I = 100, Tier II = 250, Tier III = 500
+    points_map = {0: 0, 1: 100, 2: 250, 3: 500}
+    current_points = points_map[tier]
+    max_points = 500
+
+    tier_names = {
+        0: "Не получено",
+        1: "Tier I · Бронза",
+        2: "Tier II · Серебро",
+        3: "Tier III · Золото"
+    }
+    stars_map = {
+        0: "☆☆☆",
+        1: "★☆☆",
+        2: "★★☆",
+        3: "★★★"
+    }
+
+    # Индикаторы уровней (пипы) в стиле боевого пропуска Dota 2 / Shooter
+    pips = [
+        {"level": 1, "status": "completed" if tier >= 1 else "locked", "star": "★" if tier >= 1 else "☆"},
+        {"level": 2, "status": "completed" if tier >= 2 else "locked", "star": "★" if tier >= 2 else "☆"},
+        {"level": 3, "status": "completed" if tier >= 3 else "locked", "star": "★" if tier >= 3 else "☆"},
+    ]
+
+    target_idx = min(2, tier)
+    target_thresh = thresholds[target_idx]
+
+    if is_max:
+        prog_pct = 100.0
+        prog_val = target_thresh
+        prog_max = target_thresh
+    else:
+        prog_val = round(float(current_val), 1) if isinstance(current_val, float) else current_val
+        prog_max = target_thresh
+        if prog_max > 0:
+            prog_pct = round(max(0.0, min(100.0, (float(prog_val) / float(prog_max)) * 100.0)), 1)
+        else:
+            prog_pct = 0.0
+
+    if custom_progress_text:
+        prog_text = custom_progress_text
+    elif unit == "%":
+        prog_text = f"{prog_val}% / {prog_max}%"
+    elif unit:
+        prog_text = f"{prog_val} / {prog_max} {unit}"
+    else:
+        prog_text = f"{prog_val} / {prog_max}"
+
+    desc = descriptions[tier - 1] if tier >= 1 else descriptions[0]
+    next_goal = descriptions[tier] if tier < 3 else "Все 3 уровня успешно получены! Легендарный ранг."
+
+    return {
+        "id": id_str,
+        "title": title,
+        "icon": icon,
+        "tier": tier,
+        "max_tier": 3,
+        "unlocked": unlocked,
+        "is_max": is_max,
+        "points": current_points,
+        "max_points": max_points,
+        "stars": stars_map[tier],
+        "tier_name": tier_names[tier],
+        "pips": pips,
+        "desc": desc,
+        "next_goal": next_goal,
+        "progress_val": prog_val,
+        "progress_max": prog_max,
+        "progress_pct": prog_pct,
+        "progress": prog_text,
+        "progress_text": prog_text
+    }
+
+
+def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: dict, momentum_info: dict, matches: list = None, ratings: dict = None, map_perf: dict = None) -> tuple[list[dict], dict]:
     """
-    Проверяет разблокировку 24 киберспортивных (про-уровень) и фановых достижений игрока.
+    Рассчитывает 24 киберспортивных 3-уровневых достижения игрока (Tier I / II / III)
+    с начислением очков славы, индикаторами звезд/пипов и динамической шкалой прогресса.
     """
     achievements = []
     matches = matches or []
     ratings = ratings or {}
     map_perf = map_perf or {}
-    
+
     # Подсчет киллов с ножа, зевса и матчей с 25+ / 30+ фрагами
     knife_zeus_total = 0
     knife_zeus_in_match_max = 0
@@ -1172,7 +1264,7 @@ def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: 
             matches_25k += 1
         if k_cnt >= 30:
             matches_30k += 1
-            
+
     # Подсчет максимального винстрика в истории матчей
     max_streak = 0
     cur_streak = 0
@@ -1186,303 +1278,434 @@ def calculate_player_achievements(metrics: dict, overall_stats: dict, mmr_info: 
 
     tot_m = overall_stats.get("total_matches", len(matches))
     tk = overall_stats.get("total_kills", 0)
-    actual_rounds = overall_stats.get("total_rounds", max(1, tot_m * 22))
 
     # 1. 🔪 Мастер унижений (Meme / Hardcore Fun)
-    unlocked_kz = (multi_kz_matches >= 2) or (knife_zeus_in_match_max >= 3) or (multi_kz_matches >= 1 and knife_zeus_total >= 5)
-    achievements.append({
-        "id": "humiliation_master",
-        "title": "Мастер унижений",
-        "desc": "Совершить по 2+ убийства с ножа/Zeus минимум в 2 матчах (или 3+ за одну игру)",
-        "icon": "🔪",
-        "unlocked": unlocked_kz,
-        "progress": f"{multi_kz_matches}/2 матчей с 2+ kill с ножа/Zeus (всего {knife_zeus_total} фрагов)"
-    })
+    if (multi_kz_matches >= 3) or (knife_zeus_total >= 10):
+        t_kz = 3
+    elif (multi_kz_matches >= 1) or (knife_zeus_total >= 5):
+        t_kz = 2
+    elif knife_zeus_total >= 2:
+        t_kz = 1
+    else:
+        t_kz = 0
+    achievements.append(_build_tiered_achievement(
+        "humiliation_master", "Мастер унижений", "🔪", t_kz,
+        [2, 5, 10],
+        ["2 фрага с ножа или Zeus", "5 фрагов с ножа/Zeus (или 2+ в одном матче)", "10 фрагов с ножа/Zeus (или по 2+ в 3 матчах)"],
+        knife_zeus_total, "фрагов",
+        custom_progress_text=f"{knife_zeus_total} фрагов ({multi_kz_matches} матчей с 2+ kill)"
+    ))
 
-    # 2. 🎯 One-Tap Хирург (Pro / Hard)
-    hs = metrics.get("hs_percent", 0.0)
-    unlocked_hs = (hs >= 52.0 and tk >= 80) or (hs >= 56.0 and tk >= 40)
-    achievements.append({
-        "id": "headshot_king",
-        "title": "One-Tap Хирург",
-        "desc": "Средний процент попаданий в голову >= 52% при 80+ фрагах за карьеру",
-        "icon": "🎯",
-        "unlocked": unlocked_hs,
-        "progress": f"{hs}% HS ({tk}/80 фрагов)"
-    })
+    # 2. 🎯 One-Tap Хирург (Pro / Precision)
+    hs = round(float(metrics.get("hs_percent", 0.0) or 0.0), 1)
+    if hs >= 58.0 and tk >= 40:
+        t_hs = 3
+    elif hs >= 52.0 and tk >= 25:
+        t_hs = 2
+    elif hs >= 45.0 and tk >= 15:
+        t_hs = 1
+    else:
+        t_hs = 0
+    achievements.append(_build_tiered_achievement(
+        "headshot_king", "One-Tap Хирург", "🎯", t_hs,
+        [45.0, 52.0, 58.0],
+        ["45.0% попаданий в голову (от 15 фрагов)", "52.0% попаданий в голову (от 25 фрагов)", "58.0% попаданий в голову (от 40 фрагов)"],
+        hs, "%", custom_progress_text=f"{hs}% HS ({tk} фрагов)"
+    ))
 
-    # 3. ⚡ Гроза опенингов (Pro / Hard)
+    # 3. ⚡ Гроза опенингов (Pro / Entry)
     fk = overall_stats.get("total_first_kills", 0)
-    es = metrics.get("entry_success", 0.0)
-    unlocked_entry = (fk >= 18 and es >= 52.0) or (fk >= 25 and es >= 48.0)
-    achievements.append({
-        "id": "entry_demon",
-        "title": "Гроза опенингов",
-        "desc": "18+ первых убийств с винрейтом энтри-дуэлей >= 52%",
-        "icon": "⚡",
-        "unlocked": unlocked_entry,
-        "progress": f"{fk} первых фрагов (WR: {es}%)"
-    })
+    if fk >= 25:
+        t_fk = 3
+    elif fk >= 15:
+        t_fk = 2
+    elif fk >= 7:
+        t_fk = 1
+    else:
+        t_fk = 0
+    achievements.append(_build_tiered_achievement(
+        "entry_demon", "Гроза опенингов", "⚡", t_fk,
+        [7, 15, 25],
+        ["7 первых убийств в раундах", "15 первых убийств в раундах", "25 первых убийств в раундах"],
+        fk, "первых фрагов"
+    ))
 
-    # 4. 🛡️ Железный занавес (Pro / Hard)
-    kast = metrics.get("kast", 0.0)
-    pos_r = ratings.get("Positioning", 5.0)
-    unlocked_wall = kast >= 75.0 and tot_m >= 5 and pos_r >= 6.5
-    achievements.append({
-        "id": "iron_wall",
-        "title": "Железный занавес",
-        "desc": "Командная полезность KAST >= 75.0% и позиционка >= 6.5 (от 5 матчей)",
-        "icon": "🛡️",
-        "unlocked": unlocked_wall,
-        "progress": f"{kast}% KAST, Позиционка {pos_r} ({tot_m}/5 матчей)"
-    })
+    # 4. 🛡️ Железный занавес (Teamwork / KAST)
+    kast = round(float(metrics.get("kast", 0.0) or 0.0), 1)
+    pos_r = round(float(ratings.get("Positioning", 5.0) or 5.0), 1)
+    if kast >= 76.0 and pos_r >= 6.8:
+        t_kast = 3
+    elif kast >= 72.0 and pos_r >= 6.0:
+        t_kast = 2
+    elif kast >= 67.0:
+        t_kast = 1
+    else:
+        t_kast = 0
+    achievements.append(_build_tiered_achievement(
+        "iron_wall", "Железный занавес", "🛡️", t_kast,
+        [67.0, 72.0, 76.0],
+        ["Полезность KAST >= 67.0%", "KAST >= 72.0% и Позиционирование >= 6.0", "KAST >= 76.0% и Позиционирование >= 6.8"],
+        kast, "%", custom_progress_text=f"{kast}% KAST (Поз. {pos_r})"
+    ))
 
-    # 5. 👑 Клатч-министр (Pro / Hard)
+    # 5. 👑 Клатч-министр (Pro / Clutch)
     cw = overall_stats.get("total_clutch_wins", 0)
-    cwr = metrics.get("clutch_win_rate", 0.0)
-    unlocked_clutch = (cw >= 5 and cwr >= 35.0) or (cw >= 8)
-    achievements.append({
-        "id": "clutch_master",
-        "title": "Клатч-министр",
-        "desc": "Выиграть 5+ клатчей 1vX с винрейтом клатчей >= 35% (или 8+ суммарно)",
-        "icon": "👑",
-        "unlocked": unlocked_clutch,
-        "progress": f"{cw} клатчей (WR: {cwr}%)"
-    })
+    if cw >= 8:
+        t_cw = 3
+    elif cw >= 4:
+        t_cw = 2
+    elif cw >= 2:
+        t_cw = 1
+    else:
+        t_cw = 0
+    achievements.append(_build_tiered_achievement(
+        "clutch_master", "Клатч-министр", "👑", t_cw,
+        [2, 4, 8],
+        ["Выиграть 2 клатча 1vX", "Выиграть 4 клатча 1vX", "Выиграть 8 клатчей 1vX"],
+        cw, "клатчей"
+    ))
 
-    # 6. 🔭 Снайперская элита (Pro / Hard)
+    # 6. 🔭 Снайперская элита (AWP / Precision)
     awp_k = metrics.get("awp_kills", 0)
-    awp_pct = metrics.get("awp_kills_percent", 0.0)
-    aim_r = ratings.get("Aim", 5.0)
-    unlocked_awp = (awp_k >= 35 and awp_pct >= 25.0 and aim_r >= 6.5) or (awp_k >= 50)
-    achievements.append({
-        "id": "sniper_elite",
-        "title": "Снайперская элита",
-        "desc": "35+ фрагов с винтовки AWP (доля AWP >= 25%) и рейтинг Aim >= 6.5",
-        "icon": "🔭",
-        "unlocked": unlocked_awp,
-        "progress": f"{awp_k} фрагов AWP ({awp_pct}%), Aim {aim_r}"
-    })
+    if awp_k >= 50:
+        t_awp = 3
+    elif awp_k >= 25:
+        t_awp = 2
+    elif awp_k >= 10:
+        t_awp = 1
+    else:
+        t_awp = 0
+    achievements.append(_build_tiered_achievement(
+        "sniper_elite", "Снайперская элита", "🔭", t_awp,
+        [10, 25, 50],
+        ["10 фрагов с винтовки AWP", "25 фрагов с винтовки AWP", "50 фрагов с винтовки AWP"],
+        awp_k, "фрагов AWP"
+    ))
 
-    # 7. 💥 Огневой каток (Pro / Hard)
-    adr = metrics.get("adr", 0.0)
-    unlocked_adr = adr >= 88.0 and tot_m >= 5
-    achievements.append({
-        "id": "damage_machine",
-        "title": "Огневой каток",
-        "desc": "Средний урон за раунд (ADR) >= 88.0 на дистанции от 5 матчей",
-        "icon": "💥",
-        "unlocked": unlocked_adr,
-        "progress": f"{adr} ADR ({tot_m}/5 матчей)"
-    })
+    # 7. 💥 Огневой каток (Pro / ADR)
+    adr = round(float(metrics.get("adr", 0.0) or 0.0), 1)
+    if adr >= 92.0:
+        t_adr = 3
+    elif adr >= 84.0:
+        t_adr = 2
+    elif adr >= 75.0:
+        t_adr = 1
+    else:
+        t_adr = 0
+    achievements.append(_build_tiered_achievement(
+        "damage_machine", "Огневой каток", "💥", t_adr,
+        [75.0, 84.0, 92.0],
+        ["Средний урон за раунд ADR >= 75.0", "ADR >= 84.0", "ADR >= 92.0 (Турнирный уровень)"],
+        adr, "ADR"
+    ))
 
-    # 8. 🔥 В абсолютном огне (Form / Trend)
+    # 8. 🔥 В абсолютном огне (Momentum / Surge)
+    m_delta = round(float(momentum_info.get("delta", 0.0) or 0.0), 2)
     is_fire = momentum_info.get("status") == "on_fire"
-    achievements.append({
-        "id": "on_fire_badge",
-        "title": "В абсолютном огне",
-        "desc": "Сессионный рывок формы >= +0.25 HLTV 2.0 относительно среднего",
-        "icon": "🔥",
-        "unlocked": is_fire,
-        "progress": f"{momentum_info.get('delta', 0.0):+.2f} HLTV"
-    })
+    if is_fire or m_delta >= 0.28:
+        t_fire = 3
+    elif m_delta >= 0.18:
+        t_fire = 2
+    elif m_delta >= 0.08:
+        t_fire = 1
+    else:
+        t_fire = 0
+    achievements.append(_build_tiered_achievement(
+        "on_fire_badge", "В абсолютном огне", "🔥", t_fire,
+        [0.08, 0.18, 0.28],
+        ["Сессионный рывок формы >= +0.08 HLTV", "Сессионный рывок формы >= +0.18 HLTV", "Рывок >= +0.28 HLTV (Статус «В абсолютном огне»)"],
+        max(0.0, m_delta), "HLTV", custom_progress_text=f"{m_delta:+.2f} HLTV"
+    ))
 
-    # 9. 📈 Неприкасаемый (Streak / Grit)
-    unlocked_streak = max_streak >= 4
-    achievements.append({
-        "id": "untouchable",
-        "title": "Неприкасаемый",
-        "desc": "Серия из 4 или более побед подряд в официальных играх",
-        "icon": "📈",
-        "unlocked": unlocked_streak,
-        "progress": f"{max_streak} побед подряд (цель 4)"
-    })
+    # 9. 📈 Неприкасаемый (Streak / Dominance)
+    if max_streak >= 6:
+        t_str = 3
+    elif max_streak >= 4:
+        t_str = 2
+    elif max_streak >= 2:
+        t_str = 1
+    else:
+        t_str = 0
+    achievements.append(_build_tiered_achievement(
+        "untouchable", "Неприкасаемый", "📈", t_str,
+        [2, 4, 6],
+        ["Серия из 2 побед подряд", "Серия из 4 побед подряд", "Серия из 6 побед подряд"],
+        max_streak, "побед подряд"
+    ))
 
-    # 10. 🧨 Артиллерийский полк (Utility / Pro)
+    # 10. 🧨 Артиллерийский полк (Utility DMG)
     ud = overall_stats.get("total_utility_damage", 0)
-    ud_per_r = round(ud / max(1, actual_rounds), 1)
-    unlocked_ud = ud >= 320 and ud_per_r >= 6.5
-    achievements.append({
-        "id": "grenadier",
-        "title": "Артиллерийский полк",
-        "desc": "Нанести 320+ HP урона гранатами (в среднем >= 6.5 за раунд)",
-        "icon": "🧨",
-        "unlocked": unlocked_ud,
-        "progress": f"{ud} HP ({ud_per_r}/раунд)"
-    })
+    if ud >= 600:
+        t_ud = 3
+    elif ud >= 300:
+        t_ud = 2
+    elif ud >= 120:
+        t_ud = 1
+    else:
+        t_ud = 0
+    achievements.append(_build_tiered_achievement(
+        "grenadier", "Артиллерийский полк", "🧨", t_ud,
+        [120, 300, 600],
+        ["120 HP суммарного урона гранатами", "300 HP урона гранатами", "600 HP урона гранатами"],
+        ud, "HP"
+    ))
 
-    # 11. 💡 Ослепляющий свет (Support / Pro)
+    # 11. 💡 Ослепляющий свет (Flash Support)
     fa = overall_stats.get("total_flash_assists", 0)
-    fa_avg = round(fa / max(1, tot_m), 1)
-    unlocked_fa = fa >= 10 and fa_avg >= 1.2
-    achievements.append({
-        "id": "flash_tactician",
-        "title": "Ослепляющий свет",
-        "desc": "10+ флеш-ассистов (в среднем >= 1.2 ослепления с фрагом за матч)",
-        "icon": "💡",
-        "unlocked": unlocked_fa,
-        "progress": f"{fa} ассистов ({fa_avg}/матч)"
-    })
+    if fa >= 18:
+        t_fa = 3
+    elif fa >= 8:
+        t_fa = 2
+    elif fa >= 3:
+        t_fa = 1
+    else:
+        t_fa = 0
+    achievements.append(_build_tiered_achievement(
+        "flash_tactician", "Ослепляющий свет", "💡", t_fa,
+        [3, 8, 18],
+        ["3 флеш-ассиста", "8 флеш-ассистов", "18 флеш-ассистов"],
+        fa, "ассистов"
+    ))
 
-    # 12. 🔄 Машина размена (Teamwork / Pro)
+    # 12. 🔄 Машина размена (Refrag Teamwork)
     tr = overall_stats.get("total_trades", 0)
-    tr_rate = metrics.get("trade_rate", 0.0)
-    unlocked_tr = tr >= 16 and tr_rate >= 23.0
-    achievements.append({
-        "id": "refrag_king",
-        "title": "Машина размена",
-        "desc": "16+ успешных разменов тиммейтов (доля разменов >= 23%)",
-        "icon": "🔄",
-        "unlocked": unlocked_tr,
-        "progress": f"{tr} разменов ({tr_rate}%)"
-    })
+    if tr >= 25:
+        t_tr = 3
+    elif tr >= 14:
+        t_tr = 2
+    elif tr >= 6:
+        t_tr = 1
+    else:
+        t_tr = 0
+    achievements.append(_build_tiered_achievement(
+        "refrag_king", "Машина размена", "🔄", t_tr,
+        [6, 14, 25],
+        ["6 успешных разменов тиммейтов", "14 успешных разменов тиммейтов", "25 успешных разменов тиммейтов"],
+        tr, "разменов"
+    ))
 
-    # 13. 🔫 Пистолетный маэстро (Pistol / Pro)
+    # 13. 🔫 Пистолетный маэстро (Pistol Rounds)
     pk = overall_stats.get("pistol_round_kills", 0)
-    p_wr = metrics.get("pistol_win_rate", 0.0)
-    unlocked_pk = pk >= 10 and p_wr >= 50.0
-    achievements.append({
-        "id": "pistol_king",
-        "title": "Пистолетный маэстро",
-        "desc": "10+ фрагов в пистолетных раундах с винрейтом раундов >= 50%",
-        "icon": "🔫",
-        "unlocked": unlocked_pk,
-        "progress": f"{pk} фрагов (WR: {p_wr}%)"
-    })
+    if pk >= 16:
+        t_pk = 3
+    elif pk >= 8:
+        t_pk = 2
+    elif pk >= 4:
+        t_pk = 1
+    else:
+        t_pk = 0
+    achievements.append(_build_tiered_achievement(
+        "pistol_king", "Пистолетный маэстро", "🔫", t_pk,
+        [4, 8, 16],
+        ["4 фрага в пистолетных раундах", "8 фрагов в пистолетных раундах", "16 фрагов в пистолетных раундах"],
+        pk, "фрагов"
+    ))
 
-    # 14. 💰 Экономический диверсант (Tactical / Hard)
-    vs_full = metrics.get("vs_full_buy_kd", 1.0)
-    unlocked_eco = vs_full >= 1.30 and tot_m >= 4
-    achievements.append({
-        "id": "eco_raider",
-        "title": "Экономический диверсант",
-        "desc": "K/D >= 1.30 в раундах против полного закупа соперника (Full Buy)",
-        "icon": "💰",
-        "unlocked": unlocked_eco,
-        "progress": f"{vs_full} K/D vs Full Buy"
-    })
+    # 14. 💰 Экономический диверсант (Tactical / Eco)
+    vs_full = round(float(metrics.get("vs_full_buy_kd", 1.0) or 1.0), 2)
+    if vs_full >= 1.40 and tot_m >= 3:
+        t_eco = 3
+    elif vs_full >= 1.20 and tot_m >= 2:
+        t_eco = 2
+    elif vs_full >= 1.05:
+        t_eco = 1
+    else:
+        t_eco = 0
+    achievements.append(_build_tiered_achievement(
+        "eco_raider", "Экономический диверсант", "💰", t_eco,
+        [1.05, 1.20, 1.40],
+        ["K/D >= 1.05 против Full Buy", "K/D >= 1.20 против Full Buy (от 2 матчей)", "K/D >= 1.40 против Full Buy (от 3 матчей)"],
+        vs_full, "K/D", custom_progress_text=f"{vs_full} K/D vs Full Buy"
+    ))
 
-    # 15. 🏆 Царь горы (Peak MMR / Pro)
+    # 15. 🏆 Царь горы (MMR Peak)
     peak_mmr = mmr_info.get("peak_mmr", 1000)
-    unlocked_peak = peak_mmr >= 1100
-    achievements.append({
-        "id": "high_roller",
-        "title": "Царь горы",
-        "desc": "Достичь пикового рейтинга 1100+ MMR в соревновательном ладдере",
-        "icon": "🏆",
-        "unlocked": unlocked_peak,
-        "progress": f"{peak_mmr} / 1100 MMR"
-    })
+    if peak_mmr >= 1150:
+        t_mmr = 3
+    elif peak_mmr >= 1080:
+        t_mmr = 2
+    elif peak_mmr >= 1030:
+        t_mmr = 1
+    else:
+        t_mmr = 0
+    achievements.append(_build_tiered_achievement(
+        "high_roller", "Царь горы", "🏆", t_mmr,
+        [1030, 1080, 1150],
+        ["Пиковый рейтинг 1030+ MMR", "Пиковый рейтинг 1080+ MMR", "Пиковый рейтинг 1150+ MMR"],
+        peak_mmr, "MMR"
+    ))
 
-    # 16. 🎩 Шляпный фокус (Ace Hunter / 25+ Bomb)
-    unlocked_25k = matches_25k >= 2
-    achievements.append({
-        "id": "ace_hunter",
-        "title": "Шляпный фокус (25+ бомбардир)",
-        "desc": "Оформить 25+ фрагов за одну карту как минимум в 2 матчах",
-        "icon": "🎩",
-        "unlocked": unlocked_25k,
-        "progress": f"{matches_25k} / 2 матчей с 25+ фрагами"
-    })
+    # 16. 🎩 Шляпный фокус (25+ Бомбардир)
+    if matches_25k >= 4:
+        t_25 = 3
+    elif matches_25k >= 2:
+        t_25 = 2
+    elif matches_25k >= 1:
+        t_25 = 1
+    else:
+        t_25 = 0
+    achievements.append(_build_tiered_achievement(
+        "ace_hunter", "Шляпный фокус (25+ фрагов)", "🎩", t_25,
+        [1, 2, 4],
+        ["1 матч с 25+ фрагами за карту", "2 матча с 25+ фрагами за карту", "4 матча с 25+ фрагами за карту"],
+        matches_25k, "матчей"
+    ))
 
-    # 17. 🧘 Мастер выживания (Positioning / Pro)
-    surv = metrics.get("survival_rate", 0.0)
-    unlocked_surv = surv >= 35.0 and tot_m >= 5
-    achievements.append({
-        "id": "unbroken",
-        "title": "Мастер выживания",
-        "desc": "Выживаемость в раундах >= 35.0% на дистанции от 5 матчей",
-        "icon": "🧘",
-        "unlocked": unlocked_surv,
-        "progress": f"{surv}% выживаемости"
-    })
+    # 17. 🧘 Мастер выживания (Survival Rate)
+    surv = round(float(metrics.get("survival_rate", 0.0) or 0.0), 1)
+    if surv >= 38.0 and tot_m >= 3:
+        t_surv = 3
+    elif surv >= 32.0 and tot_m >= 2:
+        t_surv = 2
+    elif surv >= 26.0:
+        t_surv = 1
+    else:
+        t_surv = 0
+    achievements.append(_build_tiered_achievement(
+        "unbroken", "Мастер выживания", "🧘", t_surv,
+        [26.0, 32.0, 38.0],
+        ["Выживаемость в раундах >= 26.0%", "Выживаемость в раундах >= 32.0%", "Выживаемость в раундах >= 38.0%"],
+        surv, "%"
+    ))
 
     # 18. 🎖️ Ветеран дивизиона (Longevity)
-    unlocked_vet = tot_m >= 15
-    achievements.append({
-        "id": "veteran",
-        "title": "Ветеран дивизиона",
-        "desc": "Сыграть 15 или более официальных матчей на платформе",
-        "icon": "🎖️",
-        "unlocked": unlocked_vet,
-        "progress": f"{tot_m} / 15 матчей"
-    })
+    if tot_m >= 15:
+        t_vet = 3
+    elif tot_m >= 8:
+        t_vet = 2
+    elif tot_m >= 4:
+        t_vet = 1
+    else:
+        t_vet = 0
+    achievements.append(_build_tiered_achievement(
+        "veteran", "Ветеран дивизиона", "🎖️", t_vet,
+        [4, 8, 15],
+        ["Сыграть 4 официальных матча", "Сыграть 8 официальных матчей", "Сыграть 15 официальных матчей"],
+        tot_m, "матчей"
+    ))
 
-    # 19. 👑 Император клатчей (Clutch Elite)
-    unlocked_clutch_god = (cw >= 6 and cwr >= 40.0) or (cw >= 9)
-    achievements.append({
-        "id": "clutch_god",
-        "title": "Император клатчей",
-        "desc": "Выиграть 6+ клатчей при феноменальном винрейте >= 40% (или 9+ суммарно)",
-        "icon": "👑",
-        "unlocked": unlocked_clutch_god,
-        "progress": f"{cw} клатчей (WR: {cwr}%)"
-    })
+    # 19. 👑 Император клатчей (Clutch Elite Mastery)
+    cwr = round(float(metrics.get("clutch_win_rate", 0.0) or 0.0), 1)
+    if (cw >= 6 and cwr >= 35.0) or (cw >= 8):
+        t_cgod = 3
+    elif (cw >= 4 and cwr >= 28.0) or (cw >= 5):
+        t_cgod = 2
+    elif cw >= 2:
+        t_cgod = 1
+    else:
+        t_cgod = 0
+    achievements.append(_build_tiered_achievement(
+        "clutch_god", "Император клатчей", "👑", t_cgod,
+        [2, 4, 6],
+        ["2 клатча с винрейтом клатчей >= 20%", "4 клатча с винрейтом клатчей >= 28%", "6 клатчей с винрейтом клатчей >= 35%"],
+        cw, "клатчей", custom_progress_text=f"{cw} клатчей (WR: {cwr}%)"
+    ))
 
-    # 20. 🎯 Абсолютный хедхантер (Pure Precision)
-    unlocked_perfect_aim = (aim_r >= 8.2) or (hs >= 58.0 and tk >= 80)
-    achievements.append({
-        "id": "perfect_aim",
-        "title": "Абсолютный хедхантер",
-        "desc": "Рейтинг Aim >= 8.2 или 58%+ HS при 80+ фрагах за карьеру",
-        "icon": "🎯",
-        "unlocked": unlocked_perfect_aim,
-        "progress": f"Aim: {aim_r} / 8.2, HS: {hs}%"
-    })
+    # 20. 🎯 Абсолютный хедхантер (Pure Aim)
+    aim_r = round(float(ratings.get("Aim", 5.0) or 5.0), 1)
+    if aim_r >= 8.0 or (hs >= 60.0 and tk >= 30):
+        t_aim = 3
+    elif aim_r >= 7.3 or (hs >= 54.0 and tk >= 20):
+        t_aim = 2
+    elif aim_r >= 6.5 or (hs >= 48.0 and tk >= 15):
+        t_aim = 1
+    else:
+        t_aim = 0
+    achievements.append(_build_tiered_achievement(
+        "perfect_aim", "Абсолютный хедхантер", "🎯", t_aim,
+        [6.5, 7.3, 8.0],
+        ["Рейтинг Aim >= 6.5", "Рейтинг Aim >= 7.3", "Рейтинг Aim >= 8.0 (Элитная меткость)"],
+        aim_r, "Aim", custom_progress_text=f"Aim: {aim_r} / 8.0 (HS: {hs}%)"
+    ))
 
     # 21. 🌪️ Хозяин карты (Map Ruler)
     map_stats = map_perf.get("maps", {}) if isinstance(map_perf, dict) else {}
-    best_map_entry = None
-    for mn, m_st in map_stats.items():
-        if m_st.get("matches", 0) >= 3 and m_st.get("win_rate", 0) >= 70.0:
-            best_map_entry = (mn, m_st)
-            break
-    unlocked_map_conq = best_map_entry is not None
-    m_conq_prog = f"{best_map_entry[0]} (WR: {best_map_entry[1].get('win_rate')}%)" if best_map_entry else "Нет карт с 3+ играми и WR>=70%"
-    achievements.append({
-        "id": "map_conqueror",
-        "title": "Хозяин карты",
-        "desc": "Выиграть 70%+ матчей на конкретной карте при минимуме 3 сыгранных играх",
-        "icon": "🌪️",
-        "unlocked": unlocked_map_conq,
-        "progress": m_conq_prog
-    })
+    dominant_maps_70 = sum(1 for mn, st in map_stats.items() if st.get("matches", 0) >= 2 and st.get("win_rate", 0) >= 66.0)
+    dominant_maps_55 = sum(1 for mn, st in map_stats.items() if st.get("matches", 0) >= 2 and st.get("win_rate", 0) >= 55.0)
+    if dominant_maps_70 >= 2:
+        t_map = 3
+    elif dominant_maps_70 >= 1:
+        t_map = 2
+    elif dominant_maps_55 >= 1:
+        t_map = 1
+    else:
+        t_map = 0
+    achievements.append(_build_tiered_achievement(
+        "map_conqueror", "Хозяин карты", "🌪️", t_map,
+        [1, 1, 2],
+        ["1 карта с WR >= 55% (от 2 матчей)", "1 карта с WR >= 66% (от 2 матчей)", "2+ карты с WR >= 66% (от 2 матчей на каждой)"],
+        dominant_maps_70, "карт", custom_progress_text=f"{dominant_maps_70} карт с WR >= 66%"
+    ))
 
     # 22. 🛡️ Непробиваемый якорь (Anchor Titan)
-    unlocked_anchor = (pos_r >= 7.6 and surv >= 35.0 and tot_m >= 4)
-    achievements.append({
-        "id": "anchor_titan",
-        "title": "Непробиваемый якорь",
-        "desc": "Рейтинг Positioning >= 7.6 и выживаемость >= 35% при 4+ матчах",
-        "icon": "🛡️",
-        "unlocked": unlocked_anchor,
-        "progress": f"Позиционка: {pos_r}, Выживание: {surv}%"
-    })
+    if pos_r >= 7.6:
+        t_anc = 3
+    elif pos_r >= 7.0:
+        t_anc = 2
+    elif pos_r >= 6.3:
+        t_anc = 1
+    else:
+        t_anc = 0
+    achievements.append(_build_tiered_achievement(
+        "anchor_titan", "Непробиваемый якорь", "🛡️", t_anc,
+        [6.3, 7.0, 7.6],
+        ["Рейтинг Positioning >= 6.3", "Рейтинг Positioning >= 7.0", "Рейтинг Positioning >= 7.6"],
+        pos_r, "Позиционирование"
+    ))
 
     # 23. 🧨 Тактический гроссмейстер (Utility Pro)
-    ut_r = ratings.get("Utility", 5.0)
-    unlocked_tactician = (ut_r >= 7.2 and fa >= 10)
-    achievements.append({
-        "id": "tactical_overlord",
-        "title": "Тактический гроссмейстер",
-        "desc": "Рейтинг Utility >= 7.2 и 10+ флеш-ассистов за карьеру",
-        "icon": "🧨",
-        "unlocked": unlocked_tactician,
-        "progress": f"Utility: {ut_r}, Флеш-ассисты: {fa}"
-    })
+    ut_r = round(float(ratings.get("Utility", 5.0) or 5.0), 1)
+    if ut_r >= 7.5:
+        t_ut = 3
+    elif ut_r >= 6.8:
+        t_ut = 2
+    elif ut_r >= 6.0:
+        t_ut = 1
+    else:
+        t_ut = 0
+    achievements.append(_build_tiered_achievement(
+        "tactical_overlord", "Тактический гроссмейстер", "🧨", t_ut,
+        [6.0, 6.8, 7.5],
+        ["Рейтинг Utility >= 6.0", "Рейтинг Utility >= 6.8", "Рейтинг Utility >= 7.5"],
+        ut_r, "Utility", custom_progress_text=f"Utility: {ut_r} (Флеши: {fa})"
+    ))
 
     # 24. 💀 Аннигилятор (30+ бомба)
-    unlocked_30k = matches_30k >= 1
-    achievements.append({
-        "id": "thirty_bomb",
-        "title": "Аннигилятор (30+ бомба)",
-        "desc": "Оформить 30 или более фрагов за одну карту в официальном матче",
-        "icon": "💀",
-        "unlocked": unlocked_30k,
-        "progress": f"{matches_30k} матчей с 30+ фрагами (цель 1)"
-    })
+    if matches_30k >= 3:
+        t_30 = 3
+    elif matches_30k >= 2:
+        t_30 = 2
+    elif matches_30k >= 1:
+        t_30 = 1
+    else:
+        t_30 = 0
+    achievements.append(_build_tiered_achievement(
+        "thirty_bomb", "Аннигилятор (30+ бомба)", "💀", t_30,
+        [1, 2, 3],
+        ["1 матч с 30+ фрагами за карту", "2 матча с 30+ фрагами за карту", "3 матча с 30+ фрагами за карту"],
+        matches_30k, "матчей"
+    ))
 
-    return achievements
+    # Сводная статистика достижений (Glory Summary)
+    total_unlocked = sum(1 for a in achievements if a["unlocked"])
+    total_points = sum(a["points"] for a in achievements)
+    tier1_cnt = sum(1 for a in achievements if a["tier"] == 1)
+    tier2_cnt = sum(1 for a in achievements if a["tier"] == 2)
+    tier3_cnt = sum(1 for a in achievements if a["tier"] == 3)
+    max_pts = len(achievements) * 500
+
+    achievements_summary = {
+        "total_unlocked": total_unlocked,
+        "total_count": len(achievements),
+        "tier1_count": tier1_cnt,
+        "tier2_count": tier2_cnt,
+        "tier3_count": tier3_cnt,
+        "total_points": total_points,
+        "max_points": max_pts,
+        "points_pct": round((total_points / max(1, max_pts)) * 100, 1),
+    }
+
+    return achievements, achievements_summary
 
 
 def analyze_pistol_rounds(player_matches: list[dict]) -> dict:
@@ -2542,7 +2765,7 @@ def run_analysis(force_ai: bool = False):
             "pistol_round_kills": sum(m.get("pistol_round_kills", 0) for m in matches)
         }
 
-        achievements = calculate_player_achievements(metrics, overall_stats_dict, p_mmr, momentum, matches=matches, ratings=ratings, map_perf=map_perf)
+        achievements, ach_summary = calculate_player_achievements(metrics, overall_stats_dict, p_mmr, momentum, matches=matches, ratings=ratings, map_perf=map_perf)
 
         player_obj = {
             "steam_id": steam_id,
@@ -2579,6 +2802,7 @@ def run_analysis(force_ai: bool = False):
             "momentum": momentum,
             "connections": connections,
             "achievements": achievements,
+            "achievements_summary": ach_summary,
             "matches": matches
         }
 

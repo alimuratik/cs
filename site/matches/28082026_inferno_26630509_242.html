@@ -1895,11 +1895,46 @@
                 <span class="text-2xl">🎙️</span>
                 <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добро пожаловать на арену аналитики BLAST! Inferno вновь подтвердила статус своих канонических улочек, где <strong class='text-white'>matadorra</strong> в блестящем стиле переехала <strong class='text-white'>Folie_1</strong> со счетом <strong class='text-white'>13:7</strong>. Поединок держал в напряжении до экватора первой половины, но ключевым переломом стал фантастический раунд на эко от победителей при счете 6:5, который полностью разрушил экономику и менталку соперника, позволив matadorra включить режим тотального доминирования на стороне защиты.</p>
-<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Главным архитектором этой победы стал безупречный <strong class='text-white'>matadorra</strong>, заслуженно забивший гвоздь в крышку гроба оппонентов и забравший звание MVP матча за счет космического индивидуального перформанса и выигранных дуэлей на Banana. Победители продемонстрировали эталонный командный CS с четким раскидом и хладнокровной реализацией численкового преимущества. В то время как Folie_1 провели неплохие отрезки в атаке, им откровенно не хватило гибкости в коллах при игре на ретейках и стабильного первого убийства, из-за чего их оборонительные редуты на «плэйсах» сыпались под натиском оппонента раунд за раундом.</p></p>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1"><strong class='text-white'>[Эфирное время: Аналитическая студия BLAST. На экранах — раскаленный логотип Inferno]</strong></p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Добро пожаловать на раскаленный асфальт Inferno, где <strong class='text-white'>matadorra</strong> в доминантном стиле закрывает противостояние против <strong class='text-white'>Folie_1</strong> со счетом 13:7! Первая половина матча обещала плотную тактическую борьбу, но ключевым переломом стал фантастический раунд от победителей при счете 7:6 в их пользу: идеальный распил «банана» и хладнокровный хз-клатч сломали экономику соперника, после чего Folie_1 так и не смогли найти ключи к обороне точки «А».</p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">Триумфаторы матча провели безупречную встречу на индивидуальном классе, а звание undisputed MVP заслуженно уходит к <strong class='text-white'>matadorra</strong>, чьи открывающие фраги в стиле peak-CS не оставляли оппонентам шансов в перестрелках. В то время как Folie_1 показали неплохие заготовки в атаке, их игра в защите выглядевшая слишком пассивно, а нехватка огневой мощи на подступах к плентам не позволила им совершить камбэк.</p>
+<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1"><em class='text-slate-300'>Статистика матча закреплена на вашем экране, а мы переходим к анализу следующего полуфинала!</em></p></p>
         </div>
     </section>
     
+
+    <!-- Match Video Recording Accordion -->
+    <section class="section match-video-section mb-10">
+        <details class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden group shadow-lg" id="match-video-accordion" >
+            <summary class="p-5 bg-slate-900/90 hover:bg-slate-800/70 transition flex items-center justify-between cursor-pointer select-none border-b border-slate-800/60">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl shrink-0">🎬</span>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="text-lg font-bold text-white">Видеозапись и трансляция матча</h3>
+                            
+                            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Ожидается видео</span>
+                            
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">Полноэкранный видеоповтор карты Inferno от лица игроков</p>
+                    </div>
+                </div>
+                <span class="text-slate-400 text-sm font-bold transition-transform duration-200 group-open:rotate-180">▼</span>
+            </summary>
+
+            <div class="p-5 md:p-6 bg-slate-950/50">
+                
+                <div class="text-center py-8 px-4 rounded-xl border border-dashed border-slate-800/80 bg-slate-900/30">
+                    <div class="text-3xl mb-2">🎥</div>
+                    <h4 class="text-sm font-bold text-white mb-1">Видеозапись к этому матчу пока не прикреплена</h4>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+                        Вы можете вставить ссылку на YouTube в файл <code class="text-emerald-400 font-mono bg-slate-800 px-1.5 py-0.5 rounded">data/match_videos.json</code> под ключом <code class="text-amber-300 font-mono bg-slate-800 px-1.5 py-0.5 rounded">"28082026_inferno_26630509_242"</code>.
+                    </p>
+                </div>
+                
+            </div>
+        </details>
+    </section>
 
     <!-- Economy Graph -->
     <section class="section economy-section mb-10">
@@ -7359,7 +7394,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:47</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 17:06</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

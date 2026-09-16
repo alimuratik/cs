@@ -70,6 +70,139 @@ def format_date_display(date_str: str) -> str:
         return f"{day} {month_name} {year}"
     return date_str
 
+def extract_youtube_embed(url_or_id: str) -> str:
+    """
+    Извлекает чистый 11-значный YouTube video ID и возвращает корректный Embed URL.
+    Поддерживает ссылки формата:
+    - https://www.youtube.com/watch?v=ID
+    - https://youtu.be/ID
+    - https://www.youtube.com/live/ID
+    - https://www.youtube.com/embed/ID
+    - Прямой 11-значный ID
+    """
+    if not url_or_id or not isinstance(url_or_id, str):
+        return ""
+    s = url_or_id.strip()
+    if not s:
+        return ""
+
+    # Извлечение по регулярному выражению
+    m = re.search(r'(?:v=|\/([0-9A-Za-z_-]{11})(?:\?|&|$|\/)|youtu\.be\/([0-9A-Za-z_-]{11})|embed\/([0-9A-Za-z_-]{11})|live\/([0-9A-Za-z_-]{11}))', s)
+    if m:
+        for g in m.groups():
+            if g and len(g) == 11:
+                return f"https://www.youtube-nocookie.com/embed/{g}"
+
+    if "v=" in s:
+        part = s.split("v=")[1].split("&")[0].split("?")[0]
+        if len(part) == 11:
+            return f"https://www.youtube-nocookie.com/embed/{part}"
+
+    if len(s) == 11 and re.match(r'^[0-9A-Za-z_-]{11}$', s):
+        return f"https://www.youtube-nocookie.com/embed/{s}"
+
+    return ""
+
+def sync_match_videos(match_ids: list[str]) -> dict[str, str]:
+    """
+    Синхронизирует файл data/match_videos.json:
+    - Читает существующие ссылки (добавленные пользователем на GitHub или локально).
+    - Добавляет только новые match_id со значением "" (пустая строка).
+    - НИКОГДА не удаляет и не затирает существующие ссылки пользователя!
+    """
+    videos_file = DATA_DIR / "match_videos.json"
+    videos_data = {}
+    if videos_file.exists():
+        try:
+            with open(videos_file, "r", encoding="utf-8") as f:
+                videos_data = json.load(f)
+        except Exception as e:
+            logging.warning(f"Не удалось прочитать {videos_file}: {e}")
+            videos_data = {}
+
+    changed = False
+    for mid in sorted(match_ids):
+        if mid and mid not in videos_data:
+            videos_data[mid] = ""
+            changed = True
+
+    if changed or not videos_file.exists():
+        try:
+            with open(videos_file, "w", encoding="utf-8") as f:
+                json.dump(videos_data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            logging.warning(f"Не удалось сохранить {videos_file}: {e}")
+
+    return videos_data
+
+def compute_faceit_map_performance(faceit_data: dict) -> dict:
+    """
+    Вычисляет лучшую («Сигнатурная крепость FACEIT») и худшую («Зона риска FACEIT») карты
+    на основе сегментов официальной статистики Faceit API.
+    """
+    if not faceit_data or not faceit_data.get("found"):
+        return {"has_data": False, "favorite": None, "kryptonite": None, "all_maps": []}
+
+    map_stats = faceit_data.get("map_stats", {})
+    if not map_stats or not isinstance(map_stats, dict):
+        return {"has_data": False, "favorite": None, "kryptonite": None, "all_maps": []}
+
+    map_icons = {
+        "mirage": "mirage.svg",
+        "dust2": "dust2.svg",
+        "inferno": "inferno.svg",
+        "nuke": "nuke.svg",
+        "ancient": "ancient.svg",
+        "anubis": "anubis.svg",
+        "vertigo": "vertigo.svg",
+        "overpass": "overpass.svg",
+        "train": "train.svg"
+    }
+
+    parsed_maps = []
+    for raw_m_name, st in map_stats.items():
+        m_clean = raw_m_name.lower().replace("de_", "").strip()
+        cnt = int(st.get("matches", 0) or 0)
+        wr = float(st.get("win_rate", 0.0) or 0.0)
+        kd = float(st.get("kd", 1.0) or 1.0)
+        if cnt <= 0:
+            continue
+        parsed_maps.append({
+            "key": m_clean,
+            "name": m_clean.capitalize(),
+            "matches": cnt,
+            "win_rate": wr,
+            "kd": kd,
+            "icon": map_icons.get(m_clean, "mirage.svg")
+        })
+
+    if not parsed_maps:
+        return {"has_data": False, "favorite": None, "kryptonite": None, "all_maps": []}
+
+    # Сортировка: приоритет картам с 2+ играми
+    multi_maps = [m for m in parsed_maps if m["matches"] >= 2]
+    pool = multi_maps if multi_maps else parsed_maps
+
+    favorite = dict(max(pool, key=lambda x: (x["win_rate"], x["kd"], x["matches"])))
+    favorite["advice"] = f"Ваша главная опора на FACEIT: {favorite['win_rate']}% побед при K/D {favorite['kd']}. Используйте уверенный контроль ключевых зон и агрессивные размены."
+
+    other_maps = [m for m in parsed_maps if m["key"] != favorite["key"]]
+    if other_maps:
+        worst_pool = [m for m in other_maps if m["matches"] >= 2] or other_maps
+        kryptonite = dict(min(worst_pool, key=lambda x: (x["win_rate"], x["kd"], -x["matches"])))
+        kryptonite["advice"] = f"Зона повышенного риска на FACEIT: {kryptonite['win_rate']}% винрейт за {kryptonite['matches']} матчей. Тренируйте смоки и позиционную игру на приеме плентов."
+    else:
+        kryptonite = None
+
+    parsed_maps.sort(key=lambda x: (-x["matches"], -x["win_rate"]))
+
+    return {
+        "has_data": True,
+        "favorite": favorite,
+        "kryptonite": kryptonite,
+        "all_maps": parsed_maps
+    }
+
 # ─── Маппинг weapon slug → CDN filename для иконок из cs2-killfeed-generator ─
 _WEAPON_ICON_CDN = "https://raw.githubusercontent.com/ChetdeJong/cs2-killfeed-generator/master/public/weapons/{slug}.svg"
 
@@ -869,6 +1002,20 @@ def format_match_data(m: dict) -> dict:
     h1_s2 = sum(1 for r in formatted_rounds if r.get("number", 0) <= 12 and r.get("winning_team") == "team2")
     half_scores_str = f"{h1_s1}:{h1_s2}"
 
+    # Видеозапись матча (YouTube Embed)
+    mid = m.get("match_id", "")
+    video_url = ""
+    try:
+        vf = DATA_DIR / "match_videos.json"
+        if vf.exists():
+            with open(vf, "r", encoding="utf-8") as v_f:
+                v_data = json.load(v_f)
+                video_url = (v_data.get(mid, "") or "").strip()
+    except Exception:
+        video_url = ""
+
+    video_embed_url = extract_youtube_embed(video_url) if video_url else ""
+
     return {
         "match_id": m.get("match_id"),
         "map_name": m.get("map_display", m.get("map")),
@@ -886,6 +1033,8 @@ def format_match_data(m: dict) -> dict:
         "rounds": formatted_rounds,
         "economy": economy_chart,
         "duels": duels_matrix,
+        "video_url": video_url,
+        "video_embed_url": video_embed_url,
         "ai_analysis": format_round_analysis(m.get("ai_analysis", "")),
         "summary_analysis": format_coach_summary(m.get("summary_analysis", "")),
         "recommendations": m.get("recommendations", [])
@@ -1152,10 +1301,21 @@ def format_player_data(p: dict) -> dict:
         },
         "session_progress": p.get("session_progress"),
         "map_performance": p.get("map_performance", {}),
+        "faceit_map_performance": compute_faceit_map_performance(p.get("faceit")),
         "archetype": p.get("archetype", {}),
         "momentum": p.get("momentum", {}),
         "connections": p.get("connections", {}),
         "achievements": p.get("achievements", []),
+        "achievements_summary": p.get("achievements_summary") or {
+            "total_unlocked": sum(1 for a in p.get("achievements", []) if a.get("unlocked")),
+            "total_count": len(p.get("achievements", [])),
+            "tier1_count": sum(1 for a in p.get("achievements", []) if a.get("tier") == 1),
+            "tier2_count": sum(1 for a in p.get("achievements", []) if a.get("tier") == 2),
+            "tier3_count": sum(1 for a in p.get("achievements", []) if a.get("tier") == 3),
+            "total_points": sum(a.get("points", 0) for a in p.get("achievements", [])),
+            "max_points": max(1, len(p.get("achievements", [])) * 500),
+            "points_pct": round(sum(a.get("points", 0) for a in p.get("achievements", [])) / max(1, len(p.get("achievements", [])) * 500) * 100, 1)
+        },
         "ai_analysis": p.get("ai_analysis", ""),
         "overall_stats": ov_stats,
         "faceit": p.get("faceit")
@@ -1471,6 +1631,8 @@ def generate_site():
     logging.info("Сгенерирована главная страница: site/index.html")
 
     # 2. Генерация страниц матчей matches/{match_id}.html
+    all_match_ids = [m.get("match_id") for m in matches if m.get("match_id")]
+    sync_match_videos(all_match_ids)
     match_template = env.get_template("match.html")
     for m in matches:
         match_id = m.get("match_id")

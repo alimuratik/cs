@@ -2061,6 +2061,42 @@ a:hover {
   margin-top: 4px;
 }
 
+/* Tiered Gamified Achievements (Dota 2 & Shooter Showcase) */
+.achievement-card-tiered {
+  background: rgba(15, 23, 42, 0.75);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-card-tiered:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.achievement-card-tiered.is-max {
+  border-color: rgba(251, 191, 36, 0.6);
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.12) 0%, rgba(15, 23, 42, 0.85) 100%);
+  box-shadow: 0 4px 20px rgba(251, 191, 36, 0.15);
+}
+
+.achievement-card-tiered.is-unlocked {
+  border-color: rgba(16, 185, 129, 0.4);
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.85) 100%);
+}
+
+.achievement-card-tiered.is-locked {
+  opacity: 0.55;
+  filter: grayscale(40%);
+}
+
+.achievement-card-tiered.is-locked:hover {
+  opacity: 0.85;
+  filter: grayscale(10%);
+}
+
 /* 6. Fight Club / Compare Page */
 .compare-hero-vs {
   display: grid;
@@ -3243,5 +3279,62 @@ background-color: #008a43 !important;
 body.light-theme .archetype-pulse {
 background-color: rgba(0, 138, 67, 0.4) !important;
 }
+
+/* 8. Light Theme Support for Tiered Achievements & Video Accordion */
+body.light-theme .achievement-card-tiered {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .achievement-card-tiered:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .achievement-card-tiered.is-max {
+  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%) !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12) !important;
+}
+
+body.light-theme .achievement-card-tiered.is-unlocked {
+  background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%) !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1) !important;
+}
+
+body.light-theme .achievement-card-tiered.is-locked {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  opacity: 0.7 !important;
+}
+
+body.light-theme .achievement-card-tiered h4 {
+  color: #0f172a !important;
+}
+
+body.light-theme .achievement-card-tiered p {
+  color: #334155 !important;
+}
+
+body.light-theme .match-video-section details {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+body.light-theme .match-video-section summary {
+  background: #f8fafc !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+
+body.light-theme .match-video-section summary:hover {
+  background: #f1f5f9 !important;
+}
+
+body.light-theme .match-video-section summary h3 {
+  color: #0f172a !important;
+}
+
 
 

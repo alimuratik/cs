@@ -42,7 +42,7 @@ logger = logging.getLogger(__name__)
 FACEIT_API_BASE = "https://open.faceit.com/data/v4"
 CACHE_TTL_HOURS = 24
 NOT_FOUND_CACHE_DAYS = 7
-LOOKUP_VERSION = 3  # Версия логики поиска для сброса устаревших кэшей и обновления карт
+LOOKUP_VERSION = 4  # Версия логики поиска для сброса устаревших кэшей, фикса W/L и карт
 
 # Диапазоны ELO для уровней Faceit CS2
 FACEIT_LEVEL_BRACKETS = {
@@ -258,17 +258,56 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
     if hist_res and isinstance(hist_res.get("items"), list):
         for item in hist_res["items"]:
             try:
+                m_id = item.get("match_id")
+                m_detail = None
+                if m_id:
+                    # Запрашиваем полные детали матча (составы фракций и точная карта)
+                    m_detail = _make_faceit_request(f"{FACEIT_API_BASE}/matches/{m_id}", key)
+
+                # Надежное определение фракции игрока (faction1 или faction2)
+                # Проверяем f1 и f2 в item и m_detail, так как в history API список игроков может лежать в 'players' или 'roster'
                 m_teams = item.get("teams", {})
-                f1 = m_teams.get("faction1", {})
-                f2 = m_teams.get("faction2", {})
-                player_faction = "faction1" if any(p.get("player_id") == player_id for p in f1.get("roster", [])) else "faction2"
+                md_teams = (m_detail.get("teams", {}) if m_detail else {})
 
-                winner = item.get("results", {}).get("winner")
-                is_win = (winner == player_faction)
+                f1_item = m_teams.get("faction1", {})
+                f2_item = m_teams.get("faction2", {})
+                f1_detail = md_teams.get("faction1", {})
+                f2_detail = md_teams.get("faction2", {})
 
-                score_dict = item.get("results", {}).get("score", {})
-                score_f1 = score_dict.get("faction1", 0)
-                score_f2 = score_dict.get("faction2", 0)
+                f1_players = (f1_detail.get("roster") or f1_detail.get("players") or
+                              f1_item.get("players") or f1_item.get("roster") or [])
+                f2_players = (f2_detail.get("roster") or f2_detail.get("players") or
+                              f2_item.get("players") or f2_item.get("roster") or [])
+
+                player_faction = None
+                if any(p.get("player_id") == player_id or (p.get("nickname") and p.get("nickname").lower() == nickname.lower()) for p in f1_players):
+                    player_faction = "faction1"
+                elif any(p.get("player_id") == player_id or (p.get("nickname") and p.get("nickname").lower() == nickname.lower()) for p in f2_players):
+                    player_faction = "faction2"
+
+                # Fallback: если не нашли по ID/нику в списках, смотрим leader
+                if not player_faction:
+                    if f1_item.get("leader") == player_id or f1_detail.get("leader") == player_id:
+                        player_faction = "faction1"
+                    elif f2_item.get("leader") == player_id or f2_detail.get("leader") == player_id:
+                        player_faction = "faction2"
+                    else:
+                        player_faction = "faction1"
+
+                # Определение победителя и счёта матча
+                res_obj = (m_detail.get("results") if m_detail else None) or item.get("results") or {}
+                winner = res_obj.get("winner")
+
+                score_dict = res_obj.get("score", {})
+                score_f1 = int(score_dict.get("faction1", 0) or 0)
+                score_f2 = int(score_dict.get("faction2", 0) or 0)
+
+                # Если winner не указан явно строкой, определяем по счету
+                if not winner and (score_f1 > 0 or score_f2 > 0):
+                    winner = "faction1" if score_f1 > score_f2 else ("faction2" if score_f2 > score_f1 else None)
+
+                is_win = (winner == player_faction) if winner else (score_f1 > score_f2 if player_faction == "faction1" else score_f2 > score_f1)
+
                 my_score = score_f1 if player_faction == "faction1" else score_f2
                 opp_score = score_f2 if player_faction == "faction1" else score_f1
                 score_str = f"{my_score}:{opp_score}"
@@ -276,20 +315,16 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
                 started_at = item.get("started_at", 0)
                 match_dt = datetime.fromtimestamp(started_at).strftime("%d.%m.%Y") if started_at else ""
 
-                m_id = item.get("match_id")
                 map_name = "CS2"
-                if m_id:
-                    # Запрашиваем детали матча для получения точной выбранной карты
-                    m_detail = _make_faceit_request(f"{FACEIT_API_BASE}/matches/{m_id}", key)
-                    if m_detail:
-                        m_voting = m_detail.get("voting", {}).get("map", {})
-                        picks = m_voting.get("pick") or []
-                        if picks and isinstance(picks, list) and len(picks) > 0:
-                            map_name = picks[0].replace("de_", "").capitalize()
-                        elif isinstance(picks, str):
-                            map_name = picks.replace("de_", "").capitalize()
-                        elif m_voting.get("entities") and isinstance(m_voting["entities"], list) and len(m_voting["entities"]) > 0:
-                            map_name = m_voting["entities"][0].get("name", "CS2").replace("de_", "").capitalize()
+                if m_detail:
+                    m_voting = m_detail.get("voting", {}).get("map", {})
+                    picks = m_voting.get("pick") or []
+                    if picks and isinstance(picks, list) and len(picks) > 0:
+                        map_name = picks[0].replace("de_", "").capitalize()
+                    elif isinstance(picks, str):
+                        map_name = picks.replace("de_", "").capitalize()
+                    elif m_voting.get("entities") and isinstance(m_voting["entities"], list) and len(m_voting["entities"]) > 0:
+                        map_name = m_voting["entities"][0].get("name", "CS2").replace("de_", "").capitalize()
 
                 # Fallback если API не ответил
                 if map_name == "CS2":
@@ -309,7 +344,8 @@ def fetch_player_faceit(steam_id: str, player_name: str = "", api_key: str = Non
                     "result_badge": "W" if is_win else "L",
                     "match_url": m_url,
                 })
-            except Exception:
+            except Exception as ex:
+                logger.debug(f"Ошибка парсинга Faceit матча: {ex}")
                 continue
 
     # Расчет дельты Elo относительно предыдущего кэша

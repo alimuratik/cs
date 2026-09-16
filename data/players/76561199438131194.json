@@ -475,196 +475,902 @@
         {
             "id": "humiliation_master",
             "title": "Мастер унижений",
-            "desc": "Совершить по 2+ убийства с ножа/Zeus минимум в 2 матчах (или 3+ за одну игру)",
             "icon": "🔪",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "0/2 матчей с 2+ kill с ножа/Zeus (всего 0 фрагов)"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "2 фрага с ножа или Zeus",
+            "next_goal": "2 фрага с ножа или Zeus",
+            "progress_val": 0,
+            "progress_max": 2,
+            "progress_pct": 0.0,
+            "progress": "0 фрагов (0 матчей с 2+ kill)",
+            "progress_text": "0 фрагов (0 матчей с 2+ kill)"
         },
         {
             "id": "headshot_king",
             "title": "One-Tap Хирург",
-            "desc": "Средний процент попаданий в голову >= 52% при 80+ фрагах за карьеру",
             "icon": "🎯",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "44.3% HS (61/80 фрагов)"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "45.0% попаданий в голову (от 15 фрагов)",
+            "next_goal": "45.0% попаданий в голову (от 15 фрагов)",
+            "progress_val": 44.3,
+            "progress_max": 45.0,
+            "progress_pct": 98.4,
+            "progress": "44.3% HS (61 фрагов)",
+            "progress_text": "44.3% HS (61 фрагов)"
         },
         {
             "id": "entry_demon",
             "title": "Гроза опенингов",
-            "desc": "18+ первых убийств с винрейтом энтри-дуэлей >= 52%",
             "icon": "⚡",
-            "unlocked": false,
-            "progress": "12 первых фрагов (WR: 70.6%)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "7 первых убийств в раундах",
+            "next_goal": "15 первых убийств в раундах",
+            "progress_val": 12,
+            "progress_max": 15,
+            "progress_pct": 80.0,
+            "progress": "12 / 15 первых фрагов",
+            "progress_text": "12 / 15 первых фрагов"
         },
         {
             "id": "iron_wall",
             "title": "Железный занавес",
-            "desc": "Командная полезность KAST >= 75.0% и позиционка >= 6.5 (от 5 матчей)",
             "icon": "🛡️",
-            "unlocked": false,
-            "progress": "100.0% KAST, Позиционка 5.3 (5/5 матчей)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Полезность KAST >= 67.0%",
+            "next_goal": "KAST >= 72.0% и Позиционирование >= 6.0",
+            "progress_val": 100.0,
+            "progress_max": 72.0,
+            "progress_pct": 100.0,
+            "progress": "100.0% KAST (Поз. 5.3)",
+            "progress_text": "100.0% KAST (Поз. 5.3)"
         },
         {
             "id": "clutch_master",
             "title": "Клатч-министр",
-            "desc": "Выиграть 5+ клатчей 1vX с винрейтом клатчей >= 35% (или 8+ суммарно)",
             "icon": "👑",
-            "unlocked": false,
-            "progress": "2 клатчей (WR: 13.3%)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Выиграть 2 клатча 1vX",
+            "next_goal": "Выиграть 4 клатча 1vX",
+            "progress_val": 2,
+            "progress_max": 4,
+            "progress_pct": 50.0,
+            "progress": "2 / 4 клатчей",
+            "progress_text": "2 / 4 клатчей"
         },
         {
             "id": "sniper_elite",
             "title": "Снайперская элита",
-            "desc": "35+ фрагов с винтовки AWP (доля AWP >= 25%) и рейтинг Aim >= 6.5",
             "icon": "🔭",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "7 фрагов AWP (11.5%), Aim 5.95"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "10 фрагов с винтовки AWP",
+            "next_goal": "10 фрагов с винтовки AWP",
+            "progress_val": 7,
+            "progress_max": 10,
+            "progress_pct": 70.0,
+            "progress": "7 / 10 фрагов AWP",
+            "progress_text": "7 / 10 фрагов AWP"
         },
         {
             "id": "damage_machine",
             "title": "Огневой каток",
-            "desc": "Средний урон за раунд (ADR) >= 88.0 на дистанции от 5 матчей",
             "icon": "💥",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "72.4 ADR (5/5 матчей)"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Средний урон за раунд ADR >= 75.0",
+            "next_goal": "Средний урон за раунд ADR >= 75.0",
+            "progress_val": 72.4,
+            "progress_max": 75.0,
+            "progress_pct": 96.5,
+            "progress": "72.4 / 75.0 ADR",
+            "progress_text": "72.4 / 75.0 ADR"
         },
         {
             "id": "on_fire_badge",
             "title": "В абсолютном огне",
-            "desc": "Сессионный рывок формы >= +0.25 HLTV 2.0 относительно среднего",
             "icon": "🔥",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "+0.00 HLTV"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Сессионный рывок формы >= +0.08 HLTV",
+            "next_goal": "Сессионный рывок формы >= +0.08 HLTV",
+            "progress_val": 0.0,
+            "progress_max": 0.08,
+            "progress_pct": 0.0,
+            "progress": "+0.00 HLTV",
+            "progress_text": "+0.00 HLTV"
         },
         {
             "id": "untouchable",
             "title": "Неприкасаемый",
-            "desc": "Серия из 4 или более побед подряд в официальных играх",
             "icon": "📈",
-            "unlocked": false,
-            "progress": "2 побед подряд (цель 4)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Серия из 2 побед подряд",
+            "next_goal": "Серия из 4 побед подряд",
+            "progress_val": 2,
+            "progress_max": 4,
+            "progress_pct": 50.0,
+            "progress": "2 / 4 побед подряд",
+            "progress_text": "2 / 4 побед подряд"
         },
         {
             "id": "grenadier",
             "title": "Артиллерийский полк",
-            "desc": "Нанести 320+ HP урона гранатами (в среднем >= 6.5 за раунд)",
             "icon": "🧨",
-            "unlocked": false,
-            "progress": "245 HP (2.7/раунд)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "120 HP суммарного урона гранатами",
+            "next_goal": "300 HP урона гранатами",
+            "progress_val": 245,
+            "progress_max": 300,
+            "progress_pct": 81.7,
+            "progress": "245 / 300 HP",
+            "progress_text": "245 / 300 HP"
         },
         {
             "id": "flash_tactician",
             "title": "Ослепляющий свет",
-            "desc": "10+ флеш-ассистов (в среднем >= 1.2 ослепления с фрагом за матч)",
             "icon": "💡",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "0 ассистов (0.0/матч)"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "3 флеш-ассиста",
+            "next_goal": "3 флеш-ассиста",
+            "progress_val": 0,
+            "progress_max": 3,
+            "progress_pct": 0.0,
+            "progress": "0 / 3 ассистов",
+            "progress_text": "0 / 3 ассистов"
         },
         {
             "id": "refrag_king",
             "title": "Машина размена",
-            "desc": "16+ успешных разменов тиммейтов (доля разменов >= 23%)",
             "icon": "🔄",
-            "unlocked": false,
-            "progress": "10 разменов (16.4%)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "6 успешных разменов тиммейтов",
+            "next_goal": "14 успешных разменов тиммейтов",
+            "progress_val": 10,
+            "progress_max": 14,
+            "progress_pct": 71.4,
+            "progress": "10 / 14 разменов",
+            "progress_text": "10 / 14 разменов"
         },
         {
             "id": "pistol_king",
             "title": "Пистолетный маэстро",
-            "desc": "10+ фрагов в пистолетных раундах с винрейтом раундов >= 50%",
             "icon": "🔫",
-            "unlocked": false,
-            "progress": "9 фрагов (WR: 0.0%)"
+            "tier": 2,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 250,
+            "max_points": 500,
+            "stars": "★★☆",
+            "tier_name": "Tier II · Серебро",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "8 фрагов в пистолетных раундах",
+            "next_goal": "16 фрагов в пистолетных раундах",
+            "progress_val": 9,
+            "progress_max": 16,
+            "progress_pct": 56.2,
+            "progress": "9 / 16 фрагов",
+            "progress_text": "9 / 16 фрагов"
         },
         {
             "id": "eco_raider",
             "title": "Экономический диверсант",
-            "desc": "K/D >= 1.30 в раундах против полного закупа соперника (Full Buy)",
             "icon": "💰",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "0.86 K/D vs Full Buy"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "K/D >= 1.05 против Full Buy",
+            "next_goal": "K/D >= 1.05 против Full Buy",
+            "progress_val": 0.9,
+            "progress_max": 1.05,
+            "progress_pct": 85.7,
+            "progress": "0.86 K/D vs Full Buy",
+            "progress_text": "0.86 K/D vs Full Buy"
         },
         {
             "id": "high_roller",
             "title": "Царь горы",
-            "desc": "Достичь пикового рейтинга 1100+ MMR в соревновательном ладдере",
             "icon": "🏆",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "1008 / 1100 MMR"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Пиковый рейтинг 1030+ MMR",
+            "next_goal": "Пиковый рейтинг 1030+ MMR",
+            "progress_val": 1008,
+            "progress_max": 1030,
+            "progress_pct": 97.9,
+            "progress": "1008 / 1030 MMR",
+            "progress_text": "1008 / 1030 MMR"
         },
         {
             "id": "ace_hunter",
-            "title": "Шляпный фокус (25+ бомбардир)",
-            "desc": "Оформить 25+ фрагов за одну карту как минимум в 2 матчах",
+            "title": "Шляпный фокус (25+ фрагов)",
             "icon": "🎩",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "0 / 2 матчей с 25+ фрагами"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "1 матч с 25+ фрагами за карту",
+            "next_goal": "1 матч с 25+ фрагами за карту",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 / 1 матчей",
+            "progress_text": "0 / 1 матчей"
         },
         {
             "id": "unbroken",
             "title": "Мастер выживания",
-            "desc": "Выживаемость в раундах >= 35.0% на дистанции от 5 матчей",
             "icon": "🧘",
-            "unlocked": false,
-            "progress": "27.5% выживаемости"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Выживаемость в раундах >= 26.0%",
+            "next_goal": "Выживаемость в раундах >= 32.0%",
+            "progress_val": 27.5,
+            "progress_max": 32.0,
+            "progress_pct": 85.9,
+            "progress": "27.5% / 32.0%",
+            "progress_text": "27.5% / 32.0%"
         },
         {
             "id": "veteran",
             "title": "Ветеран дивизиона",
-            "desc": "Сыграть 15 или более официальных матчей на платформе",
             "icon": "🎖️",
-            "unlocked": false,
-            "progress": "5 / 15 матчей"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Сыграть 4 официальных матча",
+            "next_goal": "Сыграть 8 официальных матчей",
+            "progress_val": 5,
+            "progress_max": 8,
+            "progress_pct": 62.5,
+            "progress": "5 / 8 матчей",
+            "progress_text": "5 / 8 матчей"
         },
         {
             "id": "clutch_god",
             "title": "Император клатчей",
-            "desc": "Выиграть 6+ клатчей при феноменальном винрейте >= 40% (или 9+ суммарно)",
             "icon": "👑",
-            "unlocked": false,
-            "progress": "2 клатчей (WR: 13.3%)"
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "tier_name": "Tier I · Бронза",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "completed",
+                    "star": "★"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "2 клатча с винрейтом клатчей >= 20%",
+            "next_goal": "4 клатча с винрейтом клатчей >= 28%",
+            "progress_val": 2,
+            "progress_max": 4,
+            "progress_pct": 50.0,
+            "progress": "2 клатчей (WR: 13.3%)",
+            "progress_text": "2 клатчей (WR: 13.3%)"
         },
         {
             "id": "perfect_aim",
             "title": "Абсолютный хедхантер",
-            "desc": "Рейтинг Aim >= 8.2 или 58%+ HS при 80+ фрагах за карьеру",
             "icon": "🎯",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "Aim: 5.95 / 8.2, HS: 44.3%"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Рейтинг Aim >= 6.5",
+            "next_goal": "Рейтинг Aim >= 6.5",
+            "progress_val": 6.0,
+            "progress_max": 6.5,
+            "progress_pct": 92.3,
+            "progress": "Aim: 6.0 / 8.0 (HS: 44.3%)",
+            "progress_text": "Aim: 6.0 / 8.0 (HS: 44.3%)"
         },
         {
             "id": "map_conqueror",
             "title": "Хозяин карты",
-            "desc": "Выиграть 70%+ матчей на конкретной карте при минимуме 3 сыгранных играх",
             "icon": "🌪️",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "Нет карт с 3+ играми и WR>=70%"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "1 карта с WR >= 55% (от 2 матчей)",
+            "next_goal": "1 карта с WR >= 55% (от 2 матчей)",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 карт с WR >= 66%",
+            "progress_text": "0 карт с WR >= 66%"
         },
         {
             "id": "anchor_titan",
             "title": "Непробиваемый якорь",
-            "desc": "Рейтинг Positioning >= 7.6 и выживаемость >= 35% при 4+ матчах",
             "icon": "🛡️",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "Позиционка: 5.3, Выживание: 27.5%"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Рейтинг Positioning >= 6.3",
+            "next_goal": "Рейтинг Positioning >= 6.3",
+            "progress_val": 5.3,
+            "progress_max": 6.3,
+            "progress_pct": 84.1,
+            "progress": "5.3 / 6.3 Позиционирование",
+            "progress_text": "5.3 / 6.3 Позиционирование"
         },
         {
             "id": "tactical_overlord",
             "title": "Тактический гроссмейстер",
-            "desc": "Рейтинг Utility >= 7.2 и 10+ флеш-ассистов за карьеру",
             "icon": "🧨",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "Utility: 2.675, Флеш-ассисты: 0"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "Рейтинг Utility >= 6.0",
+            "next_goal": "Рейтинг Utility >= 6.0",
+            "progress_val": 2.7,
+            "progress_max": 6.0,
+            "progress_pct": 45.0,
+            "progress": "Utility: 2.7 (Флеши: 0)",
+            "progress_text": "Utility: 2.7 (Флеши: 0)"
         },
         {
             "id": "thirty_bomb",
             "title": "Аннигилятор (30+ бомба)",
-            "desc": "Оформить 30 или более фрагов за одну карту в официальном матче",
             "icon": "💀",
+            "tier": 0,
+            "max_tier": 3,
             "unlocked": false,
-            "progress": "0 матчей с 30+ фрагами (цель 1)"
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 2,
+                    "status": "locked",
+                    "star": "☆"
+                },
+                {
+                    "level": 3,
+                    "status": "locked",
+                    "star": "☆"
+                }
+            ],
+            "desc": "1 матч с 30+ фрагами за карту",
+            "next_goal": "1 матч с 30+ фрагами за карту",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 / 1 матчей",
+            "progress_text": "0 / 1 матчей"
         }
     ],
+    "achievements_summary": {
+        "total_unlocked": 10,
+        "total_count": 24,
+        "tier1_count": 9,
+        "tier2_count": 1,
+        "tier3_count": 0,
+        "total_points": 1150,
+        "max_points": 12000,
+        "points_pct": 9.6
+    },
     "matches": [
         {
             "match_id": "11092026_ancient_27153355_244",
