@@ -383,10 +383,10 @@
                     maintainAspectRatio: false,
                     scales: {
                         r: {
-                            angleLines: { color: 'rgba(255, 255, 255, 0.12)' },
-                            grid: { color: 'rgba(255, 255, 255, 0.12)' },
-                            ticks: { min: 0, max: 10, stepSize: 2, color: '#94a3b8', backdropColor: 'transparent' },
-                            pointLabels: { color: '#cbd5e1', font: { size: 10, weight: 'bold' } }
+                            angleLines: { color: document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)' },
+                            grid: { color: document.documentElement.getAttribute('data-theme') === 'dark' ? 'rgba(255, 255, 255, 0.12)' : 'rgba(15, 23, 42, 0.08)' },
+                            ticks: { min: 0, max: 10, stepSize: 2, color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#94a3b8' : '#64748b', backdropColor: 'transparent' },
+                            pointLabels: { color: document.documentElement.getAttribute('data-theme') === 'dark' ? '#cbd5e1' : '#0f172a', font: { size: 10, weight: 'bold' } }
                         }
                     },
                     plugins: {

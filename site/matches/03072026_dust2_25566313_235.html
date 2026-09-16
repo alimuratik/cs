@@ -13,8 +13,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function() {
+            try {
+                const t = localStorage.getItem('cs2_theme') || 'light';
+                document.documentElement.setAttribute('data-theme', t);
+                if (t === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
 </head>
-<body class="dark-theme">
+<body class="light-theme">
     <header class="header">
         <div class="container header-content">
             <div class="logo">
@@ -53,12 +66,12 @@
 
             <!-- User Personalization Widget ("Кто ты?") -->
             <div class="relative ml-2 hidden md:block" id="user-profile-widget">
-                <button type="button" id="my-profile-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700/80 transition shadow-sm focus:outline-none" aria-expanded="false">
+                <button type="button" id="my-profile-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-300 hover:text-white hover:border-emerald-500/50 transition text-xs font-semibold shadow-sm" aria-expanded="false">
                     <span id="my-profile-icon">👤</span>
                     <span id="my-profile-label">Кто ты?</span>
                     <span class="text-[10px] text-slate-500">▼</span>
                 </button>
-                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-slate-800 shadow-2xl p-2 z-50 transition-all">
+                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900/95 border border-slate-700/90 backdrop-blur-xl shadow-2xl p-2 z-50 animate-fadeIn">
                     <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5 flex items-center justify-between">
                         <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Выберите свой профиль</span>
                         <button type="button" id="reset-my-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
@@ -199,10 +212,23 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu Button (Hamburger) -->
-            <button type="button" id="mobile-menu-btn" class="hamburger-btn md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Открыть мобильное меню">
-                <span class="text-xl">☰</span>
-            </button>
+            <!-- Theme Switcher (Desktop) -->
+            <div class="relative ml-2 hidden md:flex items-center">
+                <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="Переключить тему">
+                    <span id="theme-icon">☀️</span>
+                    <span id="theme-text">Светлая</span>
+                </button>
+            </div>
+
+            <!-- Mobile Controls (Quick Theme Toggle + Hamburger) -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button type="button" id="mobile-theme-btn" class="theme-toggle-btn !p-2 !rounded-xl" aria-label="Переключить тему" title="Переключить тему">
+                    <span id="mobile-theme-icon">☀️</span>
+                </button>
+                <button type="button" id="mobile-menu-btn" class="hamburger-btn text-slate-700 dark:text-slate-300 p-2 focus:outline-none" aria-label="Открыть мобильное меню">
+                    <span class="text-xl">☰</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -248,15 +274,15 @@
         </nav>
 
         <!-- Mobile User Profile Picker -->
-        <div class="mt-4 p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800" id="mobile-user-profile-widget">
+        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm" id="mobile-user-profile-widget">
             <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                     <span id="mobile-profile-icon">👤</span>
                     <span id="mobile-profile-title">Мой профиль</span>
                 </span>
-                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
+                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-500 hover:text-rose-400 hidden font-mono">Сбросить</button>
             </div>
-            <select id="mobile-player-select" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+            <select id="mobile-player-select" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500">
                 <option value="">-- Выберите профиль --</option>
                 
                 <option value="76561198357586856">__9503</option>
@@ -310,11 +336,22 @@
                 <option value="76561199413542223">zikayevg</option>
                 
             </select>
-            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-800/80">
-                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-950 text-emerald-300 border border-emerald-700/50 text-xs font-bold">
+            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-200 dark:border-slate-800/80">
+                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700/50 text-xs font-bold">
                     Открыть мой профиль ➔
                 </a>
             </div>
+        </div>
+
+        <!-- Mobile Drawer Theme Switcher -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <span id="drawer-theme-icon">☀️</span>
+                <span>Тема оформления</span>
+            </span>
+            <button type="button" id="drawer-theme-btn" class="theme-toggle-btn !px-3.5 !py-1.5">
+                <span id="drawer-theme-text">Светлая</span>
+            </button>
         </div>
 
         <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
@@ -7741,8 +7778,15 @@
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-info">
-                <p class="footer-title">⚡ CS2 Demo Analytics Platform</p>
-                <p class="footer-timestamp">Данные обновлены: 15.09.2026 13:35</p>
+                <p class="footer-title flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-5 h-5 shrink-0 inline-block align-middle" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span>CS2 Demo Analytics Platform</span>
+                </p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:36</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -7750,13 +7794,287 @@
         </div>
     </footer>
 
-    <!-- Shared Chart.js Dark Theme Defaults -->
+    <!-- Theme Manager & Chart.js Integration -->
     <script>
-        if (typeof Chart !== 'undefined') {
-            Chart.defaults.color = 'rgba(255, 255, 255, 0.7)';
-            Chart.defaults.scale.grid.color = 'rgba(255, 255, 255, 0.1)';
-            Chart.defaults.font.family = "'Inter', sans-serif";
-        }
+        (function() {
+            const THEME_KEY = 'cs2_theme';
+            
+            function getInitialTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved === 'dark' || saved === 'light') return saved;
+                } catch(e) {}
+                return 'light'; // Default is Light (KASE Financial Theme)
+            }
+
+            function updateChartDefaults(isLight) {
+                if (typeof Chart !== 'undefined') {
+                    Chart.defaults.color = isLight ? '#1e293b' : 'rgba(255, 255, 255, 0.7)';
+                    if (Chart.defaults.scale && Chart.defaults.scale.grid) {
+                        Chart.defaults.scale.grid.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)';
+                    }
+                    Chart.defaults.font.family = "'Inter', sans-serif";
+                }
+            }
+
+            function applyTheme(theme) {
+                const isLight = (theme === 'light');
+                const html = document.documentElement;
+                const body = document.body;
+
+                if (isLight) {
+                    html.classList.remove('dark');
+                    html.setAttribute('data-theme', 'light');
+                    if (body) {
+                        body.classList.remove('dark-theme');
+                        body.classList.add('light-theme');
+                    }
+                } else {
+                    html.classList.add('dark');
+                    html.setAttribute('data-theme', 'dark');
+                    if (body) {
+                        body.classList.remove('light-theme');
+                        body.classList.add('dark-theme');
+                    }
+                }
+
+                // Update UI Buttons
+                const iconStr = isLight ? '☀️' : '🌙';
+                const labelStr = isLight ? 'Светлая' : 'Темная';
+
+                const dIcon = document.getElementById('theme-icon');
+                const dText = document.getElementById('theme-text');
+                if (dIcon) dIcon.textContent = iconStr;
+                if (dText) dText.textContent = labelStr;
+
+                const mIcon = document.getElementById('mobile-theme-icon');
+                if (mIcon) mIcon.textContent = iconStr;
+
+                const drIcon = document.getElementById('drawer-theme-icon');
+                const drText = document.getElementById('drawer-theme-text');
+                if (drIcon) drIcon.textContent = iconStr;
+                if (drText) drText.textContent = labelStr;
+
+                // Update Chart.js Defaults
+                updateChartDefaults(isLight);
+
+                // Dynamically update active charts on the page
+                if (typeof Chart !== 'undefined' && Chart.instances) {
+                    Object.values(Chart.instances).forEach(chart => {
+                        if (chart.options && chart.options.scales) {
+                            Object.values(chart.options.scales).forEach(scale => {
+                                if (scale.grid) scale.grid.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)';
+                                if (scale.ticks) scale.ticks.color = isLight ? '#1e293b' : 'rgba(255, 255, 255, 0.7)';
+                                if (scale.pointLabels) scale.pointLabels.color = isLight ? '#0f172a' : '#cbd5e1';
+                                if (scale.angleLines) scale.angleLines.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.15)';
+                            });
+                        }
+                        if (chart.options && chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                            chart.options.plugins.legend.labels.color = isLight ? '#1e293b' : '#cbd5e1';
+                        }
+                        chart.update();
+                    });
+                }
+
+                try {
+                    localStorage.setItem(THEME_KEY, theme);
+                } catch(e) {}
+            }
+
+            function toggleTheme() {
+                const current = localStorage.getItem(THEME_KEY) || 'light';
+                const next = current === 'light' ? 'dark' : 'light';
+                applyTheme(next);
+            }
+
+            // Expose globally
+            window.toggleTheme = toggleTheme;
+            window.applyTheme = applyTheme;
+
+            // Initial immediate application
+            const initial = getInitialTheme();
+            updateChartDefaults(initial === 'light');
+            if (document.body) {
+                applyTheme(initial);
+            } else {
+                document.addEventListener('DOMContentLoaded', () => applyTheme(initial));
+            }
+
+            // Wire up buttons once DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                const dBtn = document.getElementById('theme-toggle-btn');
+                const mBtn = document.getElementById('mobile-theme-btn');
+                const drBtn = document.getElementById('drawer-theme-btn');
+
+                if (dBtn) dBtn.addEventListener('click', toggleTheme);
+                if (mBtn) mBtn.addEventListener('click', toggleTheme);
+                if (drBtn) drBtn.addEventListener('click', toggleTheme);
+            });
+        })();
+
+        // ─── Client-side User Personalization ("Кто ты?") ───
+        (function() {
+            const STORAGE_KEY = 'cs2_my_steamid';
+            const rootPath = '../';
+            
+            const profileBtn = document.getElementById('my-profile-btn');
+            const profileMenu = document.getElementById('my-profile-menu');
+            const profileLabel = document.getElementById('my-profile-label');
+            const profileIcon = document.getElementById('my-profile-icon');
+            const resetBtn = document.getElementById('reset-my-profile-btn');
+            const profileLink = document.getElementById('my-profile-link');
+            const activeActions = document.getElementById('my-profile-active-actions');
+            
+            const mobileSelect = document.getElementById('mobile-player-select');
+            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
+            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
+            const mobileLink = document.getElementById('mobile-profile-link');
+
+            function getMySteamId() {
+                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
+            }
+
+            function setMySteamId(sid) {
+                try {
+                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
+                    else localStorage.removeItem(STORAGE_KEY);
+                } catch(e) {}
+                applyPersonalization();
+            }
+
+            function applyPersonalization() {
+                const currentSid = getMySteamId();
+                let currentName = '';
+
+                // Find player name from list
+                const items = document.querySelectorAll('.profile-select-item');
+                items.forEach(el => {
+                    const sid = el.getAttribute('data-sid');
+                    const check = el.querySelector('.select-active-check');
+                    if (currentSid && sid === currentSid) {
+                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
+                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.remove('hidden');
+                    } else {
+                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
+                        if (check) check.classList.add('hidden');
+                    }
+                });
+
+                // Update Desktop Header Button
+                if (profileBtn && profileLabel) {
+                    if (currentSid && currentName) {
+                        profileLabel.textContent = currentName;
+                        profileIcon.textContent = '⭐';
+                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300', 'profile-active');
+                        profileBtn.setAttribute('data-selected', 'true');
+                        if (resetBtn) resetBtn.classList.remove('hidden');
+                        if (activeActions) activeActions.classList.remove('hidden');
+                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        profileLabel.textContent = 'Кто ты?';
+                        profileIcon.textContent = '👤';
+                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300', 'profile-active');
+                        profileBtn.removeAttribute('data-selected');
+                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
+                        if (resetBtn) resetBtn.classList.add('hidden');
+                        if (activeActions) activeActions.classList.add('hidden');
+                    }
+                }
+
+                // Update Mobile Selector
+                if (mobileSelect) {
+                    mobileSelect.value = currentSid;
+                }
+                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
+                    if (currentSid) {
+                        mobileResetBtn.classList.remove('hidden');
+                        mobileLinkWrap.classList.remove('hidden');
+                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
+                    } else {
+                        mobileResetBtn.classList.add('hidden');
+                        mobileLinkWrap.classList.add('hidden');
+                    }
+                }
+
+                // Highlight player rows/cards in tables and leaderboards
+                const targetEls = document.querySelectorAll('[data-steamid]');
+                targetEls.forEach(el => {
+                    const sid = el.getAttribute('data-steamid');
+                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
+                    const existingBadge = el.querySelector('.my-profile-star-badge');
+                    
+                    if (currentSid && sid === currentSid) {
+                        el.classList.add('my-profile-highlight');
+                        if (!existingBadge && badgeContainer) {
+                            const badge = document.createElement('span');
+                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
+                            badge.innerHTML = '⭐ ВЫ';
+                            badgeContainer.appendChild(badge);
+                        }
+                    } else {
+                        el.classList.remove('my-profile-highlight');
+                        if (existingBadge) {
+                            existingBadge.remove();
+                        }
+                    }
+                });
+            }
+
+            // Event Listeners
+            if (profileBtn && profileMenu) {
+                profileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isHidden = profileMenu.classList.contains('hidden');
+                    if (isHidden) {
+                        profileMenu.classList.remove('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
+                        profileMenu.classList.add('hidden');
+                        profileBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            document.querySelectorAll('.profile-select-item').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const sid = btn.getAttribute('data-sid');
+                    setMySteamId(sid);
+                    if (profileMenu) profileMenu.classList.add('hidden');
+                });
+            });
+
+            if (resetBtn) {
+                resetBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    setMySteamId('');
+                });
+            }
+
+            if (mobileSelect) {
+                mobileSelect.addEventListener('change', (e) => {
+                    setMySteamId(e.target.value);
+                });
+            }
+
+            if (mobileResetBtn) {
+                mobileResetBtn.addEventListener('click', () => {
+                    setMySteamId('');
+                });
+            }
+
+            // Run on initial page load
+            document.addEventListener('DOMContentLoaded', applyPersonalization);
+            applyPersonalization();
+        })();
     </script>
     
     
@@ -7858,6 +8176,7 @@
 
     <script src="../js/app.js"></script>
     <script>
+        // Mobile Navigation Drawer Toggle
         (function() {
             const btn = document.getElementById('mobile-menu-btn');
             const drawer = document.getElementById('mobile-nav-drawer');
@@ -7883,168 +8202,6 @@
                     if (e.key === 'Escape') setOpen(false);
                 });
             }
-        })();
-
-        // ─── Client-side User Personalization ("Кто ты?") ───
-        (function() {
-            const STORAGE_KEY = 'cs2_my_steamid';
-            const rootPath = '../';
-            
-            const profileBtn = document.getElementById('my-profile-btn');
-            const profileMenu = document.getElementById('my-profile-menu');
-            const profileLabel = document.getElementById('my-profile-label');
-            const profileIcon = document.getElementById('my-profile-icon');
-            const resetBtn = document.getElementById('reset-my-profile-btn');
-            const profileLink = document.getElementById('my-profile-link');
-            const activeActions = document.getElementById('my-profile-active-actions');
-            
-            const mobileSelect = document.getElementById('mobile-player-select');
-            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
-            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
-            const mobileLink = document.getElementById('mobile-profile-link');
-
-            function getMySteamId() {
-                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
-            }
-
-            function setMySteamId(sid) {
-                try {
-                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
-                    else localStorage.removeItem(STORAGE_KEY);
-                } catch(e) {}
-                applyPersonalization();
-            }
-
-            function applyPersonalization() {
-                const currentSid = getMySteamId();
-                let currentName = '';
-
-                // Find player name from list
-                const items = document.querySelectorAll('.profile-select-item');
-                items.forEach(el => {
-                    const sid = el.getAttribute('data-sid');
-                    const check = el.querySelector('.select-active-check');
-                    if (currentSid && sid === currentSid) {
-                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
-                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-                        if (check) check.classList.remove('hidden');
-                    } else {
-                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-                        if (check) check.classList.add('hidden');
-                    }
-                });
-
-                // Update Desktop Header Button
-                if (profileBtn && profileLabel) {
-                    if (currentSid && currentName) {
-                        profileLabel.textContent = currentName;
-                        profileIcon.textContent = '⭐';
-                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
-                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
-                        if (resetBtn) resetBtn.classList.remove('hidden');
-                        if (activeActions) activeActions.classList.remove('hidden');
-                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
-                    } else {
-                        profileLabel.textContent = 'Кто ты?';
-                        profileIcon.textContent = '👤';
-                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300');
-                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
-                        if (resetBtn) resetBtn.classList.add('hidden');
-                        if (activeActions) activeActions.classList.add('hidden');
-                    }
-                }
-
-                // Update Mobile Selector
-                if (mobileSelect) {
-                    mobileSelect.value = currentSid;
-                }
-                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
-                    if (currentSid) {
-                        mobileResetBtn.classList.remove('hidden');
-                        mobileLinkWrap.classList.remove('hidden');
-                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
-                    } else {
-                        mobileResetBtn.classList.add('hidden');
-                        mobileLinkWrap.classList.add('hidden');
-                    }
-                }
-
-                // Highlight player rows/cards in tables and leaderboards
-                const targetEls = document.querySelectorAll('[data-steamid]');
-                targetEls.forEach(el => {
-                    const sid = el.getAttribute('data-steamid');
-                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
-                    const existingBadge = el.querySelector('.my-profile-star-badge');
-                    
-                    if (currentSid && sid === currentSid) {
-                        el.classList.add('my-profile-highlight');
-                        if (!existingBadge && badgeContainer) {
-                            const badge = document.createElement('span');
-                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
-                            badge.innerHTML = '⭐ ВЫ';
-                            badgeContainer.appendChild(badge);
-                        }
-                    } else {
-                        el.classList.remove('my-profile-highlight');
-                        if (existingBadge) {
-                            existingBadge.remove();
-                        }
-                    }
-                });
-            }
-
-            // Event Listeners
-            if (profileBtn && profileMenu) {
-                profileBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isHidden = profileMenu.classList.contains('hidden');
-                    if (isHidden) {
-                        profileMenu.classList.remove('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'true');
-                    } else {
-                        profileMenu.classList.add('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-                        profileMenu.classList.add('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            }
-
-            document.querySelectorAll('.profile-select-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sid = btn.getAttribute('data-sid');
-                    setMySteamId(sid);
-                    if (profileMenu) profileMenu.classList.add('hidden');
-                });
-            });
-
-            if (resetBtn) {
-                resetBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    setMySteamId('');
-                });
-            }
-
-            if (mobileSelect) {
-                mobileSelect.addEventListener('change', (e) => {
-                    setMySteamId(e.target.value);
-                });
-            }
-
-            if (mobileResetBtn) {
-                mobileResetBtn.addEventListener('click', () => {
-                    setMySteamId('');
-                });
-            }
-
-            // Run on initial page load
-            document.addEventListener('DOMContentLoaded', applyPersonalization);
-            applyPersonalization();
         })();
     </script>
 </body>

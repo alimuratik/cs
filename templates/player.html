@@ -1096,6 +1096,11 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
+        const chartColor = isLight ? '#1e293b' : '#cbd5e1';
+        const chartSubColor = isLight ? '#64748b' : '#94a3b8';
+        const chartGridColor = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.08)';
+
         // Radar Chart
         const radarData = {{ player.ratings | tojson }};
         const ctxRadar = document.getElementById('ratings-radar').getContext('2d');
@@ -1118,10 +1123,10 @@
                 maintainAspectRatio: false,
                 scales: {
                     r: {
-                        angleLines: { color: 'rgba(255, 255, 255, 0.15)' },
-                        grid: { color: 'rgba(255, 255, 255, 0.15)' },
-                        ticks: { min: 0, max: 10, stepSize: 2, color: '#94a3b8', backdropColor: 'transparent' },
-                        pointLabels: { color: '#cbd5e1', font: { size: 11, weight: 'bold' } }
+                        angleLines: { color: chartGridColor },
+                        grid: { color: chartGridColor },
+                        ticks: { min: 0, max: 10, stepSize: 2, color: chartSubColor, backdropColor: 'transparent' },
+                        pointLabels: { color: chartColor, font: { size: 11, weight: 'bold' } }
                     }
                 },
                 plugins: { legend: { display: false } }
@@ -1150,24 +1155,24 @@
                 plugins: {
                     legend: {
                         display: true,
-                        labels: { color: '#cbd5e1', font: { size: 11 } }
+                        labels: { color: chartColor, font: { size: 11 } }
                     }
                 },
                 scales: {
                     x: {
                         ticks: {
-                            color: '#94a3b8',
+                            color: chartSubColor,
                             font: { size: 10 }
                         },
-                        grid: { color: 'rgba(255, 255, 255, 0.06)' }
+                        grid: { color: chartGridColor }
                     },
                     y: {
                         type: 'linear',
                         display: true,
                         position: 'left',
                         title: { display: true, text: 'ADR', color: '#fbbf24' },
-                        grid: { color: 'rgba(255, 255, 255, 0.06)' },
-                        ticks: { color: '#94a3b8' }
+                        grid: { color: chartGridColor },
+                        ticks: { color: chartSubColor }
                     },
                     y1: {
                         type: 'linear',
@@ -1175,7 +1180,7 @@
                         position: 'right',
                         title: { display: true, text: 'K/D & HLTV', color: '#38bdf8' },
                         grid: { drawOnChartArea: false },
-                        ticks: { color: '#94a3b8' }
+                        ticks: { color: chartSubColor }
                     },
                     y2: {
                         type: 'linear',

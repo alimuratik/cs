@@ -2279,5 +2279,971 @@ details.mobile-player-card.my-profile-highlight {
 }
 
 
+/* ==========================================================================
+   THEME SWITCHER COMPONENT (LIGHT & DARK DUAL THEME)
+   ========================================================================== */
+.theme-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  text-decoration: none;
+}
+
+body.light-theme .theme-toggle-btn {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .theme-toggle-btn:hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: #008a43 !important;
+}
+
+body.dark-theme .theme-toggle-btn {
+  background: rgba(15, 23, 42, 0.95) !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(51, 65, 85, 0.8) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.dark-theme .theme-toggle-btn:hover {
+  background: #1e293b !important;
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+}
+
+/* Ensure mobile header controls align gracefully */
+.mobile-theme-btn {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+
+/* ==========================================================================
+   OFFICIAL KASE.KZ FINANCIAL PORTAL MASTER THEME — SOLUTION A
+   Pure High-Contrast Financial Light Theme (No Dark/Gray Artifacts)
+   ========================================================================== */
+/* 1. UNIVERSAL BOX-SIZING & BASE CANVAS */
+*,
+*::before,
+*::after {
+box-sizing: border-box !important;
+}
+
+html,
+body.light-theme {
+overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+}
+
+body.light-theme {
+background-color: #f4f6f9 !important;
+  background-image: none !important;
+  color: #0f172a !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14px;
+  line-height: 1.5;
+  padding-top: 74px !important;
+  min-height: 100vh;
+}
+
+/* 2. UNIVERSAL ERADICATION OF DARK BACKGROUNDS */
+/* Any dark slate/black/zinc container becomes crisp white */
+body.light-theme [class*="bg-slate-9"],
+body.light-theme [class*="bg-slate-8"],
+body.light-theme [class*="bg-slate-7"],
+body.light-theme [class*="bg-black"],
+body.light-theme [class*="bg-zinc-9"],
+body.light-theme [class*="bg-gray-9"] {
+background-color: #ffffff !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Remove dark background gradients */
+body.light-theme [class*="bg-gradient-"] {
+background-image: none !important;
+  background-color: #ffffff !important;
+}
+
+/* Soft pastel backgrounds for semantic colored blocks */
+body.light-theme [class*="bg-amber-950"],
+body.light-theme [class*="bg-amber-900"] {
+background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+body.light-theme [class*="bg-emerald-950"],
+body.light-theme [class*="bg-emerald-900"] {
+background-color: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+}
+
+body.light-theme [class*="bg-rose-950"],
+body.light-theme [class*="bg-red-950"] {
+background-color: #fef2f2 !important;
+  border-color: #fecaca !important;
+}
+
+body.light-theme [class*="bg-blue-950"],
+body.light-theme [class*="bg-indigo-950"],
+body.light-theme [class*="bg-sky-950"] {
+background-color: #f0f9ff !important;
+  border-color: #bae6fd !important;
+}
+
+body.light-theme [class*="bg-orange-950"] {
+background-color: #fff7ed !important;
+  border-color: #fed7aa !important;
+}
+
+/* 3. TEXT TYPOGRAPHY (ZERO GRAY-ON-GRAY, WCAG AAA HIGH CONTRAST) */
+/* Primary text, titles, player names, numbers */
+body.light-theme .text-white,
+body.light-theme [class*="text-slate-100"],
+body.light-theme [class*="text-slate-200"],
+body.light-theme span.text-slate-200,
+body.light-theme div.text-slate-200,
+body.light-theme strong.text-white,
+body.light-theme strong.text-slate-200,
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme h4,
+body.light-theme .player-name-container,
+body.light-theme .player-name-container span {
+color: #0f172a !important; /* Deepest black-slate */
+}
+
+/* Secondary labels, roles, subtitles, dates */
+body.light-theme .text-slate-400,
+body.light-theme .text-slate-500,
+body.light-theme .text-slate-600,
+body.light-theme div.text-slate-400,
+body.light-theme div.text-slate-500,
+body.light-theme span.text-slate-400,
+body.light-theme span.text-slate-500,
+body.light-theme p.text-slate-400,
+body.light-theme p.text-slate-300,
+body.light-theme p.hero-subtitle,
+body.light-theme p.section-subtitle,
+body.light-theme .hero-subtitle,
+body.light-theme .section-subtitle,
+body.light-theme .breadcrumbs-bar,
+body.light-theme footer p,
+body.light-theme footer span {
+color: #334155 !important; /* Slate-700: sharp readable dark slate */
+  font-weight: 500 !important;
+}
+
+/* Small helper texts and footnotes */
+body.light-theme .text-xs,
+body.light-theme .text-\[10px\],
+body.light-theme .text-\[11px\] {
+color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+/* Saturated Financial Metrics */
+body.light-theme .text-amber-300,
+body.light-theme .text-amber-400 {
+color: #b45309 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .text-emerald-400,
+body.light-theme .text-emerald-300 {
+color: #15803d !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .text-rose-400,
+body.light-theme .text-rose-300,
+body.light-theme .text-red-400 {
+color: #b91c1c !important;
+  font-weight: 800 !important;
+}
+
+/* Numbers & MMR in table: sharp charcoal */
+body.light-theme span.font-mono.font-black.text-orange-300,
+body.light-theme span.font-mono.font-black[class*="text-"] {
+color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+/* 4. HEADER & NAVIGATION */
+body.light-theme .header {
+background: #ffffff !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  padding: 0 !important;
+}
+
+body.light-theme .logo-accent {
+color: #008a43 !important;
+  background: none !important;
+  -webkit-text-fill-color: #008a43 !important;
+  font-weight: 900 !important;
+}
+
+body.light-theme .nav-item {
+color: #1e293b !important;
+  font-weight: 700 !important;
+  font-size: 0.88rem !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+}
+
+body.light-theme .nav-item:hover {
+color: #008a43 !important;
+  background-color: #edf7ed !important;
+}
+
+body.light-theme .nav-item.active {
+color: #008a43 !important;
+  background-color: #edf7ed !important;
+  border: 1px solid #a3e635 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme #my-profile-btn {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 9999px !important;
+  padding: 6px 14px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme #my-profile-btn.profile-active,
+body.light-theme #my-profile-btn[data-selected="true"] {
+  background: #edf7ed !important;
+  color: #008a43 !important;
+  border: 1px solid #86efac !important;
+  box-shadow: 0 1px 3px rgba(0, 138, 67, 0.15) !important;
+}
+
+body.light-theme #mobile-user-profile-widget {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme #mobile-user-profile-widget span,
+body.light-theme #mobile-user-profile-widget label {
+  color: #0f172a !important;
+}
+
+body.light-theme #mobile-player-select {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+}
+
+body.light-theme #my-profile-menu {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12) !important;
+  border-radius: 14px !important;
+}
+
+body.light-theme .profile-select-item {
+color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+body.light-theme .profile-select-item:hover {
+background: #edf7ed !important;
+  color: #008a43 !important;
+}
+
+/* 5. CARDS, HERO & SECTIONS */
+body.light-theme .glassmorphism,
+body.light-theme [class*="glassmorphism"],
+body.light-theme .stat-card,
+body.light-theme .nomination-card,
+body.light-theme .session-row,
+body.light-theme .overflow-x-auto,
+body.light-theme header.player-header,
+body.light-theme header.match-header,
+body.light-theme header[class*="glassmorphism"],
+body.light-theme section[class*="glassmorphism"],
+body.light-theme div[class*="session-progress"],
+body.light-theme .session-progress-section,
+body.light-theme .momentum-barometer-section,
+body.light-theme .h2h-score-card {
+background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+body.light-theme .stat-card {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 12px !important;
+}
+
+body.light-theme .stat-card .stat-icon {
+background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+body.light-theme .stat-card .text-xs {
+color: #475569 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+body.light-theme .stat-card .text-2xl,
+body.light-theme .stat-card .text-3xl {
+color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+/* Dual Navigation Feature Banners (1v1 Duels & 5v5 Matchmaker) */
+body.light-theme a[href="compare.html"] {
+background: #ffffff !important;
+  border: 1.5px solid #fecdd3 !important;
+  border-radius: 14px !important;
+}
+
+body.light-theme a[href="matchmaker.html"] {
+background: #ffffff !important;
+  border: 1.5px solid #bbf7d0 !important;
+  border-radius: 14px !important;
+}
+
+/* 6. HALL OF FAME */
+body.light-theme .hall-of-fame-section {
+background: #ffffff !important;
+  border: 1px solid #fed7aa !important;
+  border-top: 3px solid #d97706 !important;
+  border-radius: 14px !important;
+}
+
+body.light-theme .nomination-card a {
+color: #0f172a !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .nomination-card:nth-child(1) {
+background: #fffbeb !important; border: 1px solid #fde68a !important;
+}
+
+body.light-theme .nomination-card:nth-child(2) {
+background: #fff1f2 !important; border: 1px solid #fecdd3 !important;
+}
+
+body.light-theme .nomination-card:nth-child(3) {
+background: #f0fdf4 !important; border: 1px solid #bbf7d0 !important;
+}
+
+body.light-theme .nomination-card:nth-child(4) {
+background: #eff6ff !important; border: 1px solid #bfdbfe !important;
+}
+
+body.light-theme .nomination-card:nth-child(5) {
+background: #f8fafc !important; border: 1px solid #cbd5e1 !important;
+}
+
+/* 7. SESSION MOMENTUM BAROMETER */
+body.light-theme .momentum-barometer-section {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 14px !important;
+}
+
+body.light-theme .momentum-barometer-section a[class*="bg-slate-900"] {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+  border-radius: 10px !important;
+}
+
+body.light-theme .momentum-barometer-section a[class*="bg-slate-900"]:hover {
+border-color: #008a43 !important;
+  box-shadow: 0 2px 6px rgba(0, 138, 67, 0.12) !important;
+}
+
+body.light-theme .momentum-barometer-section a h4 {
+color: #0f172a !important; font-weight: 800 !important;
+}
+
+body.light-theme .momentum-barometer-section a span {
+color: #334155 !important;
+}
+
+body.light-theme .momentum-barometer-section a strong {
+color: #0f172a !important; font-weight: 800 !important;
+}
+
+/* 8. TABLE & HEADERS: SHARP FINANCIAL REPORT */
+body.light-theme table thead tr {
+background-color: #f1f5f9 !important;
+  border-bottom: 2px solid #cbd5e1 !important;
+}
+
+body.light-theme table thead th,
+body.light-theme table thead th span,
+body.light-theme th .tooltip-trigger {
+color: #0f172a !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 12px 14px !important;
+}
+
+body.light-theme .help-circle {
+background: #e2e8f0 !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme table ttr {
+background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.light-theme table ttr:nth-child(even) {
+background-color: #f8fafc !important;
+}
+
+body.light-theme table ttr:hover,
+body.light-theme tr.leaderboard-row:hover {
+background-color: #f0fdf4 !important;
+  border-left: 3px solid #008a43 !important;
+}
+
+body.light-theme table ttd {
+color: #0f172a !important;
+  padding: 12px 14px !important;
+  font-size: 0.875rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+body.light-theme table ttd strong {
+color: #0f172a !important;
+  font-weight: 800 !important;
+}
+
+/* Rank Numbers */
+body.light-theme .rank-num {
+font-weight: 800 !important;
+}
+
+/* Rank 1 (Gold) */
+body.light-theme tr:nth-child(1) .rank-num,
+body.light-theme .mobile-player-card summary div[class*="bg-amber-500"] {
+background-color: #fef3c7 !important;
+  color: #b45309 !important;
+  border: 1px solid #fcd34d !important;
+}
+
+/* Rank 2 (Silver) — CRISP DARK TEXT, FULLY VISIBLE */
+body.light-theme tr:nth-child(2) .rank-num,
+body.light-theme .mobile-player-card summary div[class*="bg-slate-400"] {
+background-color: #e2e8f0 !important;
+  color: #1e293b !important;
+  border: 1px solid #94a3b8 !important;
+  font-weight: 800 !important;
+}
+
+/* Rank 3 (Bronze) */
+body.light-theme tr:nth-child(3) .rank-num,
+body.light-theme .mobile-player-card summary div[class*="bg-amber-700"] {
+background-color: #ffedd5 !important;
+  color: #c2410c !important;
+  border: 1px solid #fdba74 !important;
+}
+
+/* 9. CONTROLS, SEARCH & FILTER PILLS */
+body.light-theme .leaderboard-controls-panel {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 14px !important;
+}
+
+body.light-theme .search-input-cyber {
+background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #94a3b8 !important;
+  border-radius: 8px !important;
+  padding: 8px 14px 8px 34px !important;
+  font-weight: 600 !important;
+}
+
+body.light-theme .search-input-cyber::placeholder {
+color: #64748b !important;
+}
+
+body.light-theme .filter-pill,
+body.light-theme .skill-tab-btn,
+body.light-theme .modal-tab-btn {
+background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  border-radius: 9999px !important;
+  padding: 6px 14px !important;
+  font-weight: 700 !important;
+  font-size: 0.82rem !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .filter-pill:hover,
+body.light-theme .skill-tab-btn:hover,
+body.light-theme .modal-tab-btn:hover {
+background: #edf7ed !important;
+  color: #008a43 !important;
+  border-color: #008a43 !important;
+}
+
+body.light-theme .filter-pill.active,
+body.light-theme .skill-tab-btn.active,
+body.light-theme .modal-tab-btn.active {
+background: #008a43 !important;
+  color: #ffffff !important;
+  border-color: #008a43 !important;
+  box-shadow: 0 2px 6px rgba(0, 138, 67, 0.25) !important;
+  font-weight: 800 !important;
+}
+
+/* Matchmaker and Compare Specific Buttons */
+body.light-theme #btn-select-top10,
+body.light-theme #btn-reset-selection,
+body.light-theme #swap-players-btn {
+background-color: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 700 !important;
+}
+
+body.light-theme #btn-balance-teams {
+background-color: #008a43 !important;
+  color: #ffffff !important;
+  border-color: #008a43 !important;
+  font-weight: 800 !important;
+}
+
+/* 10. MAP SCORE PILLS (INDEX.HTML) */
+body.light-theme .map-score-pill,
+body.light-theme [class*="map-score-pill"] {
+background-color: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .map-score-pill:hover {
+border-color: #008a43 !important;
+  background-color: #edf7ed !important;
+}
+
+body.light-theme .map-score-pill span.text-slate-200 {
+color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+body.light-theme .map-score-pill span[class*="bg-slate-800"] {
+background-color: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* 11. MATCH ROUND TIMELINE (MATCHES/*.HTML) */
+body.light-theme .timeline-round-item {
+background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .timeline-round-item:hover {
+border-color: #008a43 !important;
+  transform: translateY(-1px);
+}
+
+body.light-theme .timeline-round-item .round-num {
+color: #0f172a !important;
+  font-weight: 800 !important;
+  font-size: 11px !important;
+}
+
+body.light-theme .timeline-round-item .team-tag {
+color: #334155 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .timeline-round-item[class*="border-sky-"],
+body.light-theme .timeline-round-item[class*="bg-sky-"] {
+background-color: #f0f9ff !important;
+  border-color: #7dd3fc !important;
+}
+
+body.light-theme .timeline-round-item[class*="border-sky-"] .team-tag {
+color: #0284c7 !important;
+}
+
+body.light-theme .timeline-round-item[class*="border-amber-"],
+body.light-theme .timeline-round-item[class*="bg-amber-"] {
+background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+}
+
+body.light-theme .timeline-round-item[class*="border-amber-"] .team-tag {
+color: #b45309 !important;
+}
+
+/* 12. STATUS BADGES (НЕАКТИВ, КАЛИБР, СТАБИЛЬНО) */
+body.light-theme .momentum-stable,
+body.light-theme span.momentum-stable {
+background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 700 !important;
+}
+
+body.light-theme .momentum-gaining,
+body.light-theme span.momentum-gaining {
+background-color: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1px solid #86efac !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .momentum-cooling,
+body.light-theme span.momentum-cooling {
+background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1px solid #fca5a5 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .momentum-fire,
+body.light-theme span.momentum-fire {
+background-color: #fef3c7 !important;
+  color: #b45309 !important;
+  border: 1px solid #fcd34d !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme span[class*="bg-slate-800"],
+body.light-theme span[class*="bg-slate-900"],
+body.light-theme span[class*="bg-slate-700"] {
+background-color: #f1f5f9 !important;
+  color: #1e293b !important;
+  border: 1px solid #cbd5e1 !important;
+  font-weight: 700 !important;
+}
+
+/* 13. BREADCRUMBS BAR */
+body.light-theme .breadcrumbs-bar {
+background: #ffffff !important;
+  border-bottom: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+body.light-theme .breadcrumbs-bar a {
+color: #008a43 !important;
+  font-weight: 700 !important;
+}
+
+body.light-theme .breadcrumbs-bar a:hover {
+text-decoration: underline !important;
+}
+
+/* 14. TOOLTIPS (INTENTIONALLY DARK FOR HIGH CONTRAST FLOAT) */
+body.light-theme .tooltip-box {
+background-color: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+}
+
+body.light-theme .tooltip-box * {
+color: #ffffff !important;
+}
+
+
+
+/* 15. MOBILE PLAYER CARDS (< 768px) */
+
+@media (max-width: 767.98px) {
+
+  body, body.dark-theme {
+    padding-top: 64px !important;
+  
+}
+
+
+body.light-theme .mobile-player-card {
+background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 10px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+body.light-theme .mobile-player-card summary {
+background-color: #ffffff !important;
+    padding: 8px 10px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+body.light-theme .mobile-player-card summary > div:first-child {
+flex: 1 1 0% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    margin-right: 6px !important;
+}
+
+body.light-theme .mobile-player-card summary > div:first-child .min-w-0 > div:last-child {
+white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+
+body.light-theme .mobile-player-card summary > div:last-child {
+flex-shrink: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-left: auto !important;
+}
+
+body.light-theme .mobile-player-card > div {
+background-color: #ffffff !important;
+    padding: 12px !important;
+    border-top: 1px solid #cbd5e1 !important;
+}
+
+body.light-theme .mobile-nav-drawer {
+background: #ffffff !important;
+    color: #0f172a !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-theme .mobile-nav-link {
+color: #0f172a !important;
+    font-weight: 600 !important;
+}
+
+/* 16. MODAL WINDOWS */
+body.light-theme }
+
+
+.rating-modal-backdrop {
+background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+body.light-theme .rating-modal-backdrop:not(.active) {
+display: none !important;
+}
+
+body.light-theme .rating-modal-window {
+background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 16px !important;
+  color: #0f172a !important;
+}
+
+/* 17. FOOTER */
+body.light-theme footer {
+background: #ffffff !important;
+  border-top: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+/* ==========================================================================
+   LOGO & HERO TITLE CONTRAST FIX
+   ========================================================================== */
+body.light-theme .logo-text,
+body.light-theme a .logo-text,
+body.light-theme span.logo-text {
+color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+body.light-theme .logo-accent {
+color: #008a43 !important;
+  font-weight: 900 !important;
+}
+
+body.light-theme .hero-title,
+body.light-theme h1.hero-title {
+color: #0f172a !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #0f172a !important;
+  font-weight: 900 !important;
+}
+
+body.light-theme .hero-title span,
+body.light-theme .hero-title span[class*="bg-clip-text"],
+body.light-theme .hero-title span.text-transparent {
+color: #008a43 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: #008a43 !important;
+  font-weight: 900 !important;
+}
+
+/* ==========================================================================
+   ARCHETYPE MATRIX & CHARTS LIGHT FINANCIAL SUITE
+   ========================================================================== */
+/* 2D Archetype Matrix Container */
+body.light-theme .archetype-matrix-wrapper,
+body.light-theme div[class*="archetype-matrix-wrapper"] {
+background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Crosshairs in Matrix */
+body.light-theme .matrix-crosshair-x,
+body.light-theme div[class*="matrix-crosshair-x"] {
+background-color: #cbd5e1 !important;
+  border-top: 1.5px dashed #94a3b8 !important;
+}
+
+body.light-theme .matrix-crosshair-y,
+body.light-theme div[class*="matrix-crosshair-y"] {
+background-color: #cbd5e1 !important;
+  border-left: 1.5px dashed #94a3b8 !important;
+}
+
+/* Matrix Axis Labels (High Contrast) */
+body.light-theme .matrix-label.label-top,
+body.light-theme span[class*="label-top"] {
+color: #b45309 !important; /* Deep Amber */
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-bottom,
+body.light-theme span[class*="label-bottom"] {
+color: #334155 !important; /* Slate */
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-left,
+body.light-theme span[class*="label-left"] {
+color: #0284c7 !important; /* Sky Blue */
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-right,
+body.light-theme span[class*="label-right"] {
+color: #b91c1c !important; /* Crimson Red */
+  font-weight: 800 !important;
+}
+
+/* Player Point in Matrix */
+body.light-theme .archetype-point,
+body.light-theme div[class*="archetype-point"] {
+box-shadow: 0 0 0 4px rgba(0, 138, 67, 0.25) !important;
+}
+
+/* Economy Section in Match */
+body.light-theme .economy-section .glassmorphism,
+body.light-theme section.economy-section div[class*="glassmorphism"] {
+background-color: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* ==========================================================================
+   2D ARCHETYPE MATRIX — PURE KASE LIGHT SUITE OVERRIDE
+   ========================================================================== */
+body.light-theme .archetype-matrix-wrapper,
+body.light-theme div[class*="archetype-matrix-wrapper"] {
+background: #f8fafc !important;
+  background-color: #f8fafc !important;
+  background-image: none !important;
+  border: 1.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .matrix-crosshair-x,
+body.light-theme div[class*="matrix-crosshair-x"] {
+background-color: transparent !important;
+  border-top: 1.5px dashed #94a3b8 !important;
+  height: 0px !important;
+}
+
+body.light-theme .matrix-crosshair-y,
+body.light-theme div[class*="matrix-crosshair-y"] {
+background-color: transparent !important;
+  border-left: 1.5px dashed #94a3b8 !important;
+  width: 0px !important;
+}
+
+body.light-theme .matrix-label.label-top,
+body.light-theme span[class*="label-top"] {
+color: #b45309 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-bottom,
+body.light-theme span[class*="label-bottom"] {
+color: #334155 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-left,
+body.light-theme span[class*="label-left"] {
+color: #0284c7 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .matrix-label.label-right,
+body.light-theme span[class*="label-right"] {
+color: #b91c1c !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .archetype-dot {
+background-color: #008a43 !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 12px rgba(0, 138, 67, 0.6) !important;
+}
+
+body.light-theme .archetype-pulse {
+background-color: rgba(0, 138, 67, 0.4) !important;
+}
 
 
