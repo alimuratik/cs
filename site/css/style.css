@@ -167,10 +167,12 @@ a:hover {
   align-items: center;
   gap: var(--spacing-2);
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .logo-badge {
@@ -203,19 +205,23 @@ a:hover {
 
 .nav-links {
   display: flex;
-  gap: var(--spacing-4);
+  gap: 8px;
+  align-items: center;
+  flex-wrap: nowrap;
 }
 
 .nav-item {
   color: var(--color-text-secondary);
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 8px 18px;
+  font-size: 0.88rem;
+  padding: 6px 14px;
   border-radius: var(--radius-full);
   transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-item:hover, .nav-item.active {
@@ -2735,54 +2741,66 @@ body.light-theme .momentum-barometer-section a strong {
 color: #0f172a !important; font-weight: 800 !important;
 }
 
-/* 8. TABLE & HEADERS: SHARP FINANCIAL REPORT */
+/* 8. TABLE & HEADERS: SHARP FINANCIAL REPORT (COMPACT NO-OVERFLOW) */
 body.light-theme table thead tr {
-background-color: #f1f5f9 !important;
+  background-color: #f1f5f9 !important;
   border-bottom: 2px solid #cbd5e1 !important;
 }
 
-body.light-theme table thead th,
-body.light-theme table thead th span,
-body.light-theme th .tooltip-trigger {
-color: #0f172a !important;
+body.light-theme table thead th {
+  color: #0f172a !important;
   font-size: 11px !important;
   font-weight: 800 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  padding: 12px 14px !important;
+  letter-spacing: 0.02em !important;
+  padding: 8px 6px !important;
+  white-space: nowrap !important;
+}
+
+body.light-theme table thead th span,
+body.light-theme th .tooltip-trigger {
+  color: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  padding: 0 !important;
+  letter-spacing: inherit !important;
 }
 
 body.light-theme .help-circle {
-background: #e2e8f0 !important;
+  background: #e2e8f0 !important;
   color: #0f172a !important;
   border-color: #94a3b8 !important;
   font-weight: 800 !important;
+  padding: 0 4px !important;
+  margin-left: 2px !important;
 }
 
-body.light-theme table ttr {
-background-color: #ffffff !important;
+body.light-theme table tbody tr {
+  background-color: #ffffff !important;
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
-body.light-theme table ttr:nth-child(even) {
-background-color: #f8fafc !important;
+body.light-theme table tbody tr:nth-child(even) {
+  background-color: #f8fafc !important;
 }
 
-body.light-theme table ttr:hover,
+body.light-theme table tbody tr:hover,
 body.light-theme tr.leaderboard-row:hover {
-background-color: #f0fdf4 !important;
+  background-color: #f0fdf4 !important;
   border-left: 3px solid #008a43 !important;
 }
 
-body.light-theme table ttd {
-color: #0f172a !important;
-  padding: 12px 14px !important;
-  font-size: 0.875rem !important;
+body.light-theme table tbody td,
+body.light-theme table td {
+  color: #0f172a !important;
+  padding: 8px 6px !important;
+  font-size: 12px !important;
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
-body.light-theme table ttd strong {
-color: #0f172a !important;
+body.light-theme table tbody td strong,
+body.light-theme table td strong {
+  color: #0f172a !important;
   font-weight: 800 !important;
 }
 

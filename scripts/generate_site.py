@@ -1109,6 +1109,14 @@ def format_player_data(p: dict) -> dict:
     curr_mmr = mmr_data.get("current_mmr", STARTING_MMR)
     peak_mmr = mmr_data.get("peak_mmr", STARTING_MMR)
     last_delta = mmr_data.get("last_delta", 0)
+
+    # Сессионная дельта за крайний игровой день (сумма по всем матчам сессии)
+    sp = p.get("session_progress") or {}
+    sp_curr = sp.get("current") or {}
+    session_delta = sp_curr.get("mmr_delta", last_delta)
+    session_matches_count = sp.get("matches_count", 1)
+    session_date_disp = sp.get("date_display", "")
+
     is_inactive = mmr_data.get("is_inactive", False)
     form_dots = mmr_data.get("form_dots", [])
     sparkline = mmr_data.get("sparkline", [])
@@ -1260,6 +1268,10 @@ def format_player_data(p: dict) -> dict:
             "peak_mmr": peak_mmr,
             "last_delta": last_delta,
             "last_delta_text": f"{last_delta:+d}" if last_delta != 0 else "0",
+            "session_delta": session_delta,
+            "session_delta_text": f"{session_delta:+d}" if session_delta != 0 else "0",
+            "session_matches_count": session_matches_count,
+            "session_date_display": session_date_disp,
             "wins": wins,
             "losses": losses,
             "ties": ties,
@@ -1498,6 +1510,14 @@ def generate_site():
         curr_mmr = mmr_data.get("current_mmr", STARTING_MMR)
         peak_mmr = mmr_data.get("peak_mmr", STARTING_MMR)
         last_delta = mmr_data.get("last_delta", 0)
+
+        # Сессионная дельта за крайний игровой день (сумма всех матчей сессии)
+        sp = p.get("session_progress") or {}
+        sp_curr = sp.get("current") or {}
+        session_delta = sp_curr.get("mmr_delta", last_delta)
+        session_matches_count = sp.get("matches_count", 1)
+        session_date_disp = sp.get("date_display", "")
+
         overall_rating = p.get("ratings", {}).get("Overall Impact", 5.0)
         avg_hltv = mmr_data.get("avg_hltv", 1.00)
         tot_m = len(p.get("matches", []))
@@ -1517,8 +1537,12 @@ def generate_site():
             "rank_tier": tier,
             "current_mmr": curr_mmr,
             "peak_mmr": peak_mmr,
-            "last_delta": last_delta,
-            "last_delta_text": f"{last_delta:+d}" if last_delta != 0 else "0",
+            "last_delta": session_delta,
+            "last_delta_text": f"{session_delta:+d}" if session_delta != 0 else "0",
+            "session_delta": session_delta,
+            "session_delta_text": f"{session_delta:+d}" if session_delta != 0 else "0",
+            "session_matches_count": session_matches_count,
+            "session_date_display": session_date_disp,
             "rating": round(overall_rating, 1),
             "hltv_rating": avg_hltv,
             "kd_ratio": round(p.get("overall_stats", {}).get("kd_ratio", 1.0), 2),

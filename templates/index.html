@@ -345,10 +345,10 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Матч ± <span class="help-circle">?</span>
+                                Сессия ± <span class="help-circle">?</span>
                                 <span class="tooltip-box">
-                                    <strong>Дельта за крайний матч</strong><br>
-                                    Изменение рейтинга MMR по итогам последней сыгранной игры.
+                                    <strong>Дельта за крайнюю сессию</strong><br>
+                                    Суммарное изменение рейтинга MMR за все матчи крайнего игрового дня (например: +10, -15, +15 = +10).
                                 </span>
                             </span>
                         </th>
@@ -530,13 +530,14 @@
                             </span>
                         </td>
 
-                        <!-- Last Match Delta Pill -->
+                        <!-- Last Session Delta Pill -->
                         <td class="py-2.5 px-2.5 text-center">
                             <span class="inline-block px-1.5 py-0.5 rounded font-mono font-bold text-[11px]
-                                {% if player.last_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
-                                {% elif player.last_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
-                                {% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
-                                {{ player.last_delta_text }}
+                                {% if player.session_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
+                                {% elif player.session_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
+                                {% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}"
+                                title="Суммарный MMR за крайнюю сессию (матчей: {{ player.session_matches_count }}{% if player.session_date_display %}, {{ player.session_date_display }}{% endif %})">
+                                {{ player.session_delta_text }}
                             </span>
                         </td>
 
@@ -668,8 +669,9 @@
                     <div class="flex items-center gap-2.5">
                         <div class="text-right">
                             <span class="font-mono font-black text-sm {{ player.rank_tier.mmr_classes }} block">{{ player.current_mmr }}</span>
-                            <span class="text-[10px] font-mono font-bold {% if player.last_delta > 0 %}text-emerald-400{% elif player.last_delta < 0 %}text-rose-400{% else %}text-slate-400{% endif %}">
-                                {{ player.last_delta_text }}
+                            <span class="text-[10px] font-mono font-bold {% if player.session_delta > 0 %}text-emerald-400{% elif player.session_delta < 0 %}text-rose-400{% else %}text-slate-400{% endif %}"
+                                  title="Суммарный MMR за сессию (матчей: {{ player.session_matches_count }}{% if player.session_date_display %}, {{ player.session_date_display }}{% endif %})">
+                                {{ player.session_delta_text }}
                             </span>
                         </div>
                         <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
