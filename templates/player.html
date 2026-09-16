@@ -868,6 +868,53 @@
                 </div>
             </div>
         </div>
+
+        {% if player.recommendations.quests %}
+        <div class="quests-block mt-4 glassmorphism p-4 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-slate-900/40 to-slate-900/20">
+            <div class="flex items-center justify-between mb-3 pb-2 border-b border-amber-500/20">
+                <div class="flex items-center gap-2">
+                    <span class="text-xl">🎯</span>
+                    <div>
+                        <h3 class="font-bold text-amber-300 text-sm">Активные квесты на прокачку слабых сторон</h3>
+                        <p class="text-[11px] text-slate-400">Персональные боевые испытания, привязанные к твоим точкам роста</p>
+                    </div>
+                </div>
+                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Топ-3 приоритета</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {% for q in player.recommendations.quests %}
+                <div class="quest-rec-card glassmorphism p-3 rounded-lg border border-slate-700/60 bg-slate-900/60 flex flex-col justify-between hover:border-amber-500/50 transition-colors">
+                    <div>
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                                <span>{{ q.icon }}</span> {{ q.title }}
+                            </span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded {% if q.tier == 3 %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif q.tier == 2 %}bg-slate-300/20 text-slate-200 border border-slate-400/40{% elif q.tier == 1 %}bg-amber-800/20 text-amber-400 border border-amber-700/40{% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
+                                {{ q.tier_name }}
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 mb-1 flex items-center justify-between">
+                            <span>Навык: <strong class="text-slate-200">{{ q.skill }}</strong> ({{ q.skill_val }}/10)</span>
+                            <span class="text-amber-400 font-mono font-bold text-[10px]">{{ q.next_tier_name }}</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 leading-relaxed mb-2 bg-slate-950/40 p-1.5 rounded border border-slate-800/80">
+                            💡 {{ q.advice }}
+                        </p>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[10px] mb-1">
+                            <span class="text-slate-400 truncate max-w-[140px]">{{ q.next_goal }}</span>
+                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">{{ q.progress_text }}</span>
+                        </div>
+                        <div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-slate-700/50">
+                            <div class="h-full rounded-full transition-all duration-500 {% if q.tier == 3 %}bg-gradient-to-r from-amber-400 to-amber-200{% elif q.tier == 2 %}bg-gradient-to-r from-slate-300 to-slate-100{% elif q.tier == 1 %}bg-gradient-to-r from-amber-600 to-amber-400{% else %}bg-gradient-to-r from-blue-500 to-cyan-400{% endif %}" style="width: {{ q.progress_pct }}%;"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
     </section>
 
     <!-- Connections & Rivalry Section (Связи и Противостояния) -->
@@ -1021,7 +1068,7 @@
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
                     🏆 Зал славы и Достижения
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">24 киберспортивных испытания: 3 ступени мастерства (Tier I · II · III), система звёзд и прогресс</p>
+                <p class="text-xs text-slate-400 mt-1">30 киберспортивных испытаний: 3 ступени мастерства (Tier I · II · III), система звёзд и прогресс</p>
             </div>
             
             <div class="flex flex-wrap items-center gap-3">
@@ -1064,16 +1111,24 @@
                 
                 <!-- Card Header: 3 Stars + Glory Points Tag -->
                 <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
-                    <!-- 3 Stars Display (Bronze, Silver, Gold) -->
-                    <div class="flex items-center gap-1">
-                        {% for star in ach.stars_data %}
-                        <span class="text-sm font-black transition-all leading-none"
-                              style="color: {{ star.css_color }};"
-                              title="Уровень {{ star.level }} ({{ star.name }}): {% if star.unlocked %}Получено ★{% else %}Не открыто ☆{% endif %}">
-                            {{ star.symbol }}
-                        </span>
-                        {% endfor %}
-                        <span class="text-[11px] font-bold font-mono ml-1.5
+                    <!-- 3 Stars Display (Bronze, Silver, Gold) with Premium SVG Badges -->
+                    <div class="flex items-center gap-1.5">
+                        <div class="achievement-stars-tray" title="Уровень {{ ach.tier }}/3 ({{ ach.tier_name }})">
+                            {% for star in ach.stars_data %}
+                            <div class="star-badge {{ star.color_class }}" title="Уровень {{ star.level }} ({{ star.name }}): {% if star.unlocked %}Получено ★{% else %}Заблокировано ☆{% endif %}">
+                                {% if star.unlocked %}
+                                <svg class="star-icon star-icon-filled" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                {% else %}
+                                <svg class="star-icon star-icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-dasharray="3 1.5"/>
+                                </svg>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <span class="text-[11px] font-bold font-mono ml-1
                             {% if ach.tier == 3 %}text-amber-400 font-extrabold
                             {% elif ach.tier == 2 %}text-slate-300 font-bold
                             {% elif ach.tier == 1 %}text-amber-500 font-semibold

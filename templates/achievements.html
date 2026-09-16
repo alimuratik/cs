@@ -27,7 +27,7 @@
                     🏆 Зал славы и Достижения
                 </h1>
                 <p class="text-sm md:text-base text-slate-300 mt-2 max-w-2xl leading-relaxed">
-                    24 соревновательных киберспортивных испытания. Каждое достижение имеет 3 ступени мастерства: 
+                    30 соревновательных киберспортивных испытаний. Каждое достижение имеет 3 ступени мастерства: 
                     <strong class="text-amber-500">🥉 Бронза</strong> (+100 очков), 
                     <strong class="text-slate-300">🥈 Серебро</strong> (+250 очков) и 
                     <strong class="text-amber-300">🥇 Золото</strong> (+500 очков).
@@ -38,12 +38,12 @@
             <div class="flex items-center gap-3 flex-wrap">
                 <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 text-center min-w-[120px] shadow-lg">
                     <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">Всего испытаний</div>
-                    <div class="text-3xl font-black font-mono text-white">24</div>
-                    <div class="text-[10px] text-amber-400 font-mono mt-0.5">72 уровня наград</div>
+                    <div class="text-3xl font-black font-mono text-white">30</div>
+                    <div class="text-[10px] text-amber-400 font-mono mt-0.5">90 уровней наград</div>
                 </div>
                 <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 text-center min-w-[130px] shadow-lg">
                     <div class="text-[10px] uppercase font-bold tracking-wider text-slate-400 mb-1">Макс. Очков Славы</div>
-                    <div class="text-3xl font-black font-mono text-amber-300">12 000</div>
+                    <div class="text-3xl font-black font-mono text-amber-300">15 000</div>
                     <div class="text-[10px] text-emerald-400 font-mono mt-0.5">Glory Points</div>
                 </div>
             </div>
@@ -218,13 +218,17 @@
                                     <div class="flex flex-wrap gap-1.5 mt-2 max-w-md">
                                         {% for ach in p.unlocked_achievements %}
                                         <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold
-                                            {% if ach.tier == 3 %}bg-amber-950/60 text-amber-300 border border-amber-400/50
+                                            {% if ach.tier == 3 %}bg-amber-950/70 text-amber-300 border border-amber-400/60
                                             {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-600
-                                            {% else %}bg-amber-950/30 text-amber-500 border border-amber-700/40{% endif %}"
+                                            {% else %}bg-amber-950/40 text-amber-500 border border-amber-700/50{% endif %}"
                                             title="{{ ach.title }} — {{ ach.tier_name }}: {{ ach.desc }}">
                                             <span>{{ ach.icon }}</span>
                                             <span>{{ ach.title }}</span>
-                                            <span>{{ ach.stars }}</span>
+                                            <span class="inline-flex items-center gap-0.5 ml-0.5">
+                                                {% for star in ach.stars_data %}
+                                                <span class="text-[10px] leading-none" style="color: {{ star.css_color }};">{% if star.unlocked %}★{% else %}☆{% endif %}</span>
+                                                {% endfor %}
+                                            </span>
                                         </span>
                                         {% endfor %}
                                     </div>
@@ -238,11 +242,11 @@
         </div>
     </section>
 
-    <!-- Catalog of all 24 Achievements -->
+    <!-- Catalog of all 30 Achievements -->
     <section class="catalog-section mb-10">
         <div class="mb-6">
             <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                <span>📖</span> <span>Каталог испытаний (24 достижения)</span>
+                <span>📖</span> <span>Каталог испытаний (30 достижений)</span>
             </h2>
             <p class="text-xs text-slate-400 mt-1">Описания условий для получения Бронзового, Серебряного и Золотого уровней</p>
         </div>

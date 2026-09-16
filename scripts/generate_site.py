@@ -1328,7 +1328,8 @@ def format_player_data(p: dict) -> dict:
             "role": role_text,
             "best_role": role_text,
             "current_role": current_role_text,
-            "role_comparison": raw_recs.get("role_comparison", f"Текущий стиль: {current_role_text} ➔ Рекомендуется: {role_text}")
+            "role_comparison": raw_recs.get("role_comparison", f"Текущий стиль: {current_role_text} ➔ Рекомендуется: {role_text}"),
+            "quests": raw_recs.get("quests", [])
         },
         "session_progress": p.get("session_progress"),
         "map_performance": p.get("map_performance", {}),
@@ -1878,8 +1879,8 @@ def generate_site():
             "silver_count": silver_c,
             "bronze_count": bronze_c,
             "unlocked_count": unlocked_c,
-            "total_count": len(ach_list) or 24,
-            "completion_pct": round((unlocked_c / max(1, len(ach_list) or 24)) * 100, 1),
+            "total_count": len(ach_list) or 30,
+            "completion_pct": round((unlocked_c / max(1, len(ach_list) or 30)) * 100, 1),
             "achievements": ach_list,
             "unlocked_achievements": [a for a in ach_list if a.get("tier", 0) > 0]
         })

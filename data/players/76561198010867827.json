@@ -176,7 +176,147 @@
         ],
         "current_role": "Энтри-фраггер",
         "best_role": "Главный энтри-фрагер (First Entry)",
-        "role_comparison": "Текущий стиль: Энтри-фраггер ➔ Рекомендуемая роль: Главный энтри-фрагер (First Entry)"
+        "role_comparison": "Текущий стиль: Энтри-фраггер ➔ Рекомендуемая роль: Главный энтри-фрагер (First Entry)",
+        "quests": [
+            {
+                "quest_id": "util_artillery",
+                "title": "Артиллерийский полк",
+                "icon": "🧨",
+                "skill": "Utility",
+                "skill_val": 3.8,
+                "tier": 2,
+                "tier_name": "Серебро 🥈",
+                "next_tier_name": "Золото 🥇",
+                "is_max": false,
+                "progress_val": 352,
+                "progress_max": 700,
+                "progress_pct": 50.3,
+                "progress_text": "352 / 700 HP",
+                "next_goal": "Цель (Золото 🥇): 700 HP суммарного урона гранатами",
+                "stars_data": [
+                    {
+                        "level": 1,
+                        "name": "Бронза",
+                        "tier_key": "bronze",
+                        "unlocked": true,
+                        "symbol": "★",
+                        "color_class": "star-badge-bronze is-unlocked",
+                        "css_color": "#d97706"
+                    },
+                    {
+                        "level": 2,
+                        "name": "Серебро",
+                        "tier_key": "silver",
+                        "unlocked": true,
+                        "symbol": "★",
+                        "color_class": "star-badge-silver is-unlocked",
+                        "css_color": "#cbd5e1"
+                    },
+                    {
+                        "level": 3,
+                        "name": "Золото",
+                        "tier_key": "gold",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    }
+                ],
+                "advice": "Твой слабейший параметр — Utility (3.8449999999999998/10). Дефицит полезного урона и тиммейт-флешек. Заучи по 2 ключевые моменталки и ретейк-смока на каждой соревновательной карте."
+            },
+            {
+                "quest_id": "clutch_minister",
+                "title": "Клатч-министр",
+                "icon": "👑",
+                "skill": "Clutch",
+                "skill_val": 4.0,
+                "tier": 0,
+                "tier_name": "Не получено",
+                "next_tier_name": "Бронза 🥉",
+                "is_max": false,
+                "progress_val": 0,
+                "progress_max": 3,
+                "progress_pct": 0.0,
+                "progress_text": "0 / 3 клатчей",
+                "next_goal": "Цель (Бронза 🥉): 3 выигранных клатча 1vX",
+                "stars_data": [
+                    {
+                        "level": 1,
+                        "name": "Бронза",
+                        "tier_key": "bronze",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    },
+                    {
+                        "level": 2,
+                        "name": "Серебро",
+                        "tier_key": "silver",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    },
+                    {
+                        "level": 3,
+                        "name": "Золото",
+                        "tier_key": "gold",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    }
+                ],
+                "advice": "Твой слабейший параметр — Clutch (3.8449999999999998/10). В ситуациях 1vX форсируешь бой. Разделяй оппонентов на серию изолированных дуэлей 1v1."
+            },
+            {
+                "quest_id": "trade_blood_revenge",
+                "title": "Кровная месть",
+                "icon": "🔄",
+                "skill": "Trading",
+                "skill_val": 4.8,
+                "tier": 1,
+                "tier_name": "Бронза 🥉",
+                "next_tier_name": "Серебро 🥈",
+                "is_max": false,
+                "progress_val": 14,
+                "progress_max": 18,
+                "progress_pct": 77.8,
+                "progress_text": "14 / 18 разменов",
+                "next_goal": "Цель (Серебро 🥈): 18 успешных разменов тиммейтов (Trades)",
+                "stars_data": [
+                    {
+                        "level": 1,
+                        "name": "Бронза",
+                        "tier_key": "bronze",
+                        "unlocked": true,
+                        "symbol": "★",
+                        "color_class": "star-badge-bronze is-unlocked",
+                        "css_color": "#d97706"
+                    },
+                    {
+                        "level": 2,
+                        "name": "Серебро",
+                        "tier_key": "silver",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    },
+                    {
+                        "level": 3,
+                        "name": "Золото",
+                        "tier_key": "gold",
+                        "unlocked": false,
+                        "symbol": "☆",
+                        "color_class": "star-badge-locked is-locked",
+                        "css_color": "#64748b"
+                    }
+                ],
+                "advice": "Твой слабейший параметр — Trading (3.8449999999999998/10). Тиммейты погибают без размена. Сокращай тайминг пика после смерти тиммейта до 1-1.5 секунды."
+            }
+        ]
     },
     "stability": {
         "stability_score": 5.0,
@@ -396,7 +536,1447 @@
     },
     "achievements": [
         {
-            "id": "humiliation_master",
+            "id": "aim_onetap",
+            "title": "One-Tap Хирург",
+            "icon": "🎯",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "45.0% попаданий в голову (при мин. 20 фрагах)",
+            "next_goal": "Цель (Серебро 🥈): 52.0% попаданий в голову (при мин. 20 фрагах)",
+            "progress_val": 51.4,
+            "progress_max": 52.0,
+            "progress_pct": 98.8,
+            "progress": "51.4% / 52.0% HS (60/20 фрагов)",
+            "progress_text": "51.4% / 52.0% HS (60/20 фрагов)"
+        },
+        {
+            "id": "aim_damage_roller",
+            "title": "Огневой каток",
+            "icon": "💥",
+            "tier": 3,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": true,
+            "points": 500,
+            "max_points": 500,
+            "stars": "★★★",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-silver is-unlocked",
+                    "css_color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-gold is-unlocked",
+                    "css_color": "#fbbf24"
+                }
+            ],
+            "tier_name": "Золото 🥇 (МАКС)",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#fbbf24"
+                }
+            ],
+            "desc": "Средний боевой урон ADR >= 95.0 за все матчи",
+            "next_goal": "Все 3 уровня успешно получены! Легендарный ранг 🥇",
+            "progress_val": 95.0,
+            "progress_max": 95.0,
+            "progress_pct": 100.0,
+            "progress": "МАКСИМАЛЬНЫЙ РАНГ 🥇",
+            "progress_text": "МАКСИМАЛЬНЫЙ РАНГ 🥇"
+        },
+        {
+            "id": "pos_ghost",
+            "title": "Призрак раунда",
+            "icon": "👻",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Процент выживаемости в раундах >= 30.0%",
+            "next_goal": "Цель (Бронза 🥉): Процент выживаемости в раундах >= 30.0%",
+            "progress_val": 21.5,
+            "progress_max": 30.0,
+            "progress_pct": 71.7,
+            "progress": "21.5% / 30.0%",
+            "progress_text": "21.5% / 30.0%"
+        },
+        {
+            "id": "pos_anchor",
+            "title": "Непробиваемый якорь",
+            "icon": "🛡️",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Итоговый рейтинг Positioning >= 6.5",
+            "next_goal": "Цель (Бронза 🥉): Итоговый рейтинг Positioning >= 6.5",
+            "progress_val": 4.9,
+            "progress_max": 6.5,
+            "progress_pct": 75.4,
+            "progress": "4.9 / 6.5 баллов",
+            "progress_text": "4.9 / 6.5 баллов"
+        },
+        {
+            "id": "util_flash_duo",
+            "title": "Ослепительный дуэт",
+            "icon": "💡",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "5 флеш-ассистов для тиммейтов",
+            "next_goal": "Цель (Бронза 🥉): 5 флеш-ассистов для тиммейтов",
+            "progress_val": 1,
+            "progress_max": 5,
+            "progress_pct": 20.0,
+            "progress": "1 / 5 ассистов",
+            "progress_text": "1 / 5 ассистов"
+        },
+        {
+            "id": "util_artillery",
+            "title": "Артиллерийский полк",
+            "icon": "🧨",
+            "tier": 2,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 250,
+            "max_points": 500,
+            "stars": "★★☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-silver is-unlocked",
+                    "css_color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Серебро 🥈",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "350 HP суммарного урона гранатами",
+            "next_goal": "Цель (Золото 🥇): 700 HP суммарного урона гранатами",
+            "progress_val": 352,
+            "progress_max": 700,
+            "progress_pct": 50.3,
+            "progress": "352 / 700 HP",
+            "progress_text": "352 / 700 HP"
+        },
+        {
+            "id": "gs_iron_curtain",
+            "title": "Железный занавес",
+            "icon": "🧱",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Командная полезность KAST >= 70.0%",
+            "next_goal": "Цель (Серебро 🥈): Командная полезность KAST >= 75.0%",
+            "progress_val": 71.8,
+            "progress_max": 75.0,
+            "progress_pct": 95.7,
+            "progress": "71.8% / 75.0%",
+            "progress_text": "71.8% / 75.0%"
+        },
+        {
+            "id": "gs_sixth_sense",
+            "title": "Шестое чувство",
+            "icon": "👁️",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "3 фрага сквозь дым (smoke kills)",
+            "next_goal": "Цель (Серебро 🥈): 7 фрагов сквозь дым (smoke kills)",
+            "progress_val": 3,
+            "progress_max": 7,
+            "progress_pct": 42.9,
+            "progress": "3 / 7 фрагов сквозь дым",
+            "progress_text": "3 / 7 фрагов сквозь дым"
+        },
+        {
+            "id": "entry_thunder",
+            "title": "Гроза опенингов",
+            "icon": "⚡",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "10 первых убийств в раундах (First Kills)",
+            "next_goal": "Цель (Серебро 🥈): 25 первых убийств в раундах (First Kills)",
+            "progress_val": 14,
+            "progress_max": 25,
+            "progress_pct": 56.0,
+            "progress": "14 / 25 первых фрагов",
+            "progress_text": "14 / 25 первых фрагов"
+        },
+        {
+            "id": "entry_battering_ram",
+            "title": "Штурмовой таран",
+            "icon": "🚪",
+            "tier": 2,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 250,
+            "max_points": 500,
+            "stars": "★★☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-silver is-unlocked",
+                    "css_color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Серебро 🥈",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#cbd5e1"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Винрейт опенинг-дуэлей >= 58.0% (от 10 дуэлей)",
+            "next_goal": "Цель (Золото 🥇): Винрейт опенинг-дуэлей >= 65.0% (от 10 дуэлей)",
+            "progress_val": 63.6,
+            "progress_max": 65.0,
+            "progress_pct": 97.8,
+            "progress": "63.6% / 65.0% (22/10 дуэлей)",
+            "progress_text": "63.6% / 65.0% (22/10 дуэлей)"
+        },
+        {
+            "id": "trade_blood_revenge",
+            "title": "Кровная месть",
+            "icon": "🔄",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "8 успешных разменов тиммейтов (Trades)",
+            "next_goal": "Цель (Серебро 🥈): 18 успешных разменов тиммейтов (Trades)",
+            "progress_val": 14,
+            "progress_max": 18,
+            "progress_pct": 77.8,
+            "progress": "14 / 18 разменов",
+            "progress_text": "14 / 18 разменов"
+        },
+        {
+            "id": "trade_wingman",
+            "title": "Идеальный напарник",
+            "icon": "👥",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Процент размена тиммейтов (Trade Rate) >= 22.0%",
+            "next_goal": "Цель (Серебро 🥈): Процент размена тиммейтов (Trade Rate) >= 28.0%",
+            "progress_val": 23.3,
+            "progress_max": 28.0,
+            "progress_pct": 83.2,
+            "progress": "23.3% / 28.0%",
+            "progress_text": "23.3% / 28.0%"
+        },
+        {
+            "id": "clutch_minister",
+            "title": "Клатч-министр",
+            "icon": "👑",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "3 выигранных клатча 1vX",
+            "next_goal": "Цель (Бронза 🥉): 3 выигранных клатча 1vX",
+            "progress_val": 0,
+            "progress_max": 3,
+            "progress_pct": 0.0,
+            "progress": "0 / 3 клатчей",
+            "progress_text": "0 / 3 клатчей"
+        },
+        {
+            "id": "clutch_steel_nerves",
+            "title": "Стальные нервы",
+            "icon": "🧊",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "Винрейт в клатчах >= 25.0% (от 5 попыток)",
+            "next_goal": "Цель (Бронза 🥉): Винрейт в клатчах >= 25.0% (от 5 попыток)",
+            "progress_val": 0.0,
+            "progress_max": 25.0,
+            "progress_pct": 0.0,
+            "progress": "0.0% / 25.0% (6/5 клатчей)",
+            "progress_text": "0.0% / 25.0% (6/5 клатчей)"
+        },
+        {
+            "id": "disc_zen",
+            "title": "Дзен спецназа",
+            "icon": "🧘",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "1 матч без единой первой смерти (0 FD)",
+            "next_goal": "Цель (Бронза 🥉): 1 матч без единой первой смерти (0 FD)",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 / 1 матчей",
+            "progress_text": "0 / 1 матчей"
+        },
+        {
+            "id": "disc_frugal_fighter",
+            "title": "Бережливый боец",
+            "icon": "🎒",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "3 сохранения оружия в проигранных раундах (Saves)",
+            "next_goal": "Цель (Бронза 🥉): 3 сохранения оружия в проигранных раундах (Saves)",
+            "progress_val": 1,
+            "progress_max": 3,
+            "progress_pct": 33.3,
+            "progress": "1 / 3 сейвов",
+            "progress_text": "1 / 3 сейвов"
+        },
+        {
+            "id": "eco_saboteur",
+            "title": "Экономический диверсант",
+            "icon": "💰",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "K/D >= 1.05 против полного закупа соперника",
+            "next_goal": "Цель (Бронза 🥉): K/D >= 1.05 против полного закупа соперника",
+            "progress_val": 1.0,
+            "progress_max": 1.05,
+            "progress_pct": 95.2,
+            "progress": "1.0 / 1.05 K/D",
+            "progress_text": "1.0 / 1.05 K/D"
+        },
+        {
+            "id": "eco_pistol_maestro",
+            "title": "Пистолетный маэстро",
+            "icon": "🔫",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "6 фрагов в пистолетных раундах (раунды 1 и 13)",
+            "next_goal": "Цель (Бронза 🥉): 6 фрагов в пистолетных раундах (раунды 1 и 13)",
+            "progress_val": 3,
+            "progress_max": 6,
+            "progress_pct": 50.0,
+            "progress": "3 / 6 фрагов",
+            "progress_text": "3 / 6 фрагов"
+        },
+        {
+            "id": "impact_star_carry",
+            "title": "Звездный керри",
+            "icon": "🌟",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "1 матч с рейтингом HLTV 2.0 >= 1.35",
+            "next_goal": "Цель (Серебро 🥈): 3 матча с рейтингом HLTV 2.0 >= 1.35",
+            "progress_val": 1,
+            "progress_max": 3,
+            "progress_pct": 33.3,
+            "progress": "1 / 3 матчей",
+            "progress_text": "1 / 3 матчей"
+        },
+        {
+            "id": "impact_bombardier",
+            "title": "Бомбардир (25+ фрагов)",
+            "icon": "🎩",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "1 матч с 25+ фрагами за карту",
+            "next_goal": "Цель (Серебро 🥈): 3 матча с 25+ фрагами за карту",
+            "progress_val": 1,
+            "progress_max": 3,
+            "progress_pct": 33.3,
+            "progress": "1 / 3 матчей",
+            "progress_text": "1 / 3 матчей"
+        },
+        {
+            "id": "fun_humiliation",
             "title": "Мастер унижений",
             "icon": "🔪",
             "tier": 0,
@@ -410,25 +1990,28 @@
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
+                    "tier_key": "silver",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
@@ -465,216 +2048,9 @@
             "progress_text": "1 / 5 фрагов с ножа/Zeus"
         },
         {
-            "id": "headshot_king",
-            "title": "One-Tap Хирург",
-            "icon": "🎯",
-            "tier": 1,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 100,
-            "max_points": 500,
-            "stars": "★☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Бронза 🥉",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "45.0% попаданий в голову (от 15 фрагов)",
-            "next_goal": "Цель (Серебро 🥈): 52.0% попаданий в голову (от 25 фрагов)",
-            "progress_val": 51.4,
-            "progress_max": 52.0,
-            "progress_pct": 98.8,
-            "progress": "51.4% / 52.0% HS (60/25 фрагов)",
-            "progress_text": "51.4% / 52.0% HS (60/25 фрагов)"
-        },
-        {
-            "id": "entry_demon",
-            "title": "Гроза опенингов",
+            "id": "fun_taser_therapy",
+            "title": "Шоковая терапия",
             "icon": "⚡",
-            "tier": 1,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 100,
-            "max_points": 500,
-            "stars": "★☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Бронза 🥉",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "7 первых убийств в раундах",
-            "next_goal": "Цель (Серебро 🥈): 15 первых убийств в раундах",
-            "progress_val": 14,
-            "progress_max": 15,
-            "progress_pct": 93.3,
-            "progress": "14 / 15 первых фрагов",
-            "progress_text": "14 / 15 первых фрагов"
-        },
-        {
-            "id": "iron_wall",
-            "title": "Железный занавес",
-            "icon": "🛡️",
-            "tier": 1,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 100,
-            "max_points": 500,
-            "stars": "★☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Бронза 🥉",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Полезность KAST >= 68.0%",
-            "next_goal": "Цель (Серебро 🥈): KAST >= 72.0% и Позиционирование >= 6.0",
-            "progress_val": 71.8,
-            "progress_max": 72.0,
-            "progress_pct": 99.7,
-            "progress": "71.8% / 72.0% KAST (Поз: 4.9/6.0)",
-            "progress_text": "71.8% / 72.0% KAST (Поз: 4.9/6.0)"
-        },
-        {
-            "id": "clutch_master",
-            "title": "Клатч-министр",
-            "icon": "👑",
             "tier": 0,
             "max_tier": 3,
             "unlocked": false,
@@ -686,25 +2062,28 @@
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
+                    "tier_key": "silver",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
@@ -732,18 +2111,18 @@
                     "color": "#64748b"
                 }
             ],
-            "desc": "Выиграть 2 клатча 1vX",
-            "next_goal": "Цель (Бронза 🥉): Выиграть 2 клатча 1vX",
+            "desc": "1 фраг из электрошокера Zeus x27",
+            "next_goal": "Цель (Бронза 🥉): 1 фраг из электрошокера Zeus x27",
             "progress_val": 0,
-            "progress_max": 2,
+            "progress_max": 1,
             "progress_pct": 0.0,
-            "progress": "0 / 2 клатчей",
-            "progress_text": "0 / 2 клатчей"
+            "progress": "0 / 1 фрагов из Zeus",
+            "progress_text": "0 / 1 фрагов из Zeus"
         },
         {
-            "id": "sniper_elite",
-            "title": "Снайперская элита",
-            "icon": "🔭",
+            "id": "fun_wild_west",
+            "title": "Шериф Дикого Запада",
+            "icon": "🤠",
             "tier": 0,
             "max_tier": 3,
             "unlocked": false,
@@ -755,25 +2134,28 @@
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
+                    "tier_key": "silver",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
@@ -801,52 +2183,55 @@
                     "color": "#64748b"
                 }
             ],
-            "desc": "10 фрагов с винтовки AWP",
-            "next_goal": "Цель (Бронза 🥉): 10 фрагов с винтовки AWP",
-            "progress_val": 2,
-            "progress_max": 10,
-            "progress_pct": 20.0,
-            "progress": "2 / 10 фрагов AWP",
-            "progress_text": "2 / 10 фрагов AWP"
+            "desc": "5 хедшотов из Desert Eagle или фрагов из Revolver",
+            "next_goal": "Цель (Бронза 🥉): 5 хедшотов из Desert Eagle или фрагов из Revolver",
+            "progress_val": 0,
+            "progress_max": 5,
+            "progress_pct": 0.0,
+            "progress": "0 / 5 фрагов Deagle/Revolver",
+            "progress_text": "0 / 5 фрагов Deagle/Revolver"
         },
         {
-            "id": "damage_machine",
-            "title": "Огневой каток",
-            "icon": "💥",
-            "tier": 2,
+            "id": "fun_ninja_defuse",
+            "title": "Ниндзя-сапер",
+            "icon": "🥷",
+            "tier": 1,
             "max_tier": 3,
             "unlocked": true,
             "is_max": false,
-            "points": 250,
+            "points": 100,
             "max_points": 500,
-            "stars": "★★☆",
+            "stars": "★☆☆",
             "stars_data": [
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": true,
                     "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
+                    "color_class": "star-badge-bronze is-unlocked",
                     "css_color": "#d97706"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-slate-200 font-black",
-                    "css_color": "#cbd5e1"
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
-            "tier_name": "Серебро 🥈",
+            "tier_name": "Бронза 🥉",
             "pips": [
                 {
                     "level": 1,
@@ -858,75 +2243,6 @@
                 {
                     "level": 2,
                     "name": "Серебро",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#cbd5e1"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "ADR >= 84.0 (от 3 матчей)",
-            "next_goal": "Цель (Золото 🥇): ADR >= 92.0 (от 4 матчей)",
-            "progress_val": 100.1,
-            "progress_max": 92.0,
-            "progress_pct": 100.0,
-            "progress": "100.1 / 92.0 ADR (3/4 матчей)",
-            "progress_text": "100.1 / 92.0 ADR (3/4 матчей)"
-        },
-        {
-            "id": "on_fire_badge",
-            "title": "В абсолютном огне",
-            "icon": "🔥",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
                     "status": "locked",
                     "star": "☆",
                     "color": "#64748b"
@@ -939,501 +2255,18 @@
                     "color": "#64748b"
                 }
             ],
-            "desc": "Сессионный рывок формы >= +0.08 HLTV",
-            "next_goal": "Цель (Бронза 🥉): Сессионный рывок формы >= +0.08 HLTV",
-            "progress_val": 0.0,
-            "progress_max": 0.08,
-            "progress_pct": 0.0,
-            "progress": "+0.00 / +0.08 HLTV",
-            "progress_text": "+0.00 / +0.08 HLTV"
-        },
-        {
-            "id": "untouchable",
-            "title": "Неприкасаемый",
-            "icon": "📈",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Серия из 2 побед подряд",
-            "next_goal": "Цель (Бронза 🥉): Серия из 2 побед подряд",
-            "progress_val": 1,
-            "progress_max": 2,
-            "progress_pct": 50.0,
-            "progress": "1 / 2 побед подряд",
-            "progress_text": "1 / 2 побед подряд"
-        },
-        {
-            "id": "grenadier",
-            "title": "Артиллерийский полк",
-            "icon": "🧨",
-            "tier": 2,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 250,
-            "max_points": 500,
-            "stars": "★★☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-slate-200 font-black",
-                    "css_color": "#cbd5e1"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Серебро 🥈",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#cbd5e1"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "300 HP урона гранатами",
-            "next_goal": "Цель (Золото 🥇): 600 HP урона гранатами",
-            "progress_val": 352,
-            "progress_max": 600,
-            "progress_pct": 58.7,
-            "progress": "352 / 600 HP",
-            "progress_text": "352 / 600 HP"
-        },
-        {
-            "id": "flash_tactician",
-            "title": "Ослепляющий свет",
-            "icon": "💡",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "3 флеш-ассиста",
-            "next_goal": "Цель (Бронза 🥉): 3 флеш-ассиста",
+            "desc": "1 победный раунд с разминированием бомбы",
+            "next_goal": "Цель (Серебро 🥈): 3 победных раунда с разминированием бомбы",
             "progress_val": 1,
             "progress_max": 3,
             "progress_pct": 33.3,
-            "progress": "1 / 3 ассистов",
-            "progress_text": "1 / 3 ассистов"
+            "progress": "1 / 3 дефьюзов",
+            "progress_text": "1 / 3 дефьюзов"
         },
         {
-            "id": "refrag_king",
-            "title": "Машина размена",
-            "icon": "🔄",
-            "tier": 2,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 250,
-            "max_points": 500,
-            "stars": "★★☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-slate-200 font-black",
-                    "css_color": "#cbd5e1"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Серебро 🥈",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#cbd5e1"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "14 успешных разменов тиммейтов",
-            "next_goal": "Цель (Золото 🥇): 25 успешных разменов тиммейтов",
-            "progress_val": 14,
-            "progress_max": 25,
-            "progress_pct": 56.0,
-            "progress": "14 / 25 разменов",
-            "progress_text": "14 / 25 разменов"
-        },
-        {
-            "id": "pistol_king",
-            "title": "Пистолетный маэстро",
-            "icon": "🔫",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "4 фрага в пистолетных раундах",
-            "next_goal": "Цель (Бронза 🥉): 4 фрага в пистолетных раундах",
-            "progress_val": 3,
-            "progress_max": 4,
-            "progress_pct": 75.0,
-            "progress": "3 / 4 фрагов",
-            "progress_text": "3 / 4 фрагов"
-        },
-        {
-            "id": "eco_raider",
-            "title": "Экономический диверсант",
-            "icon": "💰",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "K/D >= 1.05 против Full Buy",
-            "next_goal": "Цель (Бронза 🥉): K/D >= 1.05 против Full Buy",
-            "progress_val": 1.0,
-            "progress_max": 1.05,
-            "progress_pct": 95.2,
-            "progress": "0.96 / 1.05 K/D vs Full Buy",
-            "progress_text": "0.96 / 1.05 K/D vs Full Buy"
-        },
-        {
-            "id": "high_roller",
-            "title": "Царь горы",
-            "icon": "🏆",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Пиковый рейтинг 1030+ MMR",
-            "next_goal": "Цель (Бронза 🥉): Пиковый рейтинг 1030+ MMR",
-            "progress_val": 1013,
-            "progress_max": 1030,
-            "progress_pct": 98.3,
-            "progress": "1013 / 1030 MMR",
-            "progress_text": "1013 / 1030 MMR"
-        },
-        {
-            "id": "ace_hunter",
-            "title": "Шляпный фокус (25+ фрагов)",
-            "icon": "🎩",
+            "id": "fun_doorbell_shotgun",
+            "title": "Дверной звонок",
+            "icon": "🚪",
             "tier": 1,
             "max_tier": 3,
             "unlocked": true,
@@ -1445,25 +2278,28 @@
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": true,
                     "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
+                    "color_class": "star-badge-bronze is-unlocked",
                     "css_color": "#d97706"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
+                    "tier_key": "silver",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
@@ -1491,259 +2327,55 @@
                     "color": "#64748b"
                 }
             ],
-            "desc": "1 матч с 25+ фрагами за карту",
-            "next_goal": "Цель (Серебро 🥈): 2 матча с 25+ фрагами за карту",
-            "progress_val": 1,
-            "progress_max": 2,
-            "progress_pct": 50.0,
-            "progress": "1 / 2 матчей",
-            "progress_text": "1 / 2 матчей"
-        },
-        {
-            "id": "unbroken",
-            "title": "Мастер выживания",
-            "icon": "🧘",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Выживаемость в раундах >= 26.0%",
-            "next_goal": "Цель (Бронза 🥉): Выживаемость в раундах >= 26.0%",
-            "progress_val": 21.5,
-            "progress_max": 26.0,
-            "progress_pct": 82.7,
-            "progress": "21.5% / 26.0%",
-            "progress_text": "21.5% / 26.0%"
-        },
-        {
-            "id": "veteran",
-            "title": "Ветеран дивизиона",
-            "icon": "🎖️",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Сыграть 4 официальных матча",
-            "next_goal": "Цель (Бронза 🥉): Сыграть 4 официальных матча",
+            "desc": "3 фрага из дробовиков (XM1014, Nova, MAG-7)",
+            "next_goal": "Цель (Серебро 🥈): 7 фрагов из дробовиков (XM1014, Nova, MAG-7)",
             "progress_val": 3,
-            "progress_max": 4,
-            "progress_pct": 75.0,
-            "progress": "3 / 4 матчей",
-            "progress_text": "3 / 4 матчей"
+            "progress_max": 7,
+            "progress_pct": 42.9,
+            "progress": "3 / 7 фрагов из дробовика",
+            "progress_text": "3 / 7 фрагов из дробовика"
         },
         {
-            "id": "clutch_god",
-            "title": "Император клатчей",
-            "icon": "👑",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "2 выигранных клатча 1vX",
-            "next_goal": "Цель (Бронза 🥉): 2 выигранных клатча 1vX",
-            "progress_val": 0,
-            "progress_max": 2,
-            "progress_pct": 0.0,
-            "progress": "0 / 2 клатчей",
-            "progress_text": "0 / 2 клатчей"
-        },
-        {
-            "id": "perfect_aim",
-            "title": "Абсолютный хедхантер",
-            "icon": "🎯",
-            "tier": 3,
+            "id": "fun_blind_rage",
+            "title": "Слепая ярость",
+            "icon": "🕶️",
+            "tier": 1,
             "max_tier": 3,
             "unlocked": true,
-            "is_max": true,
-            "points": 500,
+            "is_max": false,
+            "points": 100,
             "max_points": 500,
-            "stars": "★★★",
+            "stars": "★☆☆",
             "stars_data": [
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": true,
                     "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
+                    "color_class": "star-badge-bronze is-unlocked",
                     "css_color": "#d97706"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-slate-200 font-black",
-                    "css_color": "#cbd5e1"
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-300 font-extrabold",
-                    "css_color": "#fbbf24"
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
                 }
             ],
-            "tier_name": "Золото 🥇 (МАКС)",
+            "tier_name": "Бронза 🥉",
             "pips": [
                 {
                     "level": 1,
@@ -1755,29 +2387,245 @@
                 {
                     "level": 2,
                     "name": "Серебро",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#cbd5e1"
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#fbbf24"
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
                 }
             ],
-            "desc": "Рейтинг Aim >= 8.0 (Элитный аим)",
-            "next_goal": "Все 3 уровня успешно получены! Легендарный ранг 🥇",
-            "progress_val": 8.0,
-            "progress_max": 8.0,
-            "progress_pct": 100.0,
-            "progress": "МАКСИМАЛЬНЫЙ РАНГ 🥇",
-            "progress_text": "МАКСИМАЛЬНЫЙ РАНГ 🥇"
+            "desc": "1 фраг при ослеплении противника тиммейтом (assisted flash)",
+            "next_goal": "Цель (Серебро 🥈): 3 фрага при ослеплении противника тиммейтом (assisted flash)",
+            "progress_val": 1,
+            "progress_max": 3,
+            "progress_pct": 33.3,
+            "progress": "1 / 3 фрагов с ослеплением",
+            "progress_text": "1 / 3 фрагов с ослеплением"
         },
         {
-            "id": "map_conqueror",
-            "title": "Хозяин карты",
+            "id": "fun_wallbang_god",
+            "title": "ВХ без читов",
+            "icon": "🧱",
+            "tier": 1,
+            "max_tier": 3,
+            "unlocked": true,
+            "is_max": false,
+            "points": 100,
+            "max_points": 500,
+            "stars": "★☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": true,
+                    "symbol": "★",
+                    "color_class": "star-badge-bronze is-unlocked",
+                    "css_color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Бронза 🥉",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "completed",
+                    "star": "★",
+                    "color": "#d97706"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "2 прострела сквозь стены или плотный смок",
+            "next_goal": "Цель (Серебро 🥈): 5 прострелов сквозь стены или плотный смок",
+            "progress_val": 3,
+            "progress_max": 5,
+            "progress_pct": 60.0,
+            "progress": "3 / 5 прострелов",
+            "progress_text": "3 / 5 прострелов"
+        },
+        {
+            "id": "fun_terminator_ace",
+            "title": "Терминатор (ACE!)",
+            "icon": "💀",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "1 эйс (уничтожение всей команды соперника из 5 игроков за раунд)",
+            "next_goal": "Цель (Бронза 🥉): 1 эйс (уничтожение всей команды соперника из 5 игроков за раунд)",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 / 1 эйсов",
+            "progress_text": "0 / 1 эйсов"
+        },
+        {
+            "id": "fun_nemesis_hunter",
+            "title": "Кровная вендетта (Nemesis Hunter)",
+            "icon": "🩸",
+            "tier": 0,
+            "max_tier": 3,
+            "unlocked": false,
+            "is_max": false,
+            "points": 0,
+            "max_points": 500,
+            "stars": "☆☆☆",
+            "stars_data": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "tier_key": "bronze",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "tier_key": "silver",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "tier_key": "gold",
+                    "unlocked": false,
+                    "symbol": "☆",
+                    "color_class": "star-badge-locked is-locked",
+                    "css_color": "#64748b"
+                }
+            ],
+            "tier_name": "Не получено",
+            "pips": [
+                {
+                    "level": 1,
+                    "name": "Бронза",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 2,
+                    "name": "Серебро",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                },
+                {
+                    "level": 3,
+                    "name": "Золото",
+                    "status": "locked",
+                    "star": "☆",
+                    "color": "#64748b"
+                }
+            ],
+            "desc": "1 матч с 4+ убийствами своего принципиального соперника (Nemesis)",
+            "next_goal": "Цель (Бронза 🥉): 1 матч с 4+ убийствами своего принципиального соперника (Nemesis)",
+            "progress_val": 0,
+            "progress_max": 1,
+            "progress_pct": 0.0,
+            "progress": "0 / 1 матчей",
+            "progress_text": "0 / 1 матчей"
+        },
+        {
+            "id": "fun_comeback_master",
+            "title": "Мастер камбэка",
             "icon": "🌪️",
             "tier": 0,
             "max_tier": 3,
@@ -1790,25 +2638,28 @@
                 {
                     "level": 1,
                     "name": "Бронза",
+                    "tier_key": "bronze",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 2,
                     "name": "Серебро",
+                    "tier_key": "silver",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 },
                 {
                     "level": 3,
                     "name": "Золото",
+                    "tier_key": "gold",
                     "unlocked": false,
                     "symbol": "☆",
-                    "color_class": "text-slate-600",
+                    "color_class": "star-badge-locked is-locked",
                     "css_color": "#64748b"
                 }
             ],
@@ -1836,234 +2687,27 @@
                     "color": "#64748b"
                 }
             ],
-            "desc": "1 карта с WR >= 55% (от 2 матчей)",
-            "next_goal": "Цель (Бронза 🥉): 1 карта с WR >= 55% (от 2 матчей)",
+            "desc": "1 волевая победа (камбэк, овертайм или клатч-финал карты)",
+            "next_goal": "Цель (Бронза 🥉): 1 волевая победа (камбэк, овертайм или клатч-финал карты)",
             "progress_val": 0,
             "progress_max": 1,
             "progress_pct": 0.0,
-            "progress": "0 / 1 карт с WR >= 55%",
-            "progress_text": "0 / 1 карт с WR >= 55%"
-        },
-        {
-            "id": "anchor_titan",
-            "title": "Непробиваемый якорь",
-            "icon": "🛡️",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Рейтинг Positioning >= 6.3",
-            "next_goal": "Цель (Бронза 🥉): Рейтинг Positioning >= 6.3",
-            "progress_val": 4.9,
-            "progress_max": 6.3,
-            "progress_pct": 77.8,
-            "progress": "4.9 / 6.3 Позиционирование",
-            "progress_text": "4.9 / 6.3 Позиционирование"
-        },
-        {
-            "id": "tactical_overlord",
-            "title": "Тактический гроссмейстер",
-            "icon": "🧨",
-            "tier": 0,
-            "max_tier": 3,
-            "unlocked": false,
-            "is_max": false,
-            "points": 0,
-            "max_points": 500,
-            "stars": "☆☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Не получено",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "Рейтинг Utility >= 6.0",
-            "next_goal": "Цель (Бронза 🥉): Рейтинг Utility >= 6.0",
-            "progress_val": 3.8,
-            "progress_max": 6.0,
-            "progress_pct": 63.3,
-            "progress": "Utility: 3.8 / 6.0 (Флеши: 1)",
-            "progress_text": "Utility: 3.8 / 6.0 (Флеши: 1)"
-        },
-        {
-            "id": "thirty_bomb",
-            "title": "Аннигилятор (30+ бомба)",
-            "icon": "💀",
-            "tier": 1,
-            "max_tier": 3,
-            "unlocked": true,
-            "is_max": false,
-            "points": 100,
-            "max_points": 500,
-            "stars": "★☆☆",
-            "stars_data": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "unlocked": true,
-                    "symbol": "★",
-                    "color_class": "text-amber-500 font-black",
-                    "css_color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "unlocked": false,
-                    "symbol": "☆",
-                    "color_class": "text-slate-600",
-                    "css_color": "#64748b"
-                }
-            ],
-            "tier_name": "Бронза 🥉",
-            "pips": [
-                {
-                    "level": 1,
-                    "name": "Бронза",
-                    "status": "completed",
-                    "star": "★",
-                    "color": "#d97706"
-                },
-                {
-                    "level": 2,
-                    "name": "Серебро",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                },
-                {
-                    "level": 3,
-                    "name": "Золото",
-                    "status": "locked",
-                    "star": "☆",
-                    "color": "#64748b"
-                }
-            ],
-            "desc": "1 матч с 30+ фрагами за карту",
-            "next_goal": "Цель (Серебро 🥈): 2 матча с 30+ фрагами за карту",
-            "progress_val": 1,
-            "progress_max": 2,
-            "progress_pct": 50.0,
-            "progress": "1 / 2 матчей",
-            "progress_text": "1 / 2 матчей"
+            "progress": "0 / 1 волевых побед",
+            "progress_text": "0 / 1 волевых побед"
         }
     ],
     "achievements_summary": {
-        "total_unlocked": 9,
-        "total_count": 24,
-        "tier1_count": 5,
-        "tier2_count": 3,
+        "total_unlocked": 15,
+        "total_count": 30,
+        "tier1_count": 12,
+        "tier2_count": 2,
         "tier3_count": 1,
-        "bronze_count": 5,
-        "silver_count": 3,
+        "bronze_count": 12,
+        "silver_count": 2,
         "gold_count": 1,
-        "total_points": 1750,
-        "max_points": 12000,
-        "points_pct": 14.6
+        "total_points": 2200,
+        "max_points": 15000,
+        "points_pct": 14.7
     },
     "matches": [
         {
