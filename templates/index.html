@@ -493,7 +493,7 @@
                                 <div class="min-w-0">
                                     <div class="font-bold text-white group-hover:text-emerald-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
                                         <span>{{ player.name }}</span>
-                                        <span class="my-profile-badge-slot inline-flex items-center"></span>
+
                                         {% if player.is_calibrating %}
                                         <span class="text-[8px] px-1.5 py-0.2 rounded bg-blue-950/80 text-blue-300 border border-blue-500/40 font-semibold shrink-0" title="Игрок в режиме калибровки (первые 5 матчей)">Калибровка</span>
                                         {% endif %}
@@ -675,7 +675,7 @@
                         <div class="min-w-0">
                             <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
                                 <span>{{ player.name }}</span>
-                                <span class="my-profile-badge-slot inline-flex items-center"></span>
+
                                 {% if player.is_calibrating %}
                                 <span class="text-[8px] px-1 py-0.2 rounded bg-blue-950 text-blue-300 border border-blue-500/40">Калибр.</span>
                                 {% endif %}

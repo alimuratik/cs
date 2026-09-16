@@ -549,6 +549,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 1. Chart.js Economy
+        const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
+        const chartColor = isLight ? '#0f172a' : '#cbd5e1';
+        const chartSubColor = isLight ? '#334155' : '#94a3b8';
+        const chartGridColor = isLight ? 'rgba(15, 23, 42, 0.1)' : 'rgba(255, 255, 255, 0.08)';
+
         const ecoData = {{ match.economy | tojson }};
         const ctx = document.getElementById('economy-chart').getContext('2d');
         
@@ -560,16 +565,16 @@
                     {
                         label: 'Команда 1 (CT)',
                         data: ecoData.team1,
-                        borderColor: '#60a5fa',
-                        backgroundColor: 'rgba(96, 165, 250, 0.15)',
+                        borderColor: '#2563eb',
+                        backgroundColor: isLight ? 'rgba(37, 99, 235, 0.12)' : 'rgba(96, 165, 250, 0.15)',
                         tension: 0.3,
                         fill: true
                     },
                     {
                         label: 'Команда 2 (T)',
                         data: ecoData.team2,
-                        borderColor: '#fbbf24',
-                        backgroundColor: 'rgba(251, 191, 36, 0.15)',
+                        borderColor: '#d97706',
+                        backgroundColor: isLight ? 'rgba(217, 119, 6, 0.12)' : 'rgba(251, 191, 36, 0.15)',
                         tension: 0.3,
                         fill: true
                     }
@@ -579,11 +584,46 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'top' }
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: chartColor,
+                            font: { weight: '600', size: 12 }
+                        }
+                    }
                 },
                 scales: {
-                    y: { beginAtZero: true, title: { display: true, text: 'Закуп ($)' } },
-                    x: { title: { display: true, text: 'Раунд' } }
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Закуп ($)',
+                            color: chartColor,
+                            font: { weight: 'bold', size: 11 }
+                        },
+                        ticks: {
+                            color: chartSubColor,
+                            font: { weight: '500' }
+                        },
+                        grid: {
+                            color: chartGridColor
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Раунд',
+                            color: chartColor,
+                            font: { weight: 'bold', size: 11 }
+                        },
+                        ticks: {
+                            color: chartSubColor,
+                            font: { weight: '500' }
+                        },
+                        grid: {
+                            color: chartGridColor
+                        }
+                    }
                 }
             }
         });

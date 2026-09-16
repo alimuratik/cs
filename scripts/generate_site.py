@@ -1434,23 +1434,40 @@ def generate_site():
     cooling_down.sort(key=lambda x: x["momentum"]["delta"])
     cooling_down = cooling_down[:3]
 
+    def safe_dump(stream, target_path):
+        import time
+        t_path = Path(target_path)
+        t_path.parent.mkdir(parents=True, exist_ok=True)
+        for attempt in range(5):
+            try:
+                with open(t_path, "wb") as f:
+                    stream.dump(f, encoding="utf-8")
+                return
+            except OSError:
+                if attempt == 4:
+                    raise
+                time.sleep(0.1)
+
     # 1. Генерация index.html
     index_template = env.get_template("index.html")
-    index_template.stream(
-        active_page="index",
-        css_path="css/style.css",
-        js_path="js/app.js",
-        root_path="",
-        stats=stats_summary,
-        players=leaderboard_players,
-        faceit_levels_info=faceit_levels_info,
-        sessions=formatted_sessions,
-        recent_matches=recent_matches_display,
-        session_awards=session_awards,
-        top_gainers=top_gainers,
-        cooling_down=cooling_down,
-        generated_at=generated_at
-    ).dump(str(SITE_DIR / "index.html"), encoding="utf-8")
+    safe_dump(
+        index_template.stream(
+            active_page="index",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            stats=stats_summary,
+            players=leaderboard_players,
+            faceit_levels_info=faceit_levels_info,
+            sessions=formatted_sessions,
+            recent_matches=recent_matches_display,
+            session_awards=session_awards,
+            top_gainers=top_gainers,
+            cooling_down=cooling_down,
+            generated_at=generated_at
+        ),
+        SITE_DIR / "index.html"
+    )
     logging.info("Сгенерирована главная страница: site/index.html")
 
     # 2. Генерация страниц матчей matches/{match_id}.html
@@ -1458,16 +1475,19 @@ def generate_site():
     for m in matches:
         match_id = m.get("match_id")
         formatted_m = format_match_data(m)
-        match_template.stream(
-            active_page="match",
-            css_path="../css/style.css",
-            js_path="../js/app.js",
-            root_path="../",
-            match=formatted_m,
-            score1=formatted_m.get("score1", 0),
-            score2=formatted_m.get("score2", 0),
-            generated_at=generated_at
-        ).dump(str(SITE_DIR / "matches" / f"{match_id}.html"), encoding="utf-8")
+        safe_dump(
+            match_template.stream(
+                active_page="match",
+                css_path="../css/style.css",
+                js_path="../js/app.js",
+                root_path="../",
+                match=formatted_m,
+                score1=formatted_m.get("score1", 0),
+                score2=formatted_m.get("score2", 0),
+                generated_at=generated_at
+            ),
+            SITE_DIR / "matches" / f"{match_id}.html"
+        )
     logging.info(f"Сгенерированы страницы для {len(matches)} матчей")
 
     # 3. Генерация страниц игроков players/{steam_id}.html
@@ -1477,14 +1497,17 @@ def generate_site():
         if not sid:
             continue
         formatted_p = format_player_data(p)
-        player_template.stream(
-            active_page="player",
-            css_path="../css/style.css",
-            js_path="../js/app.js",
-            root_path="../",
-            player=formatted_p,
-            generated_at=generated_at
-        ).dump(str(SITE_DIR / "players" / f"{sid}.html"), encoding="utf-8")
+        safe_dump(
+            player_template.stream(
+                active_page="player",
+                css_path="../css/style.css",
+                js_path="../js/app.js",
+                root_path="../",
+                player=formatted_p,
+                generated_at=generated_at
+            ),
+            SITE_DIR / "players" / f"{sid}.html"
+        )
     logging.info(f"Сгенерированы страницы для {len(players)} игроков")
 
     # 4. Генерация страниц сессий sessions/{date}.html
@@ -1493,14 +1516,17 @@ def generate_site():
         s_date = formatted_s.get("date")
         if not s_date:
             continue
-        session_template.stream(
-            active_page="session",
-            css_path="../css/style.css",
-            js_path="../js/app.js",
-            root_path="../",
-            session=formatted_s,
-            generated_at=generated_at
-        ).dump(str(SITE_DIR / "sessions" / f"{s_date}.html"), encoding="utf-8")
+        safe_dump(
+            session_template.stream(
+                active_page="session",
+                css_path="../css/style.css",
+                js_path="../js/app.js",
+                root_path="../",
+                session=formatted_s,
+                generated_at=generated_at
+            ),
+            SITE_DIR / "sessions" / f"{s_date}.html"
+        )
     logging.info(f"Сгенерированы страницы для {len(formatted_sessions)} игровых сессий")
 
     # 5. Генерация страницы рейтинга навыков site/skills.html
@@ -1579,25 +1605,31 @@ def generate_site():
         }
 
     skills_template = env.get_template("skills.html")
-    skills_template.stream(
-        active_page="skills",
-        css_path="css/style.css",
-        js_path="js/app.js",
-        root_path="",
-        skills_data=skills_data,
-        generated_at=generated_at
-    ).dump(str(SITE_DIR / "skills.html"), encoding="utf-8")
+    safe_dump(
+        skills_template.stream(
+            active_page="skills",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            skills_data=skills_data,
+            generated_at=generated_at
+        ),
+        SITE_DIR / "skills.html"
+    )
     logging.info("Сгенерирована страница навыков: site/skills.html")
 
     # 6. Генерация страницы демок site/demos.html
     demos_template = env.get_template("demos.html")
-    demos_template.stream(
-        active_page="demos",
-        css_path="css/style.css",
-        js_path="js/app.js",
-        root_path="",
-        generated_at=generated_at
-    ).dump(str(SITE_DIR / "demos.html"), encoding="utf-8")
+    safe_dump(
+        demos_template.stream(
+            active_page="demos",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            generated_at=generated_at
+        ),
+        SITE_DIR / "demos.html"
+    )
     logging.info("Сгенерирована страница демок: site/demos.html")
 
     # 7. Генерация страницы дуэлей (Бойцовский клуб) site/compare.html
@@ -1611,28 +1643,34 @@ def generate_site():
             logging.warning(f"Ошибка загрузки head_to_head.json: {e}")
 
     compare_template = env.get_template("compare.html")
-    compare_template.stream(
-        active_page="compare",
-        css_path="css/style.css",
-        js_path="js/app.js",
-        root_path="",
-        h2h_data=h2h_data,
-        players=h2h_data.get("players", []),
-        generated_at=generated_at
-    ).dump(str(SITE_DIR / "compare.html"), encoding="utf-8")
+    safe_dump(
+        compare_template.stream(
+            active_page="compare",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            h2h_data=h2h_data,
+            players=h2h_data.get("players", []),
+            generated_at=generated_at
+        ),
+        SITE_DIR / "compare.html"
+    )
     logging.info("Сгенерирована страница дуэлей: site/compare.html")
 
     # 8. Генерация страницы матчмейкера 5v5 site/matchmaker.html
     matchmaker_template = env.get_template("matchmaker.html")
-    matchmaker_template.stream(
-        active_page="matchmaker",
-        css_path="css/style.css",
-        js_path="js/app.js",
-        root_path="",
-        players=leaderboard_players,
-        h2h_data=h2h_data,
-        generated_at=generated_at
-    ).dump(str(SITE_DIR / "matchmaker.html"), encoding="utf-8")
+    safe_dump(
+        matchmaker_template.stream(
+            active_page="matchmaker",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            players=leaderboard_players,
+            h2h_data=h2h_data,
+            generated_at=generated_at
+        ),
+        SITE_DIR / "matchmaker.html"
+    )
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
 
     logging.info("🔥 Генерация HTML-сайта успешно завершена!")

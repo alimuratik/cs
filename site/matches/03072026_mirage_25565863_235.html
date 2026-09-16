@@ -64,154 +64,6 @@
                 </a>
             </nav>
 
-            <!-- User Personalization Widget ("Кто ты?") -->
-            <div class="relative ml-2 hidden md:block" id="user-profile-widget">
-                <button type="button" id="my-profile-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-slate-300 hover:text-white hover:border-emerald-500/50 transition text-xs font-semibold shadow-sm" aria-expanded="false">
-                    <span id="my-profile-icon">👤</span>
-                    <span id="my-profile-label">Кто ты?</span>
-                    <span class="text-[10px] text-slate-500">▼</span>
-                </button>
-                <div id="my-profile-menu" class="hidden absolute right-0 mt-2 w-56 rounded-2xl bg-slate-900/95 border border-slate-700/90 backdrop-blur-xl shadow-2xl p-2 z-50 animate-fadeIn">
-                    <div class="px-3 py-2 border-b border-slate-800/80 mb-1.5 flex items-center justify-between">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Выберите свой профиль</span>
-                        <button type="button" id="reset-my-profile-btn" class="text-[10px] text-rose-400 hover:text-rose-300 hidden font-mono">Сбросить</button>
-                    </div>
-                    <div class="max-h-60 overflow-y-auto space-y-1 custom-scrollbar" id="profile-select-list">
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198357586856" data-pname="__9503">
-                            <span class="truncate">__9503</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198431427139" data-pname="ALIBONYA">
-                            <span class="truncate">ALIBONYA</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199339730968" data-pname="altairinthesky">
-                            <span class="truncate">altairinthesky</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198234120608" data-pname="Azki_1">
-                            <span class="truncate">Azki_1</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198998095898" data-pname="c kaifom">
-                            <span class="truncate">c kaifom</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199808571117" data-pname="CHPOKERS">
-                            <span class="truncate">CHPOKERS</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198068831005" data-pname="DarkAtom">
-                            <span class="truncate">DarkAtom</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198100478545" data-pname="Folie_1">
-                            <span class="truncate">Folie_1</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561197990475042" data-pname="GIGABYTE_KZ">
-                            <span class="truncate">GIGABYTE_KZ</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199478211872" data-pname="iamresplendent">
-                            <span class="truncate">iamresplendent</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198356069369" data-pname="insta/Ne7er0cs">
-                            <span class="truncate">insta/Ne7er0cs</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199569491960" data-pname="k--9">
-                            <span class="truncate">k--9</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199153011354" data-pname="matadorra">
-                            <span class="truncate">matadorra</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198686899454" data-pname="mbaliyev">
-                            <span class="truncate">mbaliyev</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198010867827" data-pname="Nakama_4">
-                            <span class="truncate">Nakama_4</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198254267961" data-pname="Oceanmengo">
-                            <span class="truncate">Oceanmengo</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198125968237" data-pname="qumashasyl">
-                            <span class="truncate">qumashasyl</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198243149322" data-pname="Rayi">
-                            <span class="truncate">Rayi</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199508661466" data-pname="Resone West">
-                            <span class="truncate">Resone West</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198083546367" data-pname="Saliend">
-                            <span class="truncate">Saliend</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199438131194" data-pname="SGEM_7">
-                            <span class="truncate">SGEM_7</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198885191528" data-pname="taksist_3">
-                            <span class="truncate">taksist_3</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561198402746932" data-pname="Yesk0">
-                            <span class="truncate">Yesk0</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199043039622" data-pname="Zanoza59">
-                            <span class="truncate">Zanoza59</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                        <button type="button" class="profile-select-item w-full text-left px-3 py-2 rounded-xl text-xs font-medium text-slate-300 hover:text-emerald-300 hover:bg-emerald-950/40 border border-transparent hover:border-emerald-500/30 transition flex items-center justify-between" data-sid="76561199413542223" data-pname="zikayevg">
-                            <span class="truncate">zikayevg</span>
-                            <span class="text-[10px] text-emerald-400 font-mono hidden select-active-check">⭐ ВЫ</span>
-                        </button>
-                        
-                    </div>
-                    <div id="my-profile-active-actions" class="hidden mt-2 pt-2 border-t border-slate-800 flex items-center justify-between px-2">
-                        <a id="my-profile-link" href="#" class="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1">
-                            <span>Открыть профиль</span> <span>➔</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Theme Switcher (Desktop) -->
             <div class="relative ml-2 hidden md:flex items-center">
                 <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="Переключить тему">
@@ -272,76 +124,6 @@
                 <span class="text-lg">🎬</span> <span>Демки и видеозаписи</span>
             </a>
         </nav>
-
-        <!-- Mobile User Profile Picker -->
-        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm" id="mobile-user-profile-widget">
-            <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                    <span id="mobile-profile-icon">👤</span>
-                    <span id="mobile-profile-title">Мой профиль</span>
-                </span>
-                <button type="button" id="mobile-reset-profile-btn" class="text-[10px] text-rose-500 hover:text-rose-400 hidden font-mono">Сбросить</button>
-            </div>
-            <select id="mobile-player-select" class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-emerald-500">
-                <option value="">-- Выберите профиль --</option>
-                
-                <option value="76561198357586856">__9503</option>
-                
-                <option value="76561198431427139">ALIBONYA</option>
-                
-                <option value="76561199339730968">altairinthesky</option>
-                
-                <option value="76561198234120608">Azki_1</option>
-                
-                <option value="76561198998095898">c kaifom</option>
-                
-                <option value="76561199808571117">CHPOKERS</option>
-                
-                <option value="76561198068831005">DarkAtom</option>
-                
-                <option value="76561198100478545">Folie_1</option>
-                
-                <option value="76561197990475042">GIGABYTE_KZ</option>
-                
-                <option value="76561199478211872">iamresplendent</option>
-                
-                <option value="76561198356069369">insta/Ne7er0cs</option>
-                
-                <option value="76561199569491960">k--9</option>
-                
-                <option value="76561199153011354">matadorra</option>
-                
-                <option value="76561198686899454">mbaliyev</option>
-                
-                <option value="76561198010867827">Nakama_4</option>
-                
-                <option value="76561198254267961">Oceanmengo</option>
-                
-                <option value="76561198125968237">qumashasyl</option>
-                
-                <option value="76561198243149322">Rayi</option>
-                
-                <option value="76561199508661466">Resone West</option>
-                
-                <option value="76561198083546367">Saliend</option>
-                
-                <option value="76561199438131194">SGEM_7</option>
-                
-                <option value="76561198885191528">taksist_3</option>
-                
-                <option value="76561198402746932">Yesk0</option>
-                
-                <option value="76561199043039622">Zanoza59</option>
-                
-                <option value="76561199413542223">zikayevg</option>
-                
-            </select>
-            <div id="mobile-profile-link-wrap" class="hidden mt-2 pt-2 border-t border-slate-200 dark:border-slate-800/80">
-                <a id="mobile-profile-link" href="#" class="block text-center py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-700/50 text-xs font-bold">
-                    Открыть мой профиль ➔
-                </a>
-            </div>
-        </div>
 
         <!-- Mobile Drawer Theme Switcher -->
         <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
@@ -7741,7 +7523,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:36</p>
+                <p class="footer-timestamp">Данные обновлены: 16.09.2026 15:47</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -7822,6 +7604,7 @@
                                 if (scale.ticks) scale.ticks.color = isLight ? '#1e293b' : 'rgba(255, 255, 255, 0.7)';
                                 if (scale.pointLabels) scale.pointLabels.color = isLight ? '#0f172a' : '#cbd5e1';
                                 if (scale.angleLines) scale.angleLines.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.15)';
+                                if (scale.title) scale.title.color = isLight ? '#0f172a' : '#cbd5e1';
                             });
                         }
                         if (chart.options && chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
@@ -7866,176 +7649,17 @@
                 if (drBtn) drBtn.addEventListener('click', toggleTheme);
             });
         })();
-
-        // ─── Client-side User Personalization ("Кто ты?") ───
-        (function() {
-            const STORAGE_KEY = 'cs2_my_steamid';
-            const rootPath = '../';
-            
-            const profileBtn = document.getElementById('my-profile-btn');
-            const profileMenu = document.getElementById('my-profile-menu');
-            const profileLabel = document.getElementById('my-profile-label');
-            const profileIcon = document.getElementById('my-profile-icon');
-            const resetBtn = document.getElementById('reset-my-profile-btn');
-            const profileLink = document.getElementById('my-profile-link');
-            const activeActions = document.getElementById('my-profile-active-actions');
-            
-            const mobileSelect = document.getElementById('mobile-player-select');
-            const mobileResetBtn = document.getElementById('mobile-reset-profile-btn');
-            const mobileLinkWrap = document.getElementById('mobile-profile-link-wrap');
-            const mobileLink = document.getElementById('mobile-profile-link');
-
-            function getMySteamId() {
-                try { return localStorage.getItem(STORAGE_KEY) || ''; } catch(e) { return ''; }
-            }
-
-            function setMySteamId(sid) {
-                try {
-                    if (sid) localStorage.setItem(STORAGE_KEY, sid);
-                    else localStorage.removeItem(STORAGE_KEY);
-                } catch(e) {}
-                applyPersonalization();
-            }
-
-            function applyPersonalization() {
-                const currentSid = getMySteamId();
-                let currentName = '';
-
-                // Find player name from list
-                const items = document.querySelectorAll('.profile-select-item');
-                items.forEach(el => {
-                    const sid = el.getAttribute('data-sid');
-                    const check = el.querySelector('.select-active-check');
-                    if (currentSid && sid === currentSid) {
-                        currentName = el.getAttribute('data-pname') || 'Мой профиль';
-                        el.classList.add('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-                        if (check) check.classList.remove('hidden');
-                    } else {
-                        el.classList.remove('bg-emerald-950/60', 'border-emerald-500/40', 'text-emerald-300');
-                        if (check) check.classList.add('hidden');
-                    }
-                });
-
-                // Update Desktop Header Button
-                if (profileBtn && profileLabel) {
-                    if (currentSid && currentName) {
-                        profileLabel.textContent = currentName;
-                        profileIcon.textContent = '⭐';
-                        profileBtn.classList.remove('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
-                        profileBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300', 'profile-active');
-                        profileBtn.setAttribute('data-selected', 'true');
-                        if (resetBtn) resetBtn.classList.remove('hidden');
-                        if (activeActions) activeActions.classList.remove('hidden');
-                        if (profileLink) profileLink.href = `${rootPath}players/${currentSid}.html`;
-                    } else {
-                        profileLabel.textContent = 'Кто ты?';
-                        profileIcon.textContent = '👤';
-                        profileBtn.classList.remove('bg-emerald-950/70', 'border-emerald-500/60', 'text-emerald-300', 'profile-active');
-                        profileBtn.removeAttribute('data-selected');
-                        profileBtn.classList.add('bg-slate-900/90', 'border-slate-700/80', 'text-slate-300');
-                        if (resetBtn) resetBtn.classList.add('hidden');
-                        if (activeActions) activeActions.classList.add('hidden');
-                    }
-                }
-
-                // Update Mobile Selector
-                if (mobileSelect) {
-                    mobileSelect.value = currentSid;
-                }
-                if (mobileResetBtn && mobileLinkWrap && mobileLink) {
-                    if (currentSid) {
-                        mobileResetBtn.classList.remove('hidden');
-                        mobileLinkWrap.classList.remove('hidden');
-                        mobileLink.href = `${rootPath}players/${currentSid}.html`;
-                    } else {
-                        mobileResetBtn.classList.add('hidden');
-                        mobileLinkWrap.classList.add('hidden');
-                    }
-                }
-
-                // Highlight player rows/cards in tables and leaderboards
-                const targetEls = document.querySelectorAll('[data-steamid]');
-                targetEls.forEach(el => {
-                    const sid = el.getAttribute('data-steamid');
-                    const badgeContainer = el.querySelector('.my-profile-badge-slot') || el.querySelector('.player-name-container') || el.querySelector('h4') || el.querySelector('.font-bold');
-                    const existingBadge = el.querySelector('.my-profile-star-badge');
-                    
-                    if (currentSid && sid === currentSid) {
-                        el.classList.add('my-profile-highlight');
-                        if (!existingBadge && badgeContainer) {
-                            const badge = document.createElement('span');
-                            badge.className = 'my-profile-star-badge inline-flex items-center gap-1 text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-400/50 shadow-sm ml-1.5 shrink-0 align-middle';
-                            badge.innerHTML = '⭐ ВЫ';
-                            badgeContainer.appendChild(badge);
-                        }
-                    } else {
-                        el.classList.remove('my-profile-highlight');
-                        if (existingBadge) {
-                            existingBadge.remove();
-                        }
-                    }
-                });
-            }
-
-            // Event Listeners
-            if (profileBtn && profileMenu) {
-                profileBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isHidden = profileMenu.classList.contains('hidden');
-                    if (isHidden) {
-                        profileMenu.classList.remove('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'true');
-                    } else {
-                        profileMenu.classList.add('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-
-                document.addEventListener('click', (e) => {
-                    if (!profileMenu.contains(e.target) && !profileBtn.contains(e.target)) {
-                        profileMenu.classList.add('hidden');
-                        profileBtn.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            }
-
-            document.querySelectorAll('.profile-select-item').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const sid = btn.getAttribute('data-sid');
-                    setMySteamId(sid);
-                    if (profileMenu) profileMenu.classList.add('hidden');
-                });
-            });
-
-            if (resetBtn) {
-                resetBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    setMySteamId('');
-                });
-            }
-
-            if (mobileSelect) {
-                mobileSelect.addEventListener('change', (e) => {
-                    setMySteamId(e.target.value);
-                });
-            }
-
-            if (mobileResetBtn) {
-                mobileResetBtn.addEventListener('click', () => {
-                    setMySteamId('');
-                });
-            }
-
-            // Run on initial page load
-            document.addEventListener('DOMContentLoaded', applyPersonalization);
-            applyPersonalization();
-        })();
     </script>
     
     
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 1. Chart.js Economy
+        const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
+        const chartColor = isLight ? '#0f172a' : '#cbd5e1';
+        const chartSubColor = isLight ? '#334155' : '#94a3b8';
+        const chartGridColor = isLight ? 'rgba(15, 23, 42, 0.1)' : 'rgba(255, 255, 255, 0.08)';
+
         const ecoData = {"labels": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], "team1": [6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200, 6200, 8200, 4200], "team2": [7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400, 9200, 3800, 5600, 7400]};
         const ctx = document.getElementById('economy-chart').getContext('2d');
         
@@ -8047,16 +7671,16 @@
                     {
                         label: 'Команда 1 (CT)',
                         data: ecoData.team1,
-                        borderColor: '#60a5fa',
-                        backgroundColor: 'rgba(96, 165, 250, 0.15)',
+                        borderColor: '#2563eb',
+                        backgroundColor: isLight ? 'rgba(37, 99, 235, 0.12)' : 'rgba(96, 165, 250, 0.15)',
                         tension: 0.3,
                         fill: true
                     },
                     {
                         label: 'Команда 2 (T)',
                         data: ecoData.team2,
-                        borderColor: '#fbbf24',
-                        backgroundColor: 'rgba(251, 191, 36, 0.15)',
+                        borderColor: '#d97706',
+                        backgroundColor: isLight ? 'rgba(217, 119, 6, 0.12)' : 'rgba(251, 191, 36, 0.15)',
                         tension: 0.3,
                         fill: true
                     }
@@ -8066,11 +7690,46 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'top' }
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: chartColor,
+                            font: { weight: '600', size: 12 }
+                        }
+                    }
                 },
                 scales: {
-                    y: { beginAtZero: true, title: { display: true, text: 'Закуп ($)' } },
-                    x: { title: { display: true, text: 'Раунд' } }
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Закуп ($)',
+                            color: chartColor,
+                            font: { weight: 'bold', size: 11 }
+                        },
+                        ticks: {
+                            color: chartSubColor,
+                            font: { weight: '500' }
+                        },
+                        grid: {
+                            color: chartGridColor
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Раунд',
+                            color: chartColor,
+                            font: { weight: 'bold', size: 11 }
+                        },
+                        ticks: {
+                            color: chartSubColor,
+                            font: { weight: '500' }
+                        },
+                        grid: {
+                            color: chartGridColor
+                        }
+                    }
                 }
             }
         });
