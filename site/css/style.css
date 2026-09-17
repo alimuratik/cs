@@ -2263,6 +2263,53 @@ a:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
+/* Tier-specific styling for shelf medal cards (Dark Theme) */
+.shelf-medal-card[data-tier="3"] {
+  background: radial-gradient(circle at 85% 15%, rgba(245, 158, 11, 0.22) 0%, rgba(15, 23, 42, 0.96) 65%), #0b0f19;
+  border: 2px solid #f59e0b;
+  box-shadow: 0 0 35px -5px rgba(245, 158, 11, 0.5);
+}
+
+.shelf-medal-card[data-tier="3"]:hover {
+  border-color: #fbbf24;
+  box-shadow: 0 0 40px -2px rgba(245, 158, 11, 0.65);
+}
+
+.shelf-medal-card[data-tier="2"] {
+  background: #111827;
+  border: 2px solid #94a3b8;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.shelf-medal-card[data-tier="2"]:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 18px rgba(148, 163, 184, 0.25);
+}
+
+.shelf-medal-card[data-tier="1"] {
+  background: #131b2e;
+  border: 2px solid #c2410c;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.shelf-medal-card[data-tier="1"]:hover {
+  border-color: #ea580c;
+  box-shadow: 0 6px 18px rgba(194, 65, 12, 0.3);
+}
+
+.shelf-medal-card[data-tier="0"],
+.shelf-medal-card.shelf-medal-locked {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1.5px dashed #334155;
+  opacity: 0.65;
+}
+
+.shelf-medal-card[data-tier="0"]:hover,
+.shelf-medal-card.shelf-medal-locked:hover {
+  opacity: 0.95;
+  border-color: #64748b;
+}
+
 /* 3D Metallic Medallions */
 .medallion-badge-3d {
   width: 56px;
@@ -2270,6 +2317,13 @@ a:hover {
   border-radius: 50%;
   position: relative;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (max-width: 640px) {
+  .medallion-badge-3d {
+    width: 54px;
+    height: 54px;
+  }
 }
 
 .shelf-medal-card:hover .medallion-badge-3d {
@@ -2292,6 +2346,14 @@ a:hover {
   background: radial-gradient(circle at 35% 28%, #f59e0b 0%, #d97706 40%, #92400e 80%, #451a03 100%);
   border: 2px solid #fcd34d;
   box-shadow: 0 0 10px rgba(217, 119, 6, 0.55), inset 0 2px 4px rgba(255, 255, 255, 0.6), inset 0 -2px 5px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.medallion-locked {
+  background: radial-gradient(circle at 35% 28%, #334155 0%, #1e293b 40%, #0f172a 80%, #020617 100%);
+  border: 2px dashed #475569;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.05), inset 0 -2px 5px rgba(0, 0, 0, 0.6);
+  filter: grayscale(1);
+  opacity: 0.7;
 }
 
 .medallion-icon {
@@ -2332,6 +2394,13 @@ a:hover {
   background: #270e04;
   border: 1px solid #d97706;
   color: #f59e0b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.medallion-locked .medallion-stars-ribbon {
+  background: #0f172a;
+  border: 1px solid #475569;
+  color: #64748b;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
@@ -3587,14 +3656,26 @@ body.light-theme .match-video-section summary h3 {
 }
 
 /* 9. Light Theme Support for Faceit ELO Progress Box */
+.faceit-progress-fill {
+  background: linear-gradient(90deg, #f59e0b, #ea580c, #dc2626) !important;
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.45) !important;
+}
+
 body.light-theme .faceit-level-progress-box {
   background: #fff7ed !important;
-  border-color: #fdba74 !important;
+  border: 1.5px solid #fdba74 !important;
   box-shadow: 0 2px 8px rgba(234, 88, 12, 0.08) !important;
 }
 
+body.light-theme .faceit-progress-title,
+body.light-theme .faceit-level-badge {
+  color: #c2410c !important;
+  font-weight: 800 !important;
+}
+
 body.light-theme .faceit-progress-elo {
-  color: #1e293b !important;
+  color: #7c2d12 !important;
+  font-weight: 900 !important;
 }
 
 body.light-theme .faceit-progress-remaining {
@@ -3604,7 +3685,14 @@ body.light-theme .faceit-progress-remaining {
 
 body.light-theme .faceit-track {
   background-color: #ffedd5 !important;
-  border-color: #fed7aa !important;
+  border: 1.5px solid #fdba74 !important;
+}
+
+body.light-theme .faceit-track > div,
+body.light-theme .faceit-progress-fill {
+  background: linear-gradient(90deg, #ea580c, #c2410c) !important;
+  background-color: #ea580c !important;
+  box-shadow: 0 1px 4px rgba(194, 65, 12, 0.4) !important;
 }
 
 /* 10. Light Theme Support for Skill Rating Bars */
@@ -3625,6 +3713,53 @@ body.light-theme .rating-bar-label {
 body.light-theme .rating-bar-track {
   background-color: #e2e8f0 !important;
   border-color: #cbd5e1 !important;
+}
+
+/* Skill Rating Bar Fills (Dark Theme) */
+.rating-fill-low {
+  background: linear-gradient(90deg, #f87171, #ef4444) !important;
+  background-color: #ef4444 !important;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}
+.rating-fill-mid {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b) !important;
+  background-color: #f59e0b !important;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+}
+.rating-fill-high {
+  background: linear-gradient(90deg, #34d399, #10b981) !important;
+  background-color: #10b981 !important;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+}
+
+/* Skill Rating Bar Fills (Light Theme: Low=Red, Medium=Yellow, High=Green) */
+body.light-theme .rating-fill-low {
+  background: linear-gradient(90deg, #ef4444, #dc2626) !important;
+  background-color: #dc2626 !important;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.3) !important;
+}
+body.light-theme .rating-fill-mid {
+  background: linear-gradient(90deg, #f59e0b, #d97706) !important;
+  background-color: #d97706 !important;
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.3) !important;
+}
+body.light-theme .rating-fill-high {
+  background: linear-gradient(90deg, #10b981, #059669) !important;
+  background-color: #059669 !important;
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.3) !important;
+}
+
+body.light-theme .rating-bar-val.val-low {
+  color: #dc2626 !important;
+  font-weight: 800 !important;
+}
+body.light-theme .rating-bar-val.val-mid {
+  color: #d97706 !important;
+  font-weight: 800 !important;
+}
+body.light-theme .rating-bar-val.val-high {
+  color: #059669 !important;
+  font-weight: 800 !important;
 }
 
 /* 11. 2D Matrix Mobile Refinements */
@@ -3781,8 +3916,6 @@ body.light-theme .showcase-toggle-btn:hover {
 }
 
 body.light-theme .shelf-medal-card {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
@@ -3790,19 +3923,33 @@ body.light-theme .shelf-medal-card:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
+/* 🥇 Золото: теплый шампань-градиент, 24K золотая рамка 2px solid #eab308, аура свечения */
 body.light-theme .shelf-medal-card[data-tier="3"] {
-  border-color: #f59e0b !important;
-  background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%) !important;
+  background: linear-gradient(165deg, #fffdf2 0%, #fef9c3 35%, #fffbeb 100%) !important;
+  border: 2px solid #eab308 !important;
+  box-shadow: 0 10px 24px -4px rgba(234, 179, 8, 0.32) !important;
 }
 
+/* 🥈 Серебро: морозно-платиновый фон, выразительная темная стальная рамка 2px solid #64748b */
 body.light-theme .shelf-medal-card[data-tier="2"] {
-  border-color: #cbd5e1 !important;
-  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%) !important;
+  background: linear-gradient(165deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  border: 2px solid #64748b !important;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.16) !important;
 }
 
+/* 🥉 Бронза: чистый нейтральный белый фон (#ffffff) без тяжелой оранжевой заливки, благородная бронзовая рамка 2px solid #a86239 */
 body.light-theme .shelf-medal-card[data-tier="1"] {
-  border-color: #fdba74 !important;
-  background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%) !important;
+  background: #ffffff !important;
+  border: 2px solid #a86239 !important;
+  box-shadow: 0 4px 12px rgba(168, 98, 57, 0.12) !important;
+}
+
+/* 🔒 Неоткрытые / Пустые карточки */
+body.light-theme .shelf-medal-card[data-tier="0"],
+body.light-theme .shelf-medal-card.shelf-medal-locked {
+  background: #ffffff !important;
+  border: 1.5px dashed #cbd5e1 !important;
+  opacity: 0.65 !important;
 }
 
 body.light-theme .shelf-medal-card h5 {
@@ -3818,17 +3965,67 @@ body.light-theme .shelf-card-footer {
   color: #64748b !important;
 }
 
-body.light-theme .shelf-filters .filter-btn {
+body.light-theme .shelf-filters .filter-btn,
+body.light-theme #player-shelf-filters .player-filter-btn {
   background: #ffffff !important;
   border-color: #cbd5e1 !important;
   color: #475569 !important;
 }
 
-body.light-theme .shelf-filters .filter-btn.active {
+body.light-theme .shelf-filters .filter-btn.active,
+body.light-theme #player-shelf-filters .player-filter-btn.active {
   background: #fffbeb !important;
   border-color: #f59e0b !important;
   color: #b45309 !important;
   font-weight: 800 !important;
+}
+
+/* Locked Medallion Light Theme */
+body.light-theme .medallion-locked {
+  background: radial-gradient(circle at 35% 28%, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%) !important;
+  border: 2px dashed #94a3b8 !important;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.8), inset 0 -2px 5px rgba(0, 0, 0, 0.08) !important;
+  filter: grayscale(1) !important;
+  opacity: 0.75 !important;
+}
+
+body.light-theme .medallion-locked .medallion-stars-ribbon {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Progress fill bars in shelf cards */
+.rating-fill-gold {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b) !important;
+  background-color: #f59e0b !important;
+}
+.rating-fill-silver {
+  background: linear-gradient(90deg, #cbd5e1, #94a3b8) !important;
+  background-color: #94a3b8 !important;
+}
+.rating-fill-bronze {
+  background: linear-gradient(90deg, #f97316, #c2410c) !important;
+  background-color: #ea580c !important;
+}
+.rating-fill-locked {
+  background: #475569 !important;
+}
+
+body.light-theme .rating-fill-gold {
+  background: linear-gradient(90deg, #eab308, #ca8a04) !important;
+  background-color: #ca8a04 !important;
+}
+body.light-theme .rating-fill-silver {
+  background: linear-gradient(90deg, #94a3b8, #64748b) !important;
+  background-color: #64748b !important;
+}
+body.light-theme .rating-fill-bronze {
+  background: linear-gradient(90deg, #ea580c, #a86239) !important;
+  background-color: #a86239 !important;
+}
+body.light-theme .rating-fill-locked {
+  background: #94a3b8 !important;
 }
 
 

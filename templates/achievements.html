@@ -274,23 +274,16 @@
                                     {% if p.unlocked_achievements %}
                                     <div class="shelf-cards-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                                         {% for ach in p.unlocked_achievements %}
-                                        <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card
-                                            {% if ach.tier == 3 %}
-                                            bg-gradient-to-b from-amber-950/30 via-slate-900/90 to-slate-950 border-amber-400/50 shadow-md shadow-amber-950/30 hover:border-amber-300
-                                            {% elif ach.tier == 2 %}
-                                            bg-gradient-to-b from-slate-800/30 via-slate-900/90 to-slate-950 border-slate-400/50 shadow-sm shadow-slate-900/30 hover:border-slate-300
-                                            {% else %}
-                                            bg-gradient-to-b from-amber-950/20 via-slate-900/90 to-slate-950 border-amber-700/40 shadow-sm shadow-amber-950/20 hover:border-amber-600
-                                            {% endif %}"
-                                            data-tier="{{ ach.tier }}">
+                                        <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
+                                             data-tier="{{ ach.tier }}">
 
                                             <!-- Top Badge: Tier + Points -->
                                             <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
-                                                <span class="px-1.5 py-0.5 rounded text-[9px]
+                                                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
                                                     {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
                                                     {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
                                                     {% else %}bg-amber-950/60 text-amber-400 border border-amber-700/50{% endif %}">
-                                                    {% if ach.tier == 3 %}Золото III{% elif ach.tier == 2 %}Серебро II{% else %}Бронза I{% endif %}
+                                                    {% if ach.tier == 3 %}👑 Золото{% elif ach.tier == 2 %}🥈 Серебро{% else %}🥉 Бронза{% endif %}
                                                 </span>
                                                 <span class="font-extrabold text-amber-400">
                                                     +{{ ach.points }} PTS
@@ -368,19 +361,19 @@
                     <div class="space-y-2 mt-4 text-xs font-sans border-t border-slate-800/80 pt-3">
                         <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/20 border border-amber-900/40">
                             <span class="font-bold text-amber-500 flex items-center gap-1.5">
-                                <span>🥉</span> <span>Бронза (Tier 1)</span>
+                                <span>🥉</span> <span>Бронза</span>
                             </span>
                             <span class="font-mono text-amber-400 font-bold">+100 pts</span>
                         </div>
                         <div class="flex items-center justify-between p-2 rounded-lg bg-slate-900/80 border border-slate-700/60">
                             <span class="font-bold text-slate-300 flex items-center gap-1.5">
-                                <span>🥈</span> <span>Серебро (Tier 2)</span>
+                                <span>🥈</span> <span>Серебро</span>
                             </span>
                             <span class="font-mono text-slate-200 font-bold">+250 pts</span>
                         </div>
                         <div class="flex items-center justify-between p-2 rounded-lg bg-amber-950/40 border border-amber-500/40">
                             <span class="font-bold text-amber-300 flex items-center gap-1.5">
-                                <span>🥇</span> <span>Золото (Tier 3)</span>
+                                <span>🥇</span> <span>Золото</span>
                             </span>
                             <span class="font-mono text-amber-300 font-black">+500 pts</span>
                         </div>
@@ -431,6 +424,15 @@
                     shelf.classList.add('hidden');
                     shelf.style.display = 'none';
                 }
+            });
+        });
+
+        // Expand shelf on row click (if not clicking link or button)
+        document.querySelectorAll('.glory-row').forEach(row => {
+            row.addEventListener('click', function(e) {
+                if (e.target.closest('a') || e.target.closest('button') || e.target.closest('input')) return;
+                const btn = this.querySelector('.showcase-toggle-btn');
+                if (btn) btn.click();
             });
         });
 

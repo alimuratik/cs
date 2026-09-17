@@ -305,14 +305,14 @@
         <div class="faceit-level-progress-box mb-5 p-3.5 rounded-xl bg-slate-900/70 border border-orange-500/30 shadow-inner">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs mb-2 font-mono">
                 <span class="faceit-progress-title flex items-center gap-2">
-                    <span class="text-orange-500 font-bold">Прогресс до Level {{ player.faceit.next_level }}</span>
+                    <span class="faceit-level-badge text-orange-500 font-bold">Прогресс до Level {{ player.faceit.next_level }}</span>
                     <span class="text-slate-500">•</span>
                     <span class="faceit-progress-elo text-slate-300 font-bold">{{ player.faceit.elo }} / {{ player.faceit.next_level_elo }} ELO</span>
                 </span>
                 <span class="faceit-progress-remaining font-bold text-orange-400">Осталось {{ player.faceit.elo_to_next }} ELO ({{ player.faceit.progress_percent }}%)</span>
             </div>
             <div class="faceit-track w-full bg-slate-950 rounded-full h-2.5 p-0.5 border border-slate-800 overflow-hidden">
-                <div class="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style="width: {{ player.faceit.progress_percent }}%;"></div>
+                <div class="faceit-progress-fill bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 h-full rounded-full transition-all duration-500" style="width: {{ player.faceit.progress_percent }}%;"></div>
             </div>
         </div>
         {% elif player.faceit.skill_level == 10 %}
@@ -407,18 +407,16 @@
                         <span class="text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
                     </span>
                     <div class="rating-bar-track flex-1 bg-slate-800/80 rounded-full h-2.5 overflow-hidden border border-slate-700 p-0.5">
-                        <div class="h-full rounded-full transition-all duration-500
-                            {% if val < 5.0 %}bg-rose-500
-                            {% elif val < 7.0 %}bg-amber-500
-                            {% elif val < 8.0 %}bg-emerald-500
-                            {% else %}bg-gradient-to-r from-amber-400 to-yellow-400{% endif %}"
+                        <div class="rating-bar-fill h-full rounded-full transition-all duration-500
+                            {% if val < 5.0 %}rating-fill-low
+                            {% elif val < 7.0 %}rating-fill-mid
+                            {% else %}rating-fill-high{% endif %}"
                              style="width: {{ val * 10 }}%;"></div>
                     </div>
                     <span class="rating-bar-val font-mono font-bold text-xs w-8 text-right
-                        {% if val < 5.0 %}text-rose-400
-                        {% elif val < 7.0 %}text-amber-400
-                        {% elif val < 8.0 %}text-emerald-400
-                        {% else %}text-amber-300 font-bold{% endif %}">{{ val }}</span>
+                        {% if val < 5.0 %}val-low text-rose-400
+                        {% elif val < 7.0 %}val-mid text-amber-400
+                        {% else %}val-high text-emerald-400{% endif %}">{{ val }}</span>
                 </a>
                 {% endfor %}
             </div>
@@ -1061,14 +1059,14 @@
 
     <!-- Achievements & Badges Showcase (Gamified 3-Tier System) -->
     {% if player.achievements %}
-    <section class="section achievements-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
-        <!-- Glory Header (Dota 2 / Shooter Style) -->
+    <section class="section achievements-section glassmorphism p-5 sm:p-6 rounded-2xl border border-slate-800 mb-8">
+        <!-- Glory Header -->
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-800/80">
             <div>
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
                     🏆 Зал славы и Достижения
                 </h2>
-                <p class="text-xs text-slate-400 mt-1">30 киберспортивных испытаний: 3 ступени мастерства (Tier I · II · III), система звёзд и прогресс</p>
+                <p class="text-xs text-slate-400 mt-1">30 соревновательных киберспортивных испытаний: Золото 🥇 · Серебро 🥈 · Бронза 🥉</p>
             </div>
             
             <div class="flex flex-wrap items-center gap-3">
@@ -1087,143 +1085,105 @@
                 </div>
 
                 <!-- Tier Badges Counter -->
-                <div class="hidden sm:flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
-                    <span class="px-2 py-0.5 rounded bg-amber-900/40 text-amber-300 font-bold border border-amber-500/30" title="Tier III (Золото)">★★★ {{ player.achievements_summary.tier3_count }}</span>
-                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-700" title="Tier II (Серебро)">★★ {{ player.achievements_summary.tier2_count }}</span>
-                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Tier I (Бронза)">★ {{ player.achievements_summary.tier1_count }}</span>
+                <div class="flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
+                    <span class="px-2 py-0.5 rounded bg-amber-950/70 text-amber-300 font-bold border border-amber-400/50" title="Золото">🥇 {{ player.achievements_summary.tier3_count }}</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-500" title="Серебро">🥈 {{ player.achievements_summary.tier2_count }}</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Бронза">🥉 {{ player.achievements_summary.tier1_count }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Tiered Cards Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <!-- Filter Tabs -->
+        <div class="flex items-center justify-between gap-3 mb-5 flex-wrap" id="player-shelf-filters">
+            <div class="flex items-center gap-1.5 flex-wrap font-mono text-xs">
+                <button type="button" class="player-filter-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition border border-amber-500/60 bg-amber-500/20 text-amber-300" data-filter="all">
+                    Все ({{ player.achievements|length }})
+                </button>
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-emerald-400 hover:border-emerald-500/50" data-filter="unlocked">
+                    👑 Полученные ({{ player.achievements_summary.total_unlocked }})
+                </button>
+                {% if player.achievements_summary.tier3_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-300 hover:border-amber-400/50" data-filter="3">
+                    🥇 Золото ({{ player.achievements_summary.tier3_count }})
+                </button>
+                {% endif %}
+                {% if player.achievements_summary.tier2_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-200 hover:border-slate-400/50" data-filter="2">
+                    🥈 Серебро ({{ player.achievements_summary.tier2_count }})
+                </button>
+                {% endif %}
+                {% if player.achievements_summary.tier1_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-500 hover:border-amber-600/50" data-filter="1">
+                    🥉 Бронза ({{ player.achievements_summary.tier1_count }})
+                </button>
+                {% endif %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-400 hover:border-slate-500" data-filter="locked">
+                    🔒 В процессе ({{ player.achievements_summary.total_count - player.achievements_summary.total_unlocked }})
+                </button>
+            </div>
+            <a href="../achievements.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1">
+                <span>Зал Славы сообщества ➔</span>
+            </a>
+        </div>
+
+        <!-- Shelf Grid: Cards with 3D Medallions -->
+        <div class="player-shelf-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {% for ach in player.achievements %}
-            <div class="achievement-card-tiered p-4 rounded-2xl border transition-all duration-300 flex flex-col justify-between relative overflow-hidden group
-                {% if ach.tier == 3 %}
-                bg-gradient-to-b from-amber-950/40 via-slate-900/95 to-slate-950 border-amber-400/70 shadow-lg shadow-amber-950/30 hover:border-amber-300
-                {% elif ach.tier == 2 %}
-                bg-gradient-to-b from-slate-800/40 via-slate-900/95 to-slate-950 border-slate-400/60 shadow-md shadow-slate-900/40 hover:border-slate-300
-                {% elif ach.tier == 1 %}
-                bg-gradient-to-b from-amber-950/25 via-slate-900/95 to-slate-950 border-amber-600/50 shadow-md shadow-amber-950/20 hover:border-amber-500
-                {% else %}
-                bg-slate-950/50 border-slate-800/60 opacity-65 hover:opacity-95 hover:border-slate-700
-                {% endif %}">
-                
-                <!-- Card Header: 3 Stars + Glory Points Tag -->
-                <div class="flex items-center justify-between gap-2 mb-3 pb-2.5 border-b border-slate-800/60">
-                    <!-- 3 Stars Display (Bronze, Silver, Gold) with Premium SVG Badges -->
-                    <div class="flex items-center gap-1.5">
-                        <div class="achievement-stars-tray" title="Уровень {{ ach.tier }}/3 ({{ ach.tier_name }})">
-                            {% for star in ach.stars_data %}
-                            <div class="star-badge {{ star.color_class }}" title="Уровень {{ star.level }} ({{ star.name }}): {% if star.unlocked %}Получено ★{% else %}Заблокировано ☆{% endif %}">
-                                {% if star.unlocked %}
-                                <svg class="star-icon star-icon-filled" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                {% else %}
-                                <svg class="star-icon star-icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke-dasharray="3 1.5"/>
-                                </svg>
-                                {% endif %}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        <span class="text-[11px] font-bold font-mono ml-1
-                            {% if ach.tier == 3 %}text-amber-400 font-extrabold
-                            {% elif ach.tier == 2 %}text-slate-300 font-bold
-                            {% elif ach.tier == 1 %}text-amber-500 font-semibold
-                            {% else %}text-slate-500{% endif %}">
-                            {{ ach.tier_name }}
-                        </span>
-                    </div>
+            <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
+                 data-tier="{{ ach.tier }}"
+                 data-unlocked="{{ 'true' if ach.unlocked else 'false' }}">
 
-                    <!-- Points Reward Tag -->
-                    <div class="flex items-center gap-1 font-mono text-xs font-black
-                        {% if ach.unlocked %}text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2 py-0.5 rounded-lg
-                        {% else %}text-slate-500 bg-slate-900/80 border border-slate-800 px-2 py-0.5 rounded-lg{% endif %}">
-                        <span>+{{ ach.points }}</span>
-                        <span class="text-[9px] uppercase tracking-wider text-amber-500/90">ОЧКОВ</span>
+                <!-- Top Badge: Tier + Points -->
+                <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
+                        {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
+                        {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
+                        {% elif ach.tier == 1 %}bg-amber-950/60 text-amber-400 border border-amber-700/50
+                        {% else %}bg-slate-900 text-slate-400 border border-slate-700/60{% endif %}">
+                        {% if ach.tier == 3 %}👑 Золото{% elif ach.tier == 2 %}🥈 Серебро{% elif ach.tier == 1 %}🥉 Бронза{% else %}🔒 В процессе{% endif %}
+                    </span>
+                    <span class="font-extrabold {% if ach.unlocked %}text-amber-400{% else %}text-slate-500{% endif %}">
+                        {% if ach.unlocked %}+{{ ach.points }} PTS{% else %}0 PTS{% endif %}
+                    </span>
+                </div>
+
+                <!-- 3D Metallic Medallion -->
+                <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
+                    {% if ach.tier == 3 %}medallion-gold
+                    {% elif ach.tier == 2 %}medallion-silver
+                    {% elif ach.tier == 1 %}medallion-bronze
+                    {% else %}medallion-locked{% endif %}">
+                    <span class="medallion-icon text-2xl">{{ ach.icon }}</span>
+                    <div class="medallion-stars-ribbon font-mono">
+                        {% if ach.tier == 3 %}★★★{% elif ach.tier == 2 %}★★{% elif ach.tier == 1 %}★{% else %}☆☆☆{% endif %}
                     </div>
                 </div>
 
-                <!-- Card Body: Icon Frame + Title & Descriptions -->
-                <div class="flex items-start gap-3.5 mb-3">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-transform group-hover:scale-105 relative
-                        {% if ach.tier == 3 %}
-                        bg-gradient-to-br from-amber-500/30 to-yellow-500/15 border border-amber-400/70 shadow-lg shadow-amber-400/25
-                        {% elif ach.tier == 2 %}
-                        bg-gradient-to-br from-slate-400/25 to-slate-600/15 border border-slate-400/60 shadow-sm shadow-slate-400/20
-                        {% elif ach.tier == 1 %}
-                        bg-gradient-to-br from-amber-700/25 to-amber-900/15 border border-amber-600/50 shadow-sm shadow-amber-700/20
-                        {% else %}
-                        bg-slate-900/80 border border-slate-800 grayscale
-                        {% endif %}">
-                        {{ ach.icon }}
-                        {% if ach.tier == 3 %}
-                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-amber-950 px-1 rounded border border-amber-400 text-amber-300 shadow-sm">
-                            🥇 ЗОЛОТО
-                        </span>
-                        {% elif ach.tier == 2 %}
-                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-slate-900 px-1 rounded border border-slate-400 text-slate-200 shadow-sm">
-                            🥈 СЕРЕБРО
-                        </span>
-                        {% elif ach.tier == 1 %}
-                        <span class="absolute -bottom-1 -right-1 text-[8px] font-black font-mono bg-amber-950 px-1 rounded border border-amber-600 text-amber-400 shadow-sm">
-                            🥉 БРОНЗА
-                        </span>
-                        {% endif %}
-                    </div>
-
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between gap-1">
-                            <h4 class="text-xs font-black uppercase tracking-tight truncate {% if ach.unlocked %}text-white{% else %}text-slate-400{% endif %}">
-                                {{ ach.title }}
-                            </h4>
-                            {% if ach.tier == 3 %}
-                            <span class="text-[9px] font-black uppercase tracking-wider text-amber-300 bg-amber-950/90 border border-amber-400/60 px-1.5 py-0.5 rounded shrink-0">👑 ЗОЛОТО</span>
-                            {% elif ach.tier == 2 %}
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-slate-200 bg-slate-800/90 border border-slate-400/50 px-1.5 py-0.5 rounded shrink-0">🥈 СЕРЕБРО</span>
-                            {% elif ach.tier == 1 %}
-                            <span class="text-[9px] font-bold uppercase tracking-wider text-amber-400 bg-amber-950/80 border border-amber-600/50 px-1.5 py-0.5 rounded shrink-0">🥉 БРОНЗА</span>
-                            {% else %}
-                            <span class="text-[9px] font-medium uppercase tracking-wider text-slate-400 bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded shrink-0">🔒 В ПРОЦЕССЕ</span>
-                            {% endif %}
-                        </div>
-                        
-                        <p class="text-[11px] text-slate-300 mt-1.5 leading-snug">
-                            {{ ach.desc }}
-                        </p>
-
-                        {% if ach.next_goal %}
-                        <div class="text-[11px] font-medium mt-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800 text-amber-300 leading-snug">
-                            <span class="text-slate-400 font-bold">🎯 Следующая цель:</span> {{ ach.next_goal }}
-                        </div>
-                        {% endif %}
-                    </div>
+                <!-- Title & Desc -->
+                <div class="w-full mt-2">
+                    <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="{{ ach.title }}">
+                        {{ ach.title }}
+                    </h5>
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="{{ ach.desc }}">
+                        {{ ach.desc }}
+                    </p>
                 </div>
 
-                <!-- Card Footer: Detailed Progress Bar -->
-                <div class="mt-auto pt-2.5 border-t border-slate-800/50">
-                    <div class="flex items-center justify-between text-[11px] font-mono mb-1">
-                        <span class="text-slate-400 text-[10px]">Прогресс:</span>
-                        <span class="font-bold achievement-progress-text {% if ach.tier == 3 %}text-amber-400{% elif ach.tier == 2 %}text-slate-200{% elif ach.tier == 1 %}text-amber-400{% else %}text-slate-400{% endif %}">
-                            {{ ach.progress }}
-                        </span>
+                <!-- Progress Footer -->
+                <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
+                    <div class="flex items-center justify-between text-[10px] leading-tight">
+                        <span class="text-[9px] uppercase tracking-wider text-slate-500">{% if ach.unlocked %}{% if ach.is_max %}Макс.{% else %}След.{% endif %}{% else %}Цель:{% endif %}</span>
+                        <span class="font-bold {% if ach.tier == 3 %}text-amber-400{% elif ach.tier == 2 %}text-slate-200{% elif ach.tier == 1 %}text-amber-500{% else %}text-slate-300{% endif %} truncate ml-1 text-right" title="{{ ach.progress }}">{{ ach.progress }}</span>
                     </div>
-                    <div class="w-full bg-slate-800/90 h-2 rounded-full overflow-hidden border border-slate-700/60 relative achievement-progress-track">
+                    <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
-                            {% if ach.tier == 3 %}
-                            bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 shadow-sm shadow-amber-400/60
-                            {% elif ach.tier == 2 %}
-                            bg-gradient-to-r from-slate-300 via-sky-200 to-slate-200 shadow-sm shadow-slate-300/60
-                            {% elif ach.tier == 1 %}
-                            bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 shadow-sm shadow-amber-500/50
-                            {% else %}
-                            bg-slate-600
-                            {% endif %}" style="width: {{ ach.progress_pct }}%;"></div>
+                            {% if ach.tier == 3 %}rating-fill-gold
+                            {% elif ach.tier == 2 %}rating-fill-silver
+                            {% elif ach.tier == 1 %}rating-fill-bronze
+                            {% else %}rating-fill-locked{% endif %}"
+                             style="width: {{ ach.progress_pct }}%;"></div>
                     </div>
                 </div>
-
             </div>
             {% endfor %}
         </div>
@@ -1532,6 +1492,42 @@
         }
 
         setupPlayerMatchFilters();
+
+        function setupPlayerShelfFilters() {
+            const filterBtns = document.querySelectorAll('#player-shelf-filters .player-filter-btn');
+            const cards = document.querySelectorAll('.player-shelf-grid .shelf-medal-card');
+            if (!filterBtns.length || !cards.length) return;
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active', 'border-amber-500/60', 'bg-amber-500/20', 'text-amber-300');
+                        b.classList.add('border-slate-700', 'bg-slate-900/80');
+                    });
+                    this.classList.add('active', 'border-amber-500/60', 'bg-amber-500/20', 'text-amber-300');
+                    this.classList.remove('border-slate-700', 'bg-slate-900/80');
+
+                    const filterVal = this.getAttribute('data-filter');
+                    cards.forEach(card => {
+                        const cardTier = card.getAttribute('data-tier');
+                        const isUnlocked = card.getAttribute('data-unlocked') === 'true';
+                        if (filterVal === 'all') {
+                            card.style.display = '';
+                        } else if (filterVal === 'unlocked') {
+                            card.style.display = isUnlocked ? '' : 'none';
+                        } else if (filterVal === 'locked') {
+                            card.style.display = !isUnlocked ? '' : 'none';
+                        } else if (filterVal === cardTier) {
+                            card.style.display = '';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        }
+
+        setupPlayerShelfFilters();
     });
 
     window.switchMapPoolTab = function(tab) {
