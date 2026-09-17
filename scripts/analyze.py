@@ -2275,23 +2275,27 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
         "role_comparison": f"Текущий стиль: {primary_role} ➔ Рекомендуемая роль: {best_role}"
     }
 
-    # 1. Персональная привязка к слабейшему навыку (Точка роста)
+    # 1. Шаблоны персональных советов по навыкам
+    skill_advice_templates = {
+        "Aim": "Твой параметр Aim ({val}/10) требует внимания. Рекомендуется ежедневная разминка в Aim Botz (500 тапов, 500 спреев) и фокус на стрельбу в голову на FFA DM.",
+        "Positioning": "Твой параметр Positioning ({val}/10) требует внимания. Слишком много открытых дуэлей без укрытия. Отрабатывай углы обзора (angle isolation) и не пикай повторно одну линию.",
+        "Utility": "Твой параметр Utility ({val}/10) требует внимания. Дефицит полезного урона и тиммейт-флешек. Заучи по 2 ключевые моменталки и ретейк-смока на каждой соревновательной карте.",
+        "Game Sense": "Твой параметр Game Sense ({val}/10) требует внимания. Частая потеря таймингов. Следи за радаром при сменах плента и читай экономику оппонента.",
+        "Entry": "Твой параметр Entry ({val}/10) требует внимания. Низкий винрейт в опенинг-дуэлях. Никогда не выходи первым без звукового фейка или саппорт-флешки.",
+        "Trading": "Твой параметр Trading ({val}/10) требует внимания. Тиммейты погибают без размена. Сокращай тайминг пика после смерти тиммейта до 1-1.5 секунды.",
+        "Clutch": "Твой параметр Clutch ({val}/10) требует внимания. В ситуациях 1vX форсируешь бой. Разделяй оппонентов на серию изолированных дуэлей 1v1.",
+        "Discipline": "Твой параметр Discipline ({val}/10) требует внимания. Ненужная агрессия при численном преимуществе (5v3, 4v2). Играй на удержание и время.",
+        "Economy": "Твой параметр Economy ({val}/10) требует внимания. Рассинхрон закупок с командой. Не докупай пистолеты и девайсы на командном эко."
+    }
+
+    # 1.1. Персональная привязка к слабейшему навыку (Точка роста)
     valid_ratings = [(k, v) for k, v in ratings.items() if k != "Overall Impact"]
     if valid_ratings:
         weakest_skill, weakest_val = min(valid_ratings, key=lambda x: x[1])
-        weak_skill_advice = {
-            "Aim": f"Твой слабейший параметр — Aim ({weakest_val}/10). Рекомендуется ежедневная разминка в Aim Botz (500 тапов, 500 спреев) и фокус на стрельбу в голову на FFA DM.",
-            "Positioning": f"Твой слабейший параметр — Positioning ({weakest_val}/10). Слишком много открытых дуэлей без укрытия. Отрабатывай углы обзора (angle isolation) и не пикай повторно одну линию.",
-            "Utility": f"Твой слабейший параметр — Utility ({weakest_val}/10). Дефицит полезного урона и тиммейт-флешек. Заучи по 2 ключевые моменталки и ретейк-смока на каждой соревновательной карте.",
-            "Game Sense": f"Твой слабейший параметр — Game Sense ({weakest_val}/10). Частая потеря таймингов. Следи за радаром при сменах плента и читай экономику оппонента.",
-            "Entry": f"Твой слабейший параметр — Entry ({weakest_val}/10). Низкий винрейт в опенинг-дуэлях. Никогда не выходи первым без звукового фейка или саппорт-флешки.",
-            "Trading": f"Твой слабейший параметр — Trading ({weakest_val}/10). Тиммейты погибают без размена. Сокращай тайминг пика после смерти тиммейта до 1-1.5 секунды.",
-            "Clutch": f"Твой слабейший параметр — Clutch ({weakest_val}/10). В ситуациях 1vX форсируешь бой. Разделяй оппонентов на серию изолированных дуэлей 1v1.",
-            "Discipline": f"Твой слабейший параметр — Discipline ({weakest_val}/10). Ненужная агрессия при численном преимуществе (5v3, 4v2). Играй на удержание и время.",
-            "Economy": f"Твой слабейший параметр — Economy ({weakest_val}/10). Рассинхрон закупок с командой. Не докупай пистолеты и девайсы на командном эко."
-        }
-        if weakest_skill in weak_skill_advice:
-            recs["training"].append(weak_skill_advice[weakest_skill])
+        weakest_val_fmt = round(float(weakest_val), 1)
+        if weakest_skill in skill_advice_templates:
+            primary_weak_advice = skill_advice_templates[weakest_skill].format(val=weakest_val_fmt).replace("требует внимания", "— слабейший")
+            recs["training"].append(primary_weak_advice)
 
     # 2. Персональная привязка к худшей карте (Криптонит)
     worst_m = map_perf.get("worst_map")
@@ -2386,13 +2390,17 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
             if chosen_ach:
                 used_quest_ids.add(chosen_ach["id"])
                 next_tier_names = {0: "Бронза 🥉", 1: "Серебро 🥈", 2: "Золото 🥇", 3: "Золото 🥇 (МАКС)"}
-                adv = weak_skill_advice.get(w_skill, f"Сфокусируйся на развитии навыка {w_skill} ({w_val}/10).")
+                w_val_fmt = round(float(w_val), 1)
+                if w_skill in skill_advice_templates:
+                    adv = skill_advice_templates[w_skill].format(val=w_val_fmt)
+                else:
+                    adv = f"Сфокусируйся на развитии навыка {w_skill} ({w_val_fmt}/10)."
                 quests.append({
                     "quest_id": chosen_ach.get("id"),
                     "title": chosen_ach.get("title"),
                     "icon": chosen_ach.get("icon"),
                     "skill": w_skill,
-                    "skill_val": round(w_val, 1),
+                    "skill_val": w_val_fmt,
                     "tier": chosen_ach.get("tier", 0),
                     "tier_name": chosen_ach.get("tier_name"),
                     "next_tier_name": next_tier_names.get(chosen_ach.get("tier", 0), "Золото 🥇"),
