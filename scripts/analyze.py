@@ -1320,419 +1320,596 @@ def calculate_player_achievements(
 
     # =========================================================================
     # ЧАСТЬ А: 20 НАВЫКОВЫХ АЧИВОК (ПРИВЯЗКА К 10 КЛЮЧЕВЫМ НАВЫКАМ)
+    # ПРИНЦИП: Не гринд времени, а матчи с высоким качеством (1 -> 3 -> 5 матчей)
     # =========================================================================
 
     # 1. 🎯 «One-Tap Хирург» (Aim)
-    hs = round(float(metrics.get("hs_percent", 0.0) or 0.0), 1)
+    # Пороги: 🥉 1 матч (HS >= 50%) | 🥈 3 матча (HS >= 55%) | 🥇 5 матчей (HS >= 60%) при мин. 15 фрагах
+    m_hs_50 = sum(1 for m in matches if m.get("kills", 0) >= 15 and m.get("hs_percent", 0.0) >= 50.0)
+    m_hs_55 = sum(1 for m in matches if m.get("kills", 0) >= 15 and m.get("hs_percent", 0.0) >= 55.0)
+    m_hs_60 = sum(1 for m in matches if m.get("kills", 0) >= 15 and m.get("hs_percent", 0.0) >= 60.0)
     t_hs = 0
-    if tk >= 20 and hs >= 45.0:
+    if m_hs_50 >= 1:
         t_hs = 1
-        if tk >= 20 and hs >= 52.0:
+        if m_hs_55 >= 3:
             t_hs = 2
-            if tk >= 20 and hs >= 58.0:
+            if m_hs_60 >= 5:
                 t_hs = 3
     achievements.append(_build_tiered_achievement(
         "aim_onetap", "One-Tap Хирург", "🎯", t_hs,
-        [45.0, 52.0, 58.0],
+        [1, 3, 5],
         [
-            "45.0% попаданий в голову (при мин. 20 фрагах)",
-            "52.0% попаданий в голову (при мин. 20 фрагах)",
-            "58.0% попаданий в голову (при мин. 20 фрагах)"
+            "1 матч с HS% >= 50.0% (при мин. 15 фрагах)",
+            "3 матча с HS% >= 55.0% (при мин. 15 фрагах)",
+            "5 матчей с HS% >= 60.0% (при мин. 15 фрагах)"
         ],
-        hs, "%",
+        [m_hs_50, m_hs_55, m_hs_60], "матчей",
         custom_progress_texts=[
-            f"{hs}% / 45.0% HS ({tk}/20 фрагов)",
-            f"{hs}% / 52.0% HS ({tk}/20 фрагов)",
-            f"{hs}% / 58.0% HS ({tk}/20 фрагов)"
+            f"{m_hs_50} / 1 матчей (HS >= 50%, 15+K)",
+            f"{m_hs_55} / 3 матчей (HS >= 55%, 15+K)",
+            f"{m_hs_60} / 5 матчей (HS >= 60%, 15+K)"
         ]
     ))
 
     # 2. 💥 «Огневой каток» (Aim)
-    adr = round(float(metrics.get("adr", 0.0) or 0.0), 1)
+    # Пороги: 🥉 1 матч (ADR >= 85.0) | 🥈 3 матча (ADR >= 95.0) | 🥇 5 матчей (ADR >= 105.0)
+    m_adr_85 = sum(1 for m in matches if m.get("adr", 0.0) >= 85.0)
+    m_adr_95 = sum(1 for m in matches if m.get("adr", 0.0) >= 95.0)
+    m_adr_105 = sum(1 for m in matches if m.get("adr", 0.0) >= 105.0)
     t_adr = 0
-    if adr >= 75.0:
+    if m_adr_85 >= 1:
         t_adr = 1
-        if adr >= 85.0:
+        if m_adr_95 >= 3:
             t_adr = 2
-            if adr >= 95.0:
+            if m_adr_105 >= 5:
                 t_adr = 3
     achievements.append(_build_tiered_achievement(
         "aim_damage_roller", "Огневой каток", "💥", t_adr,
-        [75.0, 85.0, 95.0],
+        [1, 3, 5],
         [
-            "Средний боевой урон ADR >= 75.0 за все матчи",
-            "Средний боевой урон ADR >= 85.0 за все матчи",
-            "Средний боевой урон ADR >= 95.0 за все матчи"
+            "1 матч со средним уроном ADR >= 85.0",
+            "3 матча со средним уроном ADR >= 95.0",
+            "5 матчей со средним уроном ADR >= 105.0"
         ],
-        adr, "ADR"
+        [m_adr_85, m_adr_95, m_adr_105], "матчей",
+        custom_progress_texts=[
+            f"{m_adr_85} / 1 матчей (ADR >= 85)",
+            f"{m_adr_95} / 3 матчей (ADR >= 95)",
+            f"{m_adr_105} / 5 матчей (ADR >= 105)"
+        ]
     ))
 
-    # 3. 👻 «Призрак раунда» (Positioning)
-    surv = round(float(metrics.get("survival_rate", 0.0) or 0.0), 1)
+    # 3. 👻 «Призрак выживания» (Positioning)
+    # Пороги: 🥉 1 матч (выживаемость >= 40.0% или deaths <= 10) | 🥈 3 матча (>= 45.0% или deaths <= 10) | 🥇 5 матчей (>= 50.0% или deaths <= 10) при мин. 16 раундах
+    def _surv_check(m, min_pct):
+        rc = m.get("rounds_count") or (m.get("score_team1", 0) + m.get("score_team2", 0)) or 20
+        d = m.get("deaths", 0)
+        sr = ((rc - d) / max(1, rc)) * 100
+        return rc >= 16 and (sr >= min_pct or d <= 10)
+
+    m_surv_40 = sum(1 for m in matches if _surv_check(m, 40.0))
+    m_surv_45 = sum(1 for m in matches if _surv_check(m, 45.0))
+    m_surv_50 = sum(1 for m in matches if _surv_check(m, 50.0))
     t_surv = 0
-    if surv >= 30.0:
+    if m_surv_40 >= 1:
         t_surv = 1
-        if surv >= 38.0:
+        if m_surv_45 >= 3:
             t_surv = 2
-            if surv >= 45.0:
+            if m_surv_50 >= 5:
                 t_surv = 3
     achievements.append(_build_tiered_achievement(
-        "pos_ghost", "Призрак раунда", "👻", t_surv,
-        [30.0, 38.0, 45.0],
+        "pos_ghost", "Призрак выживания", "👻", t_surv,
+        [1, 3, 5],
         [
-            "Процент выживаемости в раундах >= 30.0%",
-            "Процент выживаемости в раундах >= 38.0%",
-            "Процент выживаемости в раундах >= 45.0%"
+            "1 матч с выживаемостью >= 40.0% (или <= 10 смертей)",
+            "3 матча с выживаемостью >= 45.0% (или <= 10 смертей)",
+            "5 матчей с выживаемостью >= 50.0% (или <= 10 смертей)"
         ],
-        surv, "%"
+        [m_surv_40, m_surv_45, m_surv_50], "матчей",
+        custom_progress_texts=[
+            f"{m_surv_40} / 1 матчей (выживание >= 40% / <=10 D)",
+            f"{m_surv_45} / 3 матчей (выживание >= 45% / <=10 D)",
+            f"{m_surv_50} / 5 матчей (выживание >= 50% / <=10 D)"
+        ]
     ))
 
     # 4. 🛡️ «Непробиваемый якорь» (Positioning)
-    pos_r = round(float(ratings.get("Positioning", 5.0) or 5.0), 1)
+    # Пороги: 🥉 1 матч (Positioning rating >= 7.0) | 🥈 3 матча (>= 7.5) | 🥇 5 матчей (>= 8.0)
+    # Оценивается по качеству матчей с высоким баллом (score_10 >= 7.0/7.5/8.0 при K/D >= 1.15)
+    def _anchor_check(m, min_score):
+        s10 = m.get("score_10", 5.0)
+        kd = m.get("kills", 0) / max(1, m.get("deaths", 1))
+        return s10 >= min_score and kd >= 1.10
+
+    m_anc_70 = sum(1 for m in matches if _anchor_check(m, 7.0))
+    m_anc_75 = sum(1 for m in matches if _anchor_check(m, 7.5))
+    m_anc_80 = sum(1 for m in matches if _anchor_check(m, 8.0))
     t_anc = 0
-    if pos_r >= 6.5:
+    if m_anc_70 >= 1:
         t_anc = 1
-        if pos_r >= 7.2:
+        if m_anc_75 >= 3:
             t_anc = 2
-            if pos_r >= 8.0:
+            if m_anc_80 >= 5:
                 t_anc = 3
     achievements.append(_build_tiered_achievement(
         "pos_anchor", "Непробиваемый якорь", "🛡️", t_anc,
-        [6.5, 7.2, 8.0],
+        [1, 3, 5],
         [
-            "Итоговый рейтинг Positioning >= 6.5",
-            "Итоговый рейтинг Positioning >= 7.2",
-            "Итоговый рейтинг Positioning >= 8.0 (Элитный якорь)"
+            "1 матч с оценкой позиции >= 7.0 (K/D >= 1.10)",
+            "3 матча с оценкой позиции >= 7.5 (K/D >= 1.10)",
+            "5 матчей с оценкой позиции >= 8.0 (K/D >= 1.10)"
         ],
-        pos_r, "баллов"
+        [m_anc_70, m_anc_75, m_anc_80], "матчей",
+        custom_progress_texts=[
+            f"{m_anc_70} / 1 матчей (рейтинг позиции >= 7.0)",
+            f"{m_anc_75} / 3 матчей (рейтинг позиции >= 7.5)",
+            f"{m_anc_80} / 5 матчей (рейтинг позиции >= 8.0)"
+        ]
     ))
 
     # 5. 💡 «Ослепительный дуэт» (Utility)
-    fa = overall_stats.get("total_flash_assists", 0)
+    # Пороги: 🥉 1 матч с 3+ флеш-ассистами | 🥈 3 матча с 4+ флеш-ассистами | 🥇 5 матчей с 5+ флеш-ассистами
+    m_fa_3 = sum(1 for m in matches if m.get("flash_assists", 0) >= 3)
+    m_fa_4 = sum(1 for m in matches if m.get("flash_assists", 0) >= 4)
+    m_fa_5 = sum(1 for m in matches if m.get("flash_assists", 0) >= 5)
     t_fa = 0
-    if fa >= 5:
+    if m_fa_3 >= 1:
         t_fa = 1
-        if fa >= 12:
+        if m_fa_4 >= 3:
             t_fa = 2
-            if fa >= 25:
+            if m_fa_5 >= 5:
                 t_fa = 3
     achievements.append(_build_tiered_achievement(
         "util_flash_duo", "Ослепительный дуэт", "💡", t_fa,
-        [5, 12, 25],
+        [1, 3, 5],
         [
-            "5 флеш-ассистов для тиммейтов",
-            "12 флеш-ассистов для тиммейтов",
-            "25 флеш-ассистов для тиммейтов"
+            "1 матч с >= 3 флеш-ассистами для команды",
+            "3 матча с >= 4 флеш-ассистами для команды",
+            "5 матчей с >= 5 флеш-ассистами для команды"
         ],
-        fa, "ассистов"
+        [m_fa_3, m_fa_4, m_fa_5], "матчей",
+        custom_progress_texts=[
+            f"{m_fa_3} / 1 матчей (3+ flash assists)",
+            f"{m_fa_4} / 3 матчей (4+ flash assists)",
+            f"{m_fa_5} / 5 матчей (5+ flash assists)"
+        ]
     ))
 
     # 6. 🧨 «Артиллерийский полк» (Utility)
-    ud = overall_stats.get("total_utility_damage", 0)
+    # Пороги: 🥉 1 матч (120+ HP утилиты) | 🥈 3 матча (180+ HP утилиты) | 🥇 5 матчей (250+ HP утилиты)
+    m_ud_120 = sum(1 for m in matches if m.get("utility_damage", 0) >= 120)
+    m_ud_180 = sum(1 for m in matches if m.get("utility_damage", 0) >= 180)
+    m_ud_250 = sum(1 for m in matches if m.get("utility_damage", 0) >= 250)
     t_ud = 0
-    if ud >= 150:
+    if m_ud_120 >= 1:
         t_ud = 1
-        if ud >= 350:
+        if m_ud_180 >= 3:
             t_ud = 2
-            if ud >= 700:
+            if m_ud_250 >= 5:
                 t_ud = 3
     achievements.append(_build_tiered_achievement(
         "util_artillery", "Артиллерийский полк", "🧨", t_ud,
-        [150, 350, 700],
+        [1, 3, 5],
         [
-            "150 HP суммарного урона гранатами",
-            "350 HP суммарного урона гранатами",
-            "700 HP суммарного урона гранатами"
+            "1 матч с >= 120 HP урона гранатами",
+            "3 матча с >= 180 HP урона гранатами",
+            "5 матчей с >= 250 HP урона гранатами"
         ],
-        ud, "HP"
+        [m_ud_120, m_ud_180, m_ud_250], "матчей",
+        custom_progress_texts=[
+            f"{m_ud_120} / 1 матчей (120+ HP utility)",
+            f"{m_ud_180} / 3 матчей (180+ HP utility)",
+            f"{m_ud_250} / 5 матчей (250+ HP utility)"
+        ]
     ))
 
     # 7. 🧱 «Железный занавес» (Game Sense)
-    kast = round(float(metrics.get("kast", 0.0) or 0.0), 1)
+    # Пороги: 🥉 1 матч с KAST >= 75.0% | 🥈 3 матча с KAST >= 80.0% | 🥇 5 матчей с KAST >= 85.0%
+    m_kast_75 = sum(1 for m in matches if m.get("kast", 0.0) >= 75.0)
+    m_kast_80 = sum(1 for m in matches if m.get("kast", 0.0) >= 80.0)
+    m_kast_85 = sum(1 for m in matches if m.get("kast", 0.0) >= 85.0)
     t_kast = 0
-    if kast >= 70.0:
+    if m_kast_75 >= 1:
         t_kast = 1
-        if kast >= 75.0:
+        if m_kast_80 >= 3:
             t_kast = 2
-            if kast >= 80.0:
+            if m_kast_85 >= 5:
                 t_kast = 3
     achievements.append(_build_tiered_achievement(
         "gs_iron_curtain", "Железный занавес", "🧱", t_kast,
-        [70.0, 75.0, 80.0],
+        [1, 3, 5],
         [
-            "Командная полезность KAST >= 70.0%",
-            "Командная полезность KAST >= 75.0%",
-            "Командная полезность KAST >= 80.0%"
+            "1 матч с показателем KAST >= 75.0%",
+            "3 матча с показателем KAST >= 80.0%",
+            "5 матчей с показателем KAST >= 85.0%"
         ],
-        kast, "%"
+        [m_kast_75, m_kast_80, m_kast_85], "матчей",
+        custom_progress_texts=[
+            f"{m_kast_75} / 1 матчей (KAST >= 75%)",
+            f"{m_kast_80} / 3 матчей (KAST >= 80%)",
+            f"{m_kast_85} / 5 матчей (KAST >= 85%)"
+        ]
     ))
 
     # 8. 👁️ «Шестое чувство» (Game Sense)
+    # Пороги: 🥉 1 матч с 3+ тактическими фрагами (прострелы/дым) | 🥈 3 матча | 🥇 5 матчей
+    m_tact_3 = sum(1 for m in matches if m.get("tactical_kills", 0) >= 3 or (m.get("weapon_kills", {}).get("thrusmoke", 0) >= 3))
+    # Также проверяем суммарные спец-события
+    if m_tact_3 == 0 and thrusmoke_kills >= 3:
+        m_tact_3 = min(len(matches), thrusmoke_kills // 2 or 1)
     t_smk = 0
-    if thrusmoke_kills >= 3:
+    if m_tact_3 >= 1:
         t_smk = 1
-        if thrusmoke_kills >= 7:
+        if m_tact_3 >= 3:
             t_smk = 2
-            if thrusmoke_kills >= 15:
+            if m_tact_3 >= 5:
                 t_smk = 3
     achievements.append(_build_tiered_achievement(
         "gs_sixth_sense", "Шестое чувство", "👁️", t_smk,
-        [3, 7, 15],
+        [1, 3, 5],
         [
-            "3 фрага сквозь дым (smoke kills)",
-            "7 фрагов сквозь дым (smoke kills)",
-            "15 фрагов сквозь дым (smoke kills)"
+            "1 матч с >= 3 тактическими фрагами сквозь смок/стены",
+            "3 матча с >= 3 тактическими фрагами сквозь смок/стены",
+            "5 матчей с >= 3 тактическими фрагами сквозь смок/стены"
         ],
-        thrusmoke_kills, "фрагов сквозь дым"
+        m_tact_3, "матчей",
+        custom_progress_texts=[
+            f"{m_tact_3} / 1 матчей с 3+ тактическими фрагами",
+            f"{m_tact_3} / 3 матчей с 3+ тактическими фрагами",
+            f"{m_tact_3} / 5 матчей с 3+ тактическими фрагами"
+        ]
     ))
 
     # 9. ⚡ «Гроза опенингов» (Entry)
-    fk = overall_stats.get("total_first_kills", 0)
+    # Пороги: 🥉 1 матч с FK-FD >= +2 (мин. 3 FK) | 🥈 3 матча с FK-FD >= +3 | 🥇 5 матчей с FK-FD >= +4
+    def _fk_diff(m):
+        return m.get("first_kills", 0) - m.get("first_deaths", 0)
+    m_fk_2 = sum(1 for m in matches if m.get("first_kills", 0) >= 3 and _fk_diff(m) >= 2)
+    m_fk_3 = sum(1 for m in matches if m.get("first_kills", 0) >= 4 and _fk_diff(m) >= 3)
+    m_fk_4 = sum(1 for m in matches if m.get("first_kills", 0) >= 4 and _fk_diff(m) >= 4)
     t_fk = 0
-    if fk >= 10:
+    if m_fk_2 >= 1:
         t_fk = 1
-        if fk >= 25:
+        if m_fk_3 >= 3:
             t_fk = 2
-            if fk >= 50:
+            if m_fk_4 >= 5:
                 t_fk = 3
     achievements.append(_build_tiered_achievement(
         "entry_thunder", "Гроза опенингов", "⚡", t_fk,
-        [10, 25, 50],
+        [1, 3, 5],
         [
-            "10 первых убийств в раундах (First Kills)",
-            "25 первых убийств в раундах (First Kills)",
-            "50 первых убийств в раундах (First Kills)"
+            "1 матч с чистым перевесом энтри-дуэлей (FK - FD >= +2, мин. 3 FK)",
+            "3 матча с чистым перевесом энтри-дуэлей (FK - FD >= +3)",
+            "5 матчей с чистым перевесом энтри-дуэлей (FK - FD >= +4)"
         ],
-        fk, "первых фрагов"
+        [m_fk_2, m_fk_3, m_fk_4], "матчей",
+        custom_progress_texts=[
+            f"{m_fk_2} / 1 матчей (FK-FD >= +2, 3+ FK)",
+            f"{m_fk_3} / 3 матчей (FK-FD >= +3)",
+            f"{m_fk_4} / 5 матчей (FK-FD >= +4)"
+        ]
     ))
 
     # 10. 🚪 «Штурмовой таран» (Entry)
-    fd = overall_stats.get("total_first_deaths", 0)
-    tot_duels = fk + fd
-    open_wr = round((fk / max(1, tot_duels)) * 100, 1)
+    # Пороги: 🥉 1 матч с винрейтом энтри >= 55% (мин. 4 дуэли) | 🥈 3 матча (>= 62%) | 🥇 5 матчей (>= 70%)
+    def _open_wr_check(m, min_wr):
+        tot = m.get("first_kills", 0) + m.get("first_deaths", 0)
+        wr = (m.get("first_kills", 0) / max(1, tot)) * 100
+        return tot >= 4 and wr >= min_wr
+
+    m_owr_55 = sum(1 for m in matches if _open_wr_check(m, 55.0))
+    m_owr_62 = sum(1 for m in matches if _open_wr_check(m, 62.0))
+    m_owr_70 = sum(1 for m in matches if _open_wr_check(m, 70.0))
     t_ram = 0
-    if tot_duels >= 10 and open_wr >= 50.0:
+    if m_owr_55 >= 1:
         t_ram = 1
-        if tot_duels >= 10 and open_wr >= 58.0:
+        if m_owr_62 >= 3:
             t_ram = 2
-            if tot_duels >= 10 and open_wr >= 65.0:
+            if m_owr_70 >= 5:
                 t_ram = 3
     achievements.append(_build_tiered_achievement(
         "entry_battering_ram", "Штурмовой таран", "🚪", t_ram,
-        [50.0, 58.0, 65.0],
+        [1, 3, 5],
         [
-            "Винрейт опенинг-дуэлей >= 50.0% (от 10 дуэлей)",
-            "Винрейт опенинг-дуэлей >= 58.0% (от 10 дуэлей)",
-            "Винрейт опенинг-дуэлей >= 65.0% (от 10 дуэлей)"
+            "1 матч с винрейтом опенинг-дуэлей >= 55.0% (от 4 дуэлей)",
+            "3 матча с винрейтом опенинг-дуэлей >= 62.0% (от 4 дуэлей)",
+            "5 матчей с винрейтом опенинг-дуэлей >= 70.0% (от 4 дуэлей)"
         ],
-        open_wr, "%",
+        [m_owr_55, m_owr_62, m_owr_70], "матчей",
         custom_progress_texts=[
-            f"{open_wr}% / 50.0% ({tot_duels}/10 дуэлей)",
-            f"{open_wr}% / 58.0% ({tot_duels}/10 дуэлей)",
-            f"{open_wr}% / 65.0% ({tot_duels}/10 дуэлей)"
+            f"{m_owr_55} / 1 матчей (WR опенингов >= 55%)",
+            f"{m_owr_62} / 3 матчей (WR опенингов >= 62%)",
+            f"{m_owr_70} / 5 матчей (WR опенингов >= 70%)"
         ]
     ))
 
     # 11. 🔄 «Кровная месть» (Trading)
-    tr = overall_stats.get("total_trades", 0)
+    # Пороги: 🥉 1 матч с 3+ разменами | 🥈 3 матча с 4+ разменами | 🥇 5 матчей с 5+ разменами
+    m_tr_3 = sum(1 for m in matches if m.get("trades", 0) >= 3)
+    m_tr_4 = sum(1 for m in matches if m.get("trades", 0) >= 4)
+    m_tr_5 = sum(1 for m in matches if m.get("trades", 0) >= 5)
     t_tr = 0
-    if tr >= 8:
+    if m_tr_3 >= 1:
         t_tr = 1
-        if tr >= 18:
+        if m_tr_4 >= 3:
             t_tr = 2
-            if tr >= 35:
+            if m_tr_5 >= 5:
                 t_tr = 3
     achievements.append(_build_tiered_achievement(
         "trade_blood_revenge", "Кровная месть", "🔄", t_tr,
-        [8, 18, 35],
+        [1, 3, 5],
         [
-            "8 успешных разменов тиммейтов (Trades)",
-            "18 успешных разменов тиммейтов (Trades)",
-            "35 успешных разменов тиммейтов (Trades)"
+            "1 матч с >= 3 успешными разменами тиммейтов",
+            "3 матча с >= 4 успешными разменами тиммейтов",
+            "5 матчей с >= 5 успешными разменами тиммейтов"
         ],
-        tr, "разменов"
+        [m_tr_3, m_tr_4, m_tr_5], "матчей",
+        custom_progress_texts=[
+            f"{m_tr_3} / 1 матчей (3+ размена)",
+            f"{m_tr_4} / 3 матчей (4+ размена)",
+            f"{m_tr_5} / 5 матчей (5+ разменов)"
+        ]
     ))
 
     # 12. 👥 «Идеальный напарник» (Trading)
-    trade_rate = round(float(metrics.get("trade_rate", 0.0) or 0.0), 1)
+    # Пороги: 🥉 1 матч с Trade Rate >= 25.0% | 🥈 3 матча (>= 32.0%) | 🥇 5 матчей (>= 40.0%) при мин. 10 фрагах
+    def _trade_rate_check(m, min_rate):
+        k = m.get("kills", 0)
+        tr = m.get("trades", 0)
+        rate = (tr / max(1, k)) * 100
+        return k >= 10 and rate >= min_rate
+
+    m_trr_25 = sum(1 for m in matches if _trade_rate_check(m, 25.0))
+    m_trr_32 = sum(1 for m in matches if _trade_rate_check(m, 32.0))
+    m_trr_40 = sum(1 for m in matches if _trade_rate_check(m, 40.0))
     t_wman = 0
-    if trade_rate >= 22.0:
+    if m_trr_25 >= 1:
         t_wman = 1
-        if trade_rate >= 28.0:
+        if m_trr_32 >= 3:
             t_wman = 2
-            if trade_rate >= 35.0:
+            if m_trr_40 >= 5:
                 t_wman = 3
     achievements.append(_build_tiered_achievement(
         "trade_wingman", "Идеальный напарник", "👥", t_wman,
-        [22.0, 28.0, 35.0],
+        [1, 3, 5],
         [
-            "Процент размена тиммейтов (Trade Rate) >= 22.0%",
-            "Процент размена тиммейтов (Trade Rate) >= 28.0%",
-            "Процент размена тиммейтов (Trade Rate) >= 35.0%"
+            "1 матч с долей разменов (Trade Rate) >= 25.0% (от 10 фрагов)",
+            "3 матча с долей разменов (Trade Rate) >= 32.0% (от 10 фрагов)",
+            "5 матчей с долей разменов (Trade Rate) >= 40.0% (от 10 фрагов)"
         ],
-        trade_rate, "%"
+        [m_trr_25, m_trr_32, m_trr_40], "матчей",
+        custom_progress_texts=[
+            f"{m_trr_25} / 1 матчей (Trade Rate >= 25%)",
+            f"{m_trr_32} / 3 матчей (Trade Rate >= 32%)",
+            f"{m_trr_40} / 5 матчей (Trade Rate >= 40%)"
+        ]
     ))
 
     # 13. 👑 «Клатч-министр» (Clutch)
-    cw = overall_stats.get("total_clutch_wins", 0)
+    # Пороги: 🥉 1 матч с 2+ клатчами | 🥈 3 матча с 2+ клатчами | 🥇 5 матчей с 2+ клатчами (или 1 матч с 3+ клатчами)
+    m_cw_2 = sum(1 for m in matches if m.get("clutch_wins", 0) >= 2)
+    m_cw_3 = sum(1 for m in matches if m.get("clutch_wins", 0) >= 3)
     t_cw = 0
-    if cw >= 3:
+    if m_cw_2 >= 1 or m_cw_3 >= 1:
         t_cw = 1
-        if cw >= 7:
+        if m_cw_2 >= 3 or m_cw_3 >= 1:
             t_cw = 2
-            if cw >= 15:
+            if m_cw_2 >= 5 or m_cw_3 >= 1:
                 t_cw = 3
     achievements.append(_build_tiered_achievement(
         "clutch_minister", "Клатч-министр", "👑", t_cw,
-        [3, 7, 15],
+        [1, 3, 5],
         [
-            "3 выигранных клатча 1vX",
-            "7 выигранных клатчей 1vX",
-            "15 выигранных клатчей 1vX"
+            "1 матч с 2+ выигранными клатчами 1vX",
+            "3 матча с 2+ выигранными клатчами 1vX",
+            "5 матчей с 2+ клатчами (или 1 матч с 3+ клатчами 🥇)"
         ],
-        cw, "клатчей"
+        m_cw_2, "матчей",
+        custom_progress_texts=[
+            f"{m_cw_2} / 1 матчей с 2+ клатчами",
+            f"{m_cw_2} / 3 матчей с 2+ клатчами",
+            f"{m_cw_2} / 5 матчей (или {m_cw_3}/1 с 3+ клатчами)"
+        ]
     ))
 
     # 14. 🧊 «Стальные нервы» (Clutch)
-    ca = overall_stats.get("total_clutch_attempts", 0)
-    clutch_wr = round((cw / max(1, ca)) * 100, 1)
+    # Пороги: 🥉 1 матч со 100% клатч-винрейтом (мин. 2 из 2) | 🥈 суммарный WR >= 35.0% (от 6 попыток) | 🥇 суммарный WR >= 50.0% (от 10 попыток)
+    tot_cw = overall_stats.get("total_clutch_wins", 0)
+    tot_ca = overall_stats.get("total_clutch_attempts", 0)
+    cwr_all = round((tot_cw / max(1, tot_ca)) * 100, 1)
+    m_perfect_clutch = sum(1 for m in matches if m.get("clutch_attempts", 0) >= 2 and m.get("clutch_wins", 0) == m.get("clutch_attempts", 0))
     t_sn = 0
-    if ca >= 5 and clutch_wr >= 25.0:
+    if m_perfect_clutch >= 1 or (tot_ca >= 4 and cwr_all >= 30.0):
         t_sn = 1
-        if ca >= 5 and clutch_wr >= 35.0:
+        if tot_ca >= 6 and cwr_all >= 35.0:
             t_sn = 2
-            if ca >= 5 and clutch_wr >= 45.0:
+            if tot_ca >= 10 and cwr_all >= 50.0:
                 t_sn = 3
     achievements.append(_build_tiered_achievement(
         "clutch_steel_nerves", "Стальные нервы", "🧊", t_sn,
-        [25.0, 35.0, 45.0],
+        [1, 35.0, 50.0],
         [
-            "Винрейт в клатчах >= 25.0% (от 5 попыток)",
-            "Винрейт в клатчах >= 35.0% (от 5 попыток)",
-            "Винрейт в клатчах >= 45.0% (от 5 попыток)"
+            "1 матч со 100% успехом в клатчах (мин. 2 из 2) или WR >= 30%",
+            "Винрейт в клатчах >= 35.0% (при мин. 6 попытках)",
+            "Винрейт в клатчах >= 50.0% (при мин. 10 попытках)"
         ],
-        clutch_wr, "%",
+        [m_perfect_clutch, cwr_all, cwr_all], "%",
         custom_progress_texts=[
-            f"{clutch_wr}% / 25.0% ({ca}/5 клатчей)",
-            f"{clutch_wr}% / 35.0% ({ca}/5 клатчей)",
-            f"{clutch_wr}% / 45.0% ({ca}/5 клатчей)"
+            f"{m_perfect_clutch} / 1 матчей со 100% клатчами (2/2)",
+            f"{cwr_all}% / 35.0% ({tot_ca}/6 клатч-попыток)",
+            f"{cwr_all}% / 50.0% ({tot_ca}/10 клатч-попыток)"
         ]
     ))
 
     # 15. 🧘 «Дзен спецназа» (Discipline)
+    # Пороги: 🥉 1 матч с 0 первых смертей (FD = 0, мин. 16 раундов) | 🥈 3 матча | 🥇 5 матчей
+    m_zero_fd = sum(1 for m in matches if m.get("first_deaths", 0) == 0 and (m.get("rounds_count") or (m.get("score_team1", 0) + m.get("score_team2", 0)) or 20) >= 16)
+    if m_zero_fd == 0:
+        m_zero_fd = zero_fd_matches
     t_zen = 0
-    if zero_fd_matches >= 1:
+    if m_zero_fd >= 1:
         t_zen = 1
-        if zero_fd_matches >= 3:
+        if m_zero_fd >= 3:
             t_zen = 2
-            if zero_fd_matches >= 6:
+            if m_zero_fd >= 5:
                 t_zen = 3
     achievements.append(_build_tiered_achievement(
         "disc_zen", "Дзен спецназа", "🧘", t_zen,
-        [1, 3, 6],
+        [1, 3, 5],
         [
-            "1 матч без единой первой смерти (0 FD)",
-            "3 матча без единой первой смерти (0 FD)",
-            "6 матчей без единой первой смерти (0 FD)"
+            "1 матч без единой первой смерти (0 FD, мин. 16 раундов)",
+            "3 матча без единой первой смерти (0 FD, мин. 16 раундов)",
+            "5 матчей без единой первой смерти (0 FD, мин. 16 раундов)"
         ],
-        zero_fd_matches, "матчей"
+        m_zero_fd, "матчей",
+        custom_progress_texts=[
+            f"{m_zero_fd} / 1 матчей с 0 первых смертей (0 FD)",
+            f"{m_zero_fd} / 3 матчей с 0 первых смертей (0 FD)",
+            f"{m_zero_fd} / 5 матчей с 0 первых смертей (0 FD)"
+        ]
     ))
 
     # 16. 🎒 «Бережливый боец» (Discipline)
+    # Пороги: 🥉 2 сохранения оружия в проигранных раундах | 🥈 5 сохранений | 🥇 10 сохранений
     t_frugal = 0
-    if save_rounds_cnt >= 3:
+    if save_rounds_cnt >= 2:
         t_frugal = 1
-        if save_rounds_cnt >= 8:
+        if save_rounds_cnt >= 5:
             t_frugal = 2
-            if save_rounds_cnt >= 15:
+            if save_rounds_cnt >= 10:
                 t_frugal = 3
     achievements.append(_build_tiered_achievement(
         "disc_frugal_fighter", "Бережливый боец", "🎒", t_frugal,
-        [3, 8, 15],
+        [2, 5, 10],
         [
-            "3 сохранения оружия в проигранных раундах (Saves)",
-            "8 сохранений оружия в проигранных раундах (Saves)",
-            "15 сохранений оружия в проигранных раундах (Saves)"
+            "2 сохранения девайса в заведомо проигранных раундах (Saves)",
+            "5 сохранений девайса в заведомо проигранных раундах (Saves)",
+            "10 сохранений девайса в заведомо проигранных раундах (Saves)"
         ],
-        save_rounds_cnt, "сейвов"
+        save_rounds_cnt, "сейвов",
+        custom_progress_texts=[
+            f"{save_rounds_cnt} / 2 сохраненных девайсов",
+            f"{save_rounds_cnt} / 5 сохраненных девайсов",
+            f"{save_rounds_cnt} / 10 сохраненных девайсов"
+        ]
     ))
 
     # 17. 💰 «Экономический диверсант» (Economy)
-    vs_full = round(float(metrics.get("vs_full_buy_kd", 1.0) or 1.0), 2)
+    # Пороги: 🥉 1 матч с K/D vs Full Buy >= 1.15 | 🥈 3 матча (>= 1.30) | 🥇 5 матчей (>= 1.50)
+    m_eco_115 = sum(1 for m in matches if m.get("vs_full_buy_kd", 1.0) >= 1.15)
+    m_eco_130 = sum(1 for m in matches if m.get("vs_full_buy_kd", 1.0) >= 1.30)
+    m_eco_150 = sum(1 for m in matches if m.get("vs_full_buy_kd", 1.0) >= 1.50)
+    # Если мало per-match данных, учитываем средний показатель vs_full_buy_kd
+    if m_eco_115 == 0 and float(metrics.get("vs_full_buy_kd", 1.0) or 1.0) >= 1.15:
+        m_eco_115 = min(len(matches), 2)
     t_eco = 0
-    if vs_full >= 1.05:
+    if m_eco_115 >= 1:
         t_eco = 1
-        if vs_full >= 1.25:
+        if m_eco_130 >= 3:
             t_eco = 2
-            if vs_full >= 1.45:
+            if m_eco_150 >= 5:
                 t_eco = 3
     achievements.append(_build_tiered_achievement(
         "eco_saboteur", "Экономический диверсант", "💰", t_eco,
-        [1.05, 1.25, 1.45],
+        [1, 3, 5],
         [
-            "K/D >= 1.05 против полного закупа соперника",
-            "K/D >= 1.25 против полного закупа соперника",
-            "K/D >= 1.45 против полного закупа соперника"
+            "1 матч с K/D >= 1.15 против полного закупа оппонентов",
+            "3 матча с K/D >= 1.30 против полного закупа оппонентов",
+            "5 матчей с K/D >= 1.50 против полного закупа оппонентов"
         ],
-        vs_full, "K/D"
+        [m_eco_115, m_eco_130, m_eco_150], "матчей",
+        custom_progress_texts=[
+            f"{m_eco_115} / 1 матчей (K/D vs Full Buy >= 1.15)",
+            f"{m_eco_130} / 3 матчей (K/D vs Full Buy >= 1.30)",
+            f"{m_eco_150} / 5 матчей (K/D vs Full Buy >= 1.50)"
+        ]
     ))
 
     # 18. 🔫 «Пистолетный маэстро» (Economy)
-    pk = overall_stats.get("pistol_round_kills", 0)
+    # Пороги: 🥉 1 матч с 3+ пистолетными фрагами | 🥈 3 матча с 3+ пистолетными фрагами | 🥇 5 матчей с 3+ (или 1 матч с 5+)
+    m_pk_3 = sum(1 for m in matches if m.get("pistol_round_kills", 0) >= 3)
+    m_pk_5 = sum(1 for m in matches if m.get("pistol_round_kills", 0) >= 5)
     t_pk = 0
-    if pk >= 6:
+    if m_pk_3 >= 1 or m_pk_5 >= 1:
         t_pk = 1
-        if pk >= 14:
+        if m_pk_3 >= 3 or m_pk_5 >= 1:
             t_pk = 2
-            if pk >= 25:
+            if m_pk_3 >= 5 or m_pk_5 >= 1:
                 t_pk = 3
     achievements.append(_build_tiered_achievement(
         "eco_pistol_maestro", "Пистолетный маэстро", "🔫", t_pk,
-        [6, 14, 25],
+        [1, 3, 5],
         [
-            "6 фрагов в пистолетных раундах (раунды 1 и 13)",
-            "14 фрагов в пистолетных раундах (раунды 1 и 13)",
-            "25 фрагов в пистолетных раундах (раунды 1 и 13)"
+            "1 матч с >= 3 фрагами в пистолетных раундах (1 и 13)",
+            "3 матча с >= 3 фрагами в пистолетных раундах (1 и 13)",
+            "5 матчей с >= 3 фрагами (или 1 матч с 5+ фрагами 🥇)"
         ],
-        pk, "фрагов"
+        m_pk_3, "матчей",
+        custom_progress_texts=[
+            f"{m_pk_3} / 1 матчей (3+ фрага в пистолетках)",
+            f"{m_pk_3} / 3 матчей (3+ фрага в пистолетках)",
+            f"{m_pk_3} / 5 матчей (или {m_pk_5}/1 с 5+ фрагами)"
+        ]
     ))
 
     # 19. 🌟 «Звездный керри» (Overall Impact)
+    # Пороги: 🥉 1 матч с HLTV 2.0 >= 1.35 | 🥈 3 матча с HLTV 2.0 >= 1.45 | 🥇 5 матчей с HLTV 2.0 >= 1.60
+    m_hltv_135 = sum(1 for m in matches if m.get("hltv_rating", 0.0) >= 1.35)
+    m_hltv_145 = sum(1 for m in matches if m.get("hltv_rating", 0.0) >= 1.45)
+    m_hltv_160 = sum(1 for m in matches if m.get("hltv_rating", 0.0) >= 1.60)
+    # Резервный поиск по истории mmr
+    if m_hltv_135 == 0:
+        m_hltv_135 = sum(1 for h in mmr_info.get("history", []) if h.get("hltv", 0.0) >= 1.35)
+        m_hltv_145 = sum(1 for h in mmr_info.get("history", []) if h.get("hltv", 0.0) >= 1.45)
+        m_hltv_160 = sum(1 for h in mmr_info.get("history", []) if h.get("hltv", 0.0) >= 1.60)
     t_carry = 0
-    if high_hltv_matches >= 1:
+    if m_hltv_135 >= 1:
         t_carry = 1
-        if high_hltv_matches >= 3:
+        if m_hltv_145 >= 3:
             t_carry = 2
-            if high_hltv_matches >= 6:
+            if m_hltv_160 >= 5:
                 t_carry = 3
     achievements.append(_build_tiered_achievement(
         "impact_star_carry", "Звездный керри", "🌟", t_carry,
-        [1, 3, 6],
+        [1, 3, 5],
         [
-            "1 матч с рейтингом HLTV 2.0 >= 1.35",
-            "3 матча с рейтингом HLTV 2.0 >= 1.35",
-            "6 матчей с рейтингом HLTV 2.0 >= 1.35"
+            "1 матч с соревновательным рейтингом HLTV 2.0 >= 1.35",
+            "3 матча с соревновательным рейтингом HLTV 2.0 >= 1.45",
+            "5 матчей с элитным рейтингом HLTV 2.0 >= 1.60"
         ],
-        high_hltv_matches, "матчей"
+        [m_hltv_135, m_hltv_145, m_hltv_160], "матчей",
+        custom_progress_texts=[
+            f"{m_hltv_135} / 1 матчей (HLTV 2.0 >= 1.35)",
+            f"{m_hltv_145} / 3 матчей (HLTV 2.0 >= 1.45)",
+            f"{m_hltv_160} / 5 матчей (HLTV 2.0 >= 1.60)"
+        ]
     ))
 
     # 20. 🎩 «Бомбардир (25+ фрагов)» (Overall Impact)
+    # Пороги: 🥉 1 матч с 25+ фрагами | 🥈 3 матча с 25+ фрагами | 🥇 1 матч с 30+ фрагами (или 5 матчей с 25+)
+    m_kills_25 = sum(1 for m in matches if m.get("kills", 0) >= 25)
+    m_kills_30 = sum(1 for m in matches if m.get("kills", 0) >= 30)
     t_bomb = 0
-    if matches_25k >= 1:
+    if m_kills_25 >= 1 or m_kills_30 >= 1:
         t_bomb = 1
-        if matches_25k >= 3:
+        if m_kills_25 >= 3 or m_kills_30 >= 1:
             t_bomb = 2
-            if matches_25k >= 7:
+            if m_kills_30 >= 1 or m_kills_25 >= 5:
                 t_bomb = 3
     achievements.append(_build_tiered_achievement(
         "impact_bombardier", "Бомбардир (25+ фрагов)", "🎩", t_bomb,
-        [1, 3, 7],
+        [1, 3, 5],
         [
-            "1 матч с 25+ фрагами за карту",
-            "3 матча с 25+ фрагами за карту",
-            "7 матчей с 25+ фрагами за карту"
+            "1 матч с 25+ фрагами на карте",
+            "3 матча с 25+ фрагами на карте",
+            "1 матч с 30-бомбой (30+ фрагов) или 5 матчей с 25+ фрагами 🥇"
         ],
-        matches_25k, "матчей"
+        m_kills_25, "матчей",
+        custom_progress_texts=[
+            f"{m_kills_25} / 1 матчей (25+ фрагов)",
+            f"{m_kills_25} / 3 матчей (25+ фрагов)",
+            f"{m_kills_25} / 5 матчей (или {m_kills_30}/1 с 30+ бомбой)"
+        ]
     ))
 
     # =========================================================================
@@ -1740,6 +1917,7 @@ def calculate_player_achievements(
     # =========================================================================
 
     # 21. 🔪 «Мастер унижений»
+    # Пороги: 🥉 5 фрагов с ножа/Zeus | 🥈 10 фрагов | 🥇 Дабл-килл (2+ в одном матче)
     t_kz = 0
     if knife_zeus_total >= 5:
         t_kz = 1
@@ -1765,6 +1943,7 @@ def calculate_player_achievements(
     ))
 
     # 22. ⚡ «Шоковая терапия»
+    # Пороги: 🥉 1 фраг из Zeus | 🥈 5 фрагов | 🥇 10 фрагов
     t_taser = 0
     if taser_kills >= 1:
         t_taser = 1
@@ -1784,25 +1963,27 @@ def calculate_player_achievements(
     ))
 
     # 23. 🤠 «Шериф Дикого Запада»
+    # Пороги: 🥉 10 хедшотов Deagle/Revolver | 🥈 20 фрагов | 🥇 30 фрагов
     t_west = 0
-    if wild_west_kills >= 5:
+    if wild_west_kills >= 10:
         t_west = 1
-        if wild_west_kills >= 12:
+        if wild_west_kills >= 20:
             t_west = 2
-            if wild_west_kills >= 20:
+            if wild_west_kills >= 30:
                 t_west = 3
     achievements.append(_build_tiered_achievement(
         "fun_wild_west", "Шериф Дикого Запада", "🤠", t_west,
-        [5, 12, 20],
+        [10, 20, 30],
         [
-            "5 хедшотов из Desert Eagle или фрагов из Revolver",
-            "12 хедшотов из Desert Eagle или фрагов из Revolver",
-            "20 хедшотов из Desert Eagle или фрагов из Revolver"
+            "10 хедшотов из Desert Eagle или фрагов из Revolver",
+            "20 хедшотов из Desert Eagle или фрагов из Revolver",
+            "30 хедшотов из Desert Eagle или фрагов из Revolver"
         ],
         wild_west_kills, "фрагов Deagle/Revolver"
     ))
 
     # 24. 🥷 «Ниндзя-сапер»
+    # Пороги: 🥉 1 победный дефьюз | 🥈 3 победных дефьюза | 🥇 5 победных дефьюзов
     t_def = 0
     if defuses_cnt >= 1:
         t_def = 1
@@ -1822,25 +2003,27 @@ def calculate_player_achievements(
     ))
 
     # 25. 🚪 «Дверной звонок»
+    # Пороги: 🥉 5 фрагов из дробовиков | 🥈 15 фрагов | 🥇 30 фрагов
     t_shot = 0
-    if shotgun_kills >= 3:
+    if shotgun_kills >= 5:
         t_shot = 1
-        if shotgun_kills >= 7:
+        if shotgun_kills >= 15:
             t_shot = 2
-            if shotgun_kills >= 15:
+            if shotgun_kills >= 30:
                 t_shot = 3
     achievements.append(_build_tiered_achievement(
         "fun_doorbell_shotgun", "Дверной звонок", "🚪", t_shot,
-        [3, 7, 15],
+        [5, 15, 30],
         [
-            "3 фрага из дробовиков (XM1014, Nova, MAG-7)",
-            "7 фрагов из дробовиков (XM1014, Nova, MAG-7)",
-            "15 фрагов из дробовиков (XM1014, Nova, MAG-7)"
+            "5 фрагов из дробовиков (XM1014, Nova, MAG-7, Sawed-off)",
+            "15 фрагов из дробовиков (XM1014, Nova, MAG-7, Sawed-off)",
+            "30 фрагов из дробовиков (XM1014, Nova, MAG-7, Sawed-off)"
         ],
         shotgun_kills, "фрагов из дробовика"
     ))
 
     # 26. 🕶️ «Слепая ярость»
+    # Пороги: 🥉 1 фраг при содействии световой гранаты | 🥈 3 фрага | 🥇 6 фрагов
     t_blind = 0
     if blind_rage_kills >= 1:
         t_blind = 1
@@ -1860,6 +2043,7 @@ def calculate_player_achievements(
     ))
 
     # 27. 🧱 «ВХ без читов»
+    # Пороги: 🥉 2 прострела сквозь стены/смок | 🥈 5 прострелов | 🥇 10 прострелов
     t_wall = 0
     if thrusmoke_kills >= 2:
         t_wall = 1
@@ -1871,14 +2055,15 @@ def calculate_player_achievements(
         "fun_wallbang_god", "ВХ без читов", "🧱", t_wall,
         [2, 5, 10],
         [
-            "2 прострела сквозь стены или плотный смок",
-            "5 прострелов сквозь стены или плотный смок",
-            "10 прострелов сквозь стены или плотный смок"
+            "2 прострела сквозь стены или плотный дым",
+            "5 прострелов сквозь стены или плотный дым",
+            "10 прострелов сквозь стены или плотный дым"
         ],
         thrusmoke_kills, "прострелов"
     ))
 
     # 28. 💀 «Терминатор (ACE!)»
+    # Пороги: 🥉 1 эйс | 🥈 2 эйса | 🥇 4 эйса
     t_ace = 0
     if aces_cnt >= 1:
         t_ace = 1
@@ -1898,6 +2083,7 @@ def calculate_player_achievements(
     ))
 
     # 29. 🩸 «Кровная вендетта (Nemesis Hunter)»
+    # Пороги: 🥉 1 матч с 5+ фрагами на Nemesis | 🥈 3 матча | 🥇 6 матчей
     t_nem = 0
     if nemesis_matches >= 1:
         t_nem = 1
@@ -1909,14 +2095,15 @@ def calculate_player_achievements(
         "fun_nemesis_hunter", "Кровная вендетта (Nemesis Hunter)", "🩸", t_nem,
         [1, 3, 6],
         [
-            "1 матч с 4+ убийствами своего принципиального соперника (Nemesis)",
-            "3 матча с 4+ убийствами своего принципиального соперника (Nemesis)",
-            "6 матчей с 4+ убийствами своего принципиального соперника (Nemesis)"
+            "1 матч с 5+ убийствами своего принципиального соперника (Nemesis)",
+            "3 матча с 5+ убийствами своего принципиального соперника (Nemesis)",
+            "6 матчей с 5+ убийствами своего принципиального соперника (Nemesis)"
         ],
         nemesis_matches, "матчей"
     ))
 
     # 30. 🌪️ «Мастер камбэка»
+    # Пороги: 🥉 1 волевая победа (камбэк, овертайм, разрыв <= 3) | 🥈 2 победы | 🥇 4 победы
     t_cb = 0
     if comebacks_cnt >= 1:
         t_cb = 1
@@ -2442,6 +2629,14 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
                     })
     
     recs["quests"] = quests
+    if quests:
+        # Топ-1 приоритетный квест для слабейшего навыка
+        tq = dict(quests[0])
+        # Формируем специализированную подсказку для целевой карточки
+        tq["radar_boost_text"] = f"Выполнение этого квеста на следующий ранг ({tq.get('next_tier_name')}) даст мощный прирост параметра {tq.get('skill')} на радарной диаграмме и увеличит All-Time MMR."
+        recs["target_quest"] = tq
+    else:
+        recs["target_quest"] = None
     return recs
 
 
@@ -2655,6 +2850,34 @@ def run_analysis(force_ai: bool = False):
                     pes["vs_eco_kills"] += my_kills
                     pes["vs_eco_deaths"] += my_deaths
 
+        # Рассчитываем per-match K/D против Full Buy для каждого игрока
+        match_vs_full_kd = {}
+        for cs in match_p_teams:
+            m_fk = sum(1 for k_evt in m_data.get("kills", []) if resolve_evt_sid(k_evt.get("attacker_steamid"), k_evt.get("attacker_name")) == cs and "Full Buy" in str(round_kills_map.get(k_evt.get("round_num"), [{}])[0].get("opp_eco", "") if False else ""))
+            # Точный подсчет по раундам матча
+            p_full_k = 0
+            p_full_d = 0
+            p_tactical_k = 0
+            p_team = match_p_teams[cs]
+            for r_evt in m_data.get("rounds", []):
+                r_n = r_evt.get("round_num")
+                ct_team = r_evt.get("ct_team")
+                is_ct = (p_team == ct_team)
+                opp_eco = str(r_evt.get("t_economy_badge", "") if is_ct else r_evt.get("ct_economy_badge", ""))
+                rkills = round_kills_map.get(r_n, [])
+                for k_evt in rkills:
+                    att = resolve_evt_sid(k_evt.get("attacker_steamid"), k_evt.get("attacker_name"))
+                    vic = resolve_evt_sid(k_evt.get("victim_steamid"), k_evt.get("victim_name"))
+                    if att == cs:
+                        if "Full Buy" in opp_eco:
+                            p_full_k += 1
+                        if k_evt.get("thrusmoke") or (k_evt.get("attacker_blind")):
+                            p_tactical_k += 1
+                    if vic == cs and "Full Buy" in opp_eco:
+                        p_full_d += 1
+            kd_full = round(p_full_k / max(1, p_full_d), 2) if (p_full_k + p_full_d) > 0 else 1.0
+            match_vs_full_kd[cs] = {"vs_full_kd": kd_full, "tactical_kills": p_tactical_k}
+
         for sid_key, p_stat in m_data.get("players", {}).items():
             p_name = p_stat.get("name", "").strip()
             name_lower = p_name.lower()
@@ -2811,7 +3034,10 @@ def run_analysis(force_ai: bool = False):
                 "is_tie": not team_won and not team_lost,
                 "player_team": p_team,
                 "score_team1": s1,
-                "score_team2": s2
+                "score_team2": s2,
+                "rounds_count": rounds_cnt,
+                "vs_full_buy_kd": match_vs_full_kd.get(clean_sid, {}).get("vs_full_kd", 1.0),
+                "tactical_kills": match_vs_full_kd.get(clean_sid, {}).get("tactical_kills", 0)
             })
 
         # Сбор данных по тиммейтам (синергия) и очным дуэлям (Head-to-Head)
@@ -3175,9 +3401,9 @@ def run_analysis(force_ai: bool = False):
         spec["high_hltv_matches"] = sum(1 for h in p_history if h.get("hltv", 0.0) >= 1.35)
         nem_id = nemesis.get("steam_id") if nemesis else None
         if nem_id:
-            spec["nemesis_matches"] = sum(1 for md in match_duels_list if md.get((steam_id, nem_id), 0) >= 4)
+            spec["nemesis_matches"] = sum(1 for md in match_duels_list if md.get((steam_id, nem_id), 0) >= 5)
         else:
-            spec["nemesis_matches"] = sum(1 for md in match_duels_list if any(cnt >= 4 for (att, vic), cnt in md.items() if att == steam_id))
+            spec["nemesis_matches"] = sum(1 for md in match_duels_list if any(cnt >= 5 for (att, vic), cnt in md.items() if att == steam_id))
 
         achievements, ach_summary = calculate_player_achievements(
             metrics, overall_stats_dict, p_mmr, momentum,

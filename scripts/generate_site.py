@@ -1329,7 +1329,8 @@ def format_player_data(p: dict) -> dict:
             "best_role": role_text,
             "current_role": current_role_text,
             "role_comparison": raw_recs.get("role_comparison", f"Текущий стиль: {current_role_text} ➔ Рекомендуется: {role_text}"),
-            "quests": raw_recs.get("quests", [])
+            "quests": raw_recs.get("quests", []),
+            "target_quest": raw_recs.get("target_quest")
         },
         "session_progress": p.get("session_progress"),
         "map_performance": p.get("map_performance", {}),

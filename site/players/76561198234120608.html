@@ -894,6 +894,77 @@
             </div>
         </div>
 
+        <!-- 🎯 ЦЕЛЕВОЙ КВЕСТ НА ПРОКАЧКУ СЛАБЕЙШЕГО НАВЫКА (ГЛАВНЫЙ ФОКУС ТРЕНИРОВКИ) -->
+        
+        
+        <div class="target-quest-hero mt-4 glassmorphism p-5 rounded-2xl border-2 border-amber-500/50 bg-gradient-to-br from-amber-950/40 via-slate-900/90 to-emerald-950/30 shadow-lg shadow-amber-950/30">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-amber-500/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                        ⚡
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs uppercase font-black tracking-widest text-amber-400">🏆 Целевой квест на прокачку</span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40">Фокус №1</span>
+                        </div>
+                        <h3 class="text-lg font-black text-white flex items-center gap-2 mt-0.5">
+                            Гроза опенингов
+                            <span class="text-xs font-normal font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                                Не получено
+                            </span>
+                        </h3>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 self-start sm:self-auto">
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 block uppercase font-mono">Слабейший навык</span>
+                        <span class="text-sm font-bold text-emerald-400 font-mono">Entry (1.0/10)</span>
+                    </div>
+                    <div class="h-8 w-px bg-slate-700/60 mx-1"></div>
+                    <div class="text-right">
+                        <span class="text-[10px] text-amber-400/80 block uppercase font-mono">Целевой ранг</span>
+                        <span class="text-sm font-black text-amber-300 font-mono">Бронза 🥉</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advice & Radar Boost -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 text-xs">
+                <div class="p-3 bg-slate-950/60 rounded-xl border border-slate-800/80 text-slate-300 flex items-start gap-2.5">
+                    <span class="text-base shrink-0">💡</span>
+                    <div>
+                        <span class="text-slate-400 font-bold block mb-0.5 text-[11px]">Совет тренера:</span>
+                        <p class="leading-relaxed">Твой параметр Entry (1.0/10) требует внимания. Низкий винрейт в опенинг-дуэлях. Никогда не выходи первым без звукового фейка или саппорт-флешки.</p>
+                    </div>
+                </div>
+                <div class="p-3 bg-emerald-950/30 rounded-xl border border-emerald-500/30 text-emerald-200 flex items-start gap-2.5">
+                    <span class="text-base shrink-0">📈</span>
+                    <div>
+                        <span class="text-emerald-400 font-bold block mb-0.5 text-[11px]">Влияние на радар и рейтинг:</span>
+                        <p class="leading-relaxed">Выполнение этого квеста на следующий ранг (Бронза 🥉) даст мощный прирост параметра Entry на радарной диаграмме и увеличит All-Time MMR.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar with Next Goal -->
+            <div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs mb-1.5 font-mono">
+                    <span class="text-slate-300 font-bold flex items-center gap-1.5">
+                        <span class="text-amber-400">🎯</span> Цель (Бронза 🥉): 1 матч с чистым перевесом энтри-дуэлей (FK - FD >= +2, мин. 3 FK)
+                    </span>
+                    <span class="text-amber-300 font-black text-sm">
+                        0 / 1 матчей (FK-FD >= +2, 3+ FK) <span class="text-slate-400 font-normal text-xs">(0.0%)</span>
+                    </span>
+                </div>
+                <div class="w-full bg-slate-950/80 h-3 rounded-full overflow-hidden border border-amber-500/30 p-0.5 shadow-inner">
+                    <div class="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-300 shadow-sm" style="width: 0.0%;"></div>
+                </div>
+            </div>
+        </div>
+        
+
         
         <div class="quests-block mt-4 glassmorphism p-4 rounded-xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-slate-900/40 to-slate-900/20">
             <div class="flex items-center justify-between mb-3 pb-2 border-b border-amber-500/20">
@@ -928,8 +999,8 @@
                     </div>
                     <div>
                         <div class="flex justify-between text-[10px] mb-1">
-                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 10 первых убийств в раундах (First Kills)</span>
-                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">0 / 10 первых фрагов</span>
+                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 1 матч с чистым перевесом энтри-дуэлей (FK - FD >= +2, мин. 3 FK)</span>
+                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">0 / 1 матчей (FK-FD >= +2, 3+ FK)</span>
                         </div>
                         <div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-slate-700/50">
                             <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-cyan-400" style="width: 0.0%;"></div>
@@ -957,11 +1028,11 @@
                     </div>
                     <div>
                         <div class="flex justify-between text-[10px] mb-1">
-                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 150 HP суммарного урона гранатами</span>
-                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">103 / 150 HP</span>
+                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 1 матч с >= 120 HP урона гранатами</span>
+                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">0 / 1 матчей (120+ HP utility)</span>
                         </div>
                         <div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-slate-700/50">
-                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-cyan-400" style="width: 68.7%;"></div>
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-cyan-400" style="width: 0.0%;"></div>
                         </div>
                     </div>
                 </div>
@@ -986,8 +1057,8 @@
                     </div>
                     <div>
                         <div class="flex justify-between text-[10px] mb-1">
-                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 3 выигранных клатча 1vX</span>
-                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">0 / 3 клатчей</span>
+                            <span class="text-slate-400 truncate max-w-[140px]">Цель (Бронза 🥉): 1 матч с 2+ выигранными клатчами 1vX</span>
+                            <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">0 / 1 матчей с 2+ клатчами</span>
                         </div>
                         <div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-slate-700/50">
                             <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-blue-500 to-cyan-400" style="width: 0.0%;"></div>
@@ -1150,14 +1221,14 @@
                 <!-- Summary Pill: Unlocked Count -->
                 <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-slate-700/80 text-xs font-mono font-bold">
                     <span class="text-slate-400 uppercase tracking-wider text-[11px]">ПОЛУЧЕНО:</span>
-                    <span class="text-emerald-400 font-extrabold text-sm">5</span>
+                    <span class="text-emerald-400 font-extrabold text-sm">8</span>
                     <span class="text-slate-500">из 30</span>
                 </div>
 
                 <!-- Summary Pill: Glory Points -->
                 <div class="flex items-center gap-2 bg-amber-950/40 px-3.5 py-1.5 rounded-xl border border-amber-500/40 text-xs font-mono font-bold shadow-sm shadow-amber-950/20">
                     <span class="text-amber-400 text-sm">🌟</span>
-                    <span class="text-amber-300 font-black text-sm">500</span>
+                    <span class="text-amber-300 font-black text-sm">800</span>
                     <span class="text-amber-500/80 uppercase text-[10px]">ОЧКОВ СЛАВЫ</span>
                 </div>
 
@@ -1165,7 +1236,7 @@
                 <div class="flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
                     <span class="px-2 py-0.5 rounded bg-amber-950/70 text-amber-300 font-bold border border-amber-400/50" title="Золото">🥇 0</span>
                     <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-500" title="Серебро">🥈 0</span>
-                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Бронза">🥉 5</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Бронза">🥉 8</span>
                 </div>
             </div>
         </div>
@@ -1177,17 +1248,17 @@
                     Все (30)
                 </button>
                 <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-emerald-400 hover:border-emerald-500/50" data-filter="unlocked">
-                    👑 Полученные (5)
+                    👑 Полученные (8)
                 </button>
                 
                 
                 
                 <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-500 hover:border-amber-600/50" data-filter="1">
-                    🥉 Бронза (5)
+                    🥉 Бронза (8)
                 </button>
                 
                 <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-400 hover:border-slate-500" data-filter="locked">
-                    🔒 В процессе (25)
+                    🔒 В процессе (22)
                 </button>
             </div>
             <a href="../achievements.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1">
@@ -1227,8 +1298,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="One-Tap Хирург">
                         One-Tap Хирург
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="45.0% попаданий в голову (при мин. 20 фрагах)">
-                        45.0% попаданий в голову (при мин. 20 фрагах)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с HS% >= 50.0% (при мин. 15 фрагах)">
+                        1 матч с HS% >= 50.0% (при мин. 15 фрагах)
                     </p>
                 </div>
 
@@ -1236,12 +1307,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="44.4% / 45.0% HS (27/20 фрагов)">44.4% / 45.0% HS (27/20 фрагов)</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (HS >= 50%, 15+K)">0 / 1 матчей (HS >= 50%, 15+K)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 98.7%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1275,8 +1346,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Огневой каток">
                         Огневой каток
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Средний боевой урон ADR >= 75.0 за все матчи">
-                        Средний боевой урон ADR >= 75.0 за все матчи
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч со средним уроном ADR >= 85.0">
+                        1 матч со средним уроном ADR >= 85.0
                     </p>
                 </div>
 
@@ -1284,12 +1355,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="45.0 / 75.0 ADR">45.0 / 75.0 ADR</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (ADR >= 85)">0 / 1 матчей (ADR >= 85)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 60.0%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1320,11 +1391,11 @@
 
                 <!-- Title & Desc -->
                 <div class="w-full mt-2">
-                    <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Призрак раунда">
-                        Призрак раунда
+                    <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Призрак выживания">
+                        Призрак выживания
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Процент выживаемости в раундах >= 30.0%">
-                        Процент выживаемости в раундах >= 30.0%
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с выживаемостью >= 40.0% (или <= 10 смертей)">
+                        1 матч с выживаемостью >= 40.0% (или <= 10 смертей)
                     </p>
                 </div>
 
@@ -1332,12 +1403,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="26.0% / 30.0%">26.0% / 30.0%</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (выживание >= 40% / <=10 D)">0 / 1 матчей (выживание >= 40% / <=10 D)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 86.7%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1371,8 +1442,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Непробиваемый якорь">
                         Непробиваемый якорь
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Итоговый рейтинг Positioning >= 6.5">
-                        Итоговый рейтинг Positioning >= 6.5
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с оценкой позиции >= 7.0 (K/D >= 1.10)">
+                        1 матч с оценкой позиции >= 7.0 (K/D >= 1.10)
                     </p>
                 </div>
 
@@ -1380,12 +1451,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="5.2 / 6.5 баллов">5.2 / 6.5 баллов</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (рейтинг позиции >= 7.0)">0 / 1 матчей (рейтинг позиции >= 7.0)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 80.0%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1419,8 +1490,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Ослепительный дуэт">
                         Ослепительный дуэт
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="5 флеш-ассистов для тиммейтов">
-                        5 флеш-ассистов для тиммейтов
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с >= 3 флеш-ассистами для команды">
+                        1 матч с >= 3 флеш-ассистами для команды
                     </p>
                 </div>
 
@@ -1428,7 +1499,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 5 ассистов">0 / 5 ассистов</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (3+ flash assists)">0 / 1 матчей (3+ flash assists)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1467,8 +1538,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Артиллерийский полк">
                         Артиллерийский полк
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="150 HP суммарного урона гранатами">
-                        150 HP суммарного урона гранатами
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с >= 120 HP урона гранатами">
+                        1 матч с >= 120 HP урона гранатами
                     </p>
                 </div>
 
@@ -1476,37 +1547,39 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="103 / 150 HP">103 / 150 HP</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (120+ HP utility)">0 / 1 матчей (120+ HP utility)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 68.7%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
             
             <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
-                 data-tier="0"
-                 data-unlocked="false">
+                 data-tier="1"
+                 data-unlocked="true">
 
                 <!-- Top Badge: Tier + Points -->
                 <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
                     <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
-                        bg-slate-900 text-slate-400 border border-slate-700/60">
-                        🔒 В процессе
+                        bg-amber-950/60 text-amber-400 border border-amber-700/50
+                        ">
+                        🥉 Бронза
                     </span>
-                    <span class="font-extrabold text-slate-500">
-                        0 PTS
+                    <span class="font-extrabold text-amber-400">
+                        +100 PTS
                     </span>
                 </div>
 
                 <!-- 3D Metallic Medallion -->
                 <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
-                    medallion-locked">
+                    medallion-bronze
+                    ">
                     <span class="medallion-icon text-2xl">🧱</span>
                     <div class="medallion-stars-ribbon font-mono">
-                        ☆☆☆
+                        ★
                     </div>
                 </div>
 
@@ -1515,21 +1588,22 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Железный занавес">
                         Железный занавес
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Командная полезность KAST >= 70.0%">
-                        Командная полезность KAST >= 70.0%
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с показателем KAST >= 75.0%">
+                        1 матч с показателем KAST >= 75.0%
                     </p>
                 </div>
 
                 <!-- Progress Footer -->
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
-                        <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="68.3% / 70.0%">68.3% / 70.0%</span>
+                        <span class="text-[9px] uppercase tracking-wider text-slate-500">След.</span>
+                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="1 / 3 матчей (KAST >= 80%)">1 / 3 матчей (KAST >= 80%)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
-                            rating-fill-locked"
-                             style="width: 97.6%;"></div>
+                            rating-fill-bronze
+                            "
+                             style="width: 33.3%;"></div>
                     </div>
                 </div>
             </div>
@@ -1563,8 +1637,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Шестое чувство">
                         Шестое чувство
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="3 фрага сквозь дым (smoke kills)">
-                        3 фрага сквозь дым (smoke kills)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с >= 3 тактическими фрагами сквозь смок/стены">
+                        1 матч с >= 3 тактическими фрагами сквозь смок/стены
                     </p>
                 </div>
 
@@ -1572,7 +1646,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 3 фрагов сквозь дым">0 / 3 фрагов сквозь дым</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей с 3+ тактическими фрагами">0 / 1 матчей с 3+ тактическими фрагами</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1611,8 +1685,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Гроза опенингов">
                         Гроза опенингов
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="10 первых убийств в раундах (First Kills)">
-                        10 первых убийств в раундах (First Kills)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с чистым перевесом энтри-дуэлей (FK - FD >= +2, мин. 3 FK)">
+                        1 матч с чистым перевесом энтри-дуэлей (FK - FD >= +2, мин. 3 FK)
                     </p>
                 </div>
 
@@ -1620,7 +1694,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 10 первых фрагов">0 / 10 первых фрагов</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (FK-FD >= +2, 3+ FK)">0 / 1 матчей (FK-FD >= +2, 3+ FK)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1659,8 +1733,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Штурмовой таран">
                         Штурмовой таран
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Винрейт опенинг-дуэлей >= 50.0% (от 10 дуэлей)">
-                        Винрейт опенинг-дуэлей >= 50.0% (от 10 дуэлей)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с винрейтом опенинг-дуэлей >= 55.0% (от 4 дуэлей)">
+                        1 матч с винрейтом опенинг-дуэлей >= 55.0% (от 4 дуэлей)
                     </p>
                 </div>
 
@@ -1668,7 +1742,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0.0% / 50.0% (4/10 дуэлей)">0.0% / 50.0% (4/10 дуэлей)</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (WR опенингов >= 55%)">0 / 1 матчей (WR опенингов >= 55%)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1679,26 +1753,28 @@
             </div>
             
             <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
-                 data-tier="0"
-                 data-unlocked="false">
+                 data-tier="1"
+                 data-unlocked="true">
 
                 <!-- Top Badge: Tier + Points -->
                 <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
                     <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
-                        bg-slate-900 text-slate-400 border border-slate-700/60">
-                        🔒 В процессе
+                        bg-amber-950/60 text-amber-400 border border-amber-700/50
+                        ">
+                        🥉 Бронза
                     </span>
-                    <span class="font-extrabold text-slate-500">
-                        0 PTS
+                    <span class="font-extrabold text-amber-400">
+                        +100 PTS
                     </span>
                 </div>
 
                 <!-- 3D Metallic Medallion -->
                 <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
-                    medallion-locked">
+                    medallion-bronze
+                    ">
                     <span class="medallion-icon text-2xl">🔄</span>
                     <div class="medallion-stars-ribbon font-mono">
-                        ☆☆☆
+                        ★
                     </div>
                 </div>
 
@@ -1707,21 +1783,22 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Кровная месть">
                         Кровная месть
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="8 успешных разменов тиммейтов (Trades)">
-                        8 успешных разменов тиммейтов (Trades)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с >= 3 успешными разменами тиммейтов">
+                        1 матч с >= 3 успешными разменами тиммейтов
                     </p>
                 </div>
 
                 <!-- Progress Footer -->
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
-                        <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="6 / 8 разменов">6 / 8 разменов</span>
+                        <span class="text-[9px] uppercase tracking-wider text-slate-500">След.</span>
+                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="0 / 3 матчей (4+ размена)">0 / 3 матчей (4+ размена)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
-                            rating-fill-locked"
-                             style="width: 75.0%;"></div>
+                            rating-fill-bronze
+                            "
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1757,8 +1834,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Идеальный напарник">
                         Идеальный напарник
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Процент размена тиммейтов (Trade Rate) >= 22.0%">
-                        Процент размена тиммейтов (Trade Rate) >= 22.0%
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с долей разменов (Trade Rate) >= 25.0% (от 10 фрагов)">
+                        1 матч с долей разменов (Trade Rate) >= 25.0% (от 10 фрагов)
                     </p>
                 </div>
 
@@ -1766,13 +1843,13 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">След.</span>
-                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="22.2% / 28.0%">22.2% / 28.0%</span>
+                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="0 / 3 матчей (Trade Rate >= 32%)">0 / 3 матчей (Trade Rate >= 32%)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-bronze
                             "
-                             style="width: 79.3%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -1806,8 +1883,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Клатч-министр">
                         Клатч-министр
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="3 выигранных клатча 1vX">
-                        3 выигранных клатча 1vX
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с 2+ выигранными клатчами 1vX">
+                        1 матч с 2+ выигранными клатчами 1vX
                     </p>
                 </div>
 
@@ -1815,7 +1892,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 3 клатчей">0 / 3 клатчей</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей с 2+ клатчами">0 / 1 матчей с 2+ клатчами</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1854,8 +1931,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Стальные нервы">
                         Стальные нервы
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="Винрейт в клатчах >= 25.0% (от 5 попыток)">
-                        Винрейт в клатчах >= 25.0% (от 5 попыток)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч со 100% успехом в клатчах (мин. 2 из 2) или WR >= 30%">
+                        1 матч со 100% успехом в клатчах (мин. 2 из 2) или WR >= 30%
                     </p>
                 </div>
 
@@ -1863,7 +1940,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0.0% / 25.0% (7/5 клатчей)">0.0% / 25.0% (7/5 клатчей)</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей со 100% клатчами (2/2)">0 / 1 матчей со 100% клатчами (2/2)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1904,8 +1981,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Дзен спецназа">
                         Дзен спецназа
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч без единой первой смерти (0 FD)">
-                        1 матч без единой первой смерти (0 FD)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч без единой первой смерти (0 FD, мин. 16 раундов)">
+                        1 матч без единой первой смерти (0 FD, мин. 16 раундов)
                     </p>
                 </div>
 
@@ -1913,7 +1990,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">След.</span>
-                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="2 / 3 матчей">2 / 3 матчей</span>
+                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="2 / 3 матчей с 0 первых смертей (0 FD)">2 / 3 матчей с 0 первых смертей (0 FD)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -1925,26 +2002,28 @@
             </div>
             
             <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
-                 data-tier="0"
-                 data-unlocked="false">
+                 data-tier="1"
+                 data-unlocked="true">
 
                 <!-- Top Badge: Tier + Points -->
                 <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
                     <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
-                        bg-slate-900 text-slate-400 border border-slate-700/60">
-                        🔒 В процессе
+                        bg-amber-950/60 text-amber-400 border border-amber-700/50
+                        ">
+                        🥉 Бронза
                     </span>
-                    <span class="font-extrabold text-slate-500">
-                        0 PTS
+                    <span class="font-extrabold text-amber-400">
+                        +100 PTS
                     </span>
                 </div>
 
                 <!-- 3D Metallic Medallion -->
                 <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
-                    medallion-locked">
+                    medallion-bronze
+                    ">
                     <span class="medallion-icon text-2xl">🎒</span>
                     <div class="medallion-stars-ribbon font-mono">
-                        ☆☆☆
+                        ★
                     </div>
                 </div>
 
@@ -1953,21 +2032,22 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Бережливый боец">
                         Бережливый боец
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="3 сохранения оружия в проигранных раундах (Saves)">
-                        3 сохранения оружия в проигранных раундах (Saves)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="2 сохранения девайса в заведомо проигранных раундах (Saves)">
+                        2 сохранения девайса в заведомо проигранных раундах (Saves)
                     </p>
                 </div>
 
                 <!-- Progress Footer -->
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
-                        <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="2 / 3 сейвов">2 / 3 сейвов</span>
+                        <span class="text-[9px] uppercase tracking-wider text-slate-500">След.</span>
+                        <span class="font-bold text-amber-500 truncate ml-1 text-right" title="2 / 5 сохраненных девайсов">2 / 5 сохраненных девайсов</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
-                            rating-fill-locked"
-                             style="width: 66.7%;"></div>
+                            rating-fill-bronze
+                            "
+                             style="width: 40.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -2001,8 +2081,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Экономический диверсант">
                         Экономический диверсант
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="K/D >= 1.05 против полного закупа соперника">
-                        K/D >= 1.05 против полного закупа соперника
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с K/D >= 1.15 против полного закупа оппонентов">
+                        1 матч с K/D >= 1.15 против полного закупа оппонентов
                     </p>
                 </div>
 
@@ -2010,12 +2090,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0.5 / 1.05 K/D">0.5 / 1.05 K/D</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (K/D vs Full Buy >= 1.15)">0 / 1 матчей (K/D vs Full Buy >= 1.15)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 47.6%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -2049,8 +2129,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Пистолетный маэстро">
                         Пистолетный маэстро
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="6 фрагов в пистолетных раундах (раунды 1 и 13)">
-                        6 фрагов в пистолетных раундах (раунды 1 и 13)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с >= 3 фрагами в пистолетных раундах (1 и 13)">
+                        1 матч с >= 3 фрагами в пистолетных раундах (1 и 13)
                     </p>
                 </div>
 
@@ -2058,12 +2138,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="1 / 6 фрагов">1 / 6 фрагов</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (3+ фрага в пистолетках)">0 / 1 матчей (3+ фрага в пистолетках)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 16.7%;"></div>
+                             style="width: 0.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -2097,8 +2177,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Звездный керри">
                         Звездный керри
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с рейтингом HLTV 2.0 >= 1.35">
-                        1 матч с рейтингом HLTV 2.0 >= 1.35
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с соревновательным рейтингом HLTV 2.0 >= 1.35">
+                        1 матч с соревновательным рейтингом HLTV 2.0 >= 1.35
                     </p>
                 </div>
 
@@ -2106,7 +2186,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей">0 / 1 матчей</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (HLTV 2.0 >= 1.35)">0 / 1 матчей (HLTV 2.0 >= 1.35)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -2145,8 +2225,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Бомбардир (25+ фрагов)">
                         Бомбардир (25+ фрагов)
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с 25+ фрагами за карту">
-                        1 матч с 25+ фрагами за карту
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с 25+ фрагами на карте">
+                        1 матч с 25+ фрагами на карте
                     </p>
                 </div>
 
@@ -2154,7 +2234,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей">0 / 1 матчей</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 1 матчей (25+ фрагов)">0 / 1 матчей (25+ фрагов)</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -2289,8 +2369,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Шериф Дикого Запада">
                         Шериф Дикого Запада
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="5 хедшотов из Desert Eagle или фрагов из Revolver">
-                        5 хедшотов из Desert Eagle или фрагов из Revolver
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="10 хедшотов из Desert Eagle или фрагов из Revolver">
+                        10 хедшотов из Desert Eagle или фрагов из Revolver
                     </p>
                 </div>
 
@@ -2298,7 +2378,7 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 5 фрагов Deagle/Revolver">0 / 5 фрагов Deagle/Revolver</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="0 / 10 фрагов Deagle/Revolver">0 / 10 фрагов Deagle/Revolver</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
@@ -2385,8 +2465,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Дверной звонок">
                         Дверной звонок
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="3 фрага из дробовиков (XM1014, Nova, MAG-7)">
-                        3 фрага из дробовиков (XM1014, Nova, MAG-7)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="5 фрагов из дробовиков (XM1014, Nova, MAG-7, Sawed-off)">
+                        5 фрагов из дробовиков (XM1014, Nova, MAG-7, Sawed-off)
                     </p>
                 </div>
 
@@ -2394,12 +2474,12 @@
                 <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
                     <div class="flex items-center justify-between text-[10px] leading-tight">
                         <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
-                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="1 / 3 фрагов из дробовика">1 / 3 фрагов из дробовика</span>
+                        <span class="font-bold text-slate-300 truncate ml-1 text-right" title="1 / 5 фрагов из дробовика">1 / 5 фрагов из дробовика</span>
                     </div>
                     <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
                         <div class="h-full rounded-full transition-all duration-500
                             rating-fill-locked"
-                             style="width: 33.3%;"></div>
+                             style="width: 20.0%;"></div>
                     </div>
                 </div>
             </div>
@@ -2484,8 +2564,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="ВХ без читов">
                         ВХ без читов
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="2 прострела сквозь стены или плотный смок">
-                        2 прострела сквозь стены или плотный смок
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="2 прострела сквозь стены или плотный дым">
+                        2 прострела сквозь стены или плотный дым
                     </p>
                 </div>
 
@@ -2582,8 +2662,8 @@
                     <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="Кровная вендетта (Nemesis Hunter)">
                         Кровная вендетта (Nemesis Hunter)
                     </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с 4+ убийствами своего принципиального соперника (Nemesis)">
-                        1 матч с 4+ убийствами своего принципиального соперника (Nemesis)
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="1 матч с 5+ убийствами своего принципиального соперника (Nemesis)">
+                        1 матч с 5+ убийствами своего принципиального соперника (Nemesis)
                     </p>
                 </div>
 
@@ -2893,7 +2973,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 17.09.2026 17:52</p>
+                <p class="footer-timestamp">Данные обновлены: 17.09.2026 18:17</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
