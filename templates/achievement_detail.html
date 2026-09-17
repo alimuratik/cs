@@ -1,0 +1,495 @@
+﻿{% extends "base.html" %}
+{% set active_page = 'achievements' %}
+
+{% block title %}{{ ach.title }} — Достижение{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="{{ root_path }}index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <a href="{{ root_path }}achievements.html" class="hover:text-amber-400 transition">Зал славы и Достижения</a>
+        <span>/</span>
+        <span class="text-white font-medium flex items-center gap-1.5">
+            <span>{{ ach.icon }}</span> <span>{{ ach.title }}</span>
+        </span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Top Navigation Action -->
+    <div class="mb-5 flex items-center justify-between">
+        <a href="{{ root_path }}achievements.html" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/70 text-slate-300 hover:text-amber-300 hover:border-amber-500/50 text-xs font-mono font-bold transition shadow-sm">
+            <span>←</span> <span>Вернуться в Зал Славы</span>
+        </a>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300 font-mono text-xs">
+            <span>Категория:</span>
+            <strong class="text-amber-400">{{ ach.category }}</strong>
+        </div>
+    </div>
+
+    <!-- Hero Header Card -->
+    <section class="hero-section glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/30 mb-8 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+            <!-- Left: Medallion + Title & Essence -->
+            <div class="flex items-start sm:items-center gap-5">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400/20 via-slate-900 to-amber-950/40 border-2 border-amber-400/60 flex items-center justify-center text-4xl sm:text-5xl shrink-0 shadow-xl shadow-amber-950/50">
+                    {{ ach.icon }}
+                </div>
+                <div>
+                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold mb-2 shadow-sm">
+                        <span>🌟</span> <span>КИБЕРСПОРТИВНОЕ ИСПЫТАНИЕ</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight flex items-center gap-3">
+                        {{ ach.title }}
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                        {{ ach.essence }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Rarity & Quick Tier Summary -->
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-5 min-w-[260px] shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
+                        <span class="uppercase tracking-wider font-bold">Редкость:</span>
+                        <span class="text-amber-300 font-black text-sm">{{ ach.rarity_pct }}%</span>
+                    </div>
+                    <div class="text-[11px] text-slate-300 mb-2">
+                        Разблокировано у <strong class="text-white">{{ ach.unlocked_count }}</strong> из <strong class="text-white">{{ ach.total_players }}</strong> игроков
+                    </div>
+                    <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800 p-0.5 mb-3.5">
+                        <div class="bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-300 h-full rounded-full transition-all duration-700" style="width: {{ ach.rarity_pct }}%;"></div>
+                    </div>
+                </div>
+
+                <!-- 4 Tiers Quick Count Badges -->
+                <div class="grid grid-cols-4 gap-1.5 font-mono text-[10px] text-center pt-2 border-t border-slate-800/80">
+                    <div class="p-1.5 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold" title="Золотой ранг">
+                        <div class="text-xs">🥇</div>
+                        <div class="mt-0.5">{{ ach.gold_count }}</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-slate-800 border border-slate-500 text-slate-200 font-bold" title="Серебряный ранг">
+                        <div class="text-xs">🥈</div>
+                        <div class="mt-0.5">{{ ach.silver_count }}</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-amber-950/40 border border-amber-700/40 text-amber-500 font-bold" title="Бронзовый ранг">
+                        <div class="text-xs">🥉</div>
+                        <div class="mt-0.5">{{ ach.bronze_count }}</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 font-bold" title="В процессе">
+                        <div class="text-xs">⏳</div>
+                        <div class="mt-0.5">{{ ach.in_progress_count }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4 DISTINCT STYLED BLOCKS (Gold, Silver, Bronze, In Progress) -->
+    <div class="space-y-8">
+
+        <!-- ============================================================= -->
+        <!-- 1. 🥇 ЗОЛОТОЙ РАНГ (Tier III) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border-2 border-amber-400/70 overflow-hidden shadow-2xl bg-gradient-to-b from-amber-950/20 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/60 via-slate-900/90 to-amber-950/30 border-b border-amber-400/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-400/40 ring-2 ring-amber-300 shrink-0">
+                        🥇
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-amber-300 tracking-tight">
+                                Золотой ранг (Tier III)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-mono font-black text-xs shadow-sm">
+                                +500 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-amber-400 font-bold">Условие:</span>
+                            <span>{{ ach.conditions[3] }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-amber-400/40 font-mono text-xs font-bold text-amber-300 self-start md:self-auto">
+                    <span>👑 Обладателей:</span>
+                    <span class="text-base font-black text-white">{{ gold_holders|length }}</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            {% if gold_holders %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-amber-500/20 text-[11px] font-bold font-mono text-amber-400 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4 text-center">Прогресс матчей</th>
+                            <th class="py-3 px-4 text-center">Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        {% for p in gold_holders %}
+                        <tr class="hover:bg-amber-950/20 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-300">
+                                #{{ loop.index }}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border-2 border-amber-400/80 flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-amber-300 transition block">
+                                            {{ p.name }}
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: {{ p.steam_id }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    {{ p.current_mmr }} MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold">
+                                    {{ p.matches_completed }}
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-mono font-black text-xs shadow-md shadow-amber-500/30">
+                                    <span>👑</span> <span>Золотой Триумф</span>
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-8 sm:p-12 text-center">
+                <div class="w-16 h-16 rounded-full bg-amber-950/50 border border-amber-500/40 text-amber-300 text-3xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    🥇
+                </div>
+                <h3 class="text-lg font-black text-amber-300">Золотой ранг еще никому не покорился — стань первым!</h3>
+                <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
+                    Выполни условие: <strong class="text-slate-200">{{ ach.conditions[3] }}</strong> и забирай максимальные +500 PTS в Зал Славы!
+                </p>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 2. 🥈 СЕРЕБРЯНЫЙ РАНГ (Tier II) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-slate-400/50 overflow-hidden shadow-xl bg-gradient-to-b from-slate-900/40 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-800/60 via-slate-900/90 to-slate-800/30 border-b border-slate-500/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-slate-300 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-slate-300/30 ring-2 ring-white shrink-0">
+                        🥈
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-100 tracking-tight">
+                                Серебряный ранг (Tier II)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-300 text-slate-950 font-mono font-black text-xs shadow-sm">
+                                +250 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-slate-300 font-bold">Условие:</span>
+                            <span>{{ ach.conditions[2] }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-500 font-mono text-xs font-bold text-slate-200 self-start md:self-auto">
+                    <span>🥈 Обладателей:</span>
+                    <span class="text-base font-black text-white">{{ silver_holders|length }}</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            {% if silver_holders %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-slate-700/60 text-[11px] font-bold font-mono text-slate-300 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Выполнено</th>
+                            <th class="py-3 px-4 text-center">Прогресс к Золоту</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        {% for p in silver_holders %}
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-slate-300">
+                                #{{ loop.index }}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-400 flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            {{ p.name }}
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: {{ p.steam_id }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    {{ p.current_mmr }} MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> {{ p.desc }}
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                                    {{ p.progress_text }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-8 sm:p-12 text-center">
+                <div class="w-16 h-16 rounded-full bg-slate-800/60 border border-slate-600 text-slate-300 text-3xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    🥈
+                </div>
+                <h3 class="text-lg font-black text-slate-200">Серебряный ранг еще не покорился — стань первым!</h3>
+                <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
+                    Выполни условие: <strong class="text-slate-300">{{ ach.conditions[2] }}</strong> (+250 PTS).
+                </p>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 3. 🥉 БРОНЗОВЫЙ РАНГ (Tier I) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-amber-700/50 overflow-hidden shadow-xl bg-gradient-to-b from-amber-950/15 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/50 via-slate-900/90 to-amber-950/20 border-b border-amber-700/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-700 text-amber-100 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-700/30 ring-2 ring-amber-500 shrink-0">
+                        🥉
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-amber-400 tracking-tight">
+                                Бронзовый ранг (Tier I)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-700 text-amber-100 font-mono font-black text-xs shadow-sm">
+                                +100 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-amber-500 font-bold">Условие:</span>
+                            <span>{{ ach.conditions[1] }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-amber-700/60 font-mono text-xs font-bold text-amber-400 self-start md:self-auto">
+                    <span>🥉 Обладателей:</span>
+                    <span class="text-base font-black text-white">{{ bronze_holders|length }}</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            {% if bronze_holders %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-amber-900/40 text-[11px] font-bold font-mono text-amber-500 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Выполнено</th>
+                            <th class="py-3 px-4 text-center">Прогресс к Серебру</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        {% for p in bronze_holders %}
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #{{ loop.index }}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            {{ p.name }}
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: {{ p.steam_id }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    {{ p.current_mmr }} MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> {{ p.desc }}
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    {{ p.progress_text }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-8 sm:p-12 text-center">
+                <div class="w-16 h-16 rounded-full bg-amber-950/40 border border-amber-700/50 text-amber-500 text-3xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    🥉
+                </div>
+                <h3 class="text-lg font-black text-amber-400">Бронзовый ранг еще не покорился — стань первым!</h3>
+                <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
+                    Выполни условие: <strong class="text-slate-300">{{ ach.conditions[1] }}</strong> (+100 PTS).
+                </p>
+            </div>
+            {% endif %}
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 4. ⏳ В ПРОЦЕССЕ ВЫПОЛНЕНИЯ (Tier 0) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-slate-800 overflow-hidden shadow-xl bg-slate-950/90">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-slate-900/90 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center font-black text-2xl border border-slate-700 shrink-0">
+                        ⏳
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                                В процессе выполнения (Tier 0)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono font-bold text-xs border border-slate-700">
+                                0 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Игроки, идущие к открытию Бронзового ранга: <span class="text-slate-200 font-medium">{{ ach.conditions[1] }}</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-700 font-mono text-xs font-bold text-slate-400 self-start md:self-auto">
+                    <span>Претендентов:</span>
+                    <span class="text-base font-black text-white">{{ in_progress|length }}</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            {% if in_progress %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-slate-800 text-[11px] font-bold font-mono text-slate-400 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Текущий результат</th>
+                            <th class="py-3 px-4 text-center">Осталось до Бронзы</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        {% for p in in_progress %}
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #{{ loop.index }}
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            {{ p.name }}
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: {{ p.steam_id }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    {{ p.current_mmr }} MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: {{ p.progress_pct }}%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">{{ p.current_result }}</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    {{ p.remaining_text }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-8 sm:p-12 text-center">
+                <div class="w-16 h-16 rounded-full bg-emerald-950/40 border border-emerald-600/40 text-emerald-400 text-3xl flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    🎉
+                </div>
+                <h3 class="text-lg font-black text-emerald-300">Все игроки уже открыли как минимум Бронзовый ранг!</h3>
+                <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto leading-relaxed">
+                    В сообществе не осталось участников с нулевым прогрессом по этому испытанию.
+                </p>
+            </div>
+            {% endif %}
+        </section>
+
+    </div>
+
+    <!-- Bottom Navigation Link -->
+    <div class="mt-10 pt-6 border-t border-slate-800/80 flex items-center justify-between">
+        <a href="{{ root_path }}achievements.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition">
+            <span>←</span> <span>Вернуться в Зал славы и Каталог наград</span>
+        </a>
+        <a href="{{ root_path }}skills.html" class="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white transition">
+            <span>Таблица навыков 1-10 ➔</span>
+        </a>
+    </div>
+
+</div>
+{% endblock %}

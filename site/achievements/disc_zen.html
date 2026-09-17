@@ -1,0 +1,1472 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глубокий анализ ваших матчей Counter-Strike 2">
+    <title>Дзен спецназа — Достижение | CS2 Stats</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Rajdhani:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        (function() {
+            try {
+                const t = localStorage.getItem('cs2_theme') || 'light';
+                document.documentElement.setAttribute('data-theme', t);
+                if (t === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            } catch(e) {}
+        })();
+    </script>
+</head>
+<body class="light-theme">
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="../index.html">
+                    <svg viewBox="0 0 100 86.6" class="logo-pyramid w-7 h-7 shrink-0" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="../index.html" class="nav-item ">
+                    <span class="nav-icon">📊</span> Главная
+                </a>
+                <a href="../index.html#players-section" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Игроки
+                </a>
+                <a href="../skills.html" class="nav-item ">
+                    <span class="nav-icon">🎯</span> Навыки
+                </a>
+                <a href="../index.html#sessions-section" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
+                </a>
+                <a href="../achievements.html" class="nav-item active">
+                    <span class="nav-icon">🏆</span> Достижения
+                </a>
+                <a href="../compare.html" class="nav-item ">
+                    <span class="nav-icon">⚔️</span> Дуэли
+                </a>
+                <a href="../matchmaker.html" class="nav-item ">
+                    <span class="nav-icon">⚖️</span> Составы
+                </a>
+            </nav>
+
+            <!-- Theme Switcher (Desktop) -->
+            <div class="relative ml-2 hidden md:flex items-center">
+                <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" title="Переключить тему">
+                    <span id="theme-icon">☀️</span>
+                    <span id="theme-text">Светлая</span>
+                </button>
+            </div>
+
+            <!-- Mobile Controls (Quick Theme Toggle + Hamburger) -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button type="button" id="mobile-theme-btn" class="theme-toggle-btn !p-2 !rounded-xl" aria-label="Переключить тему" title="Переключить тему">
+                    <span id="mobile-theme-icon">☀️</span>
+                </button>
+                <button type="button" id="mobile-menu-btn" class="hamburger-btn text-slate-700 dark:text-slate-300 p-2 focus:outline-none" aria-label="Открыть мобильное меню">
+                    <span class="text-xl">☰</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+            <div class="logo">
+                <a href="../index.html" class="flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                </a>
+            </div>
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+                ✕
+            </button>
+        </div>
+        <nav class="flex flex-col gap-2.5 mt-6">
+            <a href="../index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📊</span> <span>Главная</span>
+            </a>
+            <a href="../index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            </a>
+            <a href="../skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            </a>
+            <a href="../compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="../matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            </a>
+            <a href="../index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
+                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
+            </a>
+            <a href="../achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50">
+                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
+            </a>
+        </nav>
+
+        <!-- Mobile Drawer Theme Switcher -->
+        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                <span id="drawer-theme-icon">☀️</span>
+                <span>Тема оформления</span>
+            </span>
+            <button type="button" id="drawer-theme-btn" class="theme-toggle-btn !px-3.5 !py-1.5">
+                <span id="drawer-theme-text">Светлая</span>
+            </button>
+        </div>
+
+        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+            KASE CS2 Analytics Platform &bull; Mobile Nav
+        </div>
+    </div>
+
+    
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="../index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <a href="../achievements.html" class="hover:text-amber-400 transition">Зал славы и Достижения</a>
+        <span>/</span>
+        <span class="text-white font-medium flex items-center gap-1.5">
+            <span>🧘</span> <span>Дзен спецназа</span>
+        </span>
+    </div>
+</div>
+
+
+    <main class="main-content">
+        
+<div class="container mx-auto px-4 py-8">
+
+    <!-- Top Navigation Action -->
+    <div class="mb-5 flex items-center justify-between">
+        <a href="../achievements.html" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/70 text-slate-300 hover:text-amber-300 hover:border-amber-500/50 text-xs font-mono font-bold transition shadow-sm">
+            <span>←</span> <span>Вернуться в Зал Славы</span>
+        </a>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-slate-300 font-mono text-xs">
+            <span>Категория:</span>
+            <strong class="text-amber-400">Discipline (Дисциплина)</strong>
+        </div>
+    </div>
+
+    <!-- Hero Header Card -->
+    <section class="hero-section glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/30 mb-8 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+            <!-- Left: Medallion + Title & Essence -->
+            <div class="flex items-start sm:items-center gap-5">
+                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400/20 via-slate-900 to-amber-950/40 border-2 border-amber-400/60 flex items-center justify-center text-4xl sm:text-5xl shrink-0 shadow-xl shadow-amber-950/50">
+                    🧘
+                </div>
+                <div>
+                    <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold mb-2 shadow-sm">
+                        <span>🌟</span> <span>КИБЕРСПОРТИВНОЕ ИСПЫТАНИЕ</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-4xl font-black text-white tracking-tight flex items-center gap-3">
+                        Дзен спецназа
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                        Идеальная игровая дисциплина: завершение полного матча (16+ раундов) без единой первой смерти (0 First Deaths). Демонстрирует осторожность и выдержку.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: Rarity & Quick Tier Summary -->
+            <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-5 min-w-[260px] shadow-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-1">
+                        <span class="uppercase tracking-wider font-bold">Редкость:</span>
+                        <span class="text-amber-300 font-black text-sm">76.0%</span>
+                    </div>
+                    <div class="text-[11px] text-slate-300 mb-2">
+                        Разблокировано у <strong class="text-white">19</strong> из <strong class="text-white">25</strong> игроков
+                    </div>
+                    <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800 p-0.5 mb-3.5">
+                        <div class="bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-300 h-full rounded-full transition-all duration-700" style="width: 76.0%;"></div>
+                    </div>
+                </div>
+
+                <!-- 4 Tiers Quick Count Badges -->
+                <div class="grid grid-cols-4 gap-1.5 font-mono text-[10px] text-center pt-2 border-t border-slate-800/80">
+                    <div class="p-1.5 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold" title="Золотой ранг">
+                        <div class="text-xs">🥇</div>
+                        <div class="mt-0.5">3</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-slate-800 border border-slate-500 text-slate-200 font-bold" title="Серебряный ранг">
+                        <div class="text-xs">🥈</div>
+                        <div class="mt-0.5">3</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-amber-950/40 border border-amber-700/40 text-amber-500 font-bold" title="Бронзовый ранг">
+                        <div class="text-xs">🥉</div>
+                        <div class="mt-0.5">13</div>
+                    </div>
+                    <div class="p-1.5 rounded-lg bg-slate-950 border border-slate-800 text-slate-400 font-bold" title="В процессе">
+                        <div class="text-xs">⏳</div>
+                        <div class="mt-0.5">6</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4 DISTINCT STYLED BLOCKS (Gold, Silver, Bronze, In Progress) -->
+    <div class="space-y-8">
+
+        <!-- ============================================================= -->
+        <!-- 1. 🥇 ЗОЛОТОЙ РАНГ (Tier III) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border-2 border-amber-400/70 overflow-hidden shadow-2xl bg-gradient-to-b from-amber-950/20 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/60 via-slate-900/90 to-amber-950/30 border-b border-amber-400/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-400/40 ring-2 ring-amber-300 shrink-0">
+                        🥇
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-amber-300 tracking-tight">
+                                Золотой ранг (Tier III)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-mono font-black text-xs shadow-sm">
+                                +500 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-amber-400 font-bold">Условие:</span>
+                            <span>5 матчей без единой первой смерти (0 FD, мин. 16 раундов)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-amber-400/40 font-mono text-xs font-bold text-amber-300 self-start md:self-auto">
+                    <span>👑 Обладателей:</span>
+                    <span class="text-base font-black text-white">3</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-amber-500/20 text-[11px] font-bold font-mono text-amber-400 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4 text-center">Прогресс матчей</th>
+                            <th class="py-3 px-4 text-center">Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        
+                        <tr class="hover:bg-amber-950/20 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-300">
+                                #1
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border-2 border-amber-400/80 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        MB
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198686899454.html" class="font-bold text-white hover:text-amber-300 transition block">
+                                            mbaliyev
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198686899454</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1088 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold">
+                                    5 из 5
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-mono font-black text-xs shadow-md shadow-amber-500/30">
+                                    <span>👑</span> <span>Золотой Триумф</span>
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/20 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-300">
+                                #2
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border-2 border-amber-400/80 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        AL
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199339730968.html" class="font-bold text-white hover:text-amber-300 transition block">
+                                            altairinthesky
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199339730968</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1047 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold">
+                                    5 из 5
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-mono font-black text-xs shadow-md shadow-amber-500/30">
+                                    <span>👑</span> <span>Золотой Триумф</span>
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/20 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-300">
+                                #3
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border-2 border-amber-400/80 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        K-
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199569491960.html" class="font-bold text-white hover:text-amber-300 transition block">
+                                            k--9
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199569491960</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1016 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 font-bold">
+                                    5 из 5
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-mono font-black text-xs shadow-md shadow-amber-500/30">
+                                    <span>👑</span> <span>Золотой Триумф</span>
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 2. 🥈 СЕРЕБРЯНЫЙ РАНГ (Tier II) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-slate-400/50 overflow-hidden shadow-xl bg-gradient-to-b from-slate-900/40 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-800/60 via-slate-900/90 to-slate-800/30 border-b border-slate-500/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-slate-300 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-slate-300/30 ring-2 ring-white shrink-0">
+                        🥈
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-100 tracking-tight">
+                                Серебряный ранг (Tier II)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-300 text-slate-950 font-mono font-black text-xs shadow-sm">
+                                +250 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-slate-300 font-bold">Условие:</span>
+                            <span>3 матча без единой первой смерти (0 FD, мин. 16 раундов)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-slate-500 font-mono text-xs font-bold text-slate-200 self-start md:self-auto">
+                    <span>🥈 Обладателей:</span>
+                    <span class="text-base font-black text-white">3</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-slate-700/60 text-[11px] font-bold font-mono text-slate-300 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Выполнено</th>
+                            <th class="py-3 px-4 text-center">Прогресс к Золоту</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-slate-300">
+                                #1
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-400 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        FO
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198100478545.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Folie_1
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198100478545</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    994 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 3 матча без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                                    4 / 5 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-slate-300">
+                                #2
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-400 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        SA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198083546367.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Saliend
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198083546367</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    988 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 3 матча без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                                    4 / 5 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-800/30 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-slate-300">
+                                #3
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-400 flex items-center justify-center font-black text-xs shrink-0 bg-emerald-950/80 border-emerald-500/50 text-emerald-200 group-hover:border-emerald-400 group-hover:shadow-emerald-500/30 group-hover:shadow-md">
+                                        ZI
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199413542223.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            zikayevg
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199413542223</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    827 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 3 матча без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                                    3 / 5 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 3. 🥉 БРОНЗОВЫЙ РАНГ (Tier I) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-amber-700/50 overflow-hidden shadow-xl bg-gradient-to-b from-amber-950/15 via-slate-950 to-slate-950">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/50 via-slate-900/90 to-amber-950/20 border-b border-amber-700/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-amber-700 text-amber-100 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-700/30 ring-2 ring-amber-500 shrink-0">
+                        🥉
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-amber-400 tracking-tight">
+                                Бронзовый ранг (Tier I)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-amber-700 text-amber-100 font-mono font-black text-xs shadow-sm">
+                                +100 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+                            <span class="text-amber-500 font-bold">Условие:</span>
+                            <span>1 матч без единой первой смерти (0 FD, мин. 16 раундов)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-amber-700/60 font-mono text-xs font-bold text-amber-400 self-start md:self-auto">
+                    <span>🥉 Обладателей:</span>
+                    <span class="text-base font-black text-white">13</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-amber-900/40 text-[11px] font-bold font-mono text-amber-500 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Выполнено</th>
+                            <th class="py-3 px-4 text-center">Прогресс к Серебру</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #1
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                        MA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199153011354.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            matadorra
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199153011354</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1116 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    1 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #2
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                        AL
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198431427139.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            ALIBONYA
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198431427139</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1115 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #3
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        IN
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198356069369.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            insta/Ne7er0cs
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198356069369</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1095 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #4
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                        RE
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199508661466.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Resone West
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199508661466</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1090 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    1 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #5
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        ZA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199043039622.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Zanoza59
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199043039622</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    1077 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #6
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        YE
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198402746932.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Yesk0
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198402746932</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    997 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    1 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #7
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        __
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198357586856.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            __9503
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198357586856</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    994 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #8
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        SG
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199438131194.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            SGEM_7
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199438131194</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    984 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #9
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        CH
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199808571117.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            CHPOKERS
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561199808571117</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    962 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #10
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        AZ
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198234120608.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Azki_1
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198234120608</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    961 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #11
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        TA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198885191528.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            taksist_3
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198885191528</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    935 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    1 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #12
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
+                                        OC
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198254267961.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            Oceanmengo
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561198254267961</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    919 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    2 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-amber-950/15 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-black text-amber-500">
+                                #13
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-amber-600 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        GI
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561197990475042.html" class="font-bold text-white hover:text-emerald-400 transition block">
+                                            GIGABYTE_KZ
+                                        </a>
+                                        <span class="text-[10px] text-slate-400 font-mono">ID: 76561197990475042</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-200 font-bold">
+                                    869 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4 text-xs text-slate-300">
+                                <span class="text-emerald-400 font-bold mr-1">✓</span> 1 матч без единой первой смерти (0 FD, мин. 16 раундов)
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 font-bold">
+                                    1 / 3 матчей с 0 первых смертей (0 FD)
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </section>
+
+        <!-- ============================================================= -->
+        <!-- 4. ⏳ В ПРОЦЕССЕ ВЫПОЛНЕНИЯ (Tier 0) -->
+        <!-- ============================================================= -->
+        <section class="tier-block glassmorphism rounded-2xl border border-slate-800 overflow-hidden shadow-xl bg-slate-950/90">
+            <!-- Header Banner -->
+            <div class="p-5 sm:p-6 bg-slate-900/90 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-12 h-12 rounded-xl bg-slate-800 text-slate-400 flex items-center justify-center font-black text-2xl border border-slate-700 shrink-0">
+                        ⏳
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h2 class="text-xl sm:text-2xl font-black text-white tracking-tight">
+                                В процессе выполнения (Tier 0)
+                            </h2>
+                            <span class="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono font-bold text-xs border border-slate-700">
+                                0 PTS
+                            </span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Игроки, идущие к открытию Бронзового ранга: <span class="text-slate-200 font-medium">1 матч без единой первой смерти (0 FD, мин. 16 раундов)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-700 font-mono text-xs font-bold text-slate-400 self-start md:self-auto">
+                    <span>Претендентов:</span>
+                    <span class="text-base font-black text-white">6</span>
+                </div>
+            </div>
+
+            <!-- Content: Table or Empty State -->
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-900/90 border-b border-slate-800 text-[11px] font-bold font-mono text-slate-400 uppercase tracking-wider">
+                            <th class="py-3 px-4 text-center w-14">#</th>
+                            <th class="py-3 px-4">Игрок</th>
+                            <th class="py-3 px-4 text-center">Ранг / MMR</th>
+                            <th class="py-3 px-4">Текущий результат</th>
+                            <th class="py-3 px-4 text-center">Осталось до Бронзы</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-sm">
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #1
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                        C 
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198998095898.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            c kaifom
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561198998095898</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    1128 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #2
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        RA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198243149322.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            Rayi
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561198243149322</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    1079 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #3
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        IA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561199478211872.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            iamresplendent
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561199478211872</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    1015 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #4
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        QU
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198125968237.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            qumashasyl
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561198125968237</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    991 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #5
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        NA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198010867827.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            Nakama_4
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561198010867827</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    987 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-900/50 transition">
+                            <td class="py-3.5 px-4 text-center font-mono font-bold text-slate-500">
+                                #6
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-xl border border-slate-700 flex items-center justify-center font-black text-xs shrink-0 bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500">
+                                        DA
+                                    </div>
+                                    <div>
+                                        <a href="../players/76561198068831005.html" class="font-bold text-slate-200 hover:text-emerald-400 transition block">
+                                            DarkAtom
+                                        </a>
+                                        <span class="text-[10px] text-slate-500 font-mono">ID: 76561198068831005</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono">
+                                <span class="text-xs px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-400">
+                                    961 MMR
+                                </span>
+                            </td>
+                            <td class="py-3.5 px-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-24 sm:w-32 bg-slate-900 rounded-full h-1.5 overflow-hidden border border-slate-800 shrink-0">
+                                        <div class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full rounded-full" style="width: 0.0%;"></div>
+                                    </div>
+                                    <span class="font-mono text-xs text-slate-300 font-semibold">0 / 1 матчей с 0 первых смертей (0 FD)</span>
+                                </div>
+                            </td>
+                            <td class="py-3.5 px-4 text-center font-mono text-xs">
+                                <span class="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 font-bold">
+                                    Осталось: 1 матчей
+                                </span>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            
+        </section>
+
+    </div>
+
+    <!-- Bottom Navigation Link -->
+    <div class="mt-10 pt-6 border-t border-slate-800/80 flex items-center justify-between">
+        <a href="../achievements.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-500/40 text-xs font-mono font-bold transition">
+            <span>←</span> <span>Вернуться в Зал славы и Каталог наград</span>
+        </a>
+        <a href="../skills.html" class="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white transition">
+            <span>Таблица навыков 1-10 ➔</span>
+        </a>
+    </div>
+
+</div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <p class="footer-title flex items-center gap-2">
+                    <svg viewBox="0 0 100 86.6" class="w-5 h-5 shrink-0 inline-block align-middle" style="display:inline-block; vertical-align:middle;">
+                        <polygon points="50,0 50,61.9 0,86.6" fill="#50aa40" />
+                        <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
+                        <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
+                    </svg>
+                    <span>CS2 Demo Analytics Platform</span>
+                </p>
+                <p class="footer-timestamp">Данные обновлены: 17.09.2026 18:28</p>
+            </div>
+            <div class="footer-nav">
+                <a href="#" class="back-to-top">⬆️ Наверх</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Theme Manager & Chart.js Integration -->
+    <script>
+        (function() {
+            const THEME_KEY = 'cs2_theme';
+            
+            function getInitialTheme() {
+                try {
+                    const saved = localStorage.getItem(THEME_KEY);
+                    if (saved === 'dark' || saved === 'light') return saved;
+                } catch(e) {}
+                return 'light'; // Default is Light (KASE Financial Theme)
+            }
+
+            function updateChartDefaults(isLight) {
+                if (typeof Chart !== 'undefined') {
+                    Chart.defaults.color = isLight ? '#1e293b' : 'rgba(255, 255, 255, 0.7)';
+                    if (Chart.defaults.scale && Chart.defaults.scale.grid) {
+                        Chart.defaults.scale.grid.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)';
+                    }
+                    Chart.defaults.font.family = "'Inter', sans-serif";
+                }
+            }
+
+            function applyTheme(theme) {
+                const isLight = (theme === 'light');
+                const html = document.documentElement;
+                const body = document.body;
+
+                if (isLight) {
+                    html.classList.remove('dark');
+                    html.setAttribute('data-theme', 'light');
+                    if (body) {
+                        body.classList.remove('dark-theme');
+                        body.classList.add('light-theme');
+                    }
+                } else {
+                    html.classList.add('dark');
+                    html.setAttribute('data-theme', 'dark');
+                    if (body) {
+                        body.classList.remove('light-theme');
+                        body.classList.add('dark-theme');
+                    }
+                }
+
+                // Update UI Buttons
+                const iconStr = isLight ? '☀️' : '🌙';
+                const labelStr = isLight ? 'Светлая' : 'Темная';
+
+                const dIcon = document.getElementById('theme-icon');
+                const dText = document.getElementById('theme-text');
+                if (dIcon) dIcon.textContent = iconStr;
+                if (dText) dText.textContent = labelStr;
+
+                const mIcon = document.getElementById('mobile-theme-icon');
+                if (mIcon) mIcon.textContent = iconStr;
+
+                const drIcon = document.getElementById('drawer-theme-icon');
+                const drText = document.getElementById('drawer-theme-text');
+                if (drIcon) drIcon.textContent = iconStr;
+                if (drText) drText.textContent = labelStr;
+
+                // Update Chart.js Defaults
+                updateChartDefaults(isLight);
+
+                // Dynamically update active charts on the page
+                if (typeof Chart !== 'undefined' && Chart.instances) {
+                    Object.values(Chart.instances).forEach(chart => {
+                        if (chart.options && chart.options.scales) {
+                            Object.values(chart.options.scales).forEach(scale => {
+                                if (scale.grid) scale.grid.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.1)';
+                                if (scale.ticks) scale.ticks.color = isLight ? '#1e293b' : 'rgba(255, 255, 255, 0.7)';
+                                if (scale.pointLabels) scale.pointLabels.color = isLight ? '#0f172a' : '#cbd5e1';
+                                if (scale.angleLines) scale.angleLines.color = isLight ? 'rgba(15, 23, 42, 0.08)' : 'rgba(255, 255, 255, 0.15)';
+                                if (scale.title) scale.title.color = isLight ? '#0f172a' : '#cbd5e1';
+                            });
+                        }
+                        if (chart.options && chart.options.plugins && chart.options.plugins.legend && chart.options.plugins.legend.labels) {
+                            chart.options.plugins.legend.labels.color = isLight ? '#1e293b' : '#cbd5e1';
+                        }
+                        chart.update();
+                    });
+                }
+
+                try {
+                    localStorage.setItem(THEME_KEY, theme);
+                } catch(e) {}
+            }
+
+            function toggleTheme() {
+                const current = localStorage.getItem(THEME_KEY) || 'light';
+                const next = current === 'light' ? 'dark' : 'light';
+                applyTheme(next);
+            }
+
+            // Expose globally
+            window.toggleTheme = toggleTheme;
+            window.applyTheme = applyTheme;
+
+            // Initial immediate application
+            const initial = getInitialTheme();
+            updateChartDefaults(initial === 'light');
+            if (document.body) {
+                applyTheme(initial);
+            } else {
+                document.addEventListener('DOMContentLoaded', () => applyTheme(initial));
+            }
+
+            // Wire up buttons once DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                const dBtn = document.getElementById('theme-toggle-btn');
+                const mBtn = document.getElementById('mobile-theme-btn');
+                const drBtn = document.getElementById('drawer-theme-btn');
+
+                if (dBtn) dBtn.addEventListener('click', toggleTheme);
+                if (mBtn) mBtn.addEventListener('click', toggleTheme);
+                if (drBtn) drBtn.addEventListener('click', toggleTheme);
+            });
+        })();
+    </script>
+    
+    
+    <script src="../js/app.js"></script>
+    <script>
+        // Mobile Navigation Drawer Toggle
+        (function() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const drawer = document.getElementById('mobile-nav-drawer');
+            const closeBtn = document.getElementById('mobile-menu-close');
+            if (btn && drawer) {
+                function setOpen(isOpen) {
+                    if (isOpen) {
+                        drawer.classList.remove('hidden');
+                        drawer.classList.add('flex');
+                        document.body.style.overflow = 'hidden';
+                    } else {
+                        drawer.classList.add('hidden');
+                        drawer.classList.remove('flex');
+                        document.body.style.overflow = '';
+                    }
+                }
+                btn.addEventListener('click', () => {
+                    const isOpen = !drawer.classList.contains('hidden');
+                    setOpen(!isOpen);
+                });
+                if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+                drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
+                    link.addEventListener('click', () => setOpen(false));
+                });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') setOpen(false);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

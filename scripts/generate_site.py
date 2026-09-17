@@ -1825,9 +1825,8 @@ def generate_site():
     )
     logging.info("Сгенерирована страница навыков: site/skills.html")
 
-    # 6. Генерация страницы Зала славы и достижений site/achievements.html
+    # 6. Генерация страницы Зала славы (site/achievements.html) и 30 персональных страниц (site/achievements/<id>.html)
     glory_leaderboard = []
-    ach_catalog_map = {}
 
     for p in players:
         sid = clean_steamid(p.get("steam_id"))
@@ -1836,26 +1835,6 @@ def generate_site():
         p_name = clean_name(p.get("name", f"Player_{sid[-4:]}"))
         ach_list = p.get("achievements", [])
         ach_summary = p.get("achievements_summary", {})
-        
-        for a in ach_list:
-            aid = a.get("id")
-            if aid and aid not in ach_catalog_map:
-                ach_catalog_map[aid] = {
-                    "id": aid,
-                    "title": a.get("title"),
-                    "icon": a.get("icon"),
-                    "desc": a.get("desc"),
-                    "max_tier": a.get("max_tier", 3),
-                    "holders": {1: [], 2: [], 3: []}
-                }
-            if aid and a.get("tier", 0) > 0:
-                tier = a.get("tier")
-                if tier in (1, 2, 3):
-                    ach_catalog_map[aid]["holders"][tier].append({
-                        "steam_id": sid,
-                        "name": p_name,
-                        "tier_name": a.get("tier_name")
-                    })
 
         mmr_d = p.get("mmr", {})
         curr_m = mmr_d.get("current_mmr", STARTING_MMR)
@@ -1890,8 +1869,133 @@ def generate_site():
     for idx, pl in enumerate(glory_leaderboard, start=1):
         pl["glory_rank"] = idx
 
-    all_achievements_catalog = list(ach_catalog_map.values())
+    achievements_dir = SITE_DIR / "achievements"
+    achievements_dir.mkdir(parents=True, exist_ok=True)
+    ach_detail_template = env.get_template("achievement_detail.html")
 
+    all_achievements_catalog = []
+
+    for aid, meta in ACHIEVEMENTS_METADATA.items():
+        gold_holders = []
+        silver_holders = []
+        bronze_holders = []
+        in_progress = []
+
+        for pl in glory_leaderboard:
+            sid = pl["steam_id"]
+            p_name = pl["name"]
+            curr_m = pl["current_mmr"]
+            rt = pl["rank_tier"]
+            avatar_cls = pl["avatar_classes"]
+
+            p_ach = next((a for a in pl.get("achievements", []) if a.get("id") == aid), None)
+            if not p_ach:
+                continue
+
+            tier = p_ach.get("tier", 0)
+            prog_val = p_ach.get("progress_val", 0)
+            prog_max = p_ach.get("progress_max", 0)
+            prog_pct = p_ach.get("progress_pct", 0.0)
+            prog_text = p_ach.get("progress_text") or p_ach.get("progress", "")
+            desc = p_ach.get("desc", "")
+            next_goal = p_ach.get("next_goal", "")
+
+            p_item = {
+                "steam_id": sid,
+                "name": p_name,
+                "avatar_classes": avatar_cls,
+                "rank_tier": rt,
+                "current_mmr": curr_m,
+                "tier": tier,
+                "tier_name": p_ach.get("tier_name", ""),
+                "progress_val": prog_val,
+                "progress_max": prog_max,
+                "progress_pct": prog_pct,
+                "progress_text": prog_text,
+                "desc": desc,
+                "next_goal": next_goal,
+                "points": p_ach.get("points", 0),
+                "stars": p_ach.get("stars", "☆☆☆"),
+                "stars_data": p_ach.get("stars_data", [])
+            }
+
+            if tier == 3:
+                p_item["best_metric"] = "Выполнено на 100% 🥇"
+                p_item["matches_completed"] = f"{prog_max} из {prog_max}" if prog_max else "5 из 5"
+                gold_holders.append(p_item)
+            elif tier == 2:
+                p_item["best_metric"] = desc
+                p_item["matches_completed"] = prog_text
+                silver_holders.append(p_item)
+            elif tier == 1:
+                p_item["best_metric"] = desc
+                p_item["matches_completed"] = prog_text
+                bronze_holders.append(p_item)
+            else:
+                try:
+                    remaining_val = max(0, float(prog_max) - float(prog_val))
+                    if remaining_val == int(remaining_val):
+                        remaining_val = int(remaining_val)
+                    unit_str = meta.get("unit", "")
+                    p_item["remaining_text"] = f"Осталось: {remaining_val} {unit_str}".strip()
+                except Exception:
+                    p_item["remaining_text"] = "В процессе выполнения"
+                p_item["current_result"] = prog_text or f"{prog_val} / {prog_max}"
+                in_progress.append(p_item)
+
+        gold_holders.sort(key=lambda x: x["current_mmr"], reverse=True)
+        silver_holders.sort(key=lambda x: x["current_mmr"], reverse=True)
+        bronze_holders.sort(key=lambda x: x["current_mmr"], reverse=True)
+        in_progress.sort(key=lambda x: (x["progress_pct"], x["current_mmr"]), reverse=True)
+
+        tot_pl = len(glory_leaderboard)
+        unlocked_cnt = len(gold_holders) + len(silver_holders) + len(bronze_holders)
+        rarity_pct = round((unlocked_cnt / max(1, tot_pl)) * 100, 1)
+
+        ach_data = {
+            "id": aid,
+            "title": meta["title"],
+            "icon": meta["icon"],
+            "category": meta["category"],
+            "essence": meta["essence"],
+            "conditions": meta["conditions"],
+            "points": meta["points"],
+            "unit": meta.get("unit", "матчей"),
+            "unlocked_count": unlocked_cnt,
+            "total_players": tot_pl,
+            "rarity_pct": rarity_pct,
+            "gold_count": len(gold_holders),
+            "silver_count": len(silver_holders),
+            "bronze_count": len(bronze_holders),
+            "in_progress_count": len(in_progress),
+            "holders": {
+                1: bronze_holders,
+                2: silver_holders,
+                3: gold_holders
+            },
+            "desc": meta["essence"]
+        }
+
+        all_achievements_catalog.append(ach_data)
+
+        # Генерация отдельной страницы достижения site/achievements/<aid>.html
+        safe_dump(
+            ach_detail_template.stream(
+                active_page="achievements",
+                ach=ach_data,
+                gold_holders=gold_holders,
+                silver_holders=silver_holders,
+                bronze_holders=bronze_holders,
+                in_progress=in_progress,
+                root_path="../",
+                css_path="../css/style.css",
+                js_path="../js/app.js",
+                generated_at=generated_at
+            ),
+            achievements_dir / f"{aid}.html"
+        )
+
+    # Генерация общей страницы Зала славы site/achievements.html
     achievements_template = env.get_template("achievements.html")
     safe_dump(
         achievements_template.stream(
@@ -1905,7 +2009,7 @@ def generate_site():
         ),
         SITE_DIR / "achievements.html"
     )
-    logging.info("Сгенерирована страница достижений: site/achievements.html")
+    logging.info("Сгенерирована страница достижений: site/achievements.html и 30 персональных страниц в site/achievements/")
 
     # 7. Генерация страницы демок site/demos.html
     demos_template = env.get_template("demos.html")

@@ -882,7 +882,10 @@
                             <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40">Фокус №1</span>
                         </div>
                         <h3 class="text-lg font-black text-white flex items-center gap-2 mt-0.5">
-                            {{ tq.title }}
+                            <a href="{{ root_path }}achievements/{{ tq.id }}.html" class="hover:text-amber-300 hover:underline transition flex items-center gap-1.5" title="Перейти на страницу испытания {{ tq.title }}">
+                                <span>{{ tq.title }}</span>
+                                <span class="text-xs text-amber-400 font-mono">↗</span>
+                            </a>
                             <span class="text-xs font-normal font-mono px-2 py-0.5 rounded {% if tq.tier == 3 %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif tq.tier == 2 %}bg-slate-300/20 text-slate-200 border border-slate-400/40{% elif tq.tier == 1 %}bg-amber-800/20 text-amber-400 border border-amber-700/40{% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
                                 {{ tq.tier_name }}
                             </span>
@@ -955,9 +958,10 @@
                 <div class="quest-rec-card glassmorphism p-3 rounded-lg border border-slate-700/60 bg-slate-900/60 flex flex-col justify-between hover:border-amber-500/50 transition-colors">
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <span class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-                                <span>{{ q.icon }}</span> {{ q.title }}
-                            </span>
+                            <a href="{{ root_path }}achievements/{{ q.id }}.html" class="text-xs font-bold text-amber-300 flex items-center gap-1.5 hover:underline transition" title="Открыть страницу испытания {{ q.title }}">
+                                <span>{{ q.icon }}</span> <span>{{ q.title }}</span>
+                                <span class="text-[10px] text-amber-400/80 font-mono">↗</span>
+                            </a>
                             <span class="text-[10px] font-mono px-1.5 py-0.5 rounded {% if q.tier == 3 %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif q.tier == 2 %}bg-slate-300/20 text-slate-200 border border-slate-400/40{% elif q.tier == 1 %}bg-amber-800/20 text-amber-400 border border-amber-700/40{% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
                                 {{ q.tier_name }}
                             </span>
@@ -1200,9 +1204,11 @@
         <!-- Shelf Grid: Cards with 3D Medallions -->
         <div class="player-shelf-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
             {% for ach in player.achievements %}
-            <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
-                 data-tier="{{ ach.tier }}"
-                 data-unlocked="{{ 'true' if ach.unlocked else 'false' }}">
+            <a href="{{ root_path }}achievements/{{ ach.id }}.html"
+               class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
+               data-tier="{{ ach.tier }}"
+               data-unlocked="{{ 'true' if ach.unlocked else 'false' }}"
+               title="Открыть страницу испытания {{ ach.title }}">
 
                 <!-- Top Badge: Tier + Points -->
                 <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
@@ -1255,7 +1261,7 @@
                              style="width: {{ ach.progress_pct }}%;"></div>
                     </div>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </section>

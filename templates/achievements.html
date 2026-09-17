@@ -274,8 +274,10 @@
                                     {% if p.unlocked_achievements %}
                                     <div class="shelf-cards-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
                                         {% for ach in p.unlocked_achievements %}
-                                        <div class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card"
-                                             data-tier="{{ ach.tier }}">
+                                        <a href="{{ root_path }}achievements/{{ ach.id }}.html" 
+                                           class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
+                                           data-tier="{{ ach.tier }}"
+                                           title="Открыть страницу испытания {{ ach.title }}">
 
                                             <!-- Top Badge: Tier + Points -->
                                             <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
@@ -316,7 +318,7 @@
                                                 <span class="text-[9px] uppercase tracking-wider text-slate-500">Цель:</span>
                                                 <span class="font-bold text-amber-300 truncate ml-1">{{ ach.progress }}</span>
                                             </div>
-                                        </div>
+                                        </a>
                                         {% endfor %}
                                     </div>
                                     {% else %}
@@ -345,15 +347,22 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {% for ach in all_achievements_catalog %}
-            <div class="glassmorphism p-5 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-slate-700 transition">
+            <a href="{{ root_path }}achievements/{{ ach.id }}.html" 
+               class="glassmorphism p-5 rounded-2xl border border-slate-800 flex flex-col justify-between hover:border-amber-500/50 hover:scale-[1.01] transition-all group block text-inherit no-underline shadow-lg hover:shadow-amber-950/30">
                 <div>
-                    <div class="flex items-center gap-3 mb-3">
-                        <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 text-2xl flex items-center justify-center shrink-0">
+                    <div class="flex items-start gap-3.5 mb-3">
+                        <div class="w-12 h-12 rounded-xl bg-slate-900 border border-slate-800 text-2xl flex items-center justify-center shrink-0 group-hover:border-amber-500/40 transition">
                             {{ ach.icon }}
                         </div>
-                        <div>
-                            <h3 class="text-base font-black text-white">{{ ach.title }}</h3>
-                            <p class="text-xs text-slate-400 leading-snug mt-0.5">{{ ach.desc }}</p>
+                        <div class="flex-1 min-w-0">
+                            {% if ach.category %}
+                            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold block mb-0.5">{{ ach.category }}</span>
+                            {% endif %}
+                            <h3 class="text-base font-black text-white group-hover:text-amber-300 transition flex items-center justify-between">
+                                <span class="truncate">{{ ach.title }}</span>
+                                <span class="text-xs text-slate-500 group-hover:text-amber-400 font-mono transition-transform group-hover:translate-x-0.5 ml-1">↗</span>
+                            </h3>
+                            <p class="text-xs text-slate-400 leading-snug mt-1 line-clamp-2">{{ ach.desc }}</p>
                         </div>
                     </div>
 
@@ -382,14 +391,16 @@
 
                 <!-- Holders Footer -->
                 <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] font-mono text-slate-400">
-                    <span>Обладателей:</span>
                     <div class="flex items-center gap-2">
                         <span class="text-amber-300 font-bold" title="Золото">🥇 {{ ach.holders[3]|length }}</span>
                         <span class="text-slate-300 font-bold" title="Серебро">🥈 {{ ach.holders[2]|length }}</span>
                         <span class="text-amber-500 font-bold" title="Бронза">🥉 {{ ach.holders[1]|length }}</span>
                     </div>
+                    <span class="text-amber-400 group-hover:text-amber-300 font-bold inline-flex items-center gap-1 transition">
+                        Подробнее <span>➔</span>
+                    </span>
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </section>
