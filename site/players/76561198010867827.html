@@ -370,8 +370,247 @@
     </section>
     
 
-    <!-- Official FACEIT Profile Section -->
-    
+    <!-- Unified Competitive Profile & Overview Stats Hub (KASE vs FACEIT Tabs) -->
+    <section class="section stats-hub-section glassmorphism p-6 rounded-2xl border border-slate-800/80 mb-8 shadow-2xl relative overflow-hidden">
+        <!-- Ambient Decorative Watermark -->
+        <div id="stats-hub-watermark-kase" class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none select-none transition-opacity duration-300">
+            <svg viewBox="0 0 100 86.6" width="220" height="220">
+                <polygon points="50,0 50,61.9 0,86.6" fill="#10b981" />
+                <polygon points="50,0 100,86.6 50,61.9" fill="#059669" />
+                <polygon points="0,86.6 50,61.9 100,86.6" fill="#047857" />
+            </svg>
+        </div>
+        <div id="stats-hub-watermark-faceit" class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none select-none transition-opacity duration-300 hidden">
+            <svg viewBox="0 0 24 24" width="220" height="220" fill="#ff5500">
+                <path d="M23.999 4.908c-.027-.373-.257-.698-.598-.847a1.002 1.002 0 0 0-1.026.148l-9.13 6.983c-.15.115-.333.176-.521.176s-.371-.061-.521-.176L3.073 4.209a1.002 1.002 0 0 0-1.026-.148.995.995 0 0 0-.598.847L0 20.407c-.019.263.078.522.264.707.186.186.444.286.708.271l22.056-.002c.264.015.522-.085.708-.271.186-.185.283-.444.264-.707L23.999 4.908z"/>
+            </svg>
+        </div>
+
+        <!-- Section Top Bar: Title & Tab Switcher -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800/80 mb-6">
+            <div>
+                <h2 class="section-title text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                    <span>📈</span> <span>Соревновательный профиль и общая статистика</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">
+                    Сводная аналитика за все игры: прогресс рангов, ключевые метрики эффективности и недавние матчи
+                </p>
+            </div>
+            
+            <!-- Interactive Switcher Tabs -->
+            <div class="inline-flex items-center p-1 bg-slate-900/90 rounded-xl border border-slate-800 self-start sm:self-auto gap-1 shrink-0">
+                <button type="button" onclick="switchStatsHubTab('kase')" id="stats-tab-btn-kase" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer">
+                    <span>🏢</span> <span>Матчи платформы</span>
+                </button>
+                <button type="button" onclick="switchStatsHubTab('faceit')" id="stats-tab-btn-faceit" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer">
+                    <span>🟠</span>
+                    <span>Официальный FACEIT</span>
+                    
+                    <span class="text-[10px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 font-mono">Не привязан</span>
+                    
+                </button>
+            </div>
+        </div>
+
+        <!-- 1. Tab KASE Games Content (Active by default) -->
+        <div id="stats-tab-content-kase" class="transition-all duration-200">
+            <!-- Header Row: Level Badge, Player Info, All-Time MMR & Actions -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-emerald-500/20 mb-6">
+                <div class="flex items-center gap-4">
+                    <div class="shrink-0 flex items-center justify-center p-1 rounded-2xl bg-slate-950/70 border border-emerald-500/40 shadow-lg shadow-emerald-950/50">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="44" height="44" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#475569" stroke-width="2.2" stroke-dasharray="4.5 3" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#94a3b8">?</text></svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-600 text-white shadow-sm">
+                                KASE CS2
+                            </span>
+                            <h2 class="text-xl md:text-2xl font-black text-white flex items-center gap-2">
+                                Nakama_4
+                            </h2>
+                            <span class="text-xs text-slate-400 font-mono uppercase bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
+                                Калибровка
+                            </span>
+                            
+                            <span class="text-xs font-semibold font-mono px-2 py-0.5 rounded-full border bg-slate-900/80 text-slate-300 border-slate-700 flex items-center gap-1">
+                                <span class="text-[7px]">●</span> <span>Стабильно</span>
+                            </span>
+                            
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">
+                            Официальный соревновательный профиль и история матчей платформы аналитики KASE
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <div class="text-right">
+                        <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">ALL-TIME MMR</div>
+                        <div class="text-2xl md:text-3xl font-black font-mono text-white flex items-center gap-1.5 justify-end">
+                            <span>987</span>
+                            
+                            <span class="text-xs font-bold px-1.5 py-0.5 rounded font-mono text-rose-400 bg-rose-950/80 border border-rose-500/40">
+                                -26
+                            </span>
+                            
+                        </div>
+                    </div>
+                    <a href="../index.html#leaderboard" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-lg shadow-emerald-950/40 shrink-0">
+                        <span>Таблица лидеров</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Rank Level Progress Bar (exact Faceit style) -->
+            
+            <div class="kase-level-progress-box mb-5 p-3 px-4 rounded-xl bg-slate-900/70 border border-slate-700/60 flex items-center justify-between text-xs font-mono">
+                <span class="text-slate-300 font-bold flex items-center gap-2">
+                    <span>⏳</span> <span>Калибровка MMR (Сыграно 3 из 5 матчей)</span>
+                </span>
+                <span class="text-amber-400 font-bold">987 MMR (Множитель ×1.5)</span>
+            </div>
+            
+
+            <!-- Platform Stats Grid (Faceit Card Style with 8 metrics) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 mb-5">
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">K/D Ratio</div>
+                    <div class="stat-hub-val text-xl font-black font-mono mt-0.5 text-emerald-400">1.18</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">Пожизненный</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Винрейт</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-emerald-400 mt-0.5">33.3%</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">1W / 2L</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Матчей</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-white mt-0.5">3</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">На платформе</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Headshots %</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-amber-300 mt-0.5">51.4%</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">В голову</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">ADR</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-white mt-0.5">100.1</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">Урон за раунд</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">KAST %</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-cyan-400 mt-0.5">71.8%</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">Полезность</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">First Kill %</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-amber-400 mt-0.5">21.5%</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">Опен-фраги</div>
+                </div>
+                <div class="stats-hub-card bg-slate-900/80 border border-slate-800/80 rounded-xl p-3 text-center">
+                    <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Clutch Rate</div>
+                    <div class="stat-hub-val text-xl font-black font-mono text-purple-400 mt-0.5">0.0%</div>
+                    <div class="stat-hub-sub text-[10px] text-slate-500">В клатчах</div>
+                </div>
+            </div>
+
+            <!-- Recent 5 Matches on Platform (Faceit Card Style with KASE match data) -->
+            
+            <div>
+                <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+                    <span class="flex items-center gap-1.5">
+                        <span>⚔️ Крайние 5 матчей на платформе KASE</span>
+                    </span>
+                    <a href="#matches-history" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold transition flex items-center gap-1">
+                        <span>Вся история (3)</span>
+                        <span>↓</span>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5">
+                    
+                    <a href="../matches/28082026_anubis_26631716_243.html" class="stats-hub-match-card p-2.5 rounded-xl bg-slate-900/80 border border-rose-500/30 hover:border-rose-500/60 transition group block shadow-sm hover:shadow-md">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-black px-1.5 py-0.2 rounded font-mono bg-rose-950 text-rose-400 border border-rose-500/40">
+                                LOSS
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="match-map-title text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Anubis</span>
+                            <span class="text-xs font-bold font-mono text-rose-400">
+                                -21 MMR
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono border-t border-slate-800/80 pt-1 mt-1">
+                            <span>K/D 16 / 15 / 6</span>
+                            <span class="text-amber-300 font-bold">HLTV 1.09</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../matches/28082026_dust2_26631058_242.html" class="stats-hub-match-card p-2.5 rounded-xl bg-slate-900/80 border border-emerald-500/30 hover:border-emerald-500/60 transition group block shadow-sm hover:shadow-md">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-black px-1.5 py-0.2 rounded font-mono bg-emerald-950 text-emerald-400 border border-emerald-500/40">
+                                WIN
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="match-map-title text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Dust2</span>
+                            <span class="text-xs font-bold font-mono text-emerald-400">
+                                +34 MMR
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono border-t border-slate-800/80 pt-1 mt-1">
+                            <span>K/D 30 / 16 / 3</span>
+                            <span class="text-amber-300 font-bold">HLTV 1.68</span>
+                        </div>
+                    </a>
+                    
+                    <a href="../matches/28082026_inferno_26630509_242.html" class="stats-hub-match-card p-2.5 rounded-xl bg-slate-900/80 border border-rose-500/30 hover:border-rose-500/60 transition group block shadow-sm hover:shadow-md">
+                        <div class="flex items-center justify-between mb-1.5">
+                            <span class="text-xs font-black px-1.5 py-0.2 rounded font-mono bg-rose-950 text-rose-400 border border-rose-500/40">
+                                LOSS
+                            </span>
+                            <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                        </div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="match-map-title text-xs font-bold text-white group-hover:text-emerald-400 transition truncate">Inferno</span>
+                            <span class="text-xs font-bold font-mono text-rose-400">
+                                -26 MMR
+                            </span>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono border-t border-slate-800/80 pt-1 mt-1">
+                            <span>K/D 14 / 20 / 4</span>
+                            <span class="text-amber-300 font-bold">HLTV 0.83</span>
+                        </div>
+                    </a>
+                    
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- 2. Tab Official FACEIT Content -->
+        <div id="stats-tab-content-faceit" class="hidden transition-all duration-200">
+            
+            <!-- Unlinked Faceit Profile State -->
+            <div class="p-8 rounded-xl bg-slate-900/60 border border-dashed border-slate-700/60 text-center">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-2xl bg-orange-950/40 border border-orange-500/30 flex items-center justify-center text-2xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#475569" stroke-width="2.2" stroke-dasharray="4.5 3" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#94a3b8">?</text></svg>
+                </div>
+                <h3 class="text-base font-bold text-white mb-1">Профиль FACEIT не синхронизирован</h3>
+                <p class="text-xs text-slate-400 max-w-md mx-auto mb-4">
+                    Аккаунт с данным Steam ID (76561198010867827) пока не найден в базе FACEIT API или не привязан.
+                </p>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-slate-700 text-xs text-slate-300 font-mono">
+                    <span>💡 Данные обновятся автоматически при запуске синхронизации Faceit API</span>
+                </div>
+            </div>
+            
+        </div>
+    </section>
 
     <!-- Radar & Skill Bars Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -548,44 +787,6 @@
         </section>
     </div>
 
-    <!-- Overview Stats Grid -->
-    <section class="section overview-stats-section mb-8">
-        <h2 class="section-title text-xl font-bold text-white mb-4">📈 Общая статистика за все игры</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">K/D Ratio</div>
-                <div class="text-base font-black font-mono text-emerald-400">1.18</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">ADR</div>
-                <div class="text-base font-black font-mono text-white">100.1</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">KAST%</div>
-                <div class="text-base font-black font-mono text-white">71.8%</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">HS%</div>
-                <div class="text-base font-black font-mono text-white">51.4%</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Винрейт</div>
-                <div class="text-base font-black font-mono text-emerald-400">33.3%</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">First Kill %</div>
-                <div class="text-base font-black font-mono text-amber-400">21.5%</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Clutch Rate</div>
-                <div class="text-base font-black font-mono text-indigo-400">0.0%</div>
-            </div>
-            <div class="stat-card glassmorphism p-3.5 rounded-xl border border-slate-800 text-center">
-                <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Util DMG / R</div>
-                <div class="text-base font-black font-mono text-rose-400">5.4</div>
-            </div>
-        </div>
-    </section>
 
     <!-- Map Highlights: Signature Fortress & Kryptonite (KASE vs FACEIT Tabs) -->
     
@@ -3941,7 +4142,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 19.09.2026 19:55</p>
+                <p class="footer-timestamp">Данные обновлены: 19.09.2026 20:24</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -4289,6 +4490,34 @@
         } else {
             faceitContent.classList.add('hidden');
             kaseContent.classList.remove('hidden');
+            faceitBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer';
+            kaseBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer';
+        }
+    };
+
+    window.switchStatsHubTab = function(tab) {
+        const kaseContent = document.getElementById('stats-tab-content-kase');
+        const faceitContent = document.getElementById('stats-tab-content-faceit');
+        const kaseBtn = document.getElementById('stats-tab-btn-kase');
+        const faceitBtn = document.getElementById('stats-tab-btn-faceit');
+        const kaseWatermark = document.getElementById('stats-hub-watermark-kase');
+        const faceitWatermark = document.getElementById('stats-hub-watermark-faceit');
+        if (!kaseContent || !faceitContent || !kaseBtn || !faceitBtn) return;
+
+        if (tab === 'faceit') {
+            kaseContent.classList.add('hidden');
+            faceitContent.classList.remove('hidden');
+            if (kaseWatermark) kaseWatermark.classList.add('hidden');
+            if (faceitWatermark) faceitWatermark.classList.remove('hidden');
+
+            kaseBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer';
+            faceitBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-orange-600 text-white shadow-sm cursor-pointer';
+        } else {
+            faceitContent.classList.add('hidden');
+            kaseContent.classList.remove('hidden');
+            if (faceitWatermark) faceitWatermark.classList.add('hidden');
+            if (kaseWatermark) kaseWatermark.classList.remove('hidden');
+
             faceitBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 text-slate-300 hover:text-white hover:bg-slate-800 cursor-pointer';
             kaseBtn.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 bg-emerald-500 text-slate-950 shadow-sm cursor-pointer';
         }

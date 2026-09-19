@@ -548,6 +548,15 @@ def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bo
             "badge_svg_small": svg_icon_sm,
             "badge_svg_large": svg_icon_lg,
             "level": 0,
+            "next_level": 1,
+            "next_level_name": "Level 1",
+            "next_level_mmr": 820,
+            "min_level_mmr": 0,
+            "mmr_to_next": 0,
+            "progress_percent": 0.0,
+            "is_max_level": False,
+            "is_calibrating": True,
+            "is_inactive": is_inactive,
             "color": "slate",
             "avatar_classes": "bg-slate-900/80 border-slate-700/60 text-slate-400 group-hover:border-slate-500",
             "row_classes": "hover:bg-slate-800/20 border-l-slate-600 opacity-80",
@@ -641,6 +650,27 @@ def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bo
     svg_icon_sm = render_faceit_svg(lvl, size=16)
     svg_icon_lg = render_faceit_svg(lvl, size=32)
 
+    # Расчет прогресса до следующего соревновательного уровня
+    TIER_BOUNDS = [
+        (1, 0, 820),
+        (2, 820, 865),
+        (3, 865, 910),
+        (4, 910, 955),
+        (5, 955, 1000),
+        (6, 1000, 1045),
+        (7, 1045, 1090),
+        (8, 1090, 1135),
+        (9, 1135, 1180),
+        (10, 1180, 2000),
+    ]
+    cur_bound = next((b for b in TIER_BOUNDS if b[0] == lvl), (1, 0, 820))
+    min_mmr, next_mmr = cur_bound[1], cur_bound[2]
+    next_lvl = min(10, lvl + 1)
+    is_max = (lvl == 10)
+    mmr_to_next = max(0, next_mmr - mmr) if not is_max else 0
+    span = max(1, next_mmr - min_mmr)
+    prog_pct = 100.0 if is_max else round(min(100.0, max(0.0, (mmr - min_mmr) / span * 100.0)), 1)
+
     return {
         "tier_id": f"level{lvl}",
         "tier_name": f"Level {lvl}",
@@ -651,6 +681,15 @@ def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bo
         "badge_svg_small": svg_icon_sm,
         "badge_svg_large": svg_icon_lg,
         "level": lvl,
+        "next_level": next_lvl,
+        "next_level_name": f"Level {next_lvl}",
+        "next_level_mmr": next_mmr,
+        "min_level_mmr": min_mmr,
+        "mmr_to_next": mmr_to_next,
+        "progress_percent": prog_pct,
+        "is_max_level": is_max,
+        "is_calibrating": False,
+        "is_inactive": is_inactive,
         "color": color,
         "avatar_classes": avatar_classes,
         "row_classes": row_classes,

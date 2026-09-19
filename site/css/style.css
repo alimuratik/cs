@@ -4151,6 +4151,104 @@ body.light-theme .role-affinity-row .text-slate-300 {
   color: #334155 !important;
 }
 
+/* ==========================================================================
+   20. UNIFIED STATS HUB & KASE PROGRESS STYLING
+   ========================================================================== */
+
+.stats-hub-section {
+  transition: all 0.3s ease;
+}
+
+.stats-hub-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-hub-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+.stats-hub-match-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stats-hub-match-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Light theme overrides for Unified Stats Hub */
+body.light-theme .stats-hub-section {
+  background: #ffffff !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .stats-hub-card {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+body.light-theme .stats-hub-card:hover {
+  background: #f1f5f9 !important;
+  border-color: #10b981 !important;
+}
+
+body.light-theme .stats-hub-card .stat-hub-val {
+  color: #0f172a !important;
+}
+
+body.light-theme .stats-hub-card .stat-hub-sub {
+  color: #64748b !important;
+}
+
+body.light-theme .stats-hub-match-card {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+
+body.light-theme .stats-hub-match-card:hover {
+  background: #ffffff !important;
+}
+
+body.light-theme .stats-hub-match-card .match-map-title {
+  color: #0f172a !important;
+}
+
+body.light-theme .kase-level-progress-box {
+  background: #f0fdf4 !important;
+  border: 1.5px solid #86efac !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.08) !important;
+}
+
+body.light-theme .kase-progress-title,
+body.light-theme .kase-level-badge {
+  color: #047857 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .kase-progress-mmr {
+  color: #064e3b !important;
+  font-weight: 900 !important;
+}
+
+body.light-theme .kase-progress-remaining {
+  color: #047857 !important;
+  font-weight: 800 !important;
+}
+
+body.light-theme .kase-track {
+  background-color: #dcfce7 !important;
+  border: 1.5px solid #86efac !important;
+}
+
+body.light-theme .kase-track > div,
+body.light-theme .kase-progress-fill {
+  background: linear-gradient(90deg, #10b981, #059669) !important;
+  background-color: #10b981 !important;
+  box-shadow: 0 1px 4px rgba(5, 150, 105, 0.4) !important;
+}
+
+
 
 
 
