@@ -121,13 +121,12 @@ def extract_youtube_embed(url_or_id: str) -> str:
     embed, _ = build_highlight_embed_url(url_or_id, 0)
     return embed
 
-def sync_match_videos(match_ids: list[str]) -> dict:
+def sync_match_videos(matches_or_ids: list) -> dict:
     """
     Синхронизирует файл data/match_videos.json:
-    - Читает существующие ссылки (добавленные пользователем на GitHub или локально).
-    - Добавляет только новые match_id со значением "" (пустая строка).
-    - НИКОГДА не удаляет и не затирает существующие ссылки пользователя!
-    - Поддерживает как простые строки ("https://youtu.be/..."), так и словари ({"url": "...", "offset_sec": ...}).
+    - Добавляет наглядные подсказки для каждого матча (_info: карта, дата, счёт, команды, и _demo: имя .dem файла).
+    - Сохраняет все существующие ссылки пользователя (url) и смещения (offset_sec).
+    - При добавлении новых матчей автоматически прописывает структуру с подсказками.
     """
     videos_file = DATA_DIR / "match_videos.json"
     videos_data = {}
@@ -139,20 +138,92 @@ def sync_match_videos(match_ids: list[str]) -> dict:
             logging.warning(f"Не удалось прочитать {videos_file}: {e}")
             videos_data = {}
 
-    changed = False
-    for mid in sorted(match_ids):
-        if mid and mid not in videos_data:
-            videos_data[mid] = ""
-            changed = True
-
-    if changed or not videos_file.exists():
+    # Загрузка реестра демок для точной привязки имен файлов
+    registry_demos = []
+    reg_file = DATA_DIR / "registry.json"
+    if reg_file.exists():
         try:
-            with open(videos_file, "w", encoding="utf-8") as f:
-                json.dump(videos_data, f, ensure_ascii=False, indent=2)
-        except Exception as e:
-            logging.warning(f"Не удалось сохранить {videos_file}: {e}")
+            with open(reg_file, "r", encoding="utf-8") as rf:
+                registry_demos = json.load(rf).get("parsed", [])
+        except Exception:
+            registry_demos = []
 
-    return videos_data
+    def find_demo_name(mid_val: str) -> str:
+        parts = str(mid_val).split("_")
+        if not parts:
+            return ""
+        d_str = parts[0]
+        m_name = parts[1] if len(parts) > 1 else ""
+        for fn in registry_demos:
+            if fn.startswith(d_str) and m_name in fn.lower():
+                if len(parts) >= 3 and parts[2] in fn:
+                    return fn
+                elif len(parts) < 3:
+                    return fn
+        return f"{mid_val}.dem"
+
+    # Превращаем вход в словарь match_id -> match_dict
+    match_dict_by_id = {}
+    for item in matches_or_ids:
+        if isinstance(item, dict) and item.get("match_id"):
+            match_dict_by_id[item["match_id"]] = item
+        elif isinstance(item, str) and item and not item.startswith("_"):
+            match_dict_by_id[item] = {"match_id": item}
+
+    # Построение обновленного упорядоченного словаря
+    new_videos_data = {
+        "_README": "CS2 Match Videos Mapping. Укажите ссылку на YouTube в поле 'url'. При необходимости укажите смещение старта в секундах в поле 'offset_sec'. Поля '_info' и '_demo' носят справочный характер."
+    }
+
+    for mid in sorted(match_dict_by_id.keys()):
+        m_info = match_dict_by_id[mid]
+        raw_date = str(m_info.get("date", ""))
+        date_str = f"{raw_date[:2]}.{raw_date[2:4]}.{raw_date[4:]}" if len(raw_date) == 8 else raw_date
+        map_str = m_info.get("map_display") or m_info.get("map", "")
+        s1 = m_info.get("score_team1", 0)
+        s2 = m_info.get("score_team2", 0)
+        t1 = m_info.get("team1_name", "Команда 1")
+        t2 = m_info.get("team2_name", "Команда 2")
+        winner = m_info.get("winner")
+        win_str = f"Победа {t1}" if winner == "team1" else (f"Победа {t2}" if winner == "team2" else "Ничья")
+
+        info_label = f"🗺️ {map_str} | 📅 {date_str} | 🏆 Счёт: {s1}:{s2} ({win_str}) | 👥 {t1} vs {t2}"
+        demo_fn = find_demo_name(mid)
+
+        existing_val = videos_data.get(mid)
+        if isinstance(existing_val, dict):
+            url_val = existing_val.get("url", "")
+            offset_val = existing_val.get("offset_sec", 0)
+            new_entry = {
+                "_info": info_label,
+                "_demo": demo_fn,
+                "url": url_val,
+                "offset_sec": offset_val
+            }
+        elif isinstance(existing_val, str) and existing_val:
+            new_entry = {
+                "_info": info_label,
+                "_demo": demo_fn,
+                "url": existing_val,
+                "offset_sec": 0
+            }
+        else:
+            new_entry = {
+                "_info": info_label,
+                "_demo": demo_fn,
+                "url": "",
+                "offset_sec": 0
+            }
+
+        new_videos_data[mid] = new_entry
+
+    try:
+        with open(videos_file, "w", encoding="utf-8") as f:
+            json.dump(new_videos_data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logging.warning(f"Не удалось сохранить {videos_file}: {e}")
+
+    return new_videos_data
 
 def compute_faceit_map_performance(faceit_data: dict) -> dict:
     """
@@ -2239,8 +2310,7 @@ def generate_site():
     logging.info("Сгенерирована главная страница: site/index.html")
 
     # 2. Генерация страниц матчей matches/{match_id}.html
-    all_match_ids = [m.get("match_id") for m in matches if m.get("match_id")]
-    sync_match_videos(all_match_ids)
+    sync_match_videos(matches)
     match_template = env.get_template("match.html")
     for m in matches:
         match_id = m.get("match_id")
