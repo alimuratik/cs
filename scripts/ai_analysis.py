@@ -2,6 +2,7 @@ import os
 import json
 import logging
 import random
+import time
 from collections import Counter, defaultdict
 from scripts.config import *
 
@@ -267,16 +268,25 @@ def analyze_round_with_ai(
 
         prompt += "\nСформируй подробный 9-пунктовый разбор без вводных слов и лишних шаблонных фраз."
 
-        try:
-            response = client.models.generate_content(
-                model=AI_MODEL,
-                contents=prompt,
-            )
-            text = response.text.strip()
-            if text and "1. Исход и сценарий" in text:
-                return text
-        except Exception as e:
-            logging.warning(f"Ошибка вызова AI API для раунда {round_num}: {e}")
+        for attempt in range(3):
+            try:
+                response = client.models.generate_content(
+                    model=AI_MODEL,
+                    contents=prompt,
+                )
+                text = response.text.strip()
+                if text and ("1. Исход и сценарий" in text or "1. Исход" in text):
+                    time.sleep(1.0)  # Безопасный интервал для соблюдения квоты RPM
+                    return text
+            except Exception as e:
+                err_str = str(e).lower()
+                if "429" in err_str or "resource_exhausted" in err_str or "quota" in err_str:
+                    logging.warning(f"Лимит запросов Gemini (429) на раунде {round_num}, пауза 8 сек... (попытка {attempt+1}/3)")
+                    time.sleep(8)
+                    continue
+                else:
+                    logging.warning(f"Ошибка вызова AI API для раунда {round_num}: {e}")
+                    break
 
     # Fallback локальный экспертный движок
     return generate_tactical_round_analysis(

@@ -179,7 +179,8 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
             "de_nuke": "Nuke",
             "de_ancient": "Ancient",
             "de_anubis": "Anubis",
-            "de_vertigo": "Vertigo"
+            "de_vertigo": "Vertigo",
+            "de_overpass": "Overpass"
         }
         map_display = map_mapping.get(map_name, map_name.replace("de_", "").capitalize())
         
