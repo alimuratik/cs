@@ -1417,13 +1417,33 @@ def format_player_data(p: dict) -> dict:
         tq_copy["quest_id"] = tq_id
 
     # Расчет совместимости со всеми 8 ролями
+    def get_rating_class(score: float) -> str:
+        if score >= 8.0:
+            return "text-amber-400 font-bold"
+        elif score >= 7.0:
+            return "text-emerald-400 font-bold"
+        elif score >= 5.0:
+            return "text-yellow-400 font-bold"
+        return "text-red-400 font-bold"
+
+    SKILL_ICONS = {
+        "Aim": "🎯", "Positioning": "🗺️", "Utility": "🧨", "Game Sense": "🧠",
+        "Entry": "⚡", "Trading": "🔄", "Clutch": "👑", "Discipline": "🧘", "Economy": "💰"
+    }
+
+    p_metrics = p.get("metrics", {})
+
+    # Расчет совместимости со всеми 8 ролями
     player_role_affinities = []
     for rdef in ROLES_CATALOG:
-        aff = calc_affinity_score(ratings_dict, rdef["skills_weights"])
+        rid = rdef["role_id"]
+        weights = rdef["skills_weights"]
+        aff = calc_affinity_score(ratings_dict, weights)
         is_cur = any(fn in roles for fn in rdef["factual_names"])
-        if rdef["role_id"] == "igl" and ("Ин-гейм лидер" in role_text or "IGL" in role_text or "Капитан" in role_text):
+        if rid == "igl" and ("Ин-гейм лидер" in role_text or "IGL" in role_text or "Капитан" in role_text):
             is_cur = True
-        is_rec = (rdef["role_id"] == resolve_role_slug(role_text))
+        is_rec = (rid == resolve_role_slug(role_text))
+        threshold = rdef["affinity_threshold"]
         
         if is_cur:
             badge_text = "Текущий стиль"
@@ -1458,20 +1478,144 @@ def format_player_data(p: dict) -> dict:
             bar_class = "bg-slate-500"
             text_class = "text-slate-400"
 
+        # Детализация влияющих навыков с весами и иконками
+        skills_breakdown = []
+        for sk_name, w in weights.items():
+            sk_val = ratings_dict.get(sk_name, 5.0)
+            skills_breakdown.append({
+                "name": sk_name,
+                "icon": SKILL_ICONS.get(sk_name, "⭐"),
+                "weight_pct": int(round(w * 100)),
+                "rating": sk_val,
+                "rating_class": get_rating_class(sk_val)
+            })
+
+        # Лучший и слабейший навык для анализа
+        sorted_role_skills = sorted(weights.keys(), key=lambda k: ratings_dict.get(k, 5.0), reverse=True)
+        best_skill = sorted_role_skills[0] if sorted_role_skills else "Aim"
+        worst_skill = sorted_role_skills[-1] if sorted_role_skills else "Aim"
+        best_val = ratings_dict.get(best_skill, 5.0)
+        worst_val = ratings_dict.get(worst_skill, 5.0)
+
+        # Фактическая статистика из демок для данной роли
+        primary_metric = {}
+        if rid == "awp":
+            awp_pct = p_metrics.get("awp_kills_percent", 0.0)
+            primary_metric = {
+                "name": "Фраги с AWP",
+                "value": f"{awp_pct:.1f}%",
+                "norm": "Норматив ≥ 15%",
+                "is_met": awp_pct >= 15.0
+            }
+        elif rid == "entry":
+            fk_rate = p_metrics.get("first_kill_rate", 0.0)
+            primary_metric = {
+                "name": "First Kill Rate",
+                "value": f"{fk_rate:.1f}%",
+                "norm": "Норматив ≥ 14%",
+                "is_met": fk_rate >= 14.0
+            }
+        elif rid == "refragger":
+            tr_rate = p_metrics.get("trade_rate", 0.0)
+            primary_metric = {
+                "name": "Trade Rate (Размены)",
+                "value": f"{tr_rate:.1f}%",
+                "norm": "Норматив ≥ 20%",
+                "is_met": tr_rate >= 20.0
+            }
+        elif rid == "anchor":
+            kast_v = ov_stats.get("avg_kast", p_metrics.get("kast", 0.0))
+            surv_v = ov_stats.get("survival_rate", p_metrics.get("survival_rate", 0.0))
+            primary_metric = {
+                "name": "KAST / Выживаемость",
+                "value": f"{kast_v:.1f}% / {surv_v:.1f}%",
+                "norm": "KAST ≥ 68% • Выж ≥ 30%",
+                "is_met": kast_v >= 68.0 and surv_v >= 30.0
+            }
+        elif rid == "support":
+            ud_val = p_metrics.get("utility_damage_per_round", 0.0)
+            fa_val = p_metrics.get("flash_assists_per_match", p_metrics.get("flash_assists", 0.0))
+            primary_metric = {
+                "name": "Урон утилити / Flash",
+                "value": f"{ud_val:.1f} HP / {fa_val:.1f} FA",
+                "norm": "Урон ≥ 6 HP или FA ≥ 0.35",
+                "is_met": ud_val >= 6.0 or fa_val >= 0.35
+            }
+        elif rid == "lurker":
+            late_val = p_metrics.get("late_round_kills", 0.0)
+            primary_metric = {
+                "name": "Поздние фраги в раунде",
+                "value": f"{late_val:.1f}%",
+                "norm": "Норматив ≥ 15%",
+                "is_met": late_val >= 15.0
+            }
+        elif rid == "clutcher":
+            cl_wr = p_metrics.get("clutch_win_rate", 0.0)
+            cl_w = int(p_metrics.get("clutch_wins", 0))
+            primary_metric = {
+                "name": "Клатчи 1vX (WR / Побед)",
+                "value": f"{cl_wr:.1f}% ({cl_w} побед)",
+                "norm": "WR ≥ 30% (от 3 ситуаций)",
+                "is_met": cl_wr >= 30.0
+            }
+        elif rid == "igl":
+            kast_v = ov_stats.get("avg_kast", p_metrics.get("kast", 0.0))
+            eco_val = ratings_dict.get("Economy", 5.0)
+            primary_metric = {
+                "name": "KAST / Экономика",
+                "value": f"{kast_v:.1f}% / {eco_val:.1f} R",
+                "norm": "KAST ≥ 68% • Эко ≥ 5.5",
+                "is_met": kast_v >= 68.0 and eco_val >= 5.5
+            }
+
+        # Текстовое обоснование оценки
+        if is_cur:
+            reasoning = f"Фактическое амплуа по демкам. Оценка {aff}% опирается на сильный навык {best_skill} ({best_val}/10)."
+            if worst_val < 6.0:
+                reasoning += f" Точка дальнейшего роста — подтянуть {worst_skill} ({worst_val}/10)."
+        elif is_rec:
+            reasoning = f"Главная рекомендация тренера: оптимальный баланс {best_skill} ({best_val}/10) и командной синергии для максимального импакта."
+        elif aff >= 80:
+            reasoning = f"Идеальный скрытый потенциал! Высокие показатели {best_skill} ({best_val}/10) и {worst_skill} ({worst_val}/10) позволяют уверенно претендовать на основу."
+        elif aff >= 70:
+            reasoning = f"Высокая квалификация: солидный уровень {best_skill} ({best_val}/10) уверенно перекрывает квалификационный норматив."
+            if worst_val < 6.5:
+                reasoning += f" Сдерживающий фактор — {worst_skill} ({worst_val}/10)."
+        elif aff >= 50:
+            reasoning = f"Базовое соответствие: игрок стабилен в {best_skill} ({best_val}/10), но отставание в {worst_skill} ({worst_val}/10) требует целевых тренировок."
+        else:
+            reasoning = f"Низкая совместимость: профиль игрока не ложится на модель роли из-за дефицита в {worst_skill} ({worst_val}/10)."
+
+        # Краткий вердикт
+        if is_cur:
+            verdict = "В основе"
+        elif is_rec:
+            verdict = "Приоритет"
+        elif aff >= threshold:
+            verdict = "Квалифицирован"
+        elif aff >= 55:
+            verdict = "Резерв"
+        else:
+            verdict = "Не профиль"
+
         player_role_affinities.append({
-            "role_id": rdef["role_id"],
+            "role_id": rid,
             "title": rdef["title"],
             "short_title": rdef["short_title"],
             "icon": rdef["icon"],
             "lore": rdef["lore"],
             "affinity": aff,
-            "threshold": rdef["affinity_threshold"],
+            "threshold": threshold,
             "is_current": is_cur,
             "is_recommended": is_rec,
             "badge_text": badge_text,
             "badge_class": badge_class,
             "bar_class": bar_class,
-            "text_class": text_class
+            "text_class": text_class,
+            "skills_breakdown": skills_breakdown,
+            "primary_metric": primary_metric,
+            "reasoning": reasoning,
+            "verdict": verdict
         })
 
     # Сортируем: сначала текущая и рекомендуемая роль, затем по убыванию совместимости

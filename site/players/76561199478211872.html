@@ -1089,272 +1089,864 @@
                     <span>🎭</span> <span>Совместимость с 8 тактическими ролями</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
-                    Оценка пригодности игрока по 10 параметрам рейтинговой матрицы. Нажмите на карточку роли, чтобы перейти в тактический штаб команды.
+                    Индивидуальная оценка пригодности по 10 параметрам рейтинговой матрицы, формуле весов и боевой статистике из демок.
                 </p>
             </div>
-            <a href="../roles.html" class="self-start sm:self-auto text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 shadow-sm">
-                <span>Тактический штаб</span>
-                <span class="text-[10px] font-mono">➔</span>
+            <a href="../roles.html" class="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-2 shadow-sm">
+                <span>Тактический штаб ролей</span>
+                <span class="text-xs font-mono">➔</span>
             </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div class="space-y-3.5">
             
-            <a href="../roles.html#awp" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 🎯 Основной снайпер (Main AWP)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                🎯
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Снайпер</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥70%</span>
-                            </div>
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🎯
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/40 shrink-0">
-                            Текущий стиль
-                        </span>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#awp" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Снайпер в тактическом штабе">
+                                        <span>🎯 Основной снайпер (Main AWP)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/40">
+                                    Текущий стиль
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (51.7% / 70%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Хозяин дальних дистанций и создатель численного преимущества первым выстрелом. Контролирует ключевые лонги и мид-коннекторы, создавая постоянную угрозу одномоментного убийства через всю карту.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-sky-400">51.7%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 51.7%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥70%</span>
+                            <span class="text-sky-400 font-bold uppercase tracking-wider">● В основе</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-sky-400 text-xs">51.7%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 51.7%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#refragger" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 🔄 Второй номер / Трейдер (Refragger)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                🔄
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🎯</span>
+                                <span class="text-slate-300 font-medium">Aim <span class="text-[10px] text-slate-500 font-mono">(50%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.0/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Трейдер</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🗺️</span>
+                                <span class="text-slate-300 font-medium">Positioning <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.5/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>💰</span>
+                                <span class="text-slate-300 font-medium">Economy <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.1/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">Фраги с AWP:</span>
+                                <span class="font-bold text-emerald-400">
+                                    20.0%
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                Норматив ≥ 15%
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/40 shrink-0">
-                            Текущий стиль
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Фактическое амплуа по демкам. Оценка 51.7% опирается на сильный навык Positioning (5.5/10). Точка дальнейшего роста — подтянуть Aim (5.0/10).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🔄
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#refragger" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Трейдер в тактическом штабе">
+                                        <span>🔄 Второй номер / Трейдер (Refragger)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-500/40">
+                                    Текущий стиль
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (46.2% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Бежит вторым темпом за энтри, мгновенно разменивает союзников и добирает раненых. Гарантирует, что ни одна смерть тиммейта не пропадёт зря.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-slate-400">46.2%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 46.2%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-slate-400 font-bold uppercase tracking-wider">● В основе</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-slate-400 text-xs">46.2%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 46.2%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#anchor" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 🛡️ Опорник плента (Site Anchor)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                🛡️
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🔄</span>
+                                <span class="text-slate-300 font-medium">Trading <span class="text-[10px] text-slate-500 font-mono">(60%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">4.7/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Опорник</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>👑</span>
+                                <span class="text-slate-300 font-medium">Clutch <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">4.0/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🎯</span>
+                                <span class="text-slate-300 font-medium">Aim <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.0/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">Trade Rate (Размены):</span>
+                                <span class="font-bold text-emerald-400">
+                                    22.5%
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                Норматив ≥ 20%
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 shrink-0">
-                            Базовый
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Фактическое амплуа по демкам. Оценка 46.2% опирается на сильный навык Aim (5.0/10). Точка дальнейшего роста — подтянуть Clutch (4.0/10).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🛡️
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#anchor" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Опорник в тактическом штабе">
+                                        <span>🛡️ Опорник плента (Site Anchor)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                                    Базовый
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (61.9% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Столп обороны, охраняющий плент в одиночку до прихода ротации с минимальным риском. Ведёт позиционную игру, используя перекрёстный огонь и пассивные углы.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-sky-400">61.9%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 61.9%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-sky-400 font-bold uppercase tracking-wider">● Резерв</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-sky-400 text-xs">61.9%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 61.9%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#igl" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 🧠 Ин-гейм лидер / Тактик (IGL)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                🧠
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🗺️</span>
+                                <span class="text-slate-300 font-medium">Positioning <span class="text-[10px] text-slate-500 font-mono">(50%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.5/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>IGL</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧘</span>
+                                <span class="text-slate-300 font-medium">Discipline <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-emerald-400 font-bold">7.4/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">KAST / Выживаемость:</span>
+                                <span class="font-bold text-emerald-400">
+                                    72.8% / 30.1%
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                KAST ≥ 68% • Выж ≥ 30%
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 shrink-0">
-                            Базовый
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Базовое соответствие: игрок стабилен в Discipline (7.4/10), но отставание в Positioning (5.5/10) требует целевых тренировок.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🧠
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#igl" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли IGL в тактическом штабе">
+                                        <span>🧠 Ин-гейм лидер / Тактик (IGL)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                                    Базовый
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (60.6% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Мозг команды, следит за макро-экономикой, читает структуру соперника и координирует закуп. Высокий Game Sense и экономическая дисциплина — главные оружия.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-sky-400">60.6%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 60.6%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-sky-400 font-bold uppercase tracking-wider">● Резерв</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-sky-400 text-xs">60.6%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 60.6%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#lurker" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 🥷 Люркер / Одиночка (Lurker)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                🥷
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(50%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Люркер</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>💰</span>
+                                <span class="text-slate-300 font-medium">Economy <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.1/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧘</span>
+                                <span class="text-slate-300 font-medium">Discipline <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-emerald-400 font-bold">7.4/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">KAST / Экономика:</span>
+                                <span class="font-bold text-amber-400">
+                                    72.8% / 5.1 R
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                KAST ≥ 68% • Эко ≥ 5.5
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 shrink-0">
-                            Базовый
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Базовое соответствие: игрок стабилен в Discipline (7.4/10), но отставание в Economy (5.1/10) требует целевых тренировок.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            🥷
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#lurker" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Люркер в тактическом штабе">
+                                        <span>🥷 Люркер / Одиночка (Lurker)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                                    Базовый
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (52.9% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Контролирует противоположный фланг, отрезает ротации врага и читает тайминги перетяжек. Играет автономно и наказывает за ошибки в позиционировании.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-sky-400">52.9%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 52.9%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-sky-400 font-bold uppercase tracking-wider">● Не профиль</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-sky-400 text-xs">52.9%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 52.9%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#clutcher" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 👑 Клатч-мастер (Clutcher / Finisher)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                👑
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(40%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Клатчер</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🗺️</span>
+                                <span class="text-slate-300 font-medium">Positioning <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.5/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>👑</span>
+                                <span class="text-slate-300 font-medium">Clutch <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">4.0/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">Поздние фраги в раунде:</span>
+                                <span class="font-bold text-emerald-400">
+                                    15.0%
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                Норматив ≥ 15%
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40 shrink-0">
-                            Базовый
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Базовое соответствие: игрок стабилен в Game Sense (6.1/10), но отставание в Clutch (4.0/10) требует целевых тренировок.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            👑
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#clutcher" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Клатчер в тактическом штабе">
+                                        <span>👑 Клатч-мастер (Clutcher / Finisher)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 border border-sky-500/40">
+                                    Базовый
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (51.0% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Хладнокровный доигровщик раундов в ситуациях 1v1 / 1v2 / 1v3. Когда вся команда мертва — он остаётся один и выносит весь остаток.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-sky-400">51.0%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 51.0%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-sky-400 font-bold uppercase tracking-wider">● Не профиль</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-sky-400 text-xs">51.0%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-sky-600 to-cyan-400" style="width: 51.0%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#support" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: 💡 Координатор / Саппорт (Support)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                💡
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>👑</span>
+                                <span class="text-slate-300 font-medium">Clutch <span class="text-[10px] text-slate-500 font-mono">(60%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">4.0/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Саппорт</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧘</span>
+                                <span class="text-slate-300 font-medium">Discipline <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-emerald-400 font-bold">7.4/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">Клатчи 1vX (WR / Побед):</span>
+                                <span class="font-bold text-amber-400">
+                                    0.0% (0 побед)
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                WR ≥ 30% (от 3 ситуаций)
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
-                            Низкий
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Базовое соответствие: игрок стабилен в Discipline (7.4/10), но отставание в Clutch (4.0/10) требует целевых тренировок.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            💡
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#support" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Саппорт в тактическом штабе">
+                                        <span>💡 Координатор / Саппорт (Support)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                                    Низкий
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (44.4% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Мастер раскидок, подготавливает выходы идеальными моменталками и отрезает врагов огнём. Слаженная утилити-игра решает раунды до первого выстрела.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-slate-400">44.4%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 44.4%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-slate-400 font-bold uppercase tracking-wider">● Не профиль</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-slate-400 text-xs">44.4%</span>
-                    </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 44.4%;"></div>
-                    </div>
-                </div>
-            </a>
-            
-            <a href="../roles.html#entry" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: ⚡ Главный энтри-фраггер (First Entry)">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                ⚡
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧨</span>
+                                <span class="text-slate-300 font-medium">Utility <span class="text-[10px] text-slate-500 font-mono">(60%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">2.9/10</span>
                             </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>Энтри</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥65%</span>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧘</span>
+                                <span class="text-slate-300 font-medium">Discipline <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-emerald-400 font-bold">7.4/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(20%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">Урон утилити / Flash:</span>
+                                <span class="font-bold text-amber-400">
+                                    3.8 HP / 0.0 FA
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                Урон ≥ 6 HP или FA ≥ 0.35
                             </div>
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 shrink-0">
-                            Низкий
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
                         </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Низкая совместимость: профиль игрока не ложится на модель роли из-за дефицита в Utility (2.9/10).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            ⚡
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="../roles.html#entry" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли Энтри в тактическом штабе">
+                                        <span>⚡ Главный энтри-фраггер (First Entry)</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                                    Низкий
+                                </span>
+                                
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога (39.1% / 65%)
+                                </span>
+                                
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                Острие атаки команды, взломщик закрытых позиций и создатель спейса на плентах. Бежит первым, открывает карту и создаёт численное преимущество через агрессивные пики.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono text-slate-400">39.1%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 39.1%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥65%</span>
+                            <span class="text-slate-400 font-bold uppercase tracking-wider">● Не профиль</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono text-slate-400 text-xs">39.1%</span>
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>⚡</span>
+                                <span class="text-slate-300 font-medium">Entry <span class="text-[10px] text-slate-500 font-mono">(60%)</span>:</span>
+                                <span class="font-bold font-mono text-red-400 font-bold">3.0/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🎯</span>
+                                <span class="text-slate-300 font-medium">Aim <span class="text-[10px] text-slate-500 font-mono">(30%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">5.0/10</span>
+                            </div>
+                            
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>🧠</span>
+                                <span class="text-slate-300 font-medium">Game Sense <span class="text-[10px] text-slate-500 font-mono">(10%)</span>:</span>
+                                <span class="font-bold font-mono text-yellow-400 font-bold">6.1/10</span>
+                            </div>
+                            
+                        </div>
                     </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 bg-slate-500" style="width: 39.1%;"></div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">First Kill Rate:</span>
+                                <span class="font-bold text-amber-400">
+                                    6.8%
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                Норматив ≥ 14%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
+                        </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Низкая совместимость: профиль игрока не ложится на модель роли из-за дефицита в Entry (3.0/10).
+                        </p>
                     </div>
                 </div>
-            </a>
+            </div>
             
         </div>
     </section>
@@ -3335,7 +3927,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 19.09.2026 19:41</p>
+                <p class="footer-timestamp">Данные обновлены: 19.09.2026 19:55</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

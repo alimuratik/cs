@@ -999,48 +999,114 @@
                     <span>🎭</span> <span>Совместимость с 8 тактическими ролями</span>
                 </h2>
                 <p class="text-xs text-slate-400 mt-0.5">
-                    Оценка пригодности игрока по 10 параметрам рейтинговой матрицы. Нажмите на карточку роли, чтобы перейти в тактический штаб команды.
+                    Индивидуальная оценка пригодности по 10 параметрам рейтинговой матрицы, формуле весов и боевой статистике из демок.
                 </p>
             </div>
-            <a href="{{ root_path }}roles.html" class="self-start sm:self-auto text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 shadow-sm">
-                <span>Тактический штаб</span>
-                <span class="text-[10px] font-mono">➔</span>
+            <a href="{{ root_path }}roles.html" class="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-2 shadow-sm">
+                <span>Тактический штаб ролей</span>
+                <span class="text-xs font-mono">➔</span>
             </a>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div class="space-y-3.5">
             {% for ra in player.role_affinities %}
-            <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: {{ ra.title }}">
-                <div>
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
-                                {{ ra.icon }}
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
-                                    <span>{{ ra.short_title }}</span>
-                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
-                                </h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥{{ ra.threshold }}%</span>
-                            </div>
+            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
+                <!-- Top Row: Role Title, Badges & Compatibility Score -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
+                    <div class="flex items-start sm:items-center gap-3.5">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                            {{ ra.icon }}
                         </div>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {{ ra.badge_class }} shrink-0">
-                            {{ ra.badge_text }}
-                        </span>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
+                                    <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли {{ ra.short_title }} в тактическом штабе">
+                                        <span>{{ ra.title }}</span>
+                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
+                                    </a>
+                                </h3>
+                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full {{ ra.badge_class }}">
+                                    {{ ra.badge_text }}
+                                </span>
+                                {% if ra.affinity >= ra.threshold %}
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-bold">
+                                    ✅ Квалифицирован
+                                </span>
+                                {% else %}
+                                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-slate-700/60 font-semibold">
+                                    ⏳ Ниже порога ({{ ra.affinity }}% / {{ ra.threshold }}%)
+                                </span>
+                                {% endif %}
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
+                                {{ ra.lore }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Score, Progress Track & Verdict Block -->
+                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
+                            <span class="text-xl font-black font-mono {{ ra.text_class }}">{{ ra.affinity }}%</span>
+                        </div>
+                        <div class="h-2.5 w-full affinity-progress-track">
+                            <div class="h-full rounded-full transition-all duration-500 {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-slate-500">Порог: ≥{{ ra.threshold }}%</span>
+                            <span class="{{ ra.text_class }} font-bold uppercase tracking-wider">● {{ ra.verdict }}</span>
+                        </div>
                     </div>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between text-xs mb-1.5">
-                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
-                        <span class="font-bold font-mono {{ ra.text_class }} text-xs">{{ ra.affinity }}%</span>
+                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
+                    <!-- 1. Влияющие навыки с весами (5 cols) -->
+                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            {% for sk in ra.skills_breakdown %}
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
+                                <span>{{ sk.icon }}</span>
+                                <span class="text-slate-300 font-medium">{{ sk.name }} <span class="text-[10px] text-slate-500 font-mono">({{ sk.weight_pct }}%)</span>:</span>
+                                <span class="font-bold font-mono {{ sk.rating_class }}">{{ sk.rating }}/10</span>
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="h-2 w-full affinity-progress-track">
-                        <div class="h-full rounded-full transition-all duration-500 {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
+
+                    <!-- 2. Фактическая статистика из демок (3 cols) -->
+                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>📊</span> <span>Ключевая статистика в демках:</span>
+                        </span>
+                        <div>
+                            <div class="flex items-center justify-between font-mono text-xs">
+                                <span class="text-slate-400 truncate max-w-[130px]">{{ ra.primary_metric.name }}:</span>
+                                <span class="font-bold {% if ra.primary_metric.is_met %}text-emerald-400{% else %}text-amber-400{% endif %}">
+                                    {{ ra.primary_metric.value }}
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-500 font-mono mt-1">
+                                {{ ra.primary_metric.norm }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
+                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                            <span>💡</span> <span>Обоснование оценки:</span>
+                        </span>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            {{ ra.reasoning }}
+                        </p>
                     </div>
                 </div>
-            </a>
+            </div>
             {% endfor %}
         </div>
     </section>
