@@ -40,11 +40,11 @@
                     <span>🆔 Steam ID: {{ player.steam_id }}</span>
                 </div>
                 <div class="flex items-center gap-2 mt-2 flex-wrap">
-                    <a href="{{ root_path }}roles.html" class="text-xs px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700 font-mono hover:border-emerald-500/60 hover:text-emerald-300 transition no-underline" title="Фактический стиль игры по событиям в демках — нажми для подробностей">
+                    <a href="{{ root_path }}roles.html#{{ player.role_slug }}" class="text-xs px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700 font-mono hover:border-emerald-500/60 hover:text-emerald-300 transition no-underline" title="Фактический стиль игры — нажми для перехода к описанию роли">
                         🎮 Стиль: <strong class="text-emerald-400">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
                     </a>
                     {% if player.recommendations and player.recommendations.best_role and player.recommendations.best_role != (player.roles[0] if player.roles else '') %}
-                    <a href="{{ root_path }}roles.html" class="text-xs px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-mono hover:border-amber-300/80 hover:text-amber-200 transition no-underline" title="Рекомендуемая роль на основе пиковых навыков — нажми для подробностей">
+                    <a href="{{ root_path }}roles.html#{{ player.best_role_slug }}" class="text-xs px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-mono hover:border-amber-300/80 hover:text-amber-200 transition no-underline" title="Рекомендуемая роль — нажми для перехода к описанию роли">
                         🎯 Рекомендуется: <strong class="text-amber-200">{{ player.recommendations.best_role }}</strong>
                     </a>
                     {% endif %}
@@ -745,7 +745,7 @@
                 </div>
 
                 <!-- Связка: Фактический стиль ➔ Рекомендуемая роль -->
-                <a href="{{ root_path }}roles.html" class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs hover:border-emerald-500/40 transition no-underline block" title="Подробнее о тактических ролях">
+                <a href="{{ root_path }}roles.html#{{ player.best_role_slug }}" class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs hover:border-emerald-500/40 transition no-underline block" title="Подробнее о рекомендованной тактической роли">
                     <div>
                         <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль (демки)</span>
                         <strong class="text-emerald-400 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
@@ -854,14 +854,14 @@
                 <div>
                     <div class="font-bold text-amber-400 text-sm mb-2 flex items-center gap-2">🎭 Ролевое позиционирование</div>
                     <div class="space-y-2 mt-2">
-                        <div class="p-2 bg-slate-900/80 rounded-lg border border-slate-800 text-center">
+                        <a href="{{ root_path }}roles.html#{{ player.role_slug }}" class="p-2 bg-slate-900/80 rounded-lg border border-slate-800 text-center block hover:border-emerald-500/50 transition no-underline group" title="Посмотреть нормативы фактической роли">
                             <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль</span>
-                            <span class="text-sm font-bold text-emerald-300 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</span>
-                        </div>
-                        <div class="p-2 bg-amber-900/30 rounded-lg border border-amber-500/40 text-center">
+                            <span class="text-sm font-bold text-emerald-300 font-mono group-hover:underline">{{ player.roles[0] if player.roles else 'Рифлер' }} ➔</span>
+                        </a>
+                        <a href="{{ root_path }}roles.html#{{ player.best_role_slug }}" class="p-2 bg-amber-900/30 rounded-lg border border-amber-500/40 text-center block hover:border-amber-400 transition no-underline group" title="Посмотреть требования к рекомендуемой роли">
                             <span class="text-[10px] text-amber-400/80 block uppercase">Рекомендуемая роль</span>
-                            <span class="text-sm font-black text-amber-300 font-mono">{{ player.recommendations.best_role }}</span>
-                        </div>
+                            <span class="text-sm font-black text-amber-300 font-mono group-hover:underline">{{ player.recommendations.best_role }} ➔</span>
+                        </a>
                     </div>
                 </div>
             </div>

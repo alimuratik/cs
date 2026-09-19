@@ -1,283 +1,533 @@
 {% extends "base.html" %}
 
-{% block title %}Тактические роли - CS2 Demo Analytics{% endblock %}
+{% block title %}Тактические роли и специализации состава{% endblock %}
+
+{% block breadcrumbs %}
+<div class="container mx-auto px-4 pt-4">
+    <nav class="flex items-center gap-2 text-xs text-slate-400">
+        <a href="{{ root_path }}index.html" class="hover:text-emerald-300 transition">Главная</a>
+        <span>/</span>
+        <span class="text-slate-200 font-medium">Тактические роли и специализации</span>
+    </nav>
+</div>
+{% endblock %}
 
 {% block content %}
-<div class="space-y-8 animate-fade-in">
+<div class="container mx-auto px-4 py-6 space-y-8 animate-fade-in">
     <!-- Hero Section -->
-    <div class="glassmorphism rounded-2xl border-l-4 border-l-emerald-500 overflow-hidden">
-        <div class="p-8 relative">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 blur-3xl rounded-full"></div>
-            <div class="absolute bottom-0 right-32 w-48 h-48 bg-amber-500/10 blur-3xl rounded-full"></div>
-            <div class="relative z-10">
-                <div class="flex items-center gap-4 mb-3">
-                    <span class="text-4xl">🎭</span>
-                    <h1 class="text-3xl font-rajdhani font-bold text-slate-100 uppercase tracking-wider drop-shadow-md">
-                        Тактические роли и специализации состава
-                    </h1>
+    <div class="glassmorphism p-6 md:p-8 rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-slate-900/95 via-slate-900/85 to-emerald-950/30 relative overflow-hidden shadow-2xl">
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-amber-500/10 blur-3xl rounded-full pointer-events-none"></div>
+        
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
+                    <span>🎭</span> <span>Тактический штаб команды</span>
                 </div>
-                <p class="text-slate-400 max-w-3xl leading-relaxed text-sm">
-                    Тактический хаб для капитанов и аналитиков. Система анализирует каждое действие игрока в демках, 
-                    определяя его фактическую роль на сервере, и сравнивает её с потенциальной предрасположенностью 
-                    на основе 10-факторного радара навыков.
+                <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight flex items-center gap-3">
+                    Тактические роли CS2
+                </h1>
+                <p class="text-slate-300 text-sm md:text-base mt-2 leading-relaxed">
+                    Инструмент капитана и аналитика: система определяет фактическое амплуа каждого игрока по событиям в демках и находит скрытый потенциал на основе 10 параметров соревновательного рейтинга.
                 </p>
+            </div>
+
+            <!-- KPI Badges -->
+            <div class="grid grid-cols-3 gap-3 shrink-0">
+                <div class="glassmorphism p-3 sm:p-4 rounded-2xl border border-slate-700/60 bg-slate-950/60 text-center min-w-[95px] sm:min-w-[120px]">
+                    <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-400">8</div>
+                    <div class="text-[11px] font-semibold text-slate-400 mt-0.5">Ролей CS2</div>
+                </div>
+                <div class="glassmorphism p-3 sm:p-4 rounded-2xl border border-slate-700/60 bg-slate-950/60 text-center min-w-[95px] sm:min-w-[120px]">
+                    <div class="text-2xl sm:text-3xl font-black font-mono {% if roster_overview.covered_roles == 8 %}text-emerald-400{% else %}text-amber-400{% endif %}">
+                        {{ roster_overview.covered_roles }}/8
+                    </div>
+                    <div class="text-[11px] font-semibold text-slate-400 mt-0.5">В основе</div>
+                </div>
+                <div class="glassmorphism p-3 sm:p-4 rounded-2xl border border-slate-700/60 bg-slate-950/60 text-center min-w-[95px] sm:min-w-[120px]">
+                    <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-400">{{ roster_overview.total_candidates }}</div>
+                    <div class="text-[11px] font-semibold text-slate-400 mt-0.5">Кандидатов</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Algorithm Explanation Block -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <details class="glassmorphism rounded-xl border border-slate-700/60 group">
-            <summary class="p-4 cursor-pointer font-bold text-slate-200 hover:text-emerald-400 transition-colors flex items-center justify-between list-none">
-                <span class="flex items-center gap-2">
-                    <span class="text-xl">🎬</span> Фактическая роль (Current Role)
+    <!-- Roster Balance Matrix (Quick Role Matrix) -->
+    <div>
+        <div class="flex items-center justify-between mb-3 px-1">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                <span>⚖️</span> <span>Карта укомплектованности ролей состава</span>
+            </h2>
+            <span class="text-xs text-slate-500 font-mono hidden sm:inline">Кликните на роль для мгновенного перехода</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3" id="roster-overview-grid">
+            {% for r in roles %}
+            <button type="button"
+                    onclick="selectRoleTab('{{ r.role_id }}')"
+                    id="roster-card-{{ r.role_id }}"
+                    class="roster-matrix-card glassmorphism p-3 rounded-2xl border transition-all duration-200 text-left flex flex-col justify-between group hover:scale-[1.02] {% if loop.first %}border-emerald-500 bg-emerald-950/30 shadow-lg shadow-emerald-950/40{% else %}border-slate-800 bg-slate-900/60 hover:border-slate-700{% endif %}">
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <span class="text-2xl drop-shadow-md group-hover:scale-110 transition-transform">{{ r.icon }}</span>
+                        {% if r.roster_status == 'deficit' %}
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-300 border border-rose-500/40">
+                            0
+                        </span>
+                        {% elif r.roster_status == 'optimal' %}
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+                            {{ r.player_count }}
+                        </span>
+                        {% else %}
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-500/40">
+                            {{ r.player_count }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    <div class="font-bold text-xs text-slate-200 truncate group-hover:text-emerald-300 transition-colors">
+                        {{ r.short_title }}
+                    </div>
+                </div>
+
+                <div class="mt-2.5 pt-2 border-t border-slate-800/80 text-[10px] truncate">
+                    {% if r.roster_status == 'deficit' %}
+                    <span class="text-rose-400 font-medium">⚠️ Дефицит</span>
+                    {% elif r.roster_status == 'optimal' %}
+                    <span class="text-emerald-400 font-medium">✅ Закрыта</span>
+                    {% else %}
+                    <span class="text-amber-400 font-medium">⚡ Конкуренция</span>
+                    {% endif %}
+                </div>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Explainer Accordion (Current Role vs Best Role) -->
+    <div class="glassmorphism rounded-2xl border border-slate-800/80 bg-slate-950/40 overflow-hidden">
+        <details class="group" id="roles-methodology-details">
+            <summary class="p-4 sm:p-5 cursor-pointer font-bold text-slate-200 hover:text-emerald-400 transition-colors flex items-center justify-between list-none select-none">
+                <span class="flex items-center gap-3 text-sm sm:text-base font-rajdhani tracking-wide">
+                    <span class="text-lg text-emerald-400">🧠</span>
+                    <span>Как система определяет роли: <span class="text-slate-400 font-normal">Фактический стиль vs Скрытый потенциал</span></span>
                 </span>
-                <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
-            </summary>
-            <div class="p-4 pt-0 text-sm text-slate-400 border-t border-slate-700/30 mt-2">
-                <p>Рассчитывается исключительно из фактических действий в матчах. Алгоритм анализирует закупку (AWP/Utility), тайминги первых контактов, урон от гранат и трейды. Показывает, какую работу игрок реально выполняет на сервере.</p>
-            </div>
-        </details>
-        
-        <details class="glassmorphism rounded-xl border border-slate-700/60 group">
-            <summary class="p-4 cursor-pointer font-bold text-slate-200 hover:text-amber-400 transition-colors flex items-center justify-between list-none">
-                <span class="flex items-center gap-2">
-                    <span class="text-xl">🧬</span> Потенциальная роль (Best Role)
+                <span class="text-xs text-slate-400 group-open:rotate-180 transition-transform duration-200 bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
+                    Подробнее ▼
                 </span>
-                <span class="text-slate-500 group-open:rotate-180 transition-transform">▼</span>
             </summary>
-            <div class="p-4 pt-0 text-sm text-slate-400 border-t border-slate-700/30 mt-2">
-                <p>Рассчитывается на основе уникальной формулы комбинации 10 навыков (радар скиллов). Индекс совместимости показывает предрасположенность к роли. Помогает найти скрытый потенциал и оптимальную позицию для игрока.</p>
+            
+            <div class="p-4 sm:p-6 pt-0 border-t border-slate-800/80 mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Method 1 -->
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center gap-2 text-sm font-bold text-emerald-300 mb-1">
+                            <span>🎮</span> <span>1. Фактический стиль (Current Role)</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Определяется на основе чистых событий из сыгранных демок. Алгоритм фиксирует процент убийств с AWP, участие в первых контактах (FK/FD), процент разменов (Trade Rate), нанесенный урон утилитами и выживаемость на плентах.
+                        </p>
+                    </div>
+                    <div class="text-[11px] font-mono text-emerald-400/90 bg-emerald-950/40 p-2.5 rounded-lg border border-emerald-500/20">
+                        🎯 Показывает: Какую именно задачу игрок выполняет на сервере прямо сейчас.
+                    </div>
+                </div>
+
+                <!-- Method 2 -->
+                <div class="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between space-y-3">
+                    <div>
+                        <div class="flex items-center gap-2 text-sm font-bold text-amber-300 mb-1">
+                            <span>🧬</span> <span>2. Скрытый потенциал (Affinity & Best Role)</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Рассчитывается через взвешенную формулу 10 соревновательных навыков радара. Даже если игрок сейчас вынужденно играет как рифлер, его пиковые показатели аима, позиционки и экономики могут указывать на потенциал топового снайпера.
+                        </p>
+                    </div>
+                    <div class="text-[11px] font-mono text-amber-400/90 bg-amber-950/40 p-2.5 rounded-lg border border-amber-500/20">
+                        ✨ Показывает: На какой роли игрок принесет максимум пользы при смене амплуа.
+                    </div>
+                </div>
             </div>
         </details>
     </div>
 
-    <!-- Quick Jump Anchors -->
-    <div class="flex flex-wrap gap-2">
-        {% for r in roles %}
-            {% set accent_color = 'emerald' %}
-            {% if r.role_id == 'awp' %}{% set accent_color = 'amber' %}
-            {% elif r.role_id == 'entry' %}{% set accent_color = 'red' %}
-            {% elif r.role_id == 'refragger' %}{% set accent_color = 'orange' %}
-            {% elif r.role_id == 'anchor' %}{% set accent_color = 'emerald' %}
-            {% elif r.role_id == 'support' %}{% set accent_color = 'blue' %}
-            {% elif r.role_id == 'lurker' %}{% set accent_color = 'purple' %}
-            {% elif r.role_id == 'clutcher' %}{% set accent_color = 'cyan' %}
-            {% elif r.role_id == 'igl' %}{% set accent_color = 'yellow' %}
-            {% endif %}
-            
-            <a href="#role-{{ r.role_id }}" class="px-4 py-2 rounded-full glassmorphism border border-{{ accent_color }}-500/30 text-{{ accent_color }}-400 hover:bg-{{ accent_color }}-500/10 transition-colors text-sm font-bold flex items-center gap-2">
-                <span>{{ r.icon }}</span>
-                <span>{{ r.short_title }}</span>
-            </a>
-        {% endfor %}
+    <!-- Role Tab Selector -->
+    <div class="sticky top-2 z-30 pt-2 pb-2">
+        <div class="glassmorphism p-2 rounded-2xl border border-slate-800/90 bg-slate-950/80 backdrop-blur-xl shadow-xl overflow-x-auto scrollbar-thin">
+            <div class="flex items-center gap-2 min-w-max" id="role-tabs-container">
+                {% for r in roles %}
+                <button type="button"
+                        onclick="selectRoleTab('{{ r.role_id }}')"
+                        id="tab-btn-{{ r.role_id }}"
+                        class="role-tab-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs md:text-sm font-bold transition-all duration-200 border {% if loop.first %}active bg-emerald-950/80 text-white border-emerald-500 shadow-md shadow-emerald-950/60{% else %}bg-slate-900/80 text-slate-400 border-slate-800 hover:text-slate-200 hover:bg-slate-800/80{% endif %}">
+                    <span class="text-base">{{ r.icon }}</span>
+                    <span>{{ r.short_title }}</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded-full font-mono {% if r.player_count > 0 %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
+                        {{ r.player_count }}
+                    </span>
+                </button>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
-    <!-- Role Cards Section -->
-    <div class="space-y-12">
+    <!-- Role Content Panels -->
+    <div id="roles-panels-wrapper">
         {% for r in roles %}
-            {% set accent_color = 'emerald' %}
-            {% if r.role_id == 'awp' %}{% set accent_color = 'amber' %}
-            {% elif r.role_id == 'entry' %}{% set accent_color = 'red' %}
-            {% elif r.role_id == 'refragger' %}{% set accent_color = 'orange' %}
-            {% elif r.role_id == 'anchor' %}{% set accent_color = 'emerald' %}
-            {% elif r.role_id == 'support' %}{% set accent_color = 'blue' %}
-            {% elif r.role_id == 'lurker' %}{% set accent_color = 'purple' %}
-            {% elif r.role_id == 'clutcher' %}{% set accent_color = 'cyan' %}
-            {% elif r.role_id == 'igl' %}{% set accent_color = 'yellow' %}
-            {% endif %}
+        <div id="role-panel-{{ r.role_id }}" class="role-panel {% if not loop.first %}hidden{% endif %} space-y-6">
             
-            <section id="role-{{ r.role_id }}" class="scroll-mt-6">
-                <!-- Role Header -->
-                <div class="glassmorphism rounded-2xl border border-{{ accent_color }}-500/40 p-6 mb-4 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-{{ accent_color }}-500/10 blur-2xl rounded-full"></div>
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-2">
-                            <span class="text-3xl">{{ r.icon }}</span>
-                            <h2 class="text-2xl font-rajdhani font-bold text-slate-100 uppercase tracking-wide">
-                                {{ r.title }}
-                            </h2>
+            <!-- Role Passport Card (Spotlight) -->
+            <div class="glassmorphism rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900/95 via-slate-900/85 to-slate-950/90 p-6 md:p-8 relative overflow-hidden shadow-xl">
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-16 h-16 rounded-2xl glassmorphism border {{ r.accent_style.border }} bg-slate-950/80 flex items-center justify-center text-3xl shrink-0 shadow-lg {{ r.accent_style.glow }}">
+                                {{ r.icon }}
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-3 flex-wrap">
+                                    <h2 class="text-2xl sm:text-3xl font-black text-white font-rajdhani tracking-wide">
+                                        {{ r.title }}
+                                    </h2>
+                                    {% if r.roster_status == 'deficit' %}
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-950/80 text-rose-300 border border-rose-500/40">
+                                        ⚠️ Дефицит в составе
+                                    </span>
+                                    {% elif r.roster_status == 'optimal' %}
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+                                        ✅ Укомплектовано ({{ r.player_count }})
+                                    </span>
+                                    {% else %}
+                                    <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-950/80 text-amber-300 border border-amber-500/40">
+                                        ⚡ Конкуренция ({{ r.player_count }})
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <p class="text-slate-300 text-sm md:text-base mt-2 max-w-4xl leading-relaxed">
+                                    {{ r.lore }}
+                                </p>
+                            </div>
                         </div>
-                        <p class="text-slate-400 text-sm max-w-4xl">{{ r.lore }}</p>
+                    </div>
+
+                    <!-- Role Specifications Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6 pt-6 border-t border-slate-800/80">
+                        <div class="glassmorphism p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                                <span>📊</span> <span>Детект по демкам</span>
+                            </div>
+                            <div class="text-xs text-slate-200 leading-snug">
+                                {{ r.metrics_rules }}
+                            </div>
+                        </div>
+
+                        <div class="glassmorphism p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1.5">
+                                <span>🧮</span> <span>Формула совместимости</span>
+                            </div>
+                            <div class="text-xs font-mono {{ r.accent_style.text }} font-bold leading-snug">
+                                {{ r.skills_formula }}
+                            </div>
+                        </div>
+
+                        <div class="glassmorphism p-3.5 rounded-2xl border border-slate-800 bg-slate-950/60 flex items-center justify-between">
+                            <div>
+                                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">
+                                    🎯 Порог квалификации
+                                </div>
+                                <div class="text-base font-black font-mono text-white">
+                                    ≥ {{ r.affinity_threshold }}%
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[11px] px-2.5 py-1 rounded-lg {{ r.accent_style.badge_bg }} {{ r.accent_style.badge_text }} border {{ r.accent_style.badge_border }} font-bold font-mono">
+                                    {{ r.short_title }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Criteria Sub-block -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                    <div class="glassmorphism rounded-xl border border-slate-700/60 p-4">
-                        <div class="text-xs font-bold text-slate-500 uppercase mb-2">📊 Фактический расчёт</div>
-                        <div class="text-sm text-slate-300">{{ r.metrics_rules }}</div>
+            <!-- Split Layout: Current Players vs Potential Candidates -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Left Column: Current Players -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-base font-black font-rajdhani uppercase tracking-wider text-white flex items-center gap-2">
+                            <span class="text-blue-400">🛡️</span> 
+                            <span>Фактические исполнители</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
+                                {{ r.player_count }}
+                            </span>
+                        </h3>
+                        <span class="text-xs text-slate-500">Играют на сервере</span>
                     </div>
-                    <div class="glassmorphism rounded-xl border border-slate-700/60 p-4">
-                        <div class="text-xs font-bold text-slate-500 uppercase mb-2 flex items-center justify-between">
-                            <span>🧮 Индекс совместимости</span>
-                            <span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 border border-slate-600 text-slate-300">Порог: {{ r.affinity_threshold }}%</span>
-                        </div>
-                        <div class="text-sm font-mono text-{{ accent_color }}-300">{{ r.skills_formula }}</div>
-                    </div>
-                </div>
 
-                <!-- Table A: Фактические исполнители -->
-                <div class="glassmorphism rounded-xl border border-slate-700/60 overflow-hidden mb-6">
-                    <div class="px-4 py-3 border-b border-slate-700/60 bg-slate-800/40 font-bold text-slate-200 flex items-center gap-2 text-sm">
-                        <span class="text-blue-400">🔹</span> Фактические исполнители ({{ r.player_count }})
-                    </div>
                     {% if r.current_players %}
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm whitespace-nowrap">
-                                <thead class="text-xs text-slate-500 uppercase bg-slate-900/50 border-b border-slate-700/60">
-                                    <tr>
-                                        <th class="px-4 py-3 font-medium text-center w-10">#</th>
-                                        <th class="px-4 py-3 font-medium">Игрок</th>
-                                        <th class="px-4 py-3 font-medium">Стиль</th>
-                                        <th class="px-4 py-3 font-medium text-center">Рейтинг</th>
-                                        <th class="px-4 py-3 font-medium text-center">K/D</th>
-                                        <th class="px-4 py-3 font-medium text-center">ADR</th>
-                                        <th class="px-4 py-3 font-medium w-48">Совместимость %</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-700/40">
-                                    {% for p in r.current_players %}
-                                        <tr class="hover:bg-slate-800/30 transition-colors">
-                                            <td class="px-4 py-3 text-center text-slate-500">{{ loop.index }}</td>
-                                            <td class="px-4 py-3">
-                                                <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="flex items-center gap-3 group">
-                                                    <div class="w-9 h-9 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
-                                                        {{ (p.name or 'P')[:2]|upper }}
-                                                    </div>
-                                                    <div>
-                                                        <div class="font-bold text-slate-200 group-hover:text-emerald-400 transition-colors">{{ p.name }}</div>
-                                                        <div class="text-[10px] text-slate-500">MMR: {{ p.current_mmr }} • М: {{ p.total_matches }}</div>
-                                                    </div>
-                                                </a>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <div class="flex flex-wrap gap-1 max-w-[200px]">
-                                                    {% for style in p.play_style %}
-                                                        <span class="px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold">{{ style }}</span>
-                                                    {% endfor %}
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-3 text-center font-mono font-bold {% if p.rating >= 8.0 %}text-amber-400{% elif p.rating >= 7.0 %}text-emerald-400{% elif p.rating >= 5.0 %}text-yellow-400{% else %}text-red-400{% endif %}">
-                                                {{ p.rating }}
-                                            </td>
-                                            <td class="px-4 py-3 text-center font-mono text-slate-300">{{ p.kd }}</td>
-                                            <td class="px-4 py-3 text-center font-mono text-slate-300">{{ p.adr }}</td>
-                                            <td class="px-4 py-3">
-                                                {% set asc = p.affinity_score|int %}
-                                                {% set asc_color = 'slate' %}
-                                                {% if asc >= 80 %}{% set asc_color = 'amber' %}
-                                                {% elif asc >= 70 %}{% set asc_color = 'emerald' %}
-                                                {% elif asc >= 65 %}{% set asc_color = 'blue' %}
-                                                {% endif %}
-                                                <div class="flex items-center gap-2">
-                                                    <span class="font-bold text-{{ asc_color }}-400 w-8">{{ asc }}%</span>
-                                                    <div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                                                        <div class="h-full bg-{{ asc_color }}-500 rounded-full" style="width: {{ asc }}%;"></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                    <div class="space-y-3">
+                        {% for p in r.current_players %}
+                        <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="{{ p.steam_id }}">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-emerald-300 transition text-sm flex items-center gap-2">
+                                            <span>{{ p.name }}</span>
+                                            <span class="text-[10px] text-slate-400 font-normal">➔</span>
+                                        </a>
+                                        <div class="flex items-center gap-2 mt-0.5">
+                                            {{ p.rank_tier.badge_svg_small|safe }}
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: {{ p.current_mmr }}</span>
+                                            <span class="text-slate-600">•</span>
+                                            <span class="text-[11px] text-slate-400 font-mono">{{ p.total_matches }} матчей</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-right shrink-0">
+                                    <div class="text-xs text-slate-400">Рейтинг</div>
+                                    <div class="text-lg font-black font-mono {% if p.rating >= 8.0 %}text-amber-400{% elif p.rating >= 7.0 %}text-emerald-400{% elif p.rating >= 5.0 %}text-yellow-400{% else %}text-red-400{% endif %}">
+                                        {{ p.rating }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mini Stats Bar -->
+                            <div class="grid grid-cols-3 gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 text-center font-mono text-xs">
+                                <div>
+                                    <span class="text-[10px] text-slate-500 uppercase block">K/D</span>
+                                    <span class="font-bold text-slate-200">{{ p.kd }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-500 uppercase block">ADR</span>
+                                    <span class="font-bold text-slate-200">{{ p.adr }}</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-slate-500 uppercase block">KAST</span>
+                                    <span class="font-bold text-slate-200">{{ p.kast }}%</span>
+                                </div>
+                            </div>
+
+                            <!-- Affinity Progress Bar -->
+                            <div>
+                                <div class="flex items-center justify-between text-xs mb-1">
+                                    <span class="text-slate-400">Совместимость с ролью:</span>
+                                    <span class="font-bold font-mono {{ r.accent_style.text }}">{{ p.affinity_score }}%</span>
+                                </div>
+                                <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                                    <div class="h-full {{ r.accent_style.bar }} rounded-full" style="width: {{ p.affinity_score }}%;"></div>
+                                </div>
+                            </div>
                         </div>
+                        {% endfor %}
+                    </div>
                     {% else %}
-                        <div class="p-8 text-center text-slate-500 text-sm">
-                            Ни один игрок пока не проявил себя в этой роли по демкам
+                    <!-- Empty State for Current Players -->
+                    <div class="glassmorphism p-8 rounded-2xl border border-rose-500/30 bg-rose-950/10 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-950/60 border border-rose-500/40 text-rose-300 text-2xl flex items-center justify-center mx-auto">
+                            ⚠️
                         </div>
+                        <h4 class="font-bold text-white text-base">В основе нет закрепленного исполнителя</h4>
+                        <p class="text-slate-400 text-xs max-w-md mx-auto leading-relaxed">
+                            Ни один игрок пока не выполняет нормативы роли по сыгранным демкам. Рекомендуем назначить кандидата из списка справа со скрытым потенциалом.
+                        </p>
+                    </div>
                     {% endif %}
                 </div>
 
-                <!-- Table B: Кандидаты -->
-                <div class="glassmorphism rounded-xl border border-slate-700/60 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-slate-700/60 bg-slate-800/40 font-bold text-slate-200 flex items-center gap-2 text-sm">
-                        <span class="text-amber-400">✨</span> Скрытый потенциал — Кандидаты на переквалификацию ({{ r.candidate_count }})
+                <!-- Right Column: Potential Candidates -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-base font-black font-rajdhani uppercase tracking-wider text-white flex items-center gap-2">
+                            <span class="text-amber-400">✨</span> 
+                            <span>Скрытый потенциал и скаутинг</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">
+                                {{ r.candidate_count }}
+                            </span>
+                        </h3>
+                        <span class="text-xs text-slate-500">Рекомендованы к переводу</span>
                     </div>
+
                     {% if r.potential_candidates %}
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-sm whitespace-nowrap">
-                                <thead class="text-xs text-slate-500 uppercase bg-slate-900/50 border-b border-slate-700/60">
-                                    <tr>
-                                        <th class="px-4 py-3 font-medium text-center w-10">#</th>
-                                        <th class="px-4 py-3 font-medium">Игрок</th>
-                                        <th class="px-4 py-3 font-medium">Текущий стиль</th>
-                                        <th class="px-4 py-3 font-medium w-48">Индекс совместимости %</th>
-                                        <th class="px-4 py-3 font-medium text-center">Рейтинг</th>
-                                        <th class="px-4 py-3 font-medium">Потенциал</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-700/40">
-                                    {% for p in r.potential_candidates|sort(attribute='affinity_score', reverse=true) %}
-                                        <tr class="hover:bg-slate-800/30 transition-colors">
-                                            <td class="px-4 py-3 text-center text-slate-500">{{ loop.index }}</td>
-                                            <td class="px-4 py-3">
-                                                <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="flex items-center gap-3 group">
-                                                    <div class="w-9 h-9 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
-                                                        {{ (p.name or 'P')[:2]|upper }}
-                                                    </div>
-                                                    <div>
-                                                        <div class="font-bold text-slate-200 group-hover:text-amber-400 transition-colors">{{ p.name }}</div>
-                                                        <div class="text-[10px] text-slate-500">MMR: {{ p.current_mmr }} • М: {{ p.total_matches }}</div>
-                                                    </div>
-                                                </a>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                <div class="flex flex-wrap gap-1 max-w-[200px]">
-                                                    {% for style in p.play_style %}
-                                                        <span class="px-2 py-0.5 rounded-full bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold">{{ style }}</span>
-                                                    {% endfor %}
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                {% set asc = p.affinity_score|int %}
-                                                {% set asc_color = 'slate' %}
-                                                {% if asc >= 80 %}{% set asc_color = 'amber' %}
-                                                {% elif asc >= 70 %}{% set asc_color = 'emerald' %}
-                                                {% elif asc >= 65 %}{% set asc_color = 'blue' %}
-                                                {% endif %}
-                                                <div class="flex flex-col gap-1">
-                                                    <span class="font-bold text-{{ asc_color }}-400 text-base">{{ asc }}%</span>
-                                                    <div class="h-1 bg-slate-800 rounded-full overflow-hidden">
-                                                        <div class="h-full bg-{{ asc_color }}-500 rounded-full" style="width: {{ asc }}%;"></div>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td class="px-4 py-3 text-center font-mono font-bold {% if p.rating >= 8.0 %}text-amber-400{% elif p.rating >= 7.0 %}text-emerald-400{% elif p.rating >= 5.0 %}text-yellow-400{% else %}text-red-400{% endif %}">
-                                                {{ p.rating }}
-                                            </td>
-                                            <td class="px-4 py-3">
-                                                {% if p.affinity_score >= 80 %}
-                                                    <span class="px-2 py-1 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 text-xs font-bold">Высокий потенциал</span>
-                                                {% elif p.affinity_score >= 65 %}
-                                                    <span class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold">Хороший потенциал</span>
-                                                {% else %}
-                                                    <span class="text-xs text-slate-500">Средний потенциал</span>
-                                                {% endif %}
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                    <div class="space-y-3">
+                        {% for p in r.potential_candidates[:6] %}
+                        <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="{{ p.steam_id }}">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 {{ p.avatar_classes }}">
+                                        {{ (p.name or 'P')[:2]|upper }}
+                                    </div>
+                                    <div>
+                                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white hover:text-amber-300 transition text-sm flex items-center gap-2">
+                                            <span>{{ p.name }}</span>
+                                            <span class="text-[10px] text-slate-400 font-normal">➔</span>
+                                        </a>
+                                        <div class="flex items-center gap-2 mt-0.5">
+                                            {{ p.rank_tier.badge_svg_small|safe }}
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: {{ p.current_mmr }}</span>
+                                            <span class="text-slate-600">•</span>
+                                            <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">{{ p.play_style[0] if p.play_style else 'Универсал' }}</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-right shrink-0">
+                                    {% if p.affinity_score >= 80 %}
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">
+                                        🔥 Идеально
+                                    </span>
+                                    {% elif p.affinity_score >= 70 %}
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">
+                                        ⚡ Высокий
+                                    </span>
+                                    {% else %}
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/40 font-bold">
+                                        👍 Хороший
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Compatibility Banner -->
+                            <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Индекс совместимости</span>
+                                    <span class="text-xl font-black font-mono text-amber-300">{{ p.affinity_score }}%</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Общий рейтинг</span>
+                                    <span class="text-base font-black font-mono {% if p.rating >= 8.0 %}text-amber-400{% elif p.rating >= 7.0 %}text-emerald-400{% elif p.rating >= 5.0 %}text-yellow-400{% else %}text-red-400{% endif %}">
+                                        {{ p.rating }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+                                <div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full" style="width: {{ p.affinity_score }}%;"></div>
+                            </div>
                         </div>
+                        {% endfor %}
+
+                        {% if r.candidate_count > 6 %}
+                        <div class="text-center pt-2">
+                            <span class="text-xs text-slate-500 font-mono">Показаны топ-6 кандидатов из {{ r.candidate_count }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
                     {% else %}
-                        <div class="p-8 text-center text-slate-500 text-sm">
-                            Все игроки с высоким индексом уже играют в этом стиле!
+                    <!-- Empty State for Candidates -->
+                    <div class="glassmorphism p-8 rounded-2xl border border-slate-800 bg-slate-950/40 text-center space-y-3">
+                        <div class="w-12 h-12 rounded-2xl bg-slate-900 border border-slate-800 text-slate-400 text-2xl flex items-center justify-center mx-auto">
+                            ✅
                         </div>
+                        <h4 class="font-bold text-white text-base">Все кандидаты уже в этой роли</h4>
+                        <p class="text-slate-400 text-xs max-w-md mx-auto leading-relaxed">
+                            Игроки с высоким показателем индекса совместимости уже успешно выступают в данном стиле на сервере.
+                        </p>
+                    </div>
                     {% endif %}
                 </div>
-            </section>
+            </div>
+
+        </div>
         {% endfor %}
     </div>
 
-    <!-- Bottom Navigation -->
-    <div class="flex items-center justify-between mt-12 pt-8 border-t border-slate-800">
-        <a href="{{ root_path }}index.html" class="px-6 py-2 rounded-lg glassmorphism text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition-colors text-sm font-bold flex items-center gap-2">
-            <span>←</span> Главная
+    <!-- Bottom Navigation Footer -->
+    <div class="glassmorphism p-5 rounded-2xl border border-slate-800 bg-slate-950/40 flex flex-wrap items-center justify-between gap-4 mt-8">
+        <a href="{{ root_path }}index.html" class="px-5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 transition-colors text-xs font-bold flex items-center gap-2">
+            <span>←</span> <span>Главный дашборд</span>
         </a>
-        <a href="{{ root_path }}skills.html" class="px-6 py-2 rounded-lg glassmorphism text-slate-300 hover:text-emerald-400 hover:border-emerald-500/50 transition-colors text-sm font-bold flex items-center gap-2">
-            Радар скиллов <span>→</span>
-        </a>
+        <div class="flex items-center gap-2">
+            <a href="{{ root_path }}skills.html" class="px-5 py-2 rounded-xl bg-emerald-950/60 text-emerald-300 hover:bg-emerald-900/60 border border-emerald-500/40 transition-colors text-xs font-bold flex items-center gap-2">
+                <span>🎯</span> <span>Рейтинг по навыкам ➔</span>
+            </a>
+            <a href="{{ root_path }}matchmaker.html" class="px-5 py-2 rounded-xl bg-amber-950/60 text-amber-300 hover:bg-amber-900/60 border border-amber-500/40 transition-colors text-xs font-bold flex items-center gap-2">
+                <span>⚖️</span> <span>Баланс 5v5 ➔</span>
+            </a>
+        </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function selectRoleTab(roleId) {
+    if (!roleId) return;
+
+    // 1. Скрываем все панели
+    document.querySelectorAll('.role-panel').forEach(panel => {
+        panel.classList.add('hidden');
+    });
+
+    // 2. Сбрасываем стили у всех кнопок вкладок
+    document.querySelectorAll('.role-tab-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-emerald-950/80', 'text-white', 'border-emerald-500', 'shadow-md', 'shadow-emerald-950/60');
+        btn.classList.add('bg-slate-900/80', 'text-slate-400', 'border-slate-800');
+    });
+
+    // 3. Сбрасываем подсветку на карточках матрицы состава
+    document.querySelectorAll('.roster-matrix-card').forEach(card => {
+        card.classList.remove('border-emerald-500', 'bg-emerald-950/30', 'shadow-lg', 'shadow-emerald-950/40');
+        card.classList.add('border-slate-800', 'bg-slate-900/60');
+    });
+
+    // 4. Активируем выбранную панель
+    const targetPanel = document.getElementById('role-panel-' + roleId);
+    if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+    }
+
+    // 5. Активируем кнопку вкладки
+    const targetBtn = document.getElementById('tab-btn-' + roleId);
+    if (targetBtn) {
+        targetBtn.classList.remove('bg-slate-900/80', 'text-slate-400', 'border-slate-800');
+        targetBtn.classList.add('active', 'bg-emerald-950/80', 'text-white', 'border-emerald-500', 'shadow-md', 'shadow-emerald-950/60');
+        targetBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    // 6. Активируем карточку в матрице состава
+    const targetCard = document.getElementById('roster-card-' + roleId);
+    if (targetCard) {
+        targetCard.classList.remove('border-slate-800', 'bg-slate-900/60');
+        targetCard.classList.add('border-emerald-500', 'bg-emerald-950/30', 'shadow-lg', 'shadow-emerald-950/40');
+    }
+
+    // 7. Обновляем хэш страницы без прыжка экрана
+    if (history.replaceState) {
+        history.replaceState(null, null, '#' + roleId);
+    } else {
+        location.hash = '#' + roleId;
+    }
+}
+
+// Инициализация при загрузке по хэшу URL (#awp, #entry, #support и т.д.)
+window.addEventListener('DOMContentLoaded', () => {
+    let hash = window.location.hash.replace('#', '').toLowerCase();
+    // Обрабатываем возможные варианты якоря: #role-awp или #awp
+    if (hash.startsWith('role-')) {
+        hash = hash.replace('role-', '');
+    }
+    if (hash) {
+        const matchingBtn = document.getElementById('tab-btn-' + hash);
+        if (matchingBtn) {
+            selectRoleTab(hash);
+        }
+    }
+});
+
+window.addEventListener('hashchange', () => {
+    let hash = window.location.hash.replace('#', '').toLowerCase();
+    if (hash.startsWith('role-')) {
+        hash = hash.replace('role-', '');
+    }
+    if (hash) {
+        selectRoleTab(hash);
+    }
+});
+</script>
 {% endblock %}

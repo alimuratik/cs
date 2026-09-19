@@ -1251,6 +1251,38 @@ def format_player_data(p: dict) -> dict:
     if not exercises_items:
         exercises_items = ["Используй yprac карты для изучения раскидок"]
 
+    ROLE_SLUG_MAP = {
+        "снайпер": "awp",
+        "awp": "awp",
+        "энтри": "entry",
+        "entry": "entry",
+        "второй номер": "refragger",
+        "трейдер": "refragger",
+        "refragger": "refragger",
+        "опорник": "anchor",
+        "anchor": "anchor",
+        "саппорт": "support",
+        "support": "support",
+        "координатор": "support",
+        "люркер": "lurker",
+        "lurker": "lurker",
+        "клатчер": "clutcher",
+        "clutcher": "clutcher",
+        "ин-гейм лидер": "igl",
+        "igl": "igl",
+        "капитан": "igl",
+        "универсал": "refragger"
+    }
+
+    def resolve_role_slug(role_name_str: str) -> str:
+        if not role_name_str:
+            return "awp"
+        r_lower = role_name_str.lower()
+        for k, v in ROLE_SLUG_MAP.items():
+            if k in r_lower:
+                return v
+        return "awp"
+
     role_text = raw_recs.get("best_role", "Универсал")
     current_role_text = raw_recs.get("current_role", roles[0] if roles else "Универсал")
 
@@ -1262,6 +1294,8 @@ def format_player_data(p: dict) -> dict:
         "ratings": radar_values,
         "ratings_dict": ratings_dict,
         "roles": roles,
+        "role_slug": resolve_role_slug(roles[0] if roles else ""),
+        "best_role_slug": resolve_role_slug(role_text),
         "total_matches": len(matches),
         "mmr": {
             "current_mmr": curr_mmr,
@@ -2242,9 +2276,120 @@ def generate_site():
             elif affinity >= threshold:
                 potential_candidates.append(player_obj)
 
+        accent_styles = {
+            "amber": {
+                "border": "border-amber-500/40",
+                "border_active": "border-amber-400",
+                "bg_light": "bg-amber-500/10",
+                "text": "text-amber-400",
+                "glow": "shadow-amber-500/20",
+                "badge_bg": "bg-amber-950/60",
+                "badge_border": "border-amber-500/30",
+                "badge_text": "text-amber-300",
+                "bar": "bg-amber-400"
+            },
+            "red": {
+                "border": "border-rose-500/40",
+                "border_active": "border-rose-500",
+                "bg_light": "bg-rose-500/10",
+                "text": "text-rose-400",
+                "glow": "shadow-rose-500/20",
+                "badge_bg": "bg-rose-950/60",
+                "badge_border": "border-rose-500/30",
+                "badge_text": "text-rose-300",
+                "bar": "bg-rose-500"
+            },
+            "orange": {
+                "border": "border-orange-500/40",
+                "border_active": "border-orange-500",
+                "bg_light": "bg-orange-500/10",
+                "text": "text-orange-400",
+                "glow": "shadow-orange-500/20",
+                "badge_bg": "bg-orange-950/60",
+                "badge_border": "border-orange-500/30",
+                "badge_text": "text-orange-300",
+                "bar": "bg-orange-500"
+            },
+            "emerald": {
+                "border": "border-emerald-500/40",
+                "border_active": "border-emerald-500",
+                "bg_light": "bg-emerald-500/10",
+                "text": "text-emerald-400",
+                "glow": "shadow-emerald-500/20",
+                "badge_bg": "bg-emerald-950/60",
+                "badge_border": "border-emerald-500/30",
+                "badge_text": "text-emerald-300",
+                "bar": "bg-emerald-500"
+            },
+            "blue": {
+                "border": "border-sky-500/40",
+                "border_active": "border-sky-500",
+                "bg_light": "bg-sky-500/10",
+                "text": "text-sky-400",
+                "glow": "shadow-sky-500/20",
+                "badge_bg": "bg-sky-950/60",
+                "badge_border": "border-sky-500/30",
+                "badge_text": "text-sky-300",
+                "bar": "bg-sky-500"
+            },
+            "purple": {
+                "border": "border-purple-500/40",
+                "border_active": "border-purple-500",
+                "bg_light": "bg-purple-500/10",
+                "text": "text-purple-400",
+                "glow": "shadow-purple-500/20",
+                "badge_bg": "bg-purple-950/60",
+                "badge_border": "border-purple-500/30",
+                "badge_text": "text-purple-300",
+                "bar": "bg-purple-500"
+            },
+            "cyan": {
+                "border": "border-cyan-500/40",
+                "border_active": "border-cyan-500",
+                "bg_light": "bg-cyan-500/10",
+                "text": "text-cyan-400",
+                "glow": "shadow-cyan-500/20",
+                "badge_bg": "bg-cyan-950/60",
+                "badge_border": "border-cyan-500/30",
+                "badge_text": "text-cyan-300",
+                "bar": "bg-cyan-400"
+            },
+            "yellow": {
+                "border": "border-amber-400/40",
+                "border_active": "border-amber-400",
+                "bg_light": "bg-amber-400/10",
+                "text": "text-amber-300",
+                "glow": "shadow-amber-400/20",
+                "badge_bg": "bg-amber-950/60",
+                "badge_border": "border-amber-400/30",
+                "badge_text": "text-amber-200",
+                "bar": "bg-amber-400"
+            }
+        }
+
         # Сортировка: фактические — по рейтингу, кандидаты — по affinity
         current_players.sort(key=lambda x: (x["affinity_score"], x["rating"], x["current_mmr"]), reverse=True)
         potential_candidates.sort(key=lambda x: (x["affinity_score"], x["rating"]), reverse=True)
+
+        p_count = len(current_players)
+        c_count = len(potential_candidates)
+        top_cand = potential_candidates[0] if potential_candidates else None
+
+        if p_count == 0:
+            roster_status = "deficit"
+            status_label = "Дефицит роли"
+            status_color = "rose"
+        elif p_count in (1, 2):
+            roster_status = "optimal"
+            status_label = f"{p_count} в основе"
+            status_color = "emerald"
+        else:
+            roster_status = "surplus"
+            status_label = f"{p_count} в основе"
+            status_color = "amber"
+
+        acc_key = role_def["accent_color"]
+        role_style = accent_styles.get(acc_key, accent_styles["amber"])
 
         roles_data.append({
             "role_id": role_def["role_id"],
@@ -2255,12 +2400,25 @@ def generate_site():
             "metrics_rules": role_def["metrics_rules"],
             "skills_formula": role_def["skills_formula"],
             "affinity_threshold": threshold,
-            "accent_color": role_def["accent_color"],
+            "accent_color": acc_key,
+            "accent_style": role_style,
             "current_players": current_players,
             "potential_candidates": potential_candidates,
-            "player_count": len(current_players),
-            "candidate_count": len(potential_candidates)
+            "player_count": p_count,
+            "candidate_count": c_count,
+            "roster_status": roster_status,
+            "status_label": status_label,
+            "status_color": status_color,
+            "top_candidate": top_cand
         })
+
+    roster_overview = {
+        "total_roles": len(roles_data),
+        "covered_roles": sum(1 for r in roles_data if r["player_count"] > 0),
+        "deficit_roles": sum(1 for r in roles_data if r["player_count"] == 0),
+        "total_active_players": len({p["steam_id"] for r in roles_data for p in r["current_players"]}),
+        "total_candidates": sum(r["candidate_count"] for r in roles_data)
+    }
 
     roles_template = env.get_template("roles.html")
     safe_dump(
@@ -2270,6 +2428,7 @@ def generate_site():
             js_path="js/app.js",
             root_path="",
             roles=roles_data,
+            roster_overview=roster_overview,
             generated_at=generated_at
         ),
         SITE_DIR / "roles.html"
