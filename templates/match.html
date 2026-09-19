@@ -397,7 +397,7 @@
                         <div class="flex items-center gap-2 flex-wrap">
                             <h3 class="text-lg font-bold text-white">Видеозапись и трансляция матча</h3>
                             {% if match.highlight %}
-                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Хайлайт ИИ: {{ match.highlight.moment_badge }}</span>
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Ключевые моменты: Топ-{{ match.highlight.top_highlights|length }}</span>
                             {% endif %}
                             {% if match.video_embed_url %}
                             <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Доступно к просмотру</span>
@@ -412,83 +412,16 @@
             </summary>
 
             <div class="p-5 md:p-6 bg-slate-950/50 space-y-6">
-                <!-- Highlight Hero Box (AI Choice) -->
-                {% if match.highlight %}
-                {% set hl = match.highlight %}
-                <div class="highlight-card relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-br from-amber-950/20 via-slate-900/90 to-slate-950 p-5 md:p-6 shadow-xl">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800/80">
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap mb-1">
-                                <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                                    ⭐ Главный хайлайт карты (Выбор ИИ)
-                                </span>
-                                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full {% if hl.badge_color == 'rose' %}bg-rose-500/20 text-rose-300 border border-rose-500/40{% elif hl.badge_color == 'amber' %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif hl.badge_color == 'purple' %}bg-purple-500/20 text-purple-300 border border-purple-500/40{% else %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% endif %}">
-                                    {{ hl.moment_badge }}
-                                </span>
-                                <span class="text-xs font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
-                                    Раунд {{ hl.round_num }} (счёт {{ hl.score_at_moment }})
-                                </span>
-                            </div>
-                            <p class="text-xs text-slate-400">Ключевое соревновательное действие матча с автоматической привязкой таймкода к тикам демки</p>
-                        </div>
-
-                        <!-- Timecode / Quick Watch Button -->
-                        {% if hl.watch_url %}
-                        <a href="{{ hl.watch_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition shrink-0">
-                            <span>▶ Открыть на YouTube ({{ hl.timecode_display }})</span>
-                            <span class="text-sm">↗</span>
-                        </a>
-                        {% endif %}
-                    </div>
-
-                    <!-- Highlight Player & Stats -->
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4 items-center">
-                        <div class="lg:col-span-4 flex items-center gap-3">
-                            <a href="{{ root_path }}players/{{ hl.player_steamid }}.html" class="flex items-center gap-3 group">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/40 flex items-center justify-center text-base font-black text-white group-hover:scale-105 transition shadow-md">
-                                    {{ hl.player_name[:2]|upper }}
-                                </div>
-                                <div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="font-black text-white text-base group-hover:text-amber-300 transition">{{ hl.player_name }}</span>
-                                        {% if hl.rank_tier and hl.rank_tier.badge_svg_small %}
-                                        <span class="inline-block shrink-0" title="{{ hl.rank_tier.tier_name }}">
-                                            {{ hl.rank_tier.badge_svg_small|safe }}
-                                        </span>
-                                        {% endif %}
-                                    </div>
-                                    <div class="flex items-center gap-2 text-xs text-slate-400 font-mono mt-0.5">
-                                        <span class="text-amber-300 font-semibold">{{ hl.weapon_display }}</span>
-                                        <span>•</span>
-                                        <span>{{ hl.kills_count }} фрагов ({{ hl.headshots }} HS)</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        <!-- AI Commentary Bubble -->
-                        <div class="lg:col-span-8">
-                            <div class="highlight-ai-bubble bg-slate-900/80 border border-emerald-500/30 rounded-xl p-3.5 flex items-start gap-3">
-                                <span class="text-xl shrink-0 mt-0.5">🎙️</span>
-                                <div class="text-xs text-slate-300 leading-relaxed">
-                                    <strong class="text-emerald-400 font-semibold block mb-0.5">Комментарий ИИ-кастера:</strong>
-                                    {{ hl.ai_caption }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Top 5 Highlights Grid (Primary + Backup Moments) -->
-                {% if match.highlight.top_highlights and match.highlight.top_highlights|length > 1 %}
-                <div class="mt-4 pt-4 border-t border-slate-800/80">
-                    <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
+                <!-- Top 5 Highlights Grid -->
+                {% if match.highlight and match.highlight.top_highlights %}
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between gap-3 mb-1 flex-wrap">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                                 🎬 Ключевые моменты карты (Топ-{{ match.highlight.top_highlights|length }})
                             </span>
                             <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
-                                Выбор ИИ & Запасные хайлайты
+                                Выбор ИИ
                             </span>
                         </div>
                         <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">Кликните по карточке для перехода в плеере</span>
@@ -499,7 +432,7 @@
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none {% if loop.first %}is-active border-amber-400 bg-amber-500/10 shadow-lg shadow-amber-500/10{% else %}border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60{% endif %}"
                              id="moment-card-{{ loop.index0 }}"
                              {% if m_hl.embed_url %}
-                             onclick="selectVideoMoment('{{ m_hl.embed_url }}', '{{ m_hl.timecode_display }}', {{ loop.index0 }});"
+                             onclick="selectVideoMoment('{{ m_hl.embed_url }}', '{{ m_hl.timecode_display }}', {{ loop.index0 }}, '{{ m_hl.ai_caption|e }}');"
                              {% endif %}>
                             
                             <!-- Index & Timecode -->
@@ -522,7 +455,7 @@
                             <!-- Player & Weapon -->
                             <div class="space-y-1 mb-3">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="w-2 h-2 rounded-full {% if m_hl.team == 'team1' %}bg-sky-400{% elif m_hl.team == 'team2' %}bg-amber-400{% else %}bg-emerald-400{% endif %} shrink-0"></span>
+                                    <span class="w-2 h-2 rounded-full {% if m_hl.team == 'team1' %}bg-sky-400{% elif m_hl.team == 'team2' %}bg-amber-400{% else %}bg-emerald-400{% endif %} shrink-0" title="{% if m_hl.team == 'team1' %}{{ match.team1_name }}{% elif m_hl.team == 'team2' %}{{ match.team2_name }}{% endif %}"></span>
                                     <span class="text-xs font-bold text-white truncate hover:text-amber-300 transition" title="{{ m_hl.player_name }}">
                                         {{ m_hl.player_name }}
                                     </span>
@@ -559,8 +492,18 @@
                         </div>
                         {% endfor %}
                     </div>
+
+                    <!-- Dynamic AI Commentary strip for active moment -->
+                    {% if match.highlight.ai_caption %}
+                    <div class="highlight-ai-bubble bg-slate-900/80 border border-emerald-500/30 rounded-xl p-3 flex items-start gap-2.5">
+                        <span class="text-base shrink-0 mt-0.5">🎙️</span>
+                        <div class="text-xs text-slate-300 leading-relaxed">
+                            <strong class="text-emerald-400 font-semibold mr-1">Комментарий ИИ:</strong>
+                            <span id="active-moment-caption">{{ match.highlight.ai_caption }}</span>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
                 {% endif %}
 
                 <!-- Video Player Container -->
@@ -570,10 +513,10 @@
                     <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
                         <div class="flex items-center gap-2">
                             <button type="button"
-                                    onclick="selectVideoMoment('{{ match.highlight.embed_url }}', '{{ match.highlight.timecode_display }}', 0);"
+                                    onclick="selectVideoMoment('{{ match.highlight.embed_url }}', '{{ match.highlight.timecode_display }}', 0, '{{ match.highlight.ai_caption|e }}');"
                                     id="btn-highlight-play"
                                     class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs transition flex items-center gap-1.5 shadow">
-                                <span>⭐ Воспроизвести хайлайт ({{ match.highlight.timecode_display }})</span>
+                                <span>⭐ Момент #1 ({{ match.highlight.timecode_display }})</span>
                             </button>
                             <button type="button"
                                     onclick="selectFullVod('{{ match.video_embed_url }}');"
@@ -620,7 +563,7 @@
                 {% endif %}
 
                 <script>
-                function selectVideoMoment(embedUrl, tc, idx) {
+                function selectVideoMoment(embedUrl, tc, idx, caption) {
                     var iframe = document.getElementById('match-video-iframe');
                     if (iframe && embedUrl) {
                         iframe.src = embedUrl;
@@ -647,6 +590,10 @@
                         btnVod.classList.remove('bg-amber-500', 'text-slate-950', 'font-black');
                         btnVod.classList.add('bg-slate-800', 'text-slate-300');
                     }
+                    var capEl = document.getElementById('active-moment-caption');
+                    if (capEl && caption) {
+                        capEl.textContent = caption;
+                    }
                 }
 
                 function selectFullVod(embedUrl) {
@@ -668,6 +615,10 @@
                     if (btnHl) {
                         btnHl.classList.remove('bg-amber-500', 'text-slate-950', 'font-black');
                         btnHl.classList.add('bg-slate-800', 'text-slate-300');
+                    }
+                    var capEl = document.getElementById('active-moment-caption');
+                    if (capEl) {
+                        capEl.textContent = 'Полная видеозапись матча с 1-го раунда.';
                     }
                 }
                 </script>
