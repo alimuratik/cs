@@ -478,6 +478,89 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Top 5 Highlights Grid (Primary + Backup Moments) -->
+                {% if match.highlight.top_highlights and match.highlight.top_highlights|length > 1 %}
+                <div class="mt-4 pt-4 border-t border-slate-800/80">
+                    <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                                🎬 Ключевые моменты карты (Топ-{{ match.highlight.top_highlights|length }})
+                            </span>
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+                                Выбор ИИ & Запасные хайлайты
+                            </span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono hidden sm:inline">Кликните по карточке для перехода в плеере</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5" id="moments-grid">
+                        {% for m_hl in match.highlight.top_highlights %}
+                        <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none {% if loop.first %}is-active border-amber-400 bg-amber-500/10 shadow-lg shadow-amber-500/10{% else %}border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60{% endif %}"
+                             id="moment-card-{{ loop.index0 }}"
+                             {% if m_hl.embed_url %}
+                             onclick="selectVideoMoment('{{ m_hl.embed_url }}', '{{ m_hl.timecode_display }}', {{ loop.index0 }});"
+                             {% endif %}>
+                            
+                            <!-- Index & Timecode -->
+                            <div class="flex items-center justify-between gap-1 mb-2">
+                                <span class="text-[10px] font-black px-1.5 py-0.5 rounded {% if loop.first %}bg-amber-500 text-slate-950 shadow-sm shadow-amber-500/40{% else %}bg-slate-800 text-slate-300 border border-slate-700{% endif %}">
+                                    #{{ m_hl.order }}
+                                </span>
+                                <span class="text-[11px] font-mono font-bold text-amber-300 bg-slate-950/80 px-2 py-0.5 rounded border border-slate-800">
+                                    ⏱ {{ m_hl.timecode_display }}
+                                </span>
+                            </div>
+
+                            <!-- Badge -->
+                            <div class="mb-2">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full inline-block truncate max-w-full {% if m_hl.badge_color == 'rose' %}bg-rose-500/20 text-rose-300 border border-rose-500/40{% elif m_hl.badge_color == 'amber' %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif m_hl.badge_color == 'purple' %}bg-purple-500/20 text-purple-300 border border-purple-500/40{% elif m_hl.badge_color == 'indigo' %}bg-indigo-500/20 text-indigo-300 border border-indigo-500/40{% elif m_hl.badge_color == 'sky' %}bg-sky-500/20 text-sky-300 border border-sky-500/40{% else %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% endif %}">
+                                    {{ m_hl.moment_badge }}
+                                </span>
+                            </div>
+
+                            <!-- Player & Weapon -->
+                            <div class="space-y-1 mb-3">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 rounded-full {% if m_hl.team == 'team1' %}bg-sky-400{% elif m_hl.team == 'team2' %}bg-amber-400{% else %}bg-emerald-400{% endif %} shrink-0"></span>
+                                    <span class="text-xs font-bold text-white truncate hover:text-amber-300 transition" title="{{ m_hl.player_name }}">
+                                        {{ m_hl.player_name }}
+                                    </span>
+                                    {% if m_hl.rank_tier and m_hl.rank_tier.badge_svg_small %}
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="{{ m_hl.rank_tier.tier_name }}">
+                                        {{ m_hl.rank_tier.badge_svg_small|safe }}
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+                                    <span class="text-amber-300/90 font-medium">{{ m_hl.weapon_display }}</span>
+                                    <span>Рд. {{ m_hl.round_num }} ({{ m_hl.score_at_moment }})</span>
+                                </div>
+                            </div>
+
+                            <!-- Footer -->
+                            <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
+                                {% if m_hl.embed_url %}
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                {% if m_hl.watch_url %}
+                                <a href="{{ m_hl.watch_url }}" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                {% endif %}
+                                {% else %}
+                                <span class="text-slate-500 font-mono">В игре: {{ m_hl.timecode_game }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
                 {% endif %}
 
                 <!-- Video Player Container -->
@@ -487,13 +570,13 @@
                     <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
                         <div class="flex items-center gap-2">
                             <button type="button"
-                                    onclick="document.getElementById('match-video-iframe').src='{{ match.highlight.embed_url }}'; this.classList.add('bg-amber-500', 'text-slate-950', 'font-black'); this.classList.remove('bg-slate-800', 'text-slate-300'); document.getElementById('btn-full-vod').classList.remove('bg-amber-500', 'text-slate-950', 'font-black'); document.getElementById('btn-full-vod').classList.add('bg-slate-800', 'text-slate-300');"
+                                    onclick="selectVideoMoment('{{ match.highlight.embed_url }}', '{{ match.highlight.timecode_display }}', 0);"
                                     id="btn-highlight-play"
                                     class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs transition flex items-center gap-1.5 shadow">
                                 <span>⭐ Воспроизвести хайлайт ({{ match.highlight.timecode_display }})</span>
                             </button>
                             <button type="button"
-                                    onclick="document.getElementById('match-video-iframe').src='{{ match.video_embed_url }}'; this.classList.add('bg-amber-500', 'text-slate-950', 'font-black'); this.classList.remove('bg-slate-800', 'text-slate-300'); document.getElementById('btn-highlight-play').classList.remove('bg-amber-500', 'text-slate-950', 'font-black'); document.getElementById('btn-highlight-play').classList.add('bg-slate-800', 'text-slate-300');"
+                                    onclick="selectFullVod('{{ match.video_embed_url }}');"
                                     id="btn-full-vod"
                                     class="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs transition flex items-center gap-1.5">
                                 <span>📺 Полная запись (00:00)</span>
@@ -535,6 +618,59 @@
                     </p>
                 </div>
                 {% endif %}
+
+                <script>
+                function selectVideoMoment(embedUrl, tc, idx) {
+                    var iframe = document.getElementById('match-video-iframe');
+                    if (iframe && embedUrl) {
+                        iframe.src = embedUrl;
+                    }
+                    var cards = document.querySelectorAll('.moment-item-card');
+                    cards.forEach(function(card, i) {
+                        if (i === idx) {
+                            card.classList.add('is-active', 'border-amber-400', 'bg-amber-500/10', 'shadow-lg', 'shadow-amber-500/10');
+                            card.classList.remove('border-slate-800/80', 'bg-slate-900/60');
+                        } else {
+                            card.classList.remove('is-active', 'border-amber-400', 'bg-amber-500/10', 'shadow-lg', 'shadow-amber-500/10');
+                            card.classList.add('border-slate-800/80', 'bg-slate-900/60');
+                        }
+                    });
+                    var btnHl = document.getElementById('btn-highlight-play');
+                    var btnVod = document.getElementById('btn-full-vod');
+                    if (btnHl) {
+                        btnHl.classList.add('bg-amber-500', 'text-slate-950', 'font-black');
+                        btnHl.classList.remove('bg-slate-800', 'text-slate-300');
+                        var span = btnHl.querySelector('span');
+                        if (span) span.textContent = '⭐ Момент #' + (idx + 1) + ' (' + tc + ')';
+                    }
+                    if (btnVod) {
+                        btnVod.classList.remove('bg-amber-500', 'text-slate-950', 'font-black');
+                        btnVod.classList.add('bg-slate-800', 'text-slate-300');
+                    }
+                }
+
+                function selectFullVod(embedUrl) {
+                    var iframe = document.getElementById('match-video-iframe');
+                    if (iframe && embedUrl) {
+                        iframe.src = embedUrl;
+                    }
+                    var cards = document.querySelectorAll('.moment-item-card');
+                    cards.forEach(function(card) {
+                        card.classList.remove('is-active', 'border-amber-400', 'bg-amber-500/10', 'shadow-lg', 'shadow-amber-500/10');
+                        card.classList.add('border-slate-800/80', 'bg-slate-900/60');
+                    });
+                    var btnHl = document.getElementById('btn-highlight-play');
+                    var btnVod = document.getElementById('btn-full-vod');
+                    if (btnVod) {
+                        btnVod.classList.add('bg-amber-500', 'text-slate-950', 'font-black');
+                        btnVod.classList.remove('bg-slate-800', 'text-slate-300');
+                    }
+                    if (btnHl) {
+                        btnHl.classList.remove('bg-amber-500', 'text-slate-950', 'font-black');
+                        btnHl.classList.add('bg-slate-800', 'text-slate-300');
+                    }
+                }
+                </script>
             </div>
         </details>
     </section>

@@ -2954,9 +2954,21 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
     if not candidates:
         return {}
 
-    # Выбираем лучший момент по весу
+    # Дедупликация: один игрок может претендовать максимум на один хайлайт в раунде
+    seen_player_rounds = set()
+    deduped_candidates = []
     candidates.sort(key=lambda x: (x["score"], x["kills_count"], x["headshots"]), reverse=True)
-    best = candidates[0]
+    for c in candidates:
+        ckey = (c.get("player_steamid"), c.get("round_num"))
+        if ckey not in seen_player_rounds:
+            seen_player_rounds.add(ckey)
+            deduped_candidates.append(c)
+
+    if not deduped_candidates:
+        return {}
+
+    # Выбираем топ-5 лучших моментов матча
+    top_candidates = deduped_candidates[:5]
 
     # Обработка видео и таймкода
     if isinstance(video_info, dict):
@@ -2967,31 +2979,45 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         v_offset = 0
 
     lead_in_sec = 6
-    moment_t = best.get("tick") or start_tick
-    game_sec = max(0, round((moment_t - start_tick) / 64.0))
-    embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
-    timecode_display = f"{embed_start_sec // 60}:{embed_start_sec % 60:02d}"
-    timecode_game = f"{game_sec // 60}:{game_sec % 60:02d}"
+    processed_top = []
+    for idx, cand in enumerate(top_candidates):
+        c_item = dict(cand)
+        moment_t = c_item.get("tick") or start_tick
+        game_sec = max(0, round((moment_t - start_tick) / 64.0))
+        embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
+        timecode_display = f"{embed_start_sec // 60}:{embed_start_sec % 60:02d}"
+        timecode_game = f"{game_sec // 60}:{game_sec % 60:02d}"
 
-    best["match_id"] = mid
-    best["date"] = m_date
-    best["map"] = raw_map
-    best["map_display"] = map_display
-    best["start_tick"] = start_tick
-    best["moment_tick"] = moment_t
-    best["game_sec"] = game_sec
-    best["video_url"] = v_url
-    best["video_offset_sec"] = v_offset
-    best["embed_start_sec"] = embed_start_sec
-    best["timecode_display"] = timecode_display
-    best["timecode_game"] = timecode_game
+        c_item["match_id"] = mid
+        c_item["date"] = m_date
+        c_item["map"] = raw_map
+        c_item["map_display"] = map_display
+        c_item["start_tick"] = start_tick
+        c_item["moment_tick"] = moment_t
+        c_item["game_sec"] = game_sec
+        c_item["video_url"] = v_url
+        c_item["video_offset_sec"] = v_offset
+        c_item["embed_start_sec"] = embed_start_sec
+        c_item["timecode_display"] = timecode_display
+        c_item["timecode_game"] = timecode_game
+        c_item["order"] = idx + 1
 
-    # AI Commentary
-    if existing_caption:
-        best["ai_caption"] = existing_caption
-    else:
-        best["ai_caption"] = generate_highlight_ai_caption(best)
+        if idx == 0:
+            if existing_caption:
+                c_item["ai_caption"] = existing_caption
+            else:
+                c_item["ai_caption"] = generate_highlight_ai_caption(c_item)
+        else:
+            w_disp = c_item.get("weapon_display", "оружия")
+            c_item["ai_caption"] = (
+                f"Раунд {c_item.get('round_num', 1)} (счёт {c_item.get('score_at_moment', '0:0')}). "
+                f"{c_item.get('player_name', 'Игрок')} оформляет {c_item.get('moment_badge', 'хайлайт')} с {w_disp}."
+            )
+        processed_top.append(c_item)
 
+    clean_top = [dict(c) for c in processed_top]
+    best = dict(clean_top[0])
+    best["top_highlights"] = clean_top
     return best
 
 def compute_all_highlights(match_items: list, match_videos: dict = None, force_ai: bool = False) -> dict:
@@ -3034,7 +3060,9 @@ def compute_all_highlights(match_items: list, match_videos: dict = None, force_a
     for s_date, c_list in session_candidates.items():
         if c_list:
             c_list.sort(key=lambda x: (x.get("score", 0), x.get("kills_count", 0)), reverse=True)
-            session_highlights[s_date] = dict(c_list[0])
+            s_top = dict(c_list[0])
+            s_top.pop("top_highlights", None)
+            session_highlights[s_date] = s_top
 
     result = {
         "generated_at": datetime.now().isoformat(),

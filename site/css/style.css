@@ -4337,6 +4337,52 @@ body.light-theme .session-highlight-section .bg-slate-800\/80 {
   color: #475569 !important;
 }
 
+.moment-item-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.moment-item-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.5) !important;
+}
+
+.moment-item-card.is-active {
+  border-color: #f59e0b !important;
+  background: rgba(245, 158, 11, 0.12) !important;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15) !important;
+}
+
+/* Light Theme overrides for moment-item-card */
+body.light-theme .moment-item-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .moment-item-card:hover {
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.12) !important;
+}
+
+body.light-theme .moment-item-card.is-active {
+  background: #fef3c7 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2) !important;
+}
+
+body.light-theme .moment-item-card .text-white {
+  color: #0f172a !important;
+}
+
+body.light-theme .moment-item-card .bg-slate-900\/60 {
+  background: #f8fafc !important;
+}
+
+body.light-theme .moment-item-card .bg-slate-950\/80 {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
 
 
 

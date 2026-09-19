@@ -1125,11 +1125,43 @@ def format_match_data(m: dict) -> dict:
                     match_highlight["embed_url"] = hl_embed
                     match_highlight["watch_url"] = hl_watch
 
+                    def get_p_data(s_id, p_nm):
+                        for pk, pv in m.get("players", {}).items():
+                            if pk == s_id or pv.get("steam_id") == s_id or (p_nm and pv.get("name", "").lower() == str(p_nm).lower()):
+                                return pv
+                        return {}
+
                     # Ранг игрока
                     p_sid = match_highlight.get("player_steamid", "")
-                    p_stat = m.get("players", {}).get(p_sid) or {}
+                    p_stat = get_p_data(p_sid, match_highlight.get("player_name"))
                     p_mmr = p_stat.get("mmr_after", p_stat.get("mmr_before", STARTING_MMR))
                     match_highlight["rank_tier"] = get_player_rank_tier(p_mmr)
+                    match_highlight["team"] = p_stat.get("team", "")
+
+                    # Форматирование списка топ-хайлайтов карты
+                    raw_top = match_highlight.get("top_highlights", [])
+                    if not raw_top:
+                        raw_top = [match_highlight]
+                    formatted_top = []
+                    for idx, th_item in enumerate(raw_top):
+                        th = dict(th_item)
+                        th_g_sec = th.get("game_sec", 0)
+                        th_start = max(0, curr_offset + th_g_sec - lead_in)
+                        th_tc = f"{th_start // 60}:{th_start % 60:02d}"
+                        th_embed, th_watch = build_highlight_embed_url(video_url, th_start)
+                        th["embed_url"] = th_embed
+                        th["watch_url"] = th_watch
+                        th["embed_start_sec"] = th_start
+                        th["timecode_display"] = th_tc
+                        th["video_offset_sec"] = curr_offset
+                        th_sid = th.get("player_steamid", "")
+                        th_p_stat = get_p_data(th_sid, th.get("player_name"))
+                        th_mmr = th_p_stat.get("mmr_after", th_p_stat.get("mmr_before", STARTING_MMR))
+                        th["rank_tier"] = get_player_rank_tier(th_mmr)
+                        th["team"] = th_p_stat.get("team", "")
+                        th["order"] = idx + 1
+                        formatted_top.append(th)
+                    match_highlight["top_highlights"] = formatted_top
     except Exception as e:
         logging.warning(f"Ошибка загрузки хайлайта для матча {mid}: {e}")
         match_highlight = None
