@@ -4092,6 +4092,38 @@ body.light-theme #roles-panels-wrapper .bg-slate-900\/80 {
   border-color: #e2e8f0 !important;
 }
 
+/* ==========================================================================
+   Progress Bars & Tracks High-Contrast Styling (Dark & Light Themes)
+   ========================================================================== */
+.role-progress-track,
+.quest-progress-track,
+.affinity-progress-track {
+  background: #090d16;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+body.light-theme .role-progress-track,
+body.light-theme .quest-progress-track,
+body.light-theme .affinity-progress-track {
+  background: #e2e8f0 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .quest-rec-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+body.light-theme .target-quest-hero {
+  background: #ffffff !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15) !important;
+}
+
+
 
 
 

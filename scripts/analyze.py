@@ -2583,6 +2583,7 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
                 else:
                     adv = f"Сфокусируйся на развитии навыка {w_skill} ({w_val_fmt}/10)."
                 quests.append({
+                    "id": chosen_ach.get("id"),
                     "quest_id": chosen_ach.get("id"),
                     "title": chosen_ach.get("title"),
                     "icon": chosen_ach.get("icon"),
@@ -2610,6 +2611,7 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
                     used_quest_ids.add(a["id"])
                     next_tier_names = {0: "Бронза 🥉", 1: "Серебро 🥈", 2: "Золото 🥇", 3: "Золото 🥇 (МАКС)"}
                     quests.append({
+                        "id": a.get("id"),
                         "quest_id": a.get("id"),
                         "title": a.get("title"),
                         "icon": a.get("icon"),

@@ -882,7 +882,7 @@
                             <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-bold border border-amber-500/40">Фокус №1</span>
                         </div>
                         <h3 class="text-lg font-black text-white flex items-center gap-2 mt-0.5">
-                            <a href="{{ root_path }}achievements/{{ tq.id }}.html" class="hover:text-amber-300 hover:underline transition flex items-center gap-1.5" title="Перейти на страницу испытания {{ tq.title }}">
+                            <a href="{{ root_path }}achievements/{{ tq.quest_id or tq.id }}.html" class="hover:text-amber-300 hover:underline transition flex items-center gap-1.5" title="Перейти на страницу испытания {{ tq.title }}">
                                 <span>{{ tq.title }}</span>
                                 <span class="text-xs text-amber-400 font-mono">↗</span>
                             </a>
@@ -934,7 +934,7 @@
                         {{ tq.progress_text }} <span class="text-slate-400 font-normal text-xs">({{ tq.progress_pct }}%)</span>
                     </span>
                 </div>
-                <div class="w-full bg-slate-950/80 h-3 rounded-full overflow-hidden border border-amber-500/30 p-0.5 shadow-inner">
+                <div class="quest-progress-track w-full bg-slate-950/80 h-3 rounded-full overflow-hidden border border-amber-500/30 p-0.5 shadow-inner">
                     <div class="h-full rounded-full transition-all duration-700 bg-gradient-to-r from-emerald-500 via-amber-400 to-amber-300 shadow-sm" style="width: {{ tq.progress_pct }}%;"></div>
                 </div>
             </div>
@@ -958,7 +958,7 @@
                 <div class="quest-rec-card glassmorphism p-3 rounded-lg border border-slate-700/60 bg-slate-900/60 flex flex-col justify-between hover:border-amber-500/50 transition-colors">
                     <div>
                         <div class="flex items-center justify-between mb-1.5">
-                            <a href="{{ root_path }}achievements/{{ q.id }}.html" class="text-xs font-bold text-amber-300 flex items-center gap-1.5 hover:underline transition" title="Открыть страницу испытания {{ q.title }}">
+                            <a href="{{ root_path }}achievements/{{ q.quest_id or q.id }}.html" class="text-xs font-bold text-amber-300 flex items-center gap-1.5 hover:underline transition" title="Открыть страницу испытания {{ q.title }}">
                                 <span>{{ q.icon }}</span> <span>{{ q.title }}</span>
                                 <span class="text-[10px] text-amber-400/80 font-mono">↗</span>
                             </a>
@@ -979,7 +979,7 @@
                             <span class="text-slate-400 truncate max-w-[140px]">{{ q.next_goal }}</span>
                             <span class="font-mono text-amber-300 font-bold ml-1 shrink-0">{{ q.progress_text }}</span>
                         </div>
-                        <div class="w-full bg-slate-800/80 h-1.5 rounded-full overflow-hidden border border-slate-700/50">
+                        <div class="quest-progress-track w-full bg-slate-800/80 h-2 rounded-full overflow-hidden border border-slate-700/50">
                             <div class="h-full rounded-full transition-all duration-500 {% if q.tier == 3 %}bg-gradient-to-r from-amber-400 to-amber-200{% elif q.tier == 2 %}bg-gradient-to-r from-slate-300 to-slate-100{% elif q.tier == 1 %}bg-gradient-to-r from-amber-600 to-amber-400{% else %}bg-gradient-to-r from-blue-500 to-cyan-400{% endif %}" style="width: {{ q.progress_pct }}%;"></div>
                         </div>
                     </div>
@@ -989,6 +989,62 @@
         </div>
         {% endif %}
     </section>
+
+    <!-- 🎭 ТАКТИЧЕСКИЕ РОЛИ И СПЕЦИАЛИЗАЦИЯ (СОВМЕСТИМОСТЬ СО ВСЕМИ 8 РОЛЯМИ) -->
+    {% if player.role_affinities %}
+    <section class="section roles-affinity-section mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    <span>🎭</span> <span>Совместимость с 8 тактическими ролями</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Оценка пригодности игрока по 10 параметрам рейтинговой матрицы. Нажмите на карточку роли, чтобы перейти в тактический штаб команды.
+                </p>
+            </div>
+            <a href="{{ root_path }}roles.html" class="self-start sm:self-auto text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 shadow-sm">
+                <span>Тактический штаб</span>
+                <span class="text-[10px] font-mono">➔</span>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {% for ra in player.role_affinities %}
+            <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="glassmorphism p-4 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-slate-900/60 hover:bg-slate-900/90 transition-all duration-200 flex flex-col justify-between gap-3 group relative block" title="Открыть тактическую роль: {{ ra.title }}">
+                <div>
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-center text-xl shrink-0 group-hover:border-emerald-500/40 transition">
+                                {{ ra.icon }}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white group-hover:text-emerald-300 transition text-sm leading-tight flex items-center gap-1">
+                                    <span>{{ ra.short_title }}</span>
+                                    <span class="text-[10px] text-slate-500 group-hover:text-emerald-400 transition font-mono">↗</span>
+                                </h4>
+                                <span class="text-[10px] text-slate-400 font-mono">Порог: ≥{{ ra.threshold }}%</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {{ ra.badge_class }} shrink-0">
+                            {{ ra.badge_text }}
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between text-xs mb-1.5">
+                        <span class="text-slate-400 text-[11px] font-medium">Совместимость:</span>
+                        <span class="font-bold font-mono {{ ra.text_class }} text-xs">{{ ra.affinity }}%</span>
+                    </div>
+                    <div class="h-2 w-full affinity-progress-track">
+                        <div class="h-full rounded-full transition-all duration-500 {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Connections & Rivalry Section (Связи и Противостояния) -->
     {% if player.connections %}
