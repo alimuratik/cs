@@ -44,6 +44,116 @@
         </div>
     </section>
 
+    <!-- Highlight of the Evening (AI Choice) -->
+    {% if session_highlight %}
+    {% set shl = session_highlight %}
+    <section class="section session-highlight-section glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-br from-amber-950/25 via-slate-900/90 to-slate-950 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+            <div>
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                        🎬 Хайлайт крайней сессии (Выбор ИИ)
+                    </span>
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full {% if shl.badge_color == 'rose' %}bg-rose-500/20 text-rose-300 border border-rose-500/40{% elif shl.badge_color == 'amber' %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif shl.badge_color == 'purple' %}bg-purple-500/20 text-purple-300 border border-purple-500/40{% else %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% endif %}">
+                        {{ shl.moment_badge }}
+                    </span>
+                    <span class="text-xs font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
+                        {{ shl.date_display }} • Карта {{ shl.map_display }}
+                    </span>
+                </div>
+                <h2 class="text-xl md:text-2xl font-black text-white">
+                    Лучший момент игрового дня: сокрушительный эпизод от {{ shl.player_name }}
+                </h2>
+            </div>
+            
+            <div class="flex items-center gap-3 shrink-0">
+                <a href="{{ shl.match_url }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition border border-slate-700">
+                    <span>Разбор матча</span>
+                    <span>➔</span>
+                </a>
+                {% if shl.watch_url %}
+                <a href="{{ shl.watch_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition">
+                    <span>▶ YouTube ({{ shl.timecode_display }})</span>
+                    <span>↗</span>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 {% if shl.embed_url %}lg:grid-cols-12{% endif %} gap-6 items-center">
+            {% if shl.embed_url %}
+            <!-- Left: Video Embed starting at timestamp -->
+            <div class="lg:col-span-7">
+                <div class="relative w-full overflow-hidden rounded-xl aspect-video border border-slate-800 shadow-2xl bg-black">
+                    <iframe class="absolute top-0 left-0 w-full h-full"
+                            src="{{ shl.embed_url }}"
+                            title="Хайлайт матча {{ shl.map_display }}: {{ shl.player_name }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="mt-2.5 flex items-center justify-between text-xs text-slate-400 font-mono">
+                    <span>Автостарт с таймкода: <strong class="text-amber-300">{{ shl.timecode_display }}</strong></span>
+                    <span class="text-slate-500">64-tick demo sync</span>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Right / Info box -->
+            <div class="{% if shl.embed_url %}lg:col-span-5{% endif %} flex flex-col justify-between space-y-4">
+                <!-- Player Pill -->
+                <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
+                    <a href="players/{{ shl.player_steamid }}.html" class="flex items-center gap-3.5 group">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/40 flex items-center justify-center text-base font-black text-white group-hover:scale-105 transition shadow-md">
+                            {{ shl.player_name[:2]|upper }}
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="font-black text-white text-base group-hover:text-amber-300 transition">{{ shl.player_name }}</span>
+                                {% if shl.rank_tier and shl.rank_tier.badge_svg_small %}
+                                <span class="inline-block shrink-0" title="{{ shl.rank_tier.tier_name }}">
+                                    {{ shl.rank_tier.badge_svg_small|safe }}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <span class="text-xs text-slate-400 font-mono">
+                                Раунд {{ shl.round_num }} (счёт {{ shl.score_at_moment }})
+                            </span>
+                        </div>
+                    </a>
+                    
+                    <div class="text-right font-mono">
+                        <span class="block text-sm font-black text-amber-300">{{ shl.weapon_display }}</span>
+                        <span class="text-xs text-slate-400">{{ shl.kills_count }} фрагов ({{ shl.headshots }} HS)</span>
+                    </div>
+                </div>
+
+                <!-- AI Commentary Quote -->
+                <div class="highlight-ai-bubble bg-slate-950/80 border border-emerald-500/30 rounded-xl p-4 flex items-start gap-3.5">
+                    <span class="text-2xl shrink-0">🎙️</span>
+                    <div>
+                        <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block mb-1">
+                            Оценка ИИ-комментатора
+                        </span>
+                        <p class="text-xs md:text-sm text-slate-300 leading-relaxed italic">
+                            "{{ shl.ai_caption }}"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer info if no video attached -->
+                {% if not shl.embed_url %}
+                <div class="p-3 bg-slate-900/50 rounded-xl border border-dashed border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                    <span>🎬 Видеозапись ожидает привязки в <code class="text-emerald-400 font-mono">data/match_videos.json</code></span>
+                    <span class="font-mono text-amber-300">Таймкод: {{ shl.timecode_display }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- 5 Hall of Fame Session Nominations -->
     {% if session_awards and session_awards.mvp %}
     <section class="section hall-of-fame-section glassmorphism p-6 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-b from-amber-950/15 via-slate-900/80 to-slate-900/90">

@@ -2,6 +2,7 @@ import json
 import os
 import time
 import math
+import logging
 from datetime import datetime
 from typing import List, Dict, Any, Tuple
 from dataclasses import dataclass
@@ -2642,6 +2643,415 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
     return recs
 
 
+WEAPON_DISPLAY_NAMES = {
+    "ak47": "AK-47",
+    "m4a1": "M4A4",
+    "m4a1_silencer": "M4A1-S",
+    "m4a4": "M4A4",
+    "awp": "AWP",
+    "deagle": "Desert Eagle",
+    "usp_silencer": "USP-S",
+    "glock": "Glock-18",
+    "hkp2000": "P2000",
+    "p2000": "P2000",
+    "p250": "P250",
+    "dualberettas": "Dual Berettas",
+    "elite": "Dual Berettas",
+    "fiveseven": "Five-SeveN",
+    "tec9": "Tec-9",
+    "cz75a": "CZ75-Auto",
+    "revolver": "R8 Revolver",
+    "mac10": "MAC-10",
+    "mp9": "MP9",
+    "mp7": "MP7",
+    "mp5sd": "MP5-SD",
+    "ump45": "UMP-45",
+    "p90": "P90",
+    "bizon": "PP-Bizon",
+    "nova": "Nova",
+    "xm1014": "XM1014",
+    "sawedoff": "Sawed-Off",
+    "mag7": "MAG-7",
+    "galilar": "Galil AR",
+    "famas": "FAMAS",
+    "ssg08": "SSG 08",
+    "aug": "AUG",
+    "sg556": "SG 553",
+    "sg553": "SG 553",
+    "scar20": "SCAR-20",
+    "g3sg1": "G3SG1",
+    "m249": "M249",
+    "negev": "Negev",
+    "taser": "Zeus x27",
+    "knife": "Нож",
+    "hegrenade": "HE Grenade",
+    "flashbang": "Flashbang",
+    "smokegrenade": "Smoke",
+    "inferno": "Молотов",
+    "molotov": "Молотов",
+    "incgrenade": "Зажигательная"
+}
+
+def get_match_start_tick(match_id: str, kills: list) -> int:
+    """
+    Извлекает начальный тик 1-го раунда из parquet (CS Demo Manager 3.20)
+    или делает надежный fallback по первому фрагу 1-го раунда.
+    """
+    pq_path = DATA_DIR / "ticks" / f"{match_id}_ticks.parquet"
+    if pq_path.exists():
+        try:
+            import polars as pl
+            min_tick = pl.scan_parquet(str(pq_path)).select("tick").min().collect().item()
+            if min_tick is not None and min_tick >= 0:
+                return int(min_tick)
+        except Exception:
+            pass
+
+    r1_kills = [k for k in kills if k.get("round_num") == 1 and k.get("tick") is not None]
+    if r1_kills:
+        first_kill_t = min(k["tick"] for k in r1_kills)
+        return max(0, first_kill_t - (20 * 64))
+
+    all_ticks = [k["tick"] for k in kills if k.get("tick") is not None]
+    if all_ticks:
+        return max(0, min(all_ticks) - (20 * 64))
+
+    return 0
+
+_gemini_highlight_quota_exceeded = False
+
+def generate_highlight_ai_caption(hl: dict) -> str:
+    """
+    Генерирует энергичный и профессиональный комментарий киберспортивного кастера/аналитика.
+    Использует Gemini API (если доступен), либо тактический детерминированный генератор.
+    """
+    global _gemini_highlight_quota_exceeded
+    player = hl.get("player_name", "Игрок")
+    m_map = hl.get("map_display", "Карта")
+    r_num = hl.get("round_num", 1)
+    score = hl.get("score_at_moment", "0:0")
+    m_badge = hl.get("moment_badge", "Хайлайт")
+    w_name = hl.get("weapon_display", "Оружие")
+    hs = hl.get("headshots", 0)
+    kills = hl.get("kills_count", 0)
+    m_type = hl.get("moment_type", "multi_kill")
+
+    # 1. Попытка запроса через Gemini API (если квота не исчерпана)
+    if not _gemini_highlight_quota_exceeded:
+        client = get_gemini_client()
+        if client:
+            try:
+                prompt = (
+                    f"Ты — профессиональный киберспортивный русскоязычный комментатор CS2 в стиле лучших кастеров студии Maincast / StarLadder.\n"
+                    f"Составь краткий (строго 2-3 энергичных предложения), эмоциональный и профессиональный комментарий к главному хайлайту матча.\n"
+                    f"Данные момента:\n"
+                    f"- Карта: {m_map}\n"
+                    f"- Раунд: {r_num} (текущий счёт {score})\n"
+                    f"- Игрок: {player}\n"
+                    f"- Событие: {m_badge} ({kills} фрагов, {hs} в голову)\n"
+                    f"- Оружие: {w_name}\n"
+                    f"Требования: живой спортивный язык, точные CS2-термины (спрей-контроль, размен, позиционка, тайминг, клатч), без лишних предисловий и кавычек."
+                )
+                response = client.models.generate_content(
+                    model=AI_MODEL,
+                    contents=prompt
+                )
+                if response and response.text:
+                    text = response.text.strip().strip('"\'')
+                    if len(text) > 20:
+                        return text
+            except Exception as e:
+                _gemini_highlight_quota_exceeded = True
+                logging.warning(f"Переключение на локальный генератор хайлайтов (Gemini API: {e})")
+
+    # 2. Тактический генератор шаблонов с глубокой драматургией
+    if m_type == "ace":
+        return f"Раунд {r_num} при счёте {score}. {player} устраивает феноменальный сольный бенефис с {w_name}: безупречный тайминг выхода, филигранный спрей ({hs} в голову) и хладнокровный эйс (5K), сокрушивший соперника!"
+    elif m_type == "clutch":
+        return f"Раунд {r_num} (счёт {score}). Оказавшись в тяжелейшей ситуации {m_badge.lower()}, {player} сохраняет ледяное спокойствие. Мастерское разделение дуэлей с {w_name} и триумфальная победа в раунде!"
+    elif m_type == "quad_kill":
+        return f"Раунд {r_num} (счёт {score}). Взрывной квадро-килл от {player}! Четыре сокрушительных фрага с {w_name} ({hs} в голову) на важнейшей стадии раунда, перечеркнувшие все планы оппонента."
+    elif m_type == "knife":
+        return f"Раунд {r_num}. Максимальный уровень дерзости от {player}! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником."
+    elif m_type == "zeus":
+        return f"Раунд {r_num}. Обескураживающий и дерзкий выпад от {player}! Чёткий подлов оппонента на ошибке в тайминге и сокрушительный заряд из Zeus x27 в упор!"
+    else:
+        return f"Раунд {r_num} (счёт {score}). Индивидуальный класс от {player}: скоростная серия из {kills} ключевых фрагов с {w_name} ({hs} в голову), переломившая ход борьбы на карте {m_map}."
+
+def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None, existing_caption: str = "") -> dict:
+    """
+    Находит лучший момент матча (Эйс, Клатч 1vX, 4K, Нож, Zeus), вычисляет секунду таймкода
+    и генерирует ИИ-комментарий.
+    """
+    mid = m_data.get("match_id", "")
+    m_date = str(m_data.get("date", ""))[:8]
+    raw_map = str(m_data.get("map", "")).lower().strip()
+    if not raw_map.startswith("de_"):
+        raw_map = f"de_{raw_map}"
+    map_display = MAP_DISPLAY_NAMES.get(raw_map, m_data.get("map_display", raw_map.replace("de_", "").capitalize()))
+
+    kills = m_data.get("kills", [])
+    rounds = m_data.get("rounds", [])
+
+    def resolve_p_sid(s_val, n_val):
+        cs = clean_steamid(s_val)
+        nl = str(n_val or "").lower().strip()
+        if cs in PLAYER_ALIASES:
+            cs, _ = PLAYER_ALIASES[cs]
+        elif nl in PLAYER_ALIASES:
+            cs, _ = PLAYER_ALIASES[nl]
+        if nl in CANONICAL_PLAYERS:
+            cs = CANONICAL_PLAYERS[nl]
+        return cs
+
+    p_teams = {}
+    p_names = {}
+    for sid_k, p_st in m_data.get("players", {}).items():
+        cs = resolve_p_sid(p_st.get("steam_id") or sid_k, p_st.get("name"))
+        if cs:
+            p_teams[cs] = p_st.get("team")
+            p_names[cs] = p_st.get("name", f"Player_{cs[-4:]}")
+
+    round_kills = defaultdict(list)
+    for k in kills:
+        round_kills[k.get("round_num")].append(k)
+
+    candidates = []
+
+    for r_evt in rounds:
+        r_n = r_evt.get("round_num")
+        rk = round_kills.get(r_n, [])
+        if not rk:
+            continue
+
+        wteam = r_evt.get("winning_team")
+        t1_alive = {sid for sid, tm in p_teams.items() if tm == "team1"}
+        t2_alive = {sid for sid, tm in p_teams.items() if tm == "team2"}
+        clutch_info = None
+
+        att_counts = Counter()
+        att_hs = Counter()
+        att_weapons = defaultdict(list)
+        att_first_tick = {}
+        knife_zeus_tick = {}
+
+        for k in rk:
+            a_sid = resolve_p_sid(k.get("attacker_steamid"), k.get("attacker_name"))
+            v_sid = resolve_p_sid(k.get("victim_steamid"), k.get("victim_name"))
+
+            if v_sid in t1_alive:
+                t1_alive.remove(v_sid)
+            if v_sid in t2_alive:
+                t2_alive.remove(v_sid)
+
+            if len(t1_alive) == 1 and len(t2_alive) >= 2 and wteam == "team1" and not clutch_info:
+                clutch_info = (list(t1_alive)[0], len(t2_alive), k.get("tick"))
+            elif len(t2_alive) == 1 and len(t1_alive) >= 2 and wteam == "team2" and not clutch_info:
+                clutch_info = (list(t2_alive)[0], len(t1_alive), k.get("tick"))
+
+            if a_sid:
+                att_counts[a_sid] += 1
+                if k.get("headshot"):
+                    att_hs[a_sid] += 1
+                w = (k.get("weapon") or "").lower()
+                att_weapons[a_sid].append(w)
+                if a_sid not in att_first_tick and k.get("tick") is not None:
+                    att_first_tick[a_sid] = k.get("tick")
+                if ("knife" in w or "bayonet" in w or "taser" in w) and a_sid not in knife_zeus_tick:
+                    knife_zeus_tick[a_sid] = (w, k.get("tick"))
+
+        # Расчет счета на начало текущего раунда
+        s1_at_mom = sum(1 for r in rounds if (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team1")
+        s2_at_mom = sum(1 for r in rounds if (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team2")
+        score_at_moment = f"{s1_at_mom}:{s2_at_mom}"
+
+        # 1. Оценка клатча
+        if clutch_info:
+            c_sid, vs_cnt, c_tick = clutch_info
+            c_name = p_names.get(c_sid) or "Unknown"
+            c_w_list = att_weapons.get(c_sid, [])
+            fav_w = Counter(c_w_list).most_common(1)[0][0] if c_w_list else "ak47"
+            c_kills = att_counts.get(c_sid, 0)
+            hs_cnt = att_hs.get(c_sid, 0)
+
+            if vs_cnt >= 4:
+                score = 92 + (vs_cnt * 2) + (c_kills * 2)
+                candidates.append({
+                    "player_steamid": c_sid, "player_name": c_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": c_kills, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": c_tick or start_tick, "score": score,
+                    "moment_type": "clutch", "moment_badge": f"🧠 Клатч 1v{vs_cnt}", "badge_color": "amber"
+                })
+            elif vs_cnt == 3:
+                score = 85 + (c_kills * 2) + hs_cnt
+                candidates.append({
+                    "player_steamid": c_sid, "player_name": c_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": c_kills, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": c_tick or start_tick, "score": score,
+                    "moment_type": "clutch", "moment_badge": "🧠 Клатч 1v3", "badge_color": "amber"
+                })
+            elif vs_cnt == 2:
+                score = 65 + (c_kills * 2) + hs_cnt
+                candidates.append({
+                    "player_steamid": c_sid, "player_name": c_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": c_kills, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": c_tick or start_tick, "score": score,
+                    "moment_type": "clutch", "moment_badge": "🧠 Клатч 1v2", "badge_color": "sky"
+                })
+
+        # 2. Оценка серий фрагов и редких убийств
+        for a_sid, cnt in att_counts.items():
+            a_name = p_names.get(a_sid) or "Unknown"
+            w_list = att_weapons[a_sid]
+            fav_w = Counter(w_list).most_common(1)[0][0] if w_list else "ak47"
+            f_tick = att_first_tick.get(a_sid, start_tick)
+            hs_cnt = att_hs[a_sid]
+
+            if cnt >= 5:
+                score = 100 + (hs_cnt * 2)
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": a_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": cnt, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": f_tick, "score": score,
+                    "moment_type": "ace", "moment_badge": "🔥 Эйс (5K)", "badge_color": "rose"
+                })
+            elif cnt == 4:
+                score = 78 + (hs_cnt * 2)
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": a_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": cnt, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": f_tick, "score": score,
+                    "moment_type": "quad_kill", "moment_badge": "⚡ Квадро-килл (4K)", "badge_color": "indigo"
+                })
+            elif a_sid in knife_zeus_tick:
+                kw, kt = knife_zeus_tick[a_sid]
+                is_zeus = "taser" in kw
+                score = (72 if is_zeus else 74) + (cnt * 4)
+                badge = "⚡ Zeus x27 Фраг" if is_zeus else "🔪 Ножевой фраг"
+                w_slug = "taser" if is_zeus else "knife"
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": a_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": cnt, "headshots": hs_cnt,
+                    "weapon": w_slug, "weapon_display": WEAPON_DISPLAY_NAMES.get(w_slug, w_slug.upper()),
+                    "tick": kt, "score": score,
+                    "moment_type": "zeus" if is_zeus else "knife", "moment_badge": badge, "badge_color": "purple"
+                })
+            elif cnt == 3:
+                score = 50 + (hs_cnt * 2)
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": a_name, "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": cnt, "headshots": hs_cnt,
+                    "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
+                    "tick": f_tick, "score": score,
+                    "moment_type": "triple_kill", "moment_badge": "🎯 Тройной килл (3K)", "badge_color": "emerald"
+                })
+
+    if not candidates:
+        return {}
+
+    # Выбираем лучший момент по весу
+    candidates.sort(key=lambda x: (x["score"], x["kills_count"], x["headshots"]), reverse=True)
+    best = candidates[0]
+
+    # Обработка видео и таймкода
+    if isinstance(video_info, dict):
+        v_url = (video_info.get("url", "") or "").strip()
+        v_offset = int(video_info.get("offset_sec", 0) or 0)
+    else:
+        v_url = (str(video_info) if video_info else "").strip()
+        v_offset = 0
+
+    lead_in_sec = 6
+    moment_t = best.get("tick") or start_tick
+    game_sec = max(0, round((moment_t - start_tick) / 64.0))
+    embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
+    timecode_display = f"{embed_start_sec // 60}:{embed_start_sec % 60:02d}"
+    timecode_game = f"{game_sec // 60}:{game_sec % 60:02d}"
+
+    best["match_id"] = mid
+    best["date"] = m_date
+    best["map"] = raw_map
+    best["map_display"] = map_display
+    best["start_tick"] = start_tick
+    best["moment_tick"] = moment_t
+    best["game_sec"] = game_sec
+    best["video_url"] = v_url
+    best["video_offset_sec"] = v_offset
+    best["embed_start_sec"] = embed_start_sec
+    best["timecode_display"] = timecode_display
+    best["timecode_game"] = timecode_game
+
+    # AI Commentary
+    if existing_caption:
+        best["ai_caption"] = existing_caption
+    else:
+        best["ai_caption"] = generate_highlight_ai_caption(best)
+
+    return best
+
+def compute_all_highlights(match_items: list, match_videos: dict = None, force_ai: bool = False) -> dict:
+    """
+    Рассчитывает лучшие хайлайты для каждого матча и для каждой игровой сессии.
+    Сохраняет результат в data/highlights.json.
+    """
+    match_videos = match_videos or {}
+    existing_captions = {}
+    hl_file = DATA_DIR / "highlights.json"
+    if hl_file.exists() and not force_ai:
+        try:
+            with open(hl_file, "r", encoding="utf-8") as hf:
+                old_data = json.load(hf)
+                for mk, mv in old_data.get("match_highlights", {}).items():
+                    if mv.get("ai_caption"):
+                        existing_captions[mk] = mv["ai_caption"]
+        except Exception:
+            pass
+
+    match_highlights = {}
+    session_candidates = defaultdict(list)
+
+    for match_file, m_path, m_data in match_items:
+        mid = m_data.get("match_id", "")
+        if not mid:
+            continue
+        v_info = match_videos.get(mid)
+        start_tick = get_match_start_tick(mid, m_data.get("kills", []))
+        exist_cap = existing_captions.get(mid, "")
+        hl = detect_match_highlight(m_data, start_tick, v_info, existing_caption=exist_cap)
+        if hl:
+            match_highlights[mid] = hl
+            s_date = str(hl.get("date", ""))[:8]
+            if s_date:
+                session_candidates[s_date].append(hl)
+
+    # Для каждой сессии выбираем абсолютный супер-хайлайт дня
+    session_highlights = {}
+    for s_date, c_list in session_candidates.items():
+        if c_list:
+            c_list.sort(key=lambda x: (x.get("score", 0), x.get("kills_count", 0)), reverse=True)
+            session_highlights[s_date] = dict(c_list[0])
+
+    result = {
+        "generated_at": datetime.now().isoformat(),
+        "session_highlights": session_highlights,
+        "match_highlights": match_highlights
+    }
+
+    try:
+        with open(DATA_DIR / "highlights.json", "w", encoding="utf-8") as out:
+            json.dump(result, out, ensure_ascii=False, indent=2)
+        print(f"Рассчитано {len(match_highlights)} хайлайтов матчей и {len(session_highlights)} сессионных хайлайтов -> data/highlights.json")
+    except Exception as e:
+        print(f"Ошибка сохранения highlights.json: {e}")
+
+    return result
+
+
 def run_analysis(force_ai: bool = False):
     """
     Основная функция для запуска анализа.
@@ -3606,6 +4016,18 @@ def run_analysis(force_ai: bool = False):
             }
             with open(DATA_DIR / "session_awards.json", "w", encoding="utf-8") as f:
                 json.dump(awards, f, ensure_ascii=False, indent=2)
+
+    # 8. Расчет соревновательных ИИ-хайлайтов матчей и сессий (YouTube Deep-links)
+    match_videos = {}
+    v_file = DATA_DIR / "match_videos.json"
+    if v_file.exists():
+        try:
+            with open(v_file, "r", encoding="utf-8") as vf:
+                match_videos = json.load(vf)
+        except Exception:
+            pass
+
+    compute_all_highlights(match_items, match_videos, force_ai=force_ai)
 
     print("Анализ и расчёт непрерывного MMR, рейтингов, связей и достижений успешно завершён!")
 

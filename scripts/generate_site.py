@@ -70,15 +70,9 @@ def format_date_display(date_str: str) -> str:
         return f"{day} {month_name} {year}"
     return date_str
 
-def extract_youtube_embed(url_or_id: str) -> str:
+def extract_youtube_id(url_or_id: str) -> str:
     """
-    Извлекает чистый 11-значный YouTube video ID и возвращает корректный Embed URL.
-    Поддерживает ссылки формата:
-    - https://www.youtube.com/watch?v=ID
-    - https://youtu.be/ID
-    - https://www.youtube.com/live/ID
-    - https://www.youtube.com/embed/ID
-    - Прямой 11-значный ID
+    Извлекает чистый 11-значный YouTube video ID из ссылки любого формата.
     """
     if not url_or_id or not isinstance(url_or_id, str):
         return ""
@@ -86,29 +80,54 @@ def extract_youtube_embed(url_or_id: str) -> str:
     if not s:
         return ""
 
-    # Извлечение по регулярному выражению
-    m = re.search(r'(?:v=|\/([0-9A-Za-z_-]{11})(?:\?|&|$|\/)|youtu\.be\/([0-9A-Za-z_-]{11})|embed\/([0-9A-Za-z_-]{11})|live\/([0-9A-Za-z_-]{11}))', s)
-    if m:
-        for g in m.groups():
-            if g and len(g) == 11:
-                return f"https://www.youtube-nocookie.com/embed/{g}"
+    if len(s) == 11 and re.match(r'^[0-9A-Za-z_-]{11}$', s):
+        return s
+
+    patterns = [
+        r'(?:v=|\/v\/|youtu\.be\/|\/embed\/|\/live\/)([0-9A-Za-z_-]{11})',
+        r'[\?&]v=([0-9A-Za-z_-]{11})'
+    ]
+    for p in patterns:
+        m = re.search(p, s)
+        if m:
+            return m.group(1)
 
     if "v=" in s:
         part = s.split("v=")[1].split("&")[0].split("?")[0]
         if len(part) == 11:
-            return f"https://www.youtube-nocookie.com/embed/{part}"
-
-    if len(s) == 11 and re.match(r'^[0-9A-Za-z_-]{11}$', s):
-        return f"https://www.youtube-nocookie.com/embed/{s}"
+            return part
 
     return ""
 
-def sync_match_videos(match_ids: list[str]) -> dict[str, str]:
+def build_highlight_embed_url(url_or_id: str, start_sec: int = 0) -> tuple[str, str]:
+    """
+    Формирует (embed_url, watch_url) для YouTube с точным таймкодом:
+    - embed_url: https://www.youtube-nocookie.com/embed/{id}?start={start_sec}&rel=0
+    - watch_url: https://www.youtube.com/watch?v={id}&t={start_sec}s
+    """
+    vid = extract_youtube_id(url_or_id)
+    if not vid:
+        return "", ""
+    if start_sec > 0:
+        embed = f"https://www.youtube-nocookie.com/embed/{vid}?start={start_sec}&rel=0"
+        watch = f"https://www.youtube.com/watch?v={vid}&t={start_sec}s"
+    else:
+        embed = f"https://www.youtube-nocookie.com/embed/{vid}?rel=0"
+        watch = f"https://www.youtube.com/watch?v={vid}"
+    return embed, watch
+
+def extract_youtube_embed(url_or_id: str) -> str:
+    """Для обратной совместимости: возвращает базовый Embed URL."""
+    embed, _ = build_highlight_embed_url(url_or_id, 0)
+    return embed
+
+def sync_match_videos(match_ids: list[str]) -> dict:
     """
     Синхронизирует файл data/match_videos.json:
     - Читает существующие ссылки (добавленные пользователем на GitHub или локально).
     - Добавляет только новые match_id со значением "" (пустая строка).
     - НИКОГДА не удаляет и не затирает существующие ссылки пользователя!
+    - Поддерживает как простые строки ("https://youtu.be/..."), так и словари ({"url": "...", "offset_sec": ...}).
     """
     videos_file = DATA_DIR / "match_videos.json"
     videos_data = {}
@@ -1060,19 +1079,60 @@ def format_match_data(m: dict) -> dict:
     h1_s2 = sum(1 for r in formatted_rounds if r.get("number", 0) <= 12 and r.get("winning_team") == "team2")
     half_scores_str = f"{h1_s1}:{h1_s2}"
 
-    # Видеозапись матча (YouTube Embed)
+    # Видеозапись матча и хайлайты (YouTube Embed & Deep-links)
     mid = m.get("match_id", "")
     video_url = ""
+    video_offset_sec = 0
     try:
         vf = DATA_DIR / "match_videos.json"
         if vf.exists():
             with open(vf, "r", encoding="utf-8") as v_f:
                 v_data = json.load(v_f)
-                video_url = (v_data.get(mid, "") or "").strip()
+                v_val = v_data.get(mid, "")
+                if isinstance(v_val, dict):
+                    video_url = (v_val.get("url", "") or "").strip()
+                    video_offset_sec = int(v_val.get("offset_sec", 0) or 0)
+                else:
+                    video_url = (str(v_val) if v_val else "").strip()
+                    video_offset_sec = 0
     except Exception:
         video_url = ""
+        video_offset_sec = 0
 
     video_embed_url = extract_youtube_embed(video_url) if video_url else ""
+
+    # Загрузка хайлайта матча из data/highlights.json
+    match_highlight = None
+    try:
+        hl_file = DATA_DIR / "highlights.json"
+        if hl_file.exists():
+            with open(hl_file, "r", encoding="utf-8") as hf:
+                hl_all = json.load(hf)
+                hl_raw = hl_all.get("match_highlights", {}).get(mid)
+                if hl_raw:
+                    match_highlight = dict(hl_raw)
+                    curr_offset = video_offset_sec or match_highlight.get("video_offset_sec", 0)
+                    g_sec = match_highlight.get("game_sec", 0)
+                    lead_in = 6
+                    start_sec = max(0, curr_offset + g_sec - lead_in)
+                    tc_disp = f"{start_sec // 60}:{start_sec % 60:02d}"
+                    match_highlight["embed_start_sec"] = start_sec
+                    match_highlight["timecode_display"] = tc_disp
+                    match_highlight["video_url"] = video_url
+                    match_highlight["video_offset_sec"] = curr_offset
+
+                    hl_embed, hl_watch = build_highlight_embed_url(video_url, start_sec)
+                    match_highlight["embed_url"] = hl_embed
+                    match_highlight["watch_url"] = hl_watch
+
+                    # Ранг игрока
+                    p_sid = match_highlight.get("player_steamid", "")
+                    p_stat = m.get("players", {}).get(p_sid) or {}
+                    p_mmr = p_stat.get("mmr_after", p_stat.get("mmr_before", STARTING_MMR))
+                    match_highlight["rank_tier"] = get_player_rank_tier(p_mmr)
+    except Exception as e:
+        logging.warning(f"Ошибка загрузки хайлайта для матча {mid}: {e}")
+        match_highlight = None
 
     return {
         "match_id": m.get("match_id"),
@@ -1092,7 +1152,9 @@ def format_match_data(m: dict) -> dict:
         "economy": economy_chart,
         "duels": duels_matrix,
         "video_url": video_url,
+        "video_offset_sec": video_offset_sec,
         "video_embed_url": video_embed_url,
+        "highlight": match_highlight,
         "ai_analysis": format_round_analysis(m.get("ai_analysis", "")),
         "summary_analysis": format_coach_summary(m.get("summary_analysis", "")),
         "recommendations": m.get("recommendations", [])
@@ -2062,6 +2124,65 @@ def generate_site():
                     raise
                 time.sleep(0.1)
 
+    # Загрузка хайлайта для главной страницы (выбор ИИ за крайнюю сессию)
+    session_highlight = None
+    try:
+        hl_file = DATA_DIR / "highlights.json"
+        if hl_file.exists():
+            with open(hl_file, "r", encoding="utf-8") as hf:
+                hl_data = json.load(hf)
+                sess_hls = hl_data.get("session_highlights", {})
+                if sess_hls:
+                    # Выбираем хайлайт крайней сессии (по дате DDMMYYYY)
+                    latest_date = sorted(sess_hls.keys(), key=lambda d: parse_date_key(d))[-1]
+                    raw_shl = sess_hls[latest_date]
+                    session_highlight = dict(raw_shl)
+
+                    mid = session_highlight.get("match_id", "")
+                    vf = DATA_DIR / "match_videos.json"
+                    v_url = ""
+                    v_offset = 0
+                    if vf.exists():
+                        try:
+                            with open(vf, "r", encoding="utf-8") as v_f:
+                                v_dict = json.load(v_f)
+                                v_entry = v_dict.get(mid, "")
+                                if isinstance(v_entry, dict):
+                                    v_url = (v_entry.get("url", "") or "").strip()
+                                    v_offset = int(v_entry.get("offset_sec", 0) or 0)
+                                else:
+                                    v_url = (str(v_entry) if v_entry else "").strip()
+                                    v_offset = 0
+                        except Exception:
+                            pass
+
+                    g_sec = session_highlight.get("game_sec", 0)
+                    lead_in = 6
+                    start_sec = max(0, v_offset + g_sec - lead_in)
+                    session_highlight["video_url"] = v_url
+                    session_highlight["video_offset_sec"] = v_offset
+                    session_highlight["embed_start_sec"] = start_sec
+                    session_highlight["timecode_display"] = f"{start_sec // 60}:{start_sec % 60:02d}"
+
+                    hl_embed, hl_watch = build_highlight_embed_url(v_url, start_sec)
+                    session_highlight["embed_url"] = hl_embed
+                    session_highlight["watch_url"] = hl_watch
+                    session_highlight["match_url"] = f"matches/{mid}.html"
+                    session_highlight["date_display"] = format_date_display(latest_date)
+
+                    # Ранг игрока
+                    p_sid = session_highlight.get("player_steamid", "")
+                    p_found = next((p for p in leaderboard_players if p.get("steam_id") == p_sid), None)
+                    if p_found:
+                        session_highlight["rank_tier"] = p_found.get("rank_tier")
+                        session_highlight["current_mmr"] = p_found.get("current_mmr")
+                    else:
+                        session_highlight["rank_tier"] = get_player_rank_tier(STARTING_MMR)
+                        session_highlight["current_mmr"] = STARTING_MMR
+    except Exception as e:
+        logging.warning(f"Ошибка загрузки session_highlight для главной: {e}")
+        session_highlight = None
+
     # 1. Генерация index.html
     index_template = env.get_template("index.html")
     safe_dump(
@@ -2076,6 +2197,7 @@ def generate_site():
             sessions=formatted_sessions,
             recent_matches=recent_matches_display,
             session_awards=session_awards,
+            session_highlight=session_highlight,
             top_gainers=top_gainers,
             cooling_down=cooling_down,
             generated_at=generated_at

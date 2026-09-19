@@ -4248,6 +4248,96 @@ body.light-theme .kase-progress-fill {
   box-shadow: 0 1px 4px rgba(5, 150, 105, 0.4) !important;
 }
 
+/* ==========================================================================
+   AI Highlights & YouTube Deep-links System
+   ========================================================================== */
+.highlight-card {
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.highlight-card:hover {
+  border-color: rgba(245, 158, 11, 0.5) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(245, 158, 11, 0.15) !important;
+}
+
+.session-highlight-section {
+  position: relative;
+}
+
+.session-highlight-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.highlight-ai-bubble {
+  position: relative;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Light Theme overrides for Highlights */
+body.light-theme .highlight-card,
+body.light-theme .session-highlight-section {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 50%, #f8fafc 100%) !important;
+  border-color: #fcd34d !important;
+  box-shadow: 0 10px 25px rgba(245, 158, 11, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light-theme .session-highlight-section h2 {
+  color: #0f172a !important;
+}
+
+body.light-theme .highlight-card .text-white,
+body.light-theme .session-highlight-section .text-white {
+  color: #0f172a !important;
+}
+
+body.light-theme .highlight-ai-bubble {
+  background: #f0fdf4 !important;
+  border-color: #86efac !important;
+}
+
+body.light-theme .highlight-ai-bubble p {
+  color: #1e293b !important;
+}
+
+body.light-theme .highlight-ai-bubble strong {
+  color: #047857 !important;
+}
+
+body.light-theme .highlight-card .bg-slate-900\/90,
+body.light-theme .session-highlight-section .bg-slate-900\/90 {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light-theme .highlight-card .text-slate-400,
+body.light-theme .session-highlight-section .text-slate-400 {
+  color: #64748b !important;
+}
+
+body.light-theme .highlight-card .text-slate-300,
+body.light-theme .session-highlight-section .text-slate-300 {
+  color: #334155 !important;
+}
+
+body.light-theme .highlight-card .bg-slate-800\/80,
+body.light-theme .session-highlight-section .bg-slate-800\/80 {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+}
+
+
 
 
 
