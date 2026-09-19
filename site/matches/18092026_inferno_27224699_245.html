@@ -1846,8 +1846,7 @@
                 <span class="text-2xl">🎙️</span>
                 <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
             </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1"><strong class="text-white font-semibold">Студия BLAST в эфире!</strong> Добро пожаловать на послематчевый разбор уничтожения, которое только что завершилось на раскаленном асфальте Inferno. С первых же раундов «c kaifom» захватили полный контроль над сервером, не оставив сопернику ни единого шанса на камбэк, и уверенно закрыли карту со счетом 13:1. Ключевым переломным моментом встречи стал безумный эко-раунд от «c kaifom» в начале матча: выигранная ситуация 3 в 5 сломала экономику SGEM_7 окончательно и деморализовала их защиту на банане, после чего игра превратилась в безоговорочный мастер-класс от будущих триумфаторов.</p>
-<p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1">Победители из «c kaifom» провели идеальную тактическую сессию, где их лидер и безоговорочный MVP матча буквально стирал оппонентов с карты индивидуальным скиллом, поддерживаемым безупречным командным взаимодействием. В то же время SGEM_7 выглядели полностью потерянными: проигранные дуэли на ключевых позициях, отсутствие читаемости стратегий соперника и фатальные ошибки в позиционировании привели к тому, что команда оказалась абсолютно не готова к такому темпу и давлению.</p></p>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1">Матч на карте <strong class="text-white font-semibold">Inferno</strong> завершился убедительной победой — счет <strong class="text-white font-semibold">13 : 1</strong> в пользу <strong class="text-white font-semibold">Команда 1 (c kaifom)</strong>. Команда 1 (c kaifom) полностью захватила инициативу со стартовых раундов и не дала сопернику восстановить экономику. Ключевой фигурой противостояния стал <strong class="text-white font-semibold">c kaifom</strong>, продемонстрировавший высокий ADR и импакт во всех фазах игры.</p></p>
         </div>
     </section>
     
@@ -1865,7 +1864,7 @@
                             <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">⭐ Ключевые моменты: Топ-5</span>
                             
                             
-                            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Ожидается видео</span>
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Доступно к просмотру</span>
                             
                         </div>
                         <p class="text-xs text-slate-400 mt-0.5">Полноэкранный видеоповтор карты Inferno от лица игроков и выбор ключевого момента от ИИ</p>
@@ -1894,6 +1893,8 @@
                         
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none is-active border-amber-400 bg-amber-500/10 shadow-lg shadow-amber-500/10"
                              id="moment-card-0"
+                             
+                             onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=642&rel=0', '10:42', 0, 'Раунд 7. Максимальный уровень дерзости от Anarch1k! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником.');"
                              >
                             
                             <!-- Index & Timecode -->
@@ -1935,13 +1936,25 @@
                             <!-- Footer -->
                             <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
                                 
-                                <span class="text-slate-500 font-mono">В игре: 10:48</span>
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                
+                                <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=642s" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                
                                 
                             </div>
                         </div>
                         
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60"
                              id="moment-card-1"
+                             
+                             onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=50&rel=0', '0:50', 1, 'Раунд 1 (счёт 0:0). c kaifom оформляет ⚡ Квадро-килл (4K) с USP-S.');"
                              >
                             
                             <!-- Index & Timecode -->
@@ -1983,13 +1996,25 @@
                             <!-- Footer -->
                             <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
                                 
-                                <span class="text-slate-500 font-mono">В игре: 0:56</span>
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                
+                                <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=50s" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                
                                 
                             </div>
                         </div>
                         
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60"
                              id="moment-card-2"
+                             
+                             onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=912&rel=0', '15:12', 2, 'Раунд 10 (счёт 8:1). SGEM_7 оформляет ⚡ Квадро-килл (4K) с AK-47.');"
                              >
                             
                             <!-- Index & Timecode -->
@@ -2031,13 +2056,25 @@
                             <!-- Footer -->
                             <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
                                 
-                                <span class="text-slate-500 font-mono">В игре: 15:18</span>
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                
+                                <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=912s" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                
                                 
                             </div>
                         </div>
                         
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60"
                              id="moment-card-3"
+                             
+                             onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=1319&rel=0', '21:59', 3, 'Раунд 14 (счёт 12:1). natsad оформляет 🔪 Ножевой фраг с Нож.');"
                              >
                             
                             <!-- Index & Timecode -->
@@ -2079,13 +2116,25 @@
                             <!-- Footer -->
                             <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
                                 
-                                <span class="text-slate-500 font-mono">В игре: 22:05</span>
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                
+                                <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=1319s" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                
                                 
                             </div>
                         </div>
                         
                         <div class="moment-item-card relative flex flex-col justify-between p-3 rounded-xl border transition cursor-pointer select-none border-slate-800/80 bg-slate-900/60 hover:border-slate-700 hover:bg-slate-800/60"
                              id="moment-card-4"
+                             
+                             onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=1131&rel=0', '18:51', 4, 'Раунд 12 (счёт 10:1). c kaifom оформляет ⚡ Zeus x27 Фраг с Zeus x27.');"
                              >
                             
                             <!-- Index & Timecode -->
@@ -2127,7 +2176,17 @@
                             <!-- Footer -->
                             <div class="pt-2 border-t border-slate-800/60 flex items-center justify-between gap-1 text-[10px]">
                                 
-                                <span class="text-slate-500 font-mono">В игре: 18:57</span>
+                                <span class="text-amber-400 font-bold flex items-center gap-1">
+                                    <span>▶</span> Смотреть
+                                </span>
+                                
+                                <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=1131s" target="_blank" rel="noopener noreferrer"
+                                   onclick="event.stopPropagation();"
+                                   class="text-slate-400 hover:text-white font-mono hover:underline flex items-center gap-0.5"
+                                   title="Открыть на YouTube">
+                                    <span>YouTube</span> ↗
+                                </a>
+                                
                                 
                             </div>
                         </div>
@@ -2149,12 +2208,49 @@
 
                 <!-- Video Player Container -->
                 
-                <div class="text-center py-8 px-4 rounded-xl border border-dashed border-slate-800/80 bg-slate-900/30">
-                    <div class="text-3xl mb-2">🎥</div>
-                    <h4 class="text-sm font-bold text-white mb-1">Видеозапись к этому матчу пока не прикреплена</h4>
-                    <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
-                        Вы можете вставить ссылку на YouTube в файл <code class="text-emerald-400 font-mono bg-slate-800 px-1.5 py-0.5 rounded">data/match_videos.json</code> под ключом <code class="text-amber-300 font-mono bg-slate-800 px-1.5 py-0.5 rounded">"18092026_inferno_27224699_245"</code>. Система автоматически активирует видеоплеер с таймкодом <strong>10:42</strong>.
-                    </p>
+                <div>
+                    
+                    <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
+                        <div class="flex items-center gap-2">
+                            <button type="button"
+                                    onclick="selectVideoMoment('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=642&rel=0', '10:42', 0, 'Раунд 7. Максимальный уровень дерзости от Anarch1k! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником.');"
+                                    id="btn-highlight-play"
+                                    class="px-3.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-black text-xs transition flex items-center gap-1.5 shadow">
+                                <span>⭐ Момент #1 (10:42)</span>
+                            </button>
+                            <button type="button"
+                                    onclick="selectFullVod('https://www.youtube-nocookie.com/embed/7r-kYHR-a34?rel=0');"
+                                    id="btn-full-vod"
+                                    class="px-3.5 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 text-xs transition flex items-center gap-1.5">
+                                <span>📺 Полная запись (00:00)</span>
+                            </button>
+                        </div>
+                        <span class="text-[11px] font-mono text-slate-400">Синхронизация по CS Demo Manager 3.20 (64 tick)</span>
+                    </div>
+                    
+
+                    <div class="relative w-full overflow-hidden rounded-xl aspect-video border border-slate-800 shadow-2xl bg-black">
+                        <iframe id="match-video-iframe"
+                                class="absolute top-0 left-0 w-full h-full"
+                                src="https://www.youtube-nocookie.com/embed/7r-kYHR-a34?start=642&rel=0"
+                                title="Видеозапись матча Inferno (Команда 1 (c kaifom) vs Команда 2 (SGEM_7))"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <div class="mt-3 flex items-center justify-between text-xs text-slate-400 font-mono">
+                        <div class="flex items-center gap-4">
+                            
+                            <span>Источник: <a href="https://youtu.be/7r-kYHR-a34" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline">Открыть на YouTube ↗</a></span>
+                            
+                            
+                            <span>Хайлайт: <a href="https://www.youtube.com/watch?v=7r-kYHR-a34&t=642s" target="_blank" rel="noopener noreferrer" class="text-amber-300 hover:underline">Точный момент (10:42) ↗</a></span>
+                            
+                        </div>
+                        <span class="text-slate-500">HD 1080p / 60 FPS</span>
+                    </div>
                 </div>
                 
 
@@ -6082,75 +6178,75 @@
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">c kaifom</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Главный огневой удар (Primary Fragger)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник Б-плента / Энтри-фрагер</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Великолепный урон (125.4 ADR) и постоянное давление на соперника.</span>
+                                <span>Тотальный контроль темпа и высочайший импакт (125.4 ADR, 100% KAST) за счет идеального позиционирования и чтения оппонента.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Не форсировать лишние соло-дуэли при наличии численного преимущества.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Практически полное отсутствие урона гранатами (1 HP) — нужно плотнее интегрировать утилиту в ранний контакт на банане.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">berdimwws</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Главный огневой удар (Primary Fragger)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Агрессивный опорник А / Агрессор</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Великолепный урон (124.6 ADR) и постоянное давление на соперника.</span>
+                                <span>Феноменальная дуэльная форма (6 FK при 1 FD) и доминирование на мейн-направлениях с 124.6 ADR.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Не форсировать лишние соло-дуэли при наличии численного преимущества.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">7skyi</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Энтри-фрагер (Entry Duelist)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Отличный опенинг-импакт (3 первых фрагов), открывающий точки для команды.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Слишком высокий индивидуальный риск в моментах, стоит лучше координировать поджавы с поддержкой команды.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">Anarch1k</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Стабильный якорь / Саппорт (Support Anchor)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Второй номер / Помощник по утилите</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Высокая командная полезность (100.0% KAST) и надежный холд позиций.</span>
+                                <span>Идеальный командный игрок с 100% KAST, качественными флеш-ассистами (4) и стабильным мульти-киллом с AK-47.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Увеличивать личный урон за счет своевременного использования осколочных гранат.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Низкий урон по гранатам (7 HP), требуется более точный тайминг раскидки по позициям зачистки.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">7skyi</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Снайпер / AWPer</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Блестящая автономность на AWP (97.3 ADR), уверенная игра в эндгейме и конвертация преимущества в раундах.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Ошибки в клатчах (1/2), в критических ситуациях нужно хладнокровнее контролировать дистанцию с винтовкой.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">natsad</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Стабильный якорь / Саппорт (Support Anchor)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Пэкер / Поддержка</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Высокая командная полезность (100.0% KAST) и надежный холд позиций.</span>
+                                <span>Стабильная работа на команду с 100% KAST и четкое выполнение вспомогательных функций в раундах.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Увеличивать личный урон за счет своевременного использования осколочных гранат.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Низкий процент хедшотов (14.3%) и слабый индивидуальный арсенал дуэлей, следует подтянуть аим-контроль на средней дистанции.</span>
                             </div>
                         </div>
                     
@@ -6170,76 +6266,76 @@
                         
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">ALISHKA18SM</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник рубежа (Rotator)</span>
+                                <span class="font-bold text-white text-sm">SGEM_7</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Капитан / Люркеp</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Принятие на себя первого удара при штурме соперника.</span>
+                                <span>Единственный игрок команды, кто пытался создавать спейс и цепляться за раунды (77.6 ADR, 60% HS).</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Минимизировать открытые дуэли (4 первых смертей), играть глубже от укрытий и засад.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Изолированность от тимплеев и проваленные попытки реализации клатчей (1/8), нужно улучшать коммуникацию с коиглами.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">SGEM_7</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Универсал (Flex Rifle)</span>
+                                <span class="font-bold text-white text-sm">ALISHKA18SM</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Фронтлайн-энтри</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Стабильная работа по дефолту карты (10/13 K/D).</span>
+                                <span>Неплохой ADR (86.3) и высокий процент хедшотов с Mac-10, попытки навязать темп на рашах.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Повышать процент размена погибших тиммейтов и коммуникацию при перетяжках.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Катастрофический показатель первых смертей (1 FK / 4 FD), неоправданный агрессивный экспозиционный пик на банане.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">mbaliyev</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник рубежа (Rotator)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Второй номер атаки</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Принятие на себя первого удара при штурме соперника.</span>
+                                <span>Редкие вспышки активности, но в целом провальный матч (51.0 ADR, 42.9% KAST) из-за потери позиций.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Минимизировать открытые дуэли (3 первых смертей), играть глубже от укрытий и засад.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Три незамененные первые смерти (3 FD) и слабый ган-фитнесс, нужно избегать дуэлей на открытых углах топ-мида.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">ALIBONYA</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник рубежа (Rotator)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Второй номер / Экономический игрок</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Принятие на себя первого удара при штурме соперника.</span>
+                                <span>Попытки играть через девайсы с Mac-10 и один полезный флеш-ассист.</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Минимизировать открытые дуэли (5 первых смертей), играть глубже от укрытий и засад.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Пять (!) первых смертей (1 FK / 5 FD) при минимальном импакте (38.9 ADR), критическая уязвимость таймингов на выходе.</span>
                             </div>
                         </div>
                     
                         <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="font-bold text-white text-sm">Jackalll</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Универсал (Flex Rifle)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Пассивный опорник / Саппорт</span>
                             </div>
                             <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
                                 <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Стабильная работа по дефолту карты (2/14 K/D).</span>
+                                <span>Единственный плюс — сбор информации утилитой (61 урона гранатами), но полный провал в стрельбе (2K, 32.8 ADR).</span>
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Повышать процент размена погибших тиммейтов и коммуникацию при перетяжках.</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Полная потеря уверенности в перестрелках, отсутствие разменов и проигранные ключевые дуэли на плэнте.</span>
                             </div>
                         </div>
                     
@@ -6256,7 +6352,7 @@
                         Ключевые системные выводы для тренировок
                     </h3>
                 </div>
-                <p class="text-xs md:text-sm text-slate-300 mb-4 leading-relaxed">На основе тактического разбора матча на карте <strong class="text-white font-semibold">Inferno</strong> выделены 3 ключевых системных проблемы для тренировок:</p>
+                <p class="text-xs md:text-sm text-slate-300 mb-4 leading-relaxed">Матч на Inferno показал классическое уничтожение системно неорганизованной команды за счет превосходства в макро-игре, агрессивных опенингах и жестких кроссфайрах. Команда 2 полностью провалила структуру дефолта, отдав инициативу в самом зародыше раундов.</p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     
                 <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
@@ -6264,10 +6360,10 @@
                         <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
                             1
                         </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Позиционная уязвимость опорника (ALIBONYA):</span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Тотальная уязвимость в первых дуэлях (Опенинг-проблемы)</span>
                     </div>
                     <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        Игрок <strong class="text-white font-semibold">ALIBONYA</strong> отдал <strong class="text-white font-semibold">5 первых смертей</strong> за матч в районе зоны Банан, регулярно оставляя свою команду в ситуации 4v5 со стартовых секунд. Соперник явно нащупал эту брешь в расстановке и раз за разом форсировал контакт на его направлении. <strong class="text-white font-semibold">Что тренировать:</strong> перестроить дефолт, играть более пассивно от глубины сайта, либо выделять второго игрока для создания перекрестного огня и быстрой страховки.
+                        50% всех первых смертей (7 из 14) остались неразмененными, причем эпицентром катастрофы стал банан (6 дуэлей) и рампа, где Команда 2 постоянно отдавала начальный спейс без размена. Из-за этого защита Команды 1 легко читала любые попытки выхода. <strong class="text-white font-semibold">Что тренировать:</strong> Отработка синхронных энтри-выходов с заучиванием контактных поп-флешек через "вторую руку" и выстраиванием правильной дистанции трейда на банане и коврах (2 человека синхронно под один раш).
                     </p>
                 </div>
             
@@ -6276,10 +6372,10 @@
                         <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
                             2
                         </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Недооценка соперника на эко-раундах (1 сданных раундов):</span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Тактический провал в критических фазах (Эко-раунды и Ретейки)</span>
                     </div>
                     <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        Команды допустили критические ошибки в оружейных раундах против пистолетов (раунд 2 (атака слила эко CT)). Имея подавляющее превосходство в дальности и огневой мощи винтовок, игроки лезли в узкие коридоры и принимали упор-дуэли против Deagle и фарм-ганов. <strong class="text-white font-semibold">Что тренировать:</strong> на анти-эко запрещено входить в ближний контакт без предварительного закидывания хаешками и молотовыми; растягивать оборону и расстреливать соперника исключительно на дальних дистанциях.
+                        Отданный раунд №2 против Full Buy атаки CT на эко и полное отсутствие установок бомбы (0 за матч) говорят о системном непонимании экономики и неспособности выбивать точки. Команда 2 не смогла реализовать ни одного ретейка (0%). <strong class="text-white font-semibold">Что тренировать:</strong> Тренировка протоколов форс-бай раундов (закупка SMG + девайс под агрессивный поджим) и кастомные сценарии ретейков 3v3 и 4v4 на пустых серверах с акцентом на перекрестный огонь и кросс-пасс утилиты.
                     </p>
                 </div>
             
@@ -6288,10 +6384,10 @@
                         <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
                             3
                         </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Безнаказанность снайпера (7skyi: 9 фрагов с AWP):</span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Абсолютный дефицит синергии утилиты</span>
                     </div>
                     <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        <strong class="text-white font-semibold">7skyi</strong> держал в страхе всю карту, настреляв 9 фрагов со снайперской винтовки. Соперники не использовали глубокие смоки и флешки через крыши, чтобы согнать AWP с привычных позиций, и регулярно выходили на него 'в прицел'. <strong class="text-white font-semibold">Что тренировать:</strong> изучить анти-снайперские траектории гранат на Inferno, не пикать снайпера без флешки и отрезать его позиции дымами со старта.
+                        Средний урон гранатами у Команды 2 был минимальным (в районе 37-64 HP на игрока), а у Команды 1 на некоторых игроках утилита вообще не наносила урон, что приводило к безыдейным перестрелкам "в лоб". <strong class="text-white font-semibold">Что тренировать:</strong> Командные тренировки по сетапной раскидке (молотов в углубление банана, инсентровы на ковры А-плента под тайминги) с обязательным набором демейдж-гранат перед каждым агрессивным действием.
                     </p>
                 </div>
             
@@ -6317,7 +6413,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 20.09.2026 02:39</p>
+                <p class="footer-timestamp">Данные обновлены: 20.09.2026 02:54</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

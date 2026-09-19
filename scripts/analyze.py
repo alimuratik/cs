@@ -403,13 +403,22 @@ def analyze_match(match_data: dict) -> dict:
     old_static_marker = "При нехватке девайсов команды часто принимают лобовые перестрелки"
     fallback_marker = "Игроки предпринимали рискованные"
     current_summary = match_data.get("summary_analysis", "")
-    if (not current_summary 
+    match_date = match_data.get("date", "")
+    target_sessions = {"11092026", "18092026"}
+
+    needs_summary_recalc = False
+    if match_date in target_sessions and match_data.get("summary_version") != 4:
+        needs_summary_recalc = True
+    elif (not current_summary 
             or old_static_marker in current_summary 
             or fallback_marker in current_summary 
             or "Рассинхрон опенинг-дуэлей на" in current_summary 
-            or match_data.get("summary_version") != 3):
+            or match_data.get("summary_version") not in (3, 4)):
+        needs_summary_recalc = True
+
+    if needs_summary_recalc:
         match_data["summary_analysis"] = generate_match_summary_analysis(match_data)
-        match_data["summary_version"] = 3
+        match_data["summary_version"] = 4 if match_date in target_sessions else 3
     
     return match_data
 

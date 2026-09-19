@@ -730,12 +730,9 @@ def generate_tactical_takeaways_fallback(match_data: dict) -> str:
         f"3. **{p3['title']}:** {p3['text']}"
     )
 
-def generate_match_summary_analysis(match_data: dict) -> str:
+def generate_match_summary_analysis_fallback(match_data: dict) -> str:
     """
-    Генерация итогового сводного анализа после всех раундов:
-    1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ ДЛЯ ВСЕХ 10 ИГРОКОВ (Team 1 и Team 2)
-    2. ГЛАВНЫЙ ВЫВОД ДЛЯ РАБОТЫ НАД ОШИБКАМИ (3 системные проблемы)
-    С использованием высокоточного локального движка Smart Data-Driven Fallback.
+    Локальный эвристический генератор сводного анализа и вывода для работы над ошибками.
     """
     players = match_data.get('players', {})
     t1_name = match_data.get('team1_name') or "Команда 1"
@@ -795,3 +792,121 @@ def generate_match_summary_analysis(match_data: dict) -> str:
         f"{takeaways}"
     )
     return summary_text
+
+def generate_match_summary_analysis(match_data: dict) -> str:
+    """
+    Генерация итогового сводного анализа матча через Google Gemini API (с fallback на локальный движок):
+    1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ ДЛЯ ВСЕХ 10 ИГРОКОВ (Team 1 и Team 2)
+    2. ГЛАВНЫЙ ВЫВОД ДЛЯ РАБОТЫ НАД ОШИБКАМИ (3 системные проблемы для тренировок)
+    """
+    client = get_gemini_client()
+    if client:
+        try:
+            ctx = extract_tactical_match_context(match_data)
+            players = match_data.get('players', {})
+            t1_name = match_data.get('team1_name') or "Команда 1"
+            t2_name = match_data.get('team2_name') or "Команда 2"
+
+            t1_players = [p for p in players.values() if p.get('team') == 'team1']
+            t2_players = [p for p in players.values() if p.get('team') == 'team2']
+            t1_players.sort(key=lambda x: (x.get('hltv_rating', 0.0), x.get('adr', 0.0)), reverse=True)
+            t2_players.sort(key=lambda x: (x.get('hltv_rating', 0.0), x.get('adr', 0.0)), reverse=True)
+
+            def fmt_player(p):
+                k = p.get('kills', 0)
+                d = p.get('deaths', 0)
+                a = p.get('assists', 0)
+                adr = p.get('adr', 0.0)
+                kast = p.get('kast', 0.0)
+                fk = p.get('first_kills', 0)
+                fd = p.get('first_deaths', 0)
+                hs = p.get('hs_percent', 0.0)
+                ud = p.get('utility_damage', 0)
+                fa = p.get('flash_assists', 0)
+                cl_w = p.get('clutch_wins', 0)
+                cl_a = p.get('clutch_attempts', 0)
+                wpns = p.get('weapon_kills', {})
+                top_wpn = max(wpns.items(), key=lambda x: x[1])[0] if wpns else 'rifle'
+                return f"- {p.get('name')}: {k}K/{d}D/{a}A, ADR {adr}, KAST {kast}%, FK:{fk}/FD:{fd}, HS {hs}%, Урон гранатами: {ud}, Flash-ассисты: {fa}, Клатчи: {cl_w}/{cl_a}, топ оружие: {top_wpn}"
+
+            t1_desc = "\n".join([fmt_player(p) for p in t1_players])
+            t2_desc = "\n".join([fmt_player(p) for p in t2_players])
+
+            prompt = f"""Ты — профессиональный главный тренер и аналитик тир-1 команды по CS2 (уровня zonic, B1ad3).
+Твоя задача: провести глубокий, экспертный послематчевый разбор и тактический аудит матча на карте {ctx['map_name']}.
+
+МАТЧ: {t1_name} ({ctx['score1']}) против {t2_name} ({ctx['score2']}). Карта: {ctx['map_name']}. Половины: {ctx.get('half_score')}.
+Ключевые тактические метрики матча:
+- Зоны опенинг-дуэлей (First Blood): {', '.join(ctx.get('top_fb_zones', []))}
+- Неразмененные первые смерти: {ctx.get('untraded_first_deaths')} из {ctx.get('total_fb')} ({ctx.get('untraded_pct')}%)
+- Провалы на эко/форсах: {', '.join(ctx.get('anti_eco_throws', [])) if ctx.get('anti_eco_throws') else 'нет явных провалов'}
+- Пленты и ретейки: всего установок {ctx.get('total_plants')} (A: {ctx.get('a_plants')}, B: {ctx.get('b_plants')}), успешных выбиваний: {ctx.get('defuses')} ({ctx.get('retake_success_pct')}%)
+- Урон утилитой: в среднем {ctx.get('avg_util_per_round')} HP/раунд, всего флеш-ассистов: {ctx.get('total_flash_assists')}
+
+Игроки {t1_name}:
+{t1_desc}
+
+Игроки {t2_name}:
+{t2_desc}
+
+ТРЕБОВАНИЯ К ФОРМАТУ (СТРОГО СОБЛЮДАЙ СТРУКТУРУ И РАЗМЕТКУ!):
+Разбор должен состоять ровно из 2 секций:
+
+### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ ДЛЯ ВСЕХ 10 ИГРОКОВ
+
+#### 🛡️ {t1_name}
+Для КАЖДОГО игрока {t1_name} напиши ОДНУ строку строго в формате:
+• **Имя игрока** [Тактическая роль на русском]: Индивидуальная сильная сторона и вклад в матч на основе его цифр. *Зона роста:* Конкретная тактическая ошибка в этом матче и что исправить.
+
+#### 💣 {t2_name}
+Для КАЖДОГО игрока {t2_name} напиши ОДНУ строку строго в формате:
+• **Имя игрока** [Тактическая роль на русском]: Индивидуальная сильная сторона и вклад в матч на основе его цифр. *Зона роста:* Конкретная тактическая ошибка в этом матче и что исправить.
+
+---
+
+### 🏆 2. ГЛАВНЫЙ ВЫВОД ДЛЯ РАБОТЫ НАД ОШИБКАМИ
+Краткий экспертный вводный комментарий (1-2 предложения) с анализом характера игры на {ctx['map_name']}.
+
+Затем ровно 3 пронумерованных системных тактических проблемы команд на этой карте, опираясь на реальные цифры матча (неразмененные опенинги, отданные эко-раунды, ретейки, раскидки):
+1. **Название системной проблемы 1**: Подробный тактический разбор того, что происходило на карте, почему это ломало игру, с упоминанием конкретных позиций/зон карты и раундов. **Что тренировать:** Конкретное тактическое упражнение, схема дефолта или отработка раскидки на тренировке.
+
+2. **Название системной проблемы 2**: Подробный тактический разбор второй проблемы. **Что тренировать:** Конкретное командное упражнение или схема.
+
+3. **Название системной проблемы 3**: Подробный тактический разбор третьей проблемы. **Что тренировать:** Конкретное командное упражнение или схема.
+
+Пиши живо, авторитетно, на профессиональном сленге CS2 (дефолт, кроссфайр, ретейк, размен, тайминг, спейс, трейд, поп-флеш, форс, экзекьют). Никаких вводных фраз от себя — начни сразу с '### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ ДЛЯ ВСЕХ 10 ИГРОКОВ'.
+"""
+
+            for attempt in range(3):
+                try:
+                    response = client.models.generate_content(
+                        model=AI_MODEL,
+                        contents=prompt,
+                    )
+                    raw_text = response.text.strip()
+                    if raw_text.startswith("```"):
+                        lines = raw_text.split("\n")
+                        if lines[0].startswith("```"): lines = lines[1:]
+                        if lines and lines[-1].startswith("```"): lines = lines[:-1]
+                        raw_text = "\n".join(lines).strip()
+
+                    # Проверяем структуру: обе секции, заголовки команд и нумерованные выводы
+                    if ("1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ" in raw_text or "СВОДНЫЙ АНАЛИЗ" in raw_text) and \
+                       ("2. ГЛАВНЫЙ ВЫВОД" in raw_text or "ВЫВОД ДЛЯ РАБОТЫ" in raw_text) and \
+                       ("1. **" in raw_text and "2. **" in raw_text):
+                        time.sleep(1.0)
+                        return raw_text
+                except Exception as e:
+                    err_str = str(e).lower()
+                    if "429" in err_str or "resource_exhausted" in err_str or "quota" in err_str:
+                        logging.warning(f"Лимит Gemini API (429) при генерации анализа матча {match_data.get('match_id')}, пауза 8 сек... (попытка {attempt+1}/3)")
+                        time.sleep(8)
+                        continue
+                    else:
+                        logging.warning(f"Ошибка Gemini API при генерации анализа матча: {e}")
+                        break
+        except Exception as e:
+            logging.warning(f"Исключение при подготовке AI-анализа матча: {e}")
+
+    # Fallback локальный экспертный движок
+    return generate_match_summary_analysis_fallback(match_data)
