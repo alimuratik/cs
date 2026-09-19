@@ -379,69 +379,161 @@ def get_weapon_display(weapon: str) -> str:
 # Иконки для каждой из 9 секций тактического разбора
 _SECTION_ICONS = {
     "1": "⚔️", "2": "💰", "3": "🗺️", "4": "🔍",
-    "5": "❌", "6": "🌟", "7": "💨", "8": "🏆", "9": "🧠",
+    "5": "❌", "6": "🌟", "7": "💨", "8": "💣", "9": "🧠",
 }
 
-def format_round_analysis(text: str) -> str:
-    """Конвертирует markdown-разметку ai_analysis в читаемый HTML.
+def _inline_md(text: str) -> str:
+    """Конвертирует inline markdown (**bold**, *italic*, `code`) в чистые HTML теги."""
+    if not text:
+        return ""
+    # Backticks
+    text = re.sub(
+        r'`([^`]+)`',
+        r'<span class="px-1.5 py-0.5 rounded bg-slate-800 text-amber-300 font-mono text-[11px] border border-slate-700/80">\1</span>',
+        text
+    )
+    # **bold**
+    text = re.sub(r'\*\*(.+?)\*\*', r'<strong class="text-white font-semibold">\1</strong>', text)
+    # *italic*
+    text = re.sub(r'\*(.+?)\*', r'<em class="text-slate-300">\1</em>', text)
+    # Очистка остаточных решеток markdown
+    text = re.sub(r'#{1,4}\s*', '', text)
+    return text.strip()
 
-    Преобразует:
-      **N. Заголовок:** текст   →  цветной div-заголовок + параграф
-      **жирный текст**          →  <strong>
-      *курсив*                  →  <em>
+
+def format_round_analysis(text: str) -> str:
+    """Конвертирует тактический разбор раунда (от Gemini или эвристического генератора) в читаемый красивый HTML.
+
+    Поддерживает:
+      - Удаление служебных заголовков (### 📑 Раунд N)
+      - 9 обязательных тактических пунктов со стилизованными бейджами и иконками
+      - Вложенные списки дуэлей (подпункты с маркерами ▸)
+      - Карточки аудита команд и игроков (CT/T)
+      - Итоговые выводы для работы над ошибками
     """
     if not text:
         return ""
 
-    # 1. Разбиваем на абзацы по двойному переводу строки
-    paragraphs = re.split(r"\n{2,}", text.strip())
+    # 1. Удаляем служебный заголовок раунда в начале, если он есть
+    text = re.sub(r'^\s*#{1,4}\s*(?:📑\s*)?Раунд\s+\d+[:\s]*\n*', '', text.strip(), flags=re.I).strip()
+
+    # 2. Проверяем наличие дополнительных секций после 9 пунктов (аудит игроков / общий вывод)
+    extra_split = re.search(r'\n+(?=#{2,4}\s*(?:🛡️|⚔️|🔵|🟡|Команда|Team|🏆|ГЛАВНЫЙ|🧠\s*ОБЩИЙ))', text, flags=re.I)
+    if extra_split:
+        main_text = text[:extra_split.start()].strip()
+        extra_text = text[extra_split.start():].strip()
+    else:
+        main_text = text
+        extra_text = ""
+
+    sec_pattern = re.compile(
+        r'(?:^|\n)\s*(?:[\*\-\•]\s*)?(?:\*{1,2}|#{1,4}\s*)?(\d+)\.\s*(?:\*{1,2})?\s*([^*:\n]+?)(?:\*{0,2}:\*{0,2})\s*',
+        re.M
+    )
+    matches = list(sec_pattern.finditer(main_text))
+
     html_parts = []
 
-    for para in paragraphs:
-        para = para.strip()
-        if not para:
-            continue
-
-        # 2. Проверяем: это заголовок раздела вида **N. Название:**
-        section_match = re.match(
-            r"^\*{1,2}(\d+)\.\s+([^*:]+?):\*{0,2}\s*(.*)", para, re.DOTALL
-        )
-        if section_match:
-            num = section_match.group(1)
-            title = section_match.group(2).strip()
-            body = section_match.group(3).strip()
+    if matches:
+        for i, m in enumerate(matches):
+            num = m.group(1)
+            title = m.group(2).strip()
+            end_idx = matches[i+1].start() if i+1 < len(matches) else len(main_text)
+            body = main_text[m.end():end_idx].strip()
+            body = re.sub(r'\s*---+\s*$', '', body).strip()
             icon = _SECTION_ICONS.get(num, "•")
+            top_margin = "mt-1" if i == 0 else "mt-3"
 
             # Заголовок раздела
             html_parts.append(
-                f'<div class="flex items-start gap-2 mt-3 mb-1">'
+                f'<div class="flex items-start gap-2 {top_margin} mb-1">'
                 f'<span class="text-sm shrink-0 mt-px">{icon}</span>'
                 f'<span class="text-[11px] font-black uppercase tracking-wider text-emerald-300 leading-tight">{num}. {title}</span>'
                 f'</div>'
             )
-            if body:
-                body_html = _inline_md(body)
-                html_parts.append(
-                    f'<p class="text-slate-200 text-xs md:text-sm leading-relaxed pl-6 mb-1">{body_html}</p>'
-                )
-        else:
-            # 3. Обычный параграф — конвертируем inline md
-            html_parts.append(
-                f'<p class="text-slate-300 text-xs md:text-sm leading-relaxed mb-1">{_inline_md(para)}</p>'
-            )
+
+            # Тело раздела: проверка на вложенные маркеры (список дуэлей)
+            b_lines = [l.strip() for l in body.split('\n') if l.strip()]
+            has_bullets = any(l.startswith(('* ', '- ', '• ')) for l in b_lines)
+
+            if has_bullets:
+                html_parts.append('<div class="pl-6 space-y-1 mt-1 mb-1.5">')
+                for l in b_lines:
+                    if l.startswith(('* ', '- ', '• ')):
+                        sub_text = re.sub(r'^[\*\-\•]\s+', '', l).strip()
+                        html_parts.append(
+                            f'  <div class="flex items-start gap-2 text-xs md:text-sm text-slate-200 leading-relaxed py-0.5">'
+                            f'<span class="text-emerald-400 mt-1 text-[10px] shrink-0">▸</span>'
+                            f'<div>{_inline_md(sub_text)}</div></div>'
+                        )
+                    else:
+                        html_parts.append(f'  <p class="text-xs md:text-sm text-slate-200 leading-relaxed">{_inline_md(l)}</p>')
+                html_parts.append('</div>')
+            elif body:
+                body_clean = _inline_md(body.replace('\n', ' '))
+                html_parts.append(f'<p class="text-slate-200 text-xs md:text-sm leading-relaxed pl-6 mb-1">{body_clean}</p>')
+    else:
+        # Резервный вариант разбора по параграфам
+        paragraphs = re.split(r'\n{2,}', main_text)
+        for p in paragraphs:
+            if p.strip():
+                clean_p = re.sub(r'\s*---+\s*$', '', p.strip()).strip()
+                html_parts.append(f'<p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1">{_inline_md(clean_p)}</p>')
+
+    # 3. Форматирование дополнительных секций (аудит игроков / общий вывод)
+    if extra_text:
+        extra_blocks = re.split(r'\n+(?:---+\n+)?(?=#{2,4}\s+)', extra_text)
+        for b in extra_blocks:
+            b = b.strip()
+            if not b:
+                continue
+            lines = [l.strip() for l in b.split('\n') if l.strip()]
+            if not lines:
+                continue
+            raw_header = re.sub(r'^#{1,4}\s*', '', lines[0]).strip()
+            header_clean = re.sub(r'^[🛡️⚔️🏆🧠🔵🟡\ufe0f\s]+', '', raw_header).strip()
+            if header_clean.endswith(':'):
+                header_clean = header_clean[:-1].strip()
+            content_lines = lines[1:]
+
+            # Блок выводов для работы над ошибками
+            if re.search(r'ВЫВОД|ОШИБК|ИТОГ|ЗАКЛЮЧ', raw_header, re.I):
+                html_parts.append('<div class="mt-4 p-3.5 bg-emerald-950/20 border border-emerald-500/30 rounded-xl space-y-2">')
+                html_parts.append(f'<div class="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-amber-300"><span>🏆</span><span>{header_clean}</span></div>')
+                html_parts.append('<div class="space-y-1 pl-2">')
+                for cl in content_lines:
+                    cl_clean = re.sub(r'^\d+\.\s*', '', cl)
+                    cl_clean = re.sub(r'^[\*\-\•]\s+', '', cl_clean).strip()
+                    html_parts.append(f'<div class="text-xs text-slate-200 leading-relaxed flex items-start gap-2"><span class="text-amber-400 shrink-0 mt-0.5">▸</span><span>{_inline_md(cl_clean)}</span></div>')
+                html_parts.append('</div></div>')
+            # Блок оценки команд и игроков
+            elif re.search(r'Команда|Team|Игрок', raw_header, re.I):
+                is_ct = bool(re.search(r'CT|Защит|Team 1|Команда 1|🔵|🛡️', raw_header, re.I))
+                card_border = 'border-blue-500/30 bg-blue-950/10' if is_ct else 'border-amber-500/30 bg-amber-950/10'
+                hdr_color = 'text-blue-400' if is_ct else 'text-amber-400'
+                icon = '🛡️' if is_ct else '⚔️'
+
+                html_parts.append(f'<div class="mt-3 p-3 {card_border} border rounded-xl space-y-2">')
+                html_parts.append(f'<div class="text-xs font-black uppercase tracking-wider {hdr_color} flex items-center gap-1.5"><span>{icon}</span><span>{header_clean}</span></div>')
+                html_parts.append('<div class="space-y-1.5 pl-1">')
+                for cl in content_lines:
+                    cl_clean = re.sub(r'^[\*\-\•]\s+', '', cl).strip()
+                    html_parts.append(f'<div class="text-xs text-slate-200 leading-relaxed flex items-start gap-2"><span class="text-emerald-400 shrink-0 mt-0.5">•</span><div>{_inline_md(cl_clean)}</div></div>')
+                html_parts.append('</div></div>')
+            elif re.search(r'ОБЩИЙ\s+СВОДНЫЙ\s+АНАЛИЗ', raw_header, re.I):
+                # Разделитель общей тренерской оценки
+                html_parts.append(f'<div class="mt-3 pt-3 border-t border-slate-800 text-xs font-black uppercase tracking-wider text-slate-400 flex items-center gap-1.5"><span>🧠</span><span>{header_clean}</span></div>')
+                if content_lines:
+                    html_parts.append('<div class="space-y-1 pl-1">')
+                    for cl in content_lines:
+                        cl_clean = re.sub(r'^[\*\-\•]\s+', '', cl).strip()
+                        html_parts.append(f'<div class="text-xs text-slate-300 leading-relaxed">{_inline_md(cl_clean)}</div>')
+                    html_parts.append('</div>')
+            else:
+                clean_b = re.sub(r'\s*---+\s*$', '', b).strip()
+                html_parts.append(f'<div class="mt-2 p-2.5 bg-slate-900/60 border border-slate-800 rounded-lg text-xs text-slate-300 leading-relaxed">{_inline_md(clean_b)}</div>')
 
     return "\n".join(html_parts)
-
-
-def _inline_md(text: str) -> str:
-    """Конвертирует inline markdown (**bold**, *italic*) в HTML теги."""
-    # Сначала заменяем строки вида \n внутри параграфа на <br>
-    text = text.replace("\n", "<br>")
-    # **bold**
-    text = re.sub(r"\*\*(.+?)\*\*", r"<strong class='text-white'>\1</strong>", text)
-    # *italic*
-    text = re.sub(r"\*(.+?)\*", r"<em class='text-slate-300'>\1</em>", text)
-    return text
 
 
 def format_coach_summary(text: str) -> str:
