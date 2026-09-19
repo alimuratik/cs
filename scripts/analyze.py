@@ -1476,7 +1476,7 @@ def calculate_player_achievements(
         ]
     ))
 
-    # 6. 🧨 «Артиллерийский полк» (Utility)
+    # 6. 💣 «Тяжёлая артиллерия» (Utility)
     # Пороги: 🥉 1 матч (120+ HP утилиты) | 🥈 3 матча (180+ HP утилиты) | 🥇 5 матчей (250+ HP утилиты)
     m_ud_120 = sum(1 for m in matches if m.get("utility_damage", 0) >= 120)
     m_ud_180 = sum(1 for m in matches if m.get("utility_damage", 0) >= 180)
@@ -1489,7 +1489,7 @@ def calculate_player_achievements(
             if m_ud_250 >= 5:
                 t_ud = 3
     achievements.append(_build_tiered_achievement(
-        "util_artillery", "Артиллерийский полк", "🧨", t_ud,
+        "util_artillery", "Тяжёлая артиллерия", "💣", t_ud,
         [1, 3, 5],
         [
             "1 матч с >= 120 HP урона гранатами",

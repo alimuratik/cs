@@ -2714,9 +2714,9 @@ background-color: #ffffff !important;
   border-color: #cbd5e1 !important;
 }
 
-/* Remove dark background gradients */
-body.light-theme [class*="bg-gradient-"] {
-background-image: none !important;
+/* Remove dark background gradients (exclude progress bars and fills) */
+body.light-theme [class*="bg-gradient-"]:not([class*="progress"]):not([class*="rating-fill"]):not([class*="fill"]) {
+  background-image: none !important;
   background-color: #ffffff !important;
 }
 
@@ -4382,6 +4382,50 @@ body.light-theme .moment-item-card .bg-slate-950\/80 {
   background: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
 }
+
+/* ==========================================================================
+   Progress Tracks & Sliders Normalization (Light Theme)
+   ========================================================================== */
+body.light-theme .quest-progress-track,
+body.light-theme .rating-bar-track,
+body.light-theme .role-progress-track,
+body.light-theme .affinity-progress-track,
+body.light-theme [class*="-progress-track"],
+body.light-theme .shelf-card-footer [class*="bg-slate-"] {
+  background-color: #e2e8f0 !important;
+  background: #e2e8f0 !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Drawer for Calibrating and Inactive Players */
+.calibrating-inactive-drawer {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.calibrating-inactive-drawer[open] {
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+body.light-theme .calibrating-inactive-drawer {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
+}
+body.light-theme .calibrating-inactive-drawer summary {
+  background-color: #f8fafc !important;
+  border-bottom-color: #e2e8f0 !important;
+}
+body.light-theme .calibrating-inactive-drawer summary:hover {
+  background-color: #f1f5f9 !important;
+}
+body.light-theme .drawer-player-row:hover {
+  background-color: #f8fafc !important;
+}
+body.light-theme .drawer-player-card {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
 
 
 

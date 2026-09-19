@@ -44,115 +44,6 @@
         </div>
     </section>
 
-    <!-- Highlight of the Evening (AI Choice) -->
-    {% if session_highlight %}
-    {% set shl = session_highlight %}
-    <section class="section session-highlight-section glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-br from-amber-950/25 via-slate-900/90 to-slate-950 shadow-2xl relative overflow-hidden">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
-            <div>
-                <div class="flex items-center gap-2 flex-wrap mb-1">
-                    <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                        🎬 Хайлайт крайней сессии (Выбор ИИ)
-                    </span>
-                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full {% if shl.badge_color == 'rose' %}bg-rose-500/20 text-rose-300 border border-rose-500/40{% elif shl.badge_color == 'amber' %}bg-amber-500/20 text-amber-300 border border-amber-500/40{% elif shl.badge_color == 'purple' %}bg-purple-500/20 text-purple-300 border border-purple-500/40{% else %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/40{% endif %}">
-                        {{ shl.moment_badge }}
-                    </span>
-                    <span class="text-xs font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700/60">
-                        {{ shl.date_display }} • Карта {{ shl.map_display }}
-                    </span>
-                </div>
-                <h2 class="text-xl md:text-2xl font-black text-white">
-                    Лучший момент игрового дня: сокрушительный эпизод от {{ shl.player_name }}
-                </h2>
-            </div>
-            
-            <div class="flex items-center gap-3 shrink-0">
-                <a href="{{ shl.match_url }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition border border-slate-700">
-                    <span>Разбор матча</span>
-                    <span>➔</span>
-                </a>
-                {% if shl.watch_url %}
-                <a href="{{ shl.watch_url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs uppercase tracking-wider rounded-xl shadow-lg shadow-amber-500/20 hover:scale-[1.02] transition">
-                    <span>▶ YouTube ({{ shl.timecode_display }})</span>
-                    <span>↗</span>
-                </a>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 {% if shl.embed_url %}lg:grid-cols-12{% endif %} gap-6 items-center">
-            {% if shl.embed_url %}
-            <!-- Left: Video Embed starting at timestamp -->
-            <div class="lg:col-span-7">
-                <div class="relative w-full overflow-hidden rounded-xl aspect-video border border-slate-800 shadow-2xl bg-black">
-                    <iframe class="absolute top-0 left-0 w-full h-full"
-                            src="{{ shl.embed_url }}"
-                            title="Хайлайт матча {{ shl.map_display }}: {{ shl.player_name }}"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="mt-2.5 flex items-center justify-between text-xs text-slate-400 font-mono">
-                    <span>Автостарт с таймкода: <strong class="text-amber-300">{{ shl.timecode_display }}</strong></span>
-                    <span class="text-slate-500">64-tick demo sync</span>
-                </div>
-            </div>
-            {% endif %}
-
-            <!-- Right / Info box -->
-            <div class="{% if shl.embed_url %}lg:col-span-5{% endif %} flex flex-col justify-between space-y-4">
-                <!-- Player Pill -->
-                <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 flex items-center justify-between">
-                    <a href="players/{{ shl.player_steamid }}.html" class="flex items-center gap-3.5 group">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-emerald-500/20 border border-amber-500/40 flex items-center justify-center text-base font-black text-white group-hover:scale-105 transition shadow-md">
-                            {{ shl.player_name[:2]|upper }}
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-black text-white text-base group-hover:text-amber-300 transition">{{ shl.player_name }}</span>
-                                {% if shl.rank_tier and shl.rank_tier.badge_svg_small %}
-                                <span class="inline-block shrink-0" title="{{ shl.rank_tier.tier_name }}">
-                                    {{ shl.rank_tier.badge_svg_small|safe }}
-                                </span>
-                                {% endif %}
-                            </div>
-                            <span class="text-xs text-slate-400 font-mono">
-                                Раунд {{ shl.round_num }} (счёт {{ shl.score_at_moment }})
-                            </span>
-                        </div>
-                    </a>
-                    
-                    <div class="text-right font-mono">
-                        <span class="block text-sm font-black text-amber-300">{{ shl.weapon_display }}</span>
-                        <span class="text-xs text-slate-400">{{ shl.kills_count }} фрагов ({{ shl.headshots }} HS)</span>
-                    </div>
-                </div>
-
-                <!-- AI Commentary Quote -->
-                <div class="highlight-ai-bubble bg-slate-950/80 border border-emerald-500/30 rounded-xl p-4 flex items-start gap-3.5">
-                    <span class="text-2xl shrink-0">🎙️</span>
-                    <div>
-                        <span class="text-xs font-black uppercase tracking-wider text-emerald-400 block mb-1">
-                            Оценка ИИ-комментатора
-                        </span>
-                        <p class="text-xs md:text-sm text-slate-300 leading-relaxed italic">
-                            "{{ shl.ai_caption }}"
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Footer info if no video attached -->
-                {% if not shl.embed_url %}
-                <div class="p-3 bg-slate-900/50 rounded-xl border border-dashed border-slate-800 text-xs text-slate-400 flex items-center justify-between">
-                    <span>🎬 Видеозапись ожидает привязки в <code class="text-emerald-400 font-mono">data/match_videos.json</code></span>
-                    <span class="font-mono text-amber-300">Таймкод: {{ shl.timecode_display }}</span>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </section>
-    {% endif %}
 
     <!-- 5 Hall of Fame Session Nominations -->
     {% if session_awards and session_awards.mvp %}
@@ -400,7 +291,7 @@
 
             <!-- Counter -->
             <div class="text-xs text-slate-400 font-mono shrink-0 hidden lg:block">
-                Показано: <span id="players-visible-count" class="text-emerald-400 font-bold">{{ players|length }}</span> из {{ players|length }}
+                Показано: <span id="players-visible-count" class="text-emerald-400 font-bold">{{ active_players_count }}</span> из {{ active_players_count }}
             </div>
         </div>
 
@@ -439,7 +330,7 @@
                             <span class="tooltip-trigger" tabindex="0">
                                 FACEIT <span class="help-circle">?</span>
                                 <span class="tooltip-box">
-                                    <strong>Официальный FACEIT</strong><br>
+                                    <strong>Матчи FACEIT</strong><br>
                                     Уровень (1-10), текущий Elo, изменение рейтинга и динамика формы: на подъёме (▲), спад (▼) или стабильно (●).
                                 </span>
                             </span>
@@ -530,16 +421,6 @@
                 </thead>
                 <tbody class="divide-y divide-slate-800/60 text-xs">
                     {% for player in players %}
-                    {% if player.is_calibrating and loop.previtem is defined and not loop.previtem.is_calibrating %}
-                    <tr class="bg-slate-900/90 border-y border-slate-700/60">
-                        <td colspan="12" class="py-2.5 px-4 text-xs font-semibold text-slate-400">
-                            <div class="flex items-center gap-2">
-                                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px]">ℹ️</span>
-                                <span>На калибровке (до 5 матчей — без официального ранга в таблице лидеров)</span>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endif %}
                     <tr data-steamid="{{ player.steam_id }}" 
                         data-player-name="{{ player.name|lower }}" 
                         data-rating="{{ player.rating }}" 
@@ -722,12 +603,6 @@
         <!-- Mobile Collapsible Leaderboard Cards (<768px) -->
         <div class="block md:hidden space-y-3">
             {% for player in players %}
-            {% if player.is_calibrating and loop.previtem is defined and not loop.previtem.is_calibrating %}
-            <div class="py-2.5 px-3 bg-slate-900/90 border border-slate-800 rounded-xl flex items-center gap-2 text-xs font-semibold text-slate-400 my-2">
-                <span class="inline-flex items-center justify-center w-5 h-5 rounded-full bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px]">ℹ️</span>
-                <span>На калибровке (до 5 матчей)</span>
-            </div>
-            {% endif %}
             <details data-steamid="{{ player.steam_id }}" 
                      data-player-name="{{ player.name|lower }}" 
                      data-rating="{{ player.rating }}" 
@@ -873,6 +748,321 @@
             </details>
             {% endfor %}
         </div>
+
+        <!-- Collapsible Drawer for Calibrating and Inactive Players -->
+        {% if calibrating_players or inactive_players %}
+        <details id="calibrating-inactive-drawer" class="calibrating-inactive-drawer mt-6 rounded-2xl border border-slate-800 bg-slate-950/70 overflow-hidden backdrop-blur-md transition-all group/drawer">
+            <summary class="p-4 bg-slate-900/80 hover:bg-slate-900 cursor-pointer select-none flex items-center justify-between transition border-b border-slate-800/80 list-none">
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-8 h-8 rounded-xl bg-slate-800 text-amber-400 border border-slate-700 text-sm shadow-inner shrink-0">
+                        ⏳
+                    </span>
+                    <div>
+                        <div class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                            <span>На калибровке и в резерве</span>
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+                                {{ secondary_players_count }}
+                            </span>
+                        </div>
+                        <div class="text-xs text-slate-400">
+                            Игроки с менее чем 5 матчами или временно неактивные (вне официального зачета лидеров)
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 shrink-0">
+                    <span class="drawer-state-text group-open/drawer:hidden">Показать игроков</span>
+                    <span class="drawer-state-text hidden group-open/drawer:inline">Свернуть</span>
+                    <span class="text-slate-500 transition-transform group-open/drawer:rotate-180">▼</span>
+                </div>
+            </summary>
+
+            <div class="p-4 space-y-6">
+                <!-- 1. Calibrating Players Section -->
+                {% if calibrating_players %}
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800/60">
+                        <div class="flex items-center gap-2 text-xs font-bold text-sky-400 uppercase tracking-wider">
+                            <span>🧪</span>
+                            <span>На калибровке (до 5 матчей — без официального ранга в таблице лидеров)</span>
+                            <span class="text-slate-500 font-mono">({{ calibrating_players|length }})</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 hidden sm:inline">Требуется сыграть 5 матчей для входа в основной рейтинг</span>
+                    </div>
+
+                    <!-- Desktop Calibrating Table -->
+                    <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-900/90 text-[10px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                                    <th class="py-2 px-3 text-center w-12">Статус</th>
+                                    <th class="py-2 px-3">Игрок</th>
+                                    <th class="py-2 px-2.5 text-center">FACEIT</th>
+                                    <th class="py-2 px-2.5 text-center">Калибр. MMR</th>
+                                    <th class="py-2 px-2.5 text-center">Прогресс</th>
+                                    <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                    <th class="py-2 px-2.5 text-center">Оценка 1-10</th>
+                                    <th class="py-2 px-2.5 text-center">K/D</th>
+                                    <th class="py-2 px-2.5 text-center">ADR</th>
+                                    <th class="py-2 px-2.5 text-center">Винрейт</th>
+                                    <th class="py-2 px-3 text-center">Форма</th>
+                                    <th class="py-2 px-2 text-right"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60">
+                                {% for player in calibrating_players %}
+                                <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                    data-steamid="{{ player.steam_id }}"
+                                    data-player-name="{{ player.name|lower }}"
+                                    data-rating="{{ player.rating }}"
+                                    data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                                    data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                                    <td class="py-2.5 px-3 text-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-blue-950/80 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold" title="Калибровка: {{ player.total_matches }}/5 матчей">
+                                            {{ player.total_matches }}/5
+                                        </span>
+                                    </td>
+                                    <td class="py-2.5 px-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-7 h-7 rounded-lg bg-blue-950 border border-blue-500/30 flex items-center justify-center text-xs font-bold text-blue-300">
+                                                {{ player.avatar_initials }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-white text-xs flex items-center gap-1.5 player-name-container">
+                                                    <a href="players/{{ player.steam_id }}.html" class="hover:text-blue-400 transition">{{ player.name }}</a>
+                                                    <span class="text-[9px] px-1 py-0.2 rounded bg-blue-950 text-blue-300 border border-blue-500/40">Калибровка</span>
+                                                </div>
+                                                <div class="text-[10px] text-slate-400 font-mono">
+                                                    {{ player.roles[:2]|join(' / ') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center">
+                                        {% if player.faceit and player.faceit.found %}
+                                        <div class="inline-flex items-center gap-1.5 bg-orange-950/20 px-2 py-0.5 rounded border border-orange-500/30">
+                                            <span class="shrink-0">{{ render_faceit_svg(player.faceit.skill_level, 16)|safe }}</span>
+                                            <span class="font-mono font-bold text-orange-400 text-xs">{{ player.faceit.elo }}</span>
+                                        </div>
+                                        {% else %}
+                                        <span class="text-slate-600 text-xs">—</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-blue-300">
+                                        {{ player.current_mmr }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-[11px] text-slate-400">
+                                        {{ player.total_matches }} из 5 матчей
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs {% if player.hltv_rating >= 1.15 %}text-emerald-400{% elif player.hltv_rating < 0.90 %}text-rose-400{% else %}text-slate-200{% endif %}">
+                                        {{ player.hltv_rating }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                        <span class="inline-block px-1.5 py-0.5 rounded {% if player.rating >= 8.0 %}bg-amber-950 text-amber-300 border border-amber-500/50{% elif player.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50{% elif player.rating >= 5.0 %}bg-yellow-950 text-yellow-300 border border-yellow-500/50{% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                            {{ player.rating }}
+                                        </span>
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold {% if player.kd_ratio >= 1.0 %}text-emerald-400{% else %}text-rose-400{% endif %}">
+                                        {{ player.kd_ratio }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                        {{ player.adr }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                        <span class="font-bold text-white">{{ player.win_rate }}%</span>
+                                        <span class="text-slate-400 text-[10px] block">({{ player.wins }}W - {{ player.losses }}L)</span>
+                                    </td>
+                                    <td class="py-2.5 px-3 text-center">
+                                        <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded-full border border-slate-800">
+                                            {% for dot in player.form_dots %}
+                                                {% if dot == 'win_high' %}
+                                                <span class="w-2 h-2 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                                {% elif dot == 'win_low' %}
+                                                <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                                {% elif dot == 'tie' %}
+                                                <span class="w-2 h-2 rounded-full bg-slate-400 inline-block" title="Ничья"></span>
+                                                {% else %}
+                                                <span class="w-2 h-2 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="text-[10px] text-slate-500 font-mono">—</span>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td class="py-2.5 px-2 text-right">
+                                        <a href="players/{{ player.steam_id }}.html" class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white transition text-xs">
+                                            ➔
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Calibrating Cards -->
+                    <div class="block md:hidden space-y-2.5">
+                        {% for player in calibrating_players %}
+                        <div class="drawer-player-card p-3 rounded-xl border border-slate-800 bg-slate-900/80 flex items-center justify-between"
+                             data-steamid="{{ player.steam_id }}"
+                             data-player-name="{{ player.name|lower }}"
+                             data-rating="{{ player.rating }}"
+                             data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                             data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+                                    {{ player.total_matches }}/5
+                                </span>
+                                <div class="truncate">
+                                    <a href="players/{{ player.steam_id }}.html" class="text-xs font-bold text-white hover:text-blue-400 block truncate">{{ player.name }}</a>
+                                    <div class="text-[10px] text-slate-400 font-mono">
+                                        MMR: <strong class="text-blue-300">{{ player.current_mmr }}</strong> • HLTV: {{ player.hltv_rating }}
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="players/{{ player.steam_id }}.html" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-blue-600 hover:text-white transition shrink-0">
+                                Профиль ➔
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- 2. Inactive Players Section -->
+                {% if inactive_players %}
+                <div class="space-y-3 pt-4 border-t border-slate-800/80">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-800/60">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                            <span>💤</span>
+                            <span>Временно неактивные игроки (>30 дней без игр на платформе)</span>
+                            <span class="text-slate-500 font-mono">({{ inactive_players|length }})</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 hidden sm:inline">Ранг заморожен до возвращения в активные игровые сессии</span>
+                    </div>
+
+                    <!-- Desktop Inactive Table -->
+                    <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-900/90 text-[10px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                                    <th class="py-2 px-3 text-center w-12">Статус</th>
+                                    <th class="py-2 px-3">Игрок</th>
+                                    <th class="py-2 px-2.5 text-center">FACEIT</th>
+                                    <th class="py-2 px-2.5 text-center">MMR</th>
+                                    <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                    <th class="py-2 px-2.5 text-center">Оценка 1-10</th>
+                                    <th class="py-2 px-2.5 text-center">K/D</th>
+                                    <th class="py-2 px-2.5 text-center">ADR</th>
+                                    <th class="py-2 px-2.5 text-center">Винрейт</th>
+                                    <th class="py-2 px-2.5 text-center">Всего матчей</th>
+                                    <th class="py-2 px-2 text-right"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/60">
+                                {% for player in inactive_players %}
+                                <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                    data-steamid="{{ player.steam_id }}"
+                                    data-player-name="{{ player.name|lower }}"
+                                    data-rating="{{ player.rating }}"
+                                    data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                                    data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                                    <td class="py-2.5 px-3 text-center">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-md bg-slate-900 text-slate-500 border border-slate-800 text-xs">
+                                            💤
+                                        </span>
+                                    </td>
+                                    <td class="py-2.5 px-3">
+                                        <div class="flex items-center gap-2.5">
+                                            <div class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold text-slate-400">
+                                                {{ player.avatar_initials }}
+                                            </div>
+                                            <div>
+                                                <div class="font-bold text-white text-xs flex items-center gap-1.5 player-name-container">
+                                                    <a href="players/{{ player.steam_id }}.html" class="hover:text-amber-400 transition">{{ player.name }}</a>
+                                                    <span class="text-[9px] px-1 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700">Неактив</span>
+                                                </div>
+                                                <div class="text-[10px] text-slate-400 font-mono">
+                                                    {{ player.roles[:2]|join(' / ') }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center">
+                                        {% if player.faceit and player.faceit.found %}
+                                        <div class="inline-flex items-center gap-1.5 bg-orange-950/20 px-2 py-0.5 rounded border border-orange-500/30">
+                                            <span class="shrink-0">{{ render_faceit_svg(player.faceit.skill_level, 16)|safe }}</span>
+                                            <span class="font-mono font-bold text-orange-400 text-xs">{{ player.faceit.elo }}</span>
+                                        </div>
+                                        {% else %}
+                                        <span class="text-slate-600 text-xs">—</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-slate-300">
+                                        {{ player.current_mmr }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs {% if player.hltv_rating >= 1.15 %}text-emerald-400{% elif player.hltv_rating < 0.90 %}text-rose-400{% else %}text-slate-200{% endif %}">
+                                        {{ player.hltv_rating }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                        <span class="inline-block px-1.5 py-0.5 rounded {% if player.rating >= 8.0 %}bg-amber-950 text-amber-300 border border-amber-500/50{% elif player.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50{% elif player.rating >= 5.0 %}bg-yellow-950 text-yellow-300 border border-yellow-500/50{% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                            {{ player.rating }}
+                                        </span>
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold {% if player.kd_ratio >= 1.0 %}text-emerald-400{% else %}text-rose-400{% endif %}">
+                                        {{ player.kd_ratio }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                        {{ player.adr }}
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                        <span class="font-bold text-white">{{ player.win_rate }}%</span>
+                                        <span class="text-slate-400 text-[10px] block">({{ player.wins }}W - {{ player.losses }}L)</span>
+                                    </td>
+                                    <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-400">
+                                        {{ player.total_matches }}
+                                    </td>
+                                    <td class="py-2.5 px-2 text-right">
+                                        <a href="players/{{ player.steam_id }}.html" class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-slate-800 text-slate-400 group-hover:bg-amber-600 group-hover:text-white transition text-xs">
+                                            ➔
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Inactive Cards -->
+                    <div class="block md:hidden space-y-2.5">
+                        {% for player in inactive_players %}
+                        <div class="drawer-player-card p-3 rounded-xl border border-slate-800 bg-slate-900/80 flex items-center justify-between"
+                             data-steamid="{{ player.steam_id }}"
+                             data-player-name="{{ player.name|lower }}"
+                             data-rating="{{ player.rating }}"
+                             data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                             data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="w-6 h-6 rounded bg-slate-800 text-slate-500 border border-slate-700 text-xs flex items-center justify-center shrink-0">
+                                    💤
+                                </span>
+                                <div class="truncate">
+                                    <a href="players/{{ player.steam_id }}.html" class="text-xs font-bold text-white hover:text-amber-400 block truncate">{{ player.name }}</a>
+                                    <div class="text-[10px] text-slate-400 font-mono">
+                                        MMR: <strong class="text-slate-300">{{ player.current_mmr }}</strong> • HLTV: {{ player.hltv_rating }}
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="players/{{ player.steam_id }}.html" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-xs font-semibold hover:bg-amber-600 hover:text-white transition shrink-0">
+                                Профиль ➔
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </details>
+        {% endif %}
     </section>
 
     <!-- Rating System Guide Section -->
@@ -1265,9 +1455,26 @@ function setupLeaderboardFilters() {
         });
         cards.forEach(c => checkItem(c));
 
+        // Filter and auto-open drawer if search matches secondary players
+        const drawer = document.getElementById('calibrating-inactive-drawer');
+        const drawerRows = document.querySelectorAll('.drawer-player-row');
+        const drawerCards = document.querySelectorAll('.drawer-player-card');
+        let matchedInDrawer = false;
+
+        drawerRows.forEach(r => {
+            if (checkItem(r)) matchedInDrawer = true;
+        });
+        drawerCards.forEach(c => {
+            if (checkItem(c)) matchedInDrawer = true;
+        });
+
+        if (drawer && query && matchedInDrawer) {
+            drawer.open = true;
+        }
+
         if (countSpan) countSpan.textContent = visibleCount;
         if (emptyState) {
-            emptyState.classList.toggle('hidden', visibleCount > 0);
+            emptyState.classList.toggle('hidden', (visibleCount > 0) || matchedInDrawer);
         }
     }
 

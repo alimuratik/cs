@@ -1742,36 +1742,27 @@ def format_player_data(p: dict) -> dict:
         threshold = rdef["affinity_threshold"]
         
         if is_cur:
-            badge_text = "Текущий стиль"
+            badge_text = "🎮 Текущий стиль"
             badge_class = "bg-blue-950/80 text-blue-300 border border-blue-500/40"
         elif is_rec:
-            badge_text = "Рекомендуется"
+            badge_text = "💡 Рекомендация"
             badge_class = "bg-amber-950/80 text-amber-300 border border-amber-500/40"
-        elif aff >= 80:
-            badge_text = "Идеально"
-            badge_class = "bg-amber-500/20 text-amber-300 border border-amber-500/40"
-        elif aff >= 70:
-            badge_text = "Высокий"
-            badge_class = "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-        elif aff >= 50:
-            badge_text = "Базовый"
-            badge_class = "bg-sky-500/20 text-sky-300 border border-sky-500/40"
         else:
-            badge_text = "Низкий"
-            badge_class = "bg-slate-800 text-slate-400 border border-slate-700"
+            badge_text = ""
+            badge_class = ""
 
         # Цвета полосы прогресса по единой шкале
         if aff >= 80:
-            bar_class = "bg-gradient-to-r from-amber-500 to-amber-300"
+            bar_class = "rating-fill-gold"
             text_class = "text-amber-400"
         elif aff >= 70:
-            bar_class = "bg-gradient-to-r from-emerald-600 to-emerald-400"
+            bar_class = "rating-fill-high"
             text_class = "text-emerald-400"
         elif aff >= 50:
-            bar_class = "bg-gradient-to-r from-sky-600 to-cyan-400"
-            text_class = "text-sky-400"
+            bar_class = "rating-fill-mid"
+            text_class = "text-amber-400"
         else:
-            bar_class = "bg-slate-500"
+            bar_class = "rating-fill-low"
             text_class = "text-slate-400"
 
         # Детализация влияющих навыков с весами и иконками
@@ -1882,14 +1873,14 @@ def format_player_data(p: dict) -> dict:
         else:
             reasoning = f"Низкая совместимость: профиль игрока не ложится на модель роли из-за дефицита в {worst_skill} ({worst_val}/10)."
 
-        # Краткий вердикт
+        # Краткий статус готовности к роли
         if is_cur:
             verdict = "В основе"
         elif is_rec:
-            verdict = "Приоритет"
+            verdict = "Рекомендовано"
         elif aff >= threshold:
-            verdict = "Квалифицирован"
-        elif aff >= 55:
+            verdict = "Подходит"
+        elif aff >= 50:
             verdict = "Резерв"
         else:
             verdict = "Не профиль"
@@ -2235,21 +2226,28 @@ def generate_site():
         })
 
     # Разделение таблицы лидеров:
-    # 1. Прошедшие калибровку (5+ матчей) - получают официальные места #1, #2, #3...
-    calibrated_players = [p for p in leaderboard_players if not p["is_calibrating"]]
-    calibrated_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
-    for rank_idx, lp in enumerate(calibrated_players, start=1):
+    # 1. Активные квалифицированные игроки (прошли калибровку и активны) -> получают официальные ранги #1, #2, #3...
+    active_ranked_players = [p for p in leaderboard_players if not p["is_calibrating"] and not p["is_inactive"]]
+    active_ranked_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for rank_idx, lp in enumerate(active_ranked_players, start=1):
         lp["rank"] = rank_idx
         lp["is_ranked"] = True
 
-    # 2. Игроки на калибровке (<5 матчей) - опущены вниз рейтинга, ранг "—"
+    # 2. Игроки на калибровке (<5 матчей) - без официального ранга в основном зачете
     calibrating_players = [p for p in leaderboard_players if p["is_calibrating"]]
     calibrating_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
     for lp in calibrating_players:
         lp["rank"] = None
         lp["is_ranked"] = False
 
-    leaderboard_players = calibrated_players + calibrating_players
+    # 3. Неактивные игроки (>30 дней без игр на платформе) - свернуты вместе с калибровочными
+    inactive_players = [p for p in leaderboard_players if not p["is_calibrating"] and p["is_inactive"]]
+    inactive_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for lp in inactive_players:
+        lp["rank"] = None
+        lp["is_ranked"] = False
+
+    leaderboard_players = active_ranked_players + calibrating_players + inactive_players
 
     recent_matches = sorted(matches, key=lambda m: parse_date_key(m.get("date", "")), reverse=True)
     recent_matches_display = []
@@ -2387,7 +2385,14 @@ def generate_site():
             js_path="js/app.js",
             root_path="",
             stats=stats_summary,
-            players=leaderboard_players,
+            players=active_ranked_players,
+            active_players=active_ranked_players,
+            calibrating_players=calibrating_players,
+            inactive_players=inactive_players,
+            all_players=leaderboard_players,
+            total_players_count=len(leaderboard_players),
+            active_players_count=len(active_ranked_players),
+            secondary_players_count=len(calibrating_players) + len(inactive_players),
             faceit_levels_info=faceit_levels_info,
             sessions=formatted_sessions,
             recent_matches=recent_matches_display,
@@ -2487,6 +2492,8 @@ def generate_site():
             curr_m = mmr_d.get("current_mmr", STARTING_MMR)
             is_cal_p = mmr_d.get("is_calibrating", len(p.get("matches", [])) <= CALIBRATION_MATCH_LIMIT)
             is_inac_p = mmr_d.get("is_inactive", False)
+            if is_cal_p:
+                continue  # Калибровочные игроки не участвуют в рейтингах навыков
             rt = get_player_rank_tier(curr_m, is_calibrating=is_cal_p, is_inactive=is_inac_p)
             ov = p.get("overall_stats", {})
             met = p.get("metrics", {})
@@ -2565,6 +2572,8 @@ def generate_site():
         curr_m = mmr_d.get("current_mmr", STARTING_MMR)
         is_cal = mmr_d.get("is_calibrating", len(p.get("matches", [])) <= CALIBRATION_MATCH_LIMIT)
         is_inac = mmr_d.get("is_inactive", False)
+        if is_cal:
+            continue  # Калибровочные игроки не участвуют в Зале Славы и каталоге достижений
         rt = get_player_rank_tier(curr_m, is_calibrating=is_cal, is_inactive=is_inac)
 
         glory_pts = ach_summary.get("total_points", 0)
@@ -2815,6 +2824,8 @@ def generate_site():
             curr_m = mmr_d.get("current_mmr", STARTING_MMR)
             is_cal = mmr_d.get("is_calibrating", len(p.get("matches", [])) <= CALIBRATION_MATCH_LIMIT)
             is_inac = mmr_d.get("is_inactive", False)
+            if is_cal:
+                continue  # Калибровочные игроки не участвуют в тактических ролях
             rt = get_player_rank_tier(curr_m, is_calibrating=is_cal, is_inactive=is_inac)
 
             play_style = p.get("play_style", ["Универсал"])

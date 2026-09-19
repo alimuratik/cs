@@ -214,7 +214,7 @@
                                     </div>
                                 </div>
                                 <div class="h-2 w-full role-progress-track">
-                                    <div class="h-full rounded-full transition-all duration-500 {% if p.affinity_score >= 80 %}bg-gradient-to-r from-amber-500 to-amber-300{% elif p.affinity_score >= 70 %}bg-gradient-to-r from-emerald-600 to-emerald-400{% elif p.affinity_score >= 50 %}bg-gradient-to-r from-sky-600 to-cyan-400{% else %}bg-slate-500{% endif %}" style="width: {{ p.affinity_score }}%;"></div>
+                                    <div class="h-full rounded-full transition-all duration-500 {% if p.affinity_score >= 75 %}rating-fill-gold{% elif p.affinity_score >= 60 %}rating-fill-high{% elif p.affinity_score >= 45 %}rating-fill-mid{% else %}rating-fill-low{% endif %}" style="width: {{ p.affinity_score }}%;"></div>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +299,7 @@
                                     </div>
                                 </div>
                                 <div class="h-2 w-full role-progress-track">
-                                    <div class="h-full rounded-full transition-all duration-500 {% if p.affinity_score >= 80 %}bg-gradient-to-r from-amber-500 to-amber-300{% elif p.affinity_score >= 70 %}bg-gradient-to-r from-emerald-600 to-emerald-400{% elif p.affinity_score >= 50 %}bg-gradient-to-r from-sky-600 to-cyan-400{% else %}bg-slate-500{% endif %}" style="width: {{ p.affinity_score }}%;"></div>
+                                    <div class="h-full rounded-full transition-all duration-500 {% if p.affinity_score >= 75 %}rating-fill-gold{% elif p.affinity_score >= 60 %}rating-fill-high{% elif p.affinity_score >= 45 %}rating-fill-mid{% else %}rating-fill-low{% endif %}" style="width: {{ p.affinity_score }}%;"></div>
                                 </div>
                             </div>
                         </div>
