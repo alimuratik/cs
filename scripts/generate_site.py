@@ -2066,6 +2066,216 @@ def generate_site():
     )
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
 
+    # 9. Генерация страницы тактических ролей site/roles.html
+    ROLES_CATALOG = [
+        {
+            "role_id": "awp",
+            "title": "🎯 Основной снайпер (Main AWP)",
+            "icon": "🎯",
+            "short_title": "Снайпер",
+            "lore": "Хозяин дальних дистанций и создатель численного преимущества первым выстрелом. Контролирует ключевые лонги и мид-коннекторы, создавая постоянную угрозу одномоментного убийства через всю карту.",
+            "metrics_rules": "Доля фрагов с AWP >= 20% от общих фрагов, ИЛИ 20+ убийств с AWP при доле >= 15%. Система анализирует оружейную статистику из демок.",
+            "skills_formula": "Aim × 0.5 + Positioning × 0.3 + Economy × 0.2",
+            "skills_weights": {"Aim": 0.5, "Positioning": 0.3, "Economy": 0.2},
+            "affinity_threshold": 70,
+            "accent_color": "amber",
+            "factual_names": ["Снайпер"]
+        },
+        {
+            "role_id": "entry",
+            "title": "⚡ Главный энтри-фраггер (First Entry)",
+            "icon": "⚡",
+            "short_title": "Энтри",
+            "lore": "Острие атаки команды, взломщик закрытых позиций и создатель спейса на плентах. Бежит первым, открывает карту и создаёт численное преимущество через агрессивные пики.",
+            "metrics_rules": "First Kill Rate >= 14.0% ИЛИ вовлечённость в первые дуэли (FK+FD)/Rounds >= 15% при винрейте дуэлей >= 45%.",
+            "skills_formula": "Entry × 0.6 + Aim × 0.3 + Game Sense × 0.1",
+            "skills_weights": {"Entry": 0.6, "Aim": 0.3, "Game Sense": 0.1},
+            "affinity_threshold": 65,
+            "accent_color": "red",
+            "factual_names": ["Энтри-фраггер"]
+        },
+        {
+            "role_id": "refragger",
+            "title": "🔄 Второй номер / Трейдер (Refragger)",
+            "icon": "🔄",
+            "short_title": "Трейдер",
+            "lore": "Бежит вторым темпом за энтри, мгновенно разменивает союзников и добирает раненых. Гарантирует, что ни одна смерть тиммейта не пропадёт зря.",
+            "metrics_rules": "Trade Rate >= 20.0% (размен союзника в течение 3–4 секунд после его гибели).",
+            "skills_formula": "Trading × 0.6 + Clutch × 0.2 + Aim × 0.2",
+            "skills_weights": {"Trading": 0.6, "Clutch": 0.2, "Aim": 0.2},
+            "affinity_threshold": 65,
+            "accent_color": "orange",
+            "factual_names": ["Второй номер"]
+        },
+        {
+            "role_id": "anchor",
+            "title": "🛡️ Опорник плента (Site Anchor)",
+            "icon": "🛡️",
+            "short_title": "Опорник",
+            "lore": "Столп обороны, охраняющий плент в одиночку до прихода ротации с минимальным риском. Ведёт позиционную игру, используя перекрёстный огонь и пассивные углы.",
+            "metrics_rules": "KAST >= 68.0%, выживаемость >= 30%, First Death Rate <= 10%. Игроки с минимальной частотой первых смертей и стабильным участием в раундах.",
+            "skills_formula": "Positioning × 0.5 + Discipline × 0.3 + Game Sense × 0.2",
+            "skills_weights": {"Positioning": 0.5, "Discipline": 0.3, "Game Sense": 0.2},
+            "affinity_threshold": 65,
+            "accent_color": "emerald",
+            "factual_names": ["Опорник"]
+        },
+        {
+            "role_id": "support",
+            "title": "💡 Координатор / Саппорт (Support)",
+            "icon": "💡",
+            "short_title": "Саппорт",
+            "lore": "Мастер раскидок, подготавливает выходы идеальными моменталками и отрезает врагов огнём. Слаженная утилити-игра решает раунды до первого выстрела.",
+            "metrics_rules": "Utility Damage >= 6.0 HP/раунд ИЛИ Flash Assists >= 0.35 за матч. Игроки, вносящие наибольший вклад гранатами.",
+            "skills_formula": "Utility × 0.6 + Discipline × 0.2 + Game Sense × 0.2",
+            "skills_weights": {"Utility": 0.6, "Discipline": 0.2, "Game Sense": 0.2},
+            "affinity_threshold": 65,
+            "accent_color": "blue",
+            "factual_names": ["Саппорт"]
+        },
+        {
+            "role_id": "lurker",
+            "title": "🥷 Люркер / Одиночка (Lurker)",
+            "icon": "🥷",
+            "short_title": "Люркер",
+            "lore": "Контролирует противоположный фланг, отрезает ротации врага и читает тайминги перетяжек. Играет автономно и наказывает за ошибки в позиционировании.",
+            "metrics_rules": "First Kill Rate <= 8.5%, выживаемость >= 30%, фокус на поздних фрагах в раунде. Низкая вовлечённость в первые дуэли, высокая автономность.",
+            "skills_formula": "Game Sense × 0.4 + Positioning × 0.3 + Clutch × 0.3",
+            "skills_weights": {"Game Sense": 0.4, "Positioning": 0.3, "Clutch": 0.3},
+            "affinity_threshold": 65,
+            "accent_color": "purple",
+            "factual_names": ["Люркер"]
+        },
+        {
+            "role_id": "clutcher",
+            "title": "👑 Клатч-мастер (Clutcher / Finisher)",
+            "icon": "👑",
+            "short_title": "Клатчер",
+            "lore": "Хладнокровный доигровщик раундов в ситуациях 1v1 / 1v2 / 1v3. Когда вся команда мертва — он остаётся один и выносит весь остаток.",
+            "metrics_rules": "Clutch Winrate >= 30.0% при минимум 3 ситуациях 1vX за карьеру. Только реальные клатч-исполнители.",
+            "skills_formula": "Clutch × 0.6 + Game Sense × 0.2 + Discipline × 0.2",
+            "skills_weights": {"Clutch": 0.6, "Game Sense": 0.2, "Discipline": 0.2},
+            "affinity_threshold": 65,
+            "accent_color": "cyan",
+            "factual_names": ["Клатчер"]
+        },
+        {
+            "role_id": "igl",
+            "title": "🧠 Ин-гейм лидер / Тактик (IGL)",
+            "icon": "🧠",
+            "short_title": "IGL",
+            "lore": "Мозг команды, следит за макро-экономикой, читает структуру соперника и координирует закуп. Высокий Game Sense и экономическая дисциплина — главные оружия.",
+            "metrics_rules": "Высокий KAST (>= 68%), экономическая дисциплина закупов (Economy Rating >= 5.5), минимальное количество бессмысленных смертей.",
+            "skills_formula": "Game Sense × 0.5 + Economy × 0.3 + Discipline × 0.2",
+            "skills_weights": {"Game Sense": 0.5, "Economy": 0.3, "Discipline": 0.2},
+            "affinity_threshold": 65,
+            "accent_color": "yellow",
+            "factual_names": []
+        }
+    ]
+
+    def calc_affinity_score(ratings: dict, weights: dict) -> float:
+        """Рассчитывает индекс совместимости с ролью (0-100%) на основе взвешенного среднего рейтингов."""
+        total = 0.0
+        for skill, w in weights.items():
+            total += ratings.get(skill, 5.0) * w
+        return round(total * 10.0, 1)  # Нормализация: рейтинг 10.0 = 100%
+
+    roles_data = []
+    for role_def in ROLES_CATALOG:
+        role_id = role_def["role_id"]
+        weights = role_def["skills_weights"]
+        threshold = role_def["affinity_threshold"]
+        factual_names = role_def["factual_names"]
+
+        current_players = []
+        potential_candidates = []
+
+        for p in players:
+            sid = clean_steamid(p.get("steam_id"))
+            if not sid:
+                continue
+
+            p_name = clean_name(p.get("name", f"Player_{sid[-4:]}"))
+            ratings = p.get("ratings", {})
+            metrics = p.get("metrics", {})
+            ov = p.get("overall_stats", {})
+            mmr_d = p.get("mmr", {})
+            curr_m = mmr_d.get("current_mmr", STARTING_MMR)
+            is_cal = mmr_d.get("is_calibrating", len(p.get("matches", [])) <= CALIBRATION_MATCH_LIMIT)
+            is_inac = mmr_d.get("is_inactive", False)
+            rt = get_player_rank_tier(curr_m, is_calibrating=is_cal, is_inactive=is_inac)
+
+            play_style = p.get("play_style", ["Универсал"])
+            best_role = p.get("recommendations", {}).get("best_role", "Универсал")
+            overall_r = round(ratings.get("Overall Impact", 5.0), 1)
+            kd = round(ov.get("kd_ratio", 1.0), 2)
+            adr = round(ov.get("avg_adr", 0.0), 1)
+            kast = round(ov.get("avg_kast", 0.0), 1)
+            tot_m = len(p.get("matches", []))
+            affinity = calc_affinity_score(ratings, weights)
+
+            player_obj = {
+                "steam_id": sid,
+                "name": p_name,
+                "avatar_classes": rt.get("avatar_classes", ""),
+                "rank_tier": rt,
+                "current_mmr": curr_m,
+                "total_matches": tot_m,
+                "rating": overall_r,
+                "kd": kd,
+                "adr": adr,
+                "kast": kast,
+                "affinity_score": affinity,
+                "play_style": play_style,
+                "best_role": best_role
+            }
+
+            # Определяем, является ли игрок фактическим исполнителем данной роли
+            is_current = any(fn in play_style for fn in factual_names)
+            # Специальная логика для IGL: нет точного фактического маппинга, берём по best_role рекомендации
+            if role_id == "igl" and ("Ин-гейм лидер" in best_role or "IGL" in best_role or "Капитан" in best_role):
+                is_current = True
+
+            if is_current:
+                current_players.append(player_obj)
+            elif affinity >= threshold:
+                potential_candidates.append(player_obj)
+
+        # Сортировка: фактические — по рейтингу, кандидаты — по affinity
+        current_players.sort(key=lambda x: (x["affinity_score"], x["rating"], x["current_mmr"]), reverse=True)
+        potential_candidates.sort(key=lambda x: (x["affinity_score"], x["rating"]), reverse=True)
+
+        roles_data.append({
+            "role_id": role_def["role_id"],
+            "title": role_def["title"],
+            "icon": role_def["icon"],
+            "short_title": role_def["short_title"],
+            "lore": role_def["lore"],
+            "metrics_rules": role_def["metrics_rules"],
+            "skills_formula": role_def["skills_formula"],
+            "affinity_threshold": threshold,
+            "accent_color": role_def["accent_color"],
+            "current_players": current_players,
+            "potential_candidates": potential_candidates,
+            "player_count": len(current_players),
+            "candidate_count": len(potential_candidates)
+        })
+
+    roles_template = env.get_template("roles.html")
+    safe_dump(
+        roles_template.stream(
+            active_page="roles",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            roles=roles_data,
+            generated_at=generated_at
+        ),
+        SITE_DIR / "roles.html"
+    )
+    logging.info("Сгенерирована страница тактических ролей: site/roles.html")
+
     logging.info("🔥 Генерация HTML-сайта успешно завершена!")
 
 if __name__ == "__main__":

@@ -56,6 +56,9 @@
                 <a href="{{ root_path }}achievements.html" class="nav-item {% if active_page == 'achievements' %}active{% endif %}">
                     <span class="nav-icon">🏆</span> Достижения
                 </a>
+                <a href="{{ root_path }}roles.html" class="nav-item {% if active_page == 'roles' %}active{% endif %}">
+                    <span class="nav-icon">🎭</span> Роли
+                </a>
                 <a href="{{ root_path }}compare.html" class="nav-item {% if active_page == 'compare' %}active{% endif %}">
                     <span class="nav-icon">⚔️</span> Дуэли
                 </a>
@@ -122,6 +125,9 @@
             </a>
             <a href="{{ root_path }}achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm {% if active_page == 'achievements' %}bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50{% else %}text-slate-300 hover:bg-slate-800/60{% endif %}">
                 <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
+            </a>
+            <a href="{{ root_path }}roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm {% if active_page == 'roles' %}bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50{% else %}text-slate-300 hover:bg-slate-800/60{% endif %}">
+                <span class="text-lg">🎭</span> <span>Тактические роли</span>
             </a>
         </nav>
 

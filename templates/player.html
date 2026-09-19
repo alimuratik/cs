@@ -40,13 +40,13 @@
                     <span>🆔 Steam ID: {{ player.steam_id }}</span>
                 </div>
                 <div class="flex items-center gap-2 mt-2 flex-wrap">
-                    <span class="text-xs px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700 font-mono" title="Фактический стиль игры по событиям в демках">
+                    <a href="{{ root_path }}roles.html" class="text-xs px-2.5 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-700 font-mono hover:border-emerald-500/60 hover:text-emerald-300 transition no-underline" title="Фактический стиль игры по событиям в демках — нажми для подробностей">
                         🎮 Стиль: <strong class="text-emerald-400">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
-                    </span>
+                    </a>
                     {% if player.recommendations and player.recommendations.best_role and player.recommendations.best_role != (player.roles[0] if player.roles else '') %}
-                    <span class="text-xs px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-mono" title="Рекомендуемая роль на основе пиковых навыков из 10 рейтингов">
+                    <a href="{{ root_path }}roles.html" class="text-xs px-2.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/40 font-mono hover:border-amber-300/80 hover:text-amber-200 transition no-underline" title="Рекомендуемая роль на основе пиковых навыков — нажми для подробностей">
                         🎯 Рекомендуется: <strong class="text-amber-200">{{ player.recommendations.best_role }}</strong>
-                    </span>
+                    </a>
                     {% endif %}
                     {% if player.momentum and player.momentum.label %}
                     <span class="text-xs px-2.5 py-0.5 rounded-full font-bold border {{ player.momentum.badge_class }}" title="Динамика формы крайней сессии относительно средней формы за карьеру">
@@ -745,7 +745,7 @@
                 </div>
 
                 <!-- Связка: Фактический стиль ➔ Рекомендуемая роль -->
-                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+                <a href="{{ root_path }}roles.html" class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs hover:border-emerald-500/40 transition no-underline block" title="Подробнее о тактических ролях">
                     <div>
                         <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль (демки)</span>
                         <strong class="text-emerald-400 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
@@ -755,7 +755,7 @@
                         <span class="text-[10px] text-slate-400 block uppercase">Рекомендуемая роль</span>
                         <strong class="text-amber-300 font-mono">{{ player.recommendations.best_role if player.recommendations else 'Универсал' }}</strong>
                     </div>
-                </div>
+                </a>
 
                 <!-- Ролевой анализ: Командная роль vs Соло-класс Faceit -->
                 {% if player.faceit and player.faceit.found %}
