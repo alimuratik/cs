@@ -36,8 +36,8 @@
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
             <!-- Left: Medallion + Title & Essence -->
             <div class="flex items-start sm:items-center gap-5">
-                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-amber-400/20 via-slate-900 to-amber-950/40 border-2 border-amber-400/60 flex items-center justify-center text-4xl sm:text-5xl shrink-0 shadow-xl shadow-amber-950/50">
-                    {{ ach.icon }}
+                <div class="shrink-0 flex items-center justify-center">
+                    {{ render_achievement_badge_svg(3, ach.icon, 64)|safe }}
                 </div>
                 <div>
                     <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-300 font-mono text-[11px] font-bold mb-2 shadow-sm">
@@ -100,8 +100,8 @@
             <!-- Header Banner -->
             <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/60 via-slate-900/90 to-amber-950/30 border-b border-amber-400/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-400/40 ring-2 ring-amber-300 shrink-0">
-                        🥇
+                    <div class="shrink-0 flex items-center justify-center">
+                        {{ render_achievement_badge_svg(3, ach.icon, 52)|safe }}
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
@@ -197,8 +197,8 @@
             <!-- Header Banner -->
             <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-800/60 via-slate-900/90 to-slate-800/30 border-b border-slate-500/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-slate-300 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-slate-300/30 ring-2 ring-white shrink-0">
-                        🥈
+                    <div class="shrink-0 flex items-center justify-center">
+                        {{ render_achievement_badge_svg(2, ach.icon, 52)|safe }}
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">
@@ -292,8 +292,8 @@
             <!-- Header Banner -->
             <div class="p-5 sm:p-6 bg-gradient-to-r from-amber-950/50 via-slate-900/90 to-amber-950/20 border-b border-amber-700/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center gap-3.5">
-                    <div class="w-12 h-12 rounded-xl bg-amber-700 text-amber-100 flex items-center justify-center font-black text-2xl shadow-lg shadow-amber-700/30 ring-2 ring-amber-500 shrink-0">
-                        🥉
+                    <div class="shrink-0 flex items-center justify-center">
+                        {{ render_achievement_badge_svg(1, ach.icon, 52)|safe }}
                     </div>
                     <div>
                         <div class="flex items-center gap-2 flex-wrap">

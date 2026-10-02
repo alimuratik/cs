@@ -45,219 +45,30 @@
     </section>
 
 
-    <!-- 5 Hall of Fame Session Nominations -->
-    {% if session_awards and session_awards.mvp %}
-    <section class="section hall-of-fame-section glassmorphism p-6 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-b from-amber-950/15 via-slate-900/80 to-slate-900/90">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
-            <div>
-                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    👑 Зал Славы крайней сессии
-                    {% if session_awards.session_date %}
-                    <span class="text-xs font-mono text-amber-300 bg-amber-950/70 border border-amber-500/40 px-2.5 py-0.5 rounded-full">
-                        {{ session_awards.session_date[:2] }}.{{ session_awards.session_date[2:4] }}.{{ session_awards.session_date[4:] }}
-                    </span>
-                    {% endif %}
-                </h2>
-                <p class="text-xs text-slate-400 mt-1">Топ-перформансы прошедшего игрового дня по 5 ключевым соревновательным номинациям</p>
-            </div>
-            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">HLTV & Match Stats</span>
+    
+    <!-- Main Modes Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
+        <div class="segmented-nav-track site-tab-nav">
+            <button type="button" class="segmented-nav-btn site-tab-btn active" data-index-tab="tab-leaderboard">
+                <span>🏆</span> <span>Рейтинг игроков</span>
+                <span class="tab-badge">{{ active_players_count }}</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-index-tab="tab-session-summary">
+                <span>⚡</span> <span>Итоги сессии</span>
+                {% if session_awards and session_awards.session_date %}
+                <span class="tab-badge">{{ session_awards.session_date[:2] }}.{{ session_awards.session_date[2:4] }}</span>
+                {% endif %}
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-index-tab="tab-sessions-archive">
+                <span>📅</span> <span>Архив сессий</span>
+                <span class="tab-badge">{{ stats.total_sessions }}</span>
+            </button>
         </div>
+    </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <!-- 1. MVP -->
-            {% if session_awards.mvp %}
-            {% set a_mvp = session_awards.mvp %}
-            <div class="nomination-card glassmorphism p-4 rounded-xl border border-amber-500/40 bg-amber-950/20 shadow-lg shadow-amber-950/30 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                            {{ a_mvp.icon }} {{ a_mvp.title }}
-                        </span>
-                    </div>
-                    <a href="players/{{ a_mvp.steam_id }}.html" class="font-black text-white hover:text-amber-300 transition text-base block truncate">
-                        {{ a_mvp.player }}
-                    </a>
-                    <div class="text-lg font-black font-mono text-amber-300 mt-1">
-                        {{ a_mvp.value }}
-                    </div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2 border-t border-amber-500/20 pt-2 leading-tight">
-                    {{ a_mvp.desc }}
-                </p>
-            </div>
-            {% endif %}
-
-            <!-- 2. ADR Monster -->
-            {% if session_awards.adr_monster %}
-            {% set a_adr = session_awards.adr_monster %}
-            <div class="nomination-card glassmorphism p-4 rounded-xl border border-rose-500/40 bg-rose-950/20 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-1">
-                            {{ a_adr.icon }} {{ a_adr.title }}
-                        </span>
-                    </div>
-                    <a href="players/{{ a_adr.steam_id }}.html" class="font-black text-white hover:text-rose-300 transition text-base block truncate">
-                        {{ a_adr.player }}
-                    </a>
-                    <div class="text-lg font-black font-mono text-rose-300 mt-1">
-                        {{ a_adr.value }}
-                    </div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2 border-t border-rose-500/20 pt-2 leading-tight">
-                    {{ a_adr.desc }}
-                </p>
-            </div>
-            {% endif %}
-
-            <!-- 3. Headshot King -->
-            {% if session_awards.headshot_king %}
-            {% set a_hs = session_awards.headshot_king %}
-            <div class="nomination-card glassmorphism p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/20 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1">
-                            {{ a_hs.icon }} {{ a_hs.title }}
-                        </span>
-                    </div>
-                    <a href="players/{{ a_hs.steam_id }}.html" class="font-black text-white hover:text-emerald-300 transition text-base block truncate">
-                        {{ a_hs.player }}
-                    </a>
-                    <div class="text-lg font-black font-mono text-emerald-300 mt-1">
-                        {{ a_hs.value }}
-                    </div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2 border-t border-emerald-500/20 pt-2 leading-tight">
-                    {{ a_hs.desc }}
-                </p>
-            </div>
-            {% endif %}
-
-            <!-- 4. Clutch Master -->
-            {% if session_awards.clutch_master %}
-            {% set a_clutch = session_awards.clutch_master %}
-            <div class="nomination-card glassmorphism p-4 rounded-xl border border-indigo-500/40 bg-indigo-950/20 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-xs font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1">
-                            {{ a_clutch.icon }} {{ a_clutch.title }}
-                        </span>
-                    </div>
-                    <a href="players/{{ a_clutch.steam_id }}.html" class="font-black text-white hover:text-indigo-300 transition text-base block truncate">
-                        {{ a_clutch.player }}
-                    </a>
-                    <div class="text-lg font-black font-mono text-indigo-300 mt-1">
-                        {{ a_clutch.value }}
-                    </div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2 border-t border-indigo-500/20 pt-2 leading-tight">
-                    {{ a_clutch.desc }}
-                </p>
-            </div>
-            {% endif %}
-
-            <!-- 5. Bullet Magnet -->
-            {% if session_awards.bullet_magnet %}
-            {% set a_mag = session_awards.bullet_magnet %}
-            <div class="nomination-card glassmorphism p-4 rounded-xl border border-sky-500/40 bg-sky-950/20 flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <span class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-1">
-                            {{ a_mag.icon }} {{ a_mag.title }}
-                        </span>
-                    </div>
-                    <a href="players/{{ a_mag.steam_id }}.html" class="font-black text-white hover:text-sky-300 transition text-base block truncate">
-                        {{ a_mag.player }}
-                    </a>
-                    <div class="text-lg font-black font-mono text-sky-300 mt-1">
-                        {{ a_mag.value }}
-                    </div>
-                </div>
-                <p class="text-[11px] text-slate-400 mt-2 border-t border-sky-500/20 pt-2 leading-tight">
-                    {{ a_mag.desc }}
-                </p>
-            </div>
-            {% endif %}
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Session Momentum Barometer -->
-    {% if top_gainers or cooling_down %}
-    <section class="section momentum-barometer-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
-            <div>
-                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    ⚡ Барометр формы крайней сессии
-                </h2>
-                <p class="text-xs text-slate-400 mt-1">Динамика игроков по отношению к их средней индивидуальной форме за карьеру</p>
-            </div>
-            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full">
-                Сессионный срез vs База
-            </span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Top Gainers -->
-            <div class="bg-emerald-950/15 border border-emerald-500/30 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-4 pb-2 border-b border-emerald-500/20">
-                    <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                        🔥 На подъёме (Пиковая форма)
-                    </span>
-                    <span class="text-[10px] text-emerald-300 font-mono">Выше нормы</span>
-                </div>
-                <div class="space-y-3">
-                    {% for p in top_gainers %}
-                    <a href="players/{{ p.steam_id }}.html" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition group">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg">📈</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-white group-hover:text-emerald-400 transition">{{ p.name }}</h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Сессия HLTV: <strong class="text-slate-200">{{ p.momentum.session_hltv }}</strong> (Карьера: {{ p.momentum.career_hltv }})</span>
-                            </div>
-                        </div>
-                        <span class="text-xs font-black font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/50 px-2 py-0.5 rounded">
-                            +{{ p.momentum.delta }} HLTV
-                        </span>
-                    </a>
-                    {% else %}
-                    <p class="text-xs text-slate-500 py-2">Нет игроков с сильным превышением базового уровня</p>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <!-- Cooling Down -->
-            <div class="bg-rose-950/15 border border-rose-500/30 rounded-2xl p-5">
-                <div class="flex items-center justify-between mb-4 pb-2 border-b border-rose-500/20">
-                    <span class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
-                        📉 Зона спада (Ниже привычного)
-                    </span>
-                    <span class="text-[10px] text-rose-300 font-mono">Ниже нормы</span>
-                </div>
-                <div class="space-y-3">
-                    {% for p in cooling_down %}
-                    <a href="players/{{ p.steam_id }}.html" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-rose-500/50 transition group">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg">📉</span>
-                            <div>
-                                <h4 class="text-xs font-bold text-white group-hover:text-rose-400 transition">{{ p.name }}</h4>
-                                <span class="text-[10px] text-slate-400 font-mono">Сессия HLTV: <strong class="text-slate-200">{{ p.momentum.session_hltv }}</strong> (Карьера: {{ p.momentum.career_hltv }})</span>
-                            </div>
-                        </div>
-                        <span class="text-xs font-black font-mono text-rose-400 bg-rose-950/80 border border-rose-500/50 px-2 py-0.5 rounded">
-                            {{ p.momentum.delta }} HLTV
-                        </span>
-                    </a>
-                    {% else %}
-                    <p class="text-xs text-slate-500 py-2">Все активные игроки отыграли стабильно</p>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Vertical Leaderboard Section -->
+    <!-- 1. TAB: Leaderboard & Rating Guide -->
+    <div id="tab-leaderboard" class="tab-pane index-tab-pane active">
+<!-- Vertical Leaderboard Section -->
     <section id="players-section" class="section mb-12">
         <div class="section-header flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-slate-800">
             <div>
@@ -287,6 +98,7 @@
                 <button type="button" class="filter-pill" data-player-filter="top">🟢 Топ (7.0+)</button>
                 <button type="button" class="filter-pill" data-player-filter="faceit">🟧 FACEIT</button>
                 <button type="button" class="filter-pill" data-player-filter="gainers">🔥 На подъёме</button>
+                <button type="button" onclick="openRatingModal('base')" class="filter-pill hover:border-emerald-500/50 text-slate-300" title="Справка по системе начисления MMR">ℹ️ Справка</button>
             </div>
 
             <!-- Counter -->
@@ -310,7 +122,7 @@
                     <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-slate-800">
                         <th class="py-2.5 px-3 text-center w-12">
                             <span class="tooltip-trigger" tabindex="0">
-                                Ранг <span class="help-circle">?</span>
+                                Ранг
                                 <span class="tooltip-box align-left">
                                     <strong>Ранг в сообществе</strong><br>
                                     Позиция игрока в общей таблице лидеров, определяемая текущим количеством очков MMR.
@@ -319,7 +131,7 @@
                         </th>
                         <th class="py-2.5 px-3">
                             <span class="tooltip-trigger" tabindex="0">
-                                Игрок <span class="help-circle">?</span>
+                                Игрок
                                 <span class="tooltip-box align-left">
                                     <strong>Профиль и роли</strong><br>
                                     Ранг мастерства, никнейм игрока и назначенные тактические роли.
@@ -328,7 +140,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                FACEIT <span class="help-circle">?</span>
+                                FACEIT
                                 <span class="tooltip-box">
                                     <strong>Матчи FACEIT</strong><br>
                                     Уровень (1-10), текущий Elo, изменение рейтинга и динамика формы: на подъёме (▲), спад (▼) или стабильно (●).
@@ -337,16 +149,16 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                MMR <span class="help-circle">?</span>
+                                MMR
                                 <span class="tooltip-box">
                                     <strong>Match Making Rating</strong><br>
-                                    Непрерывный рейтинг мастерства (старт 1000). Победа дает +15 очков, поражение -15 очков, плюс личный импакт (±8).
+                                    Непрерывный рейтинг мастерства (старт 1000). Победа дает базу +9, поражение от -6 до -10 в зависимости от счета карты, плюс личный импакт (±7).
                                 </span>
                             </span>
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Сессия ± <span class="help-circle">?</span>
+                                Сессия ±
                                 <span class="tooltip-box">
                                     <strong>Дельта за крайнюю сессию</strong><br>
                                     Суммарное изменение рейтинга MMR за все матчи крайнего игрового дня (например: +10, -15, +15 = +10).
@@ -355,7 +167,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                HLTV 2.0 <span class="help-circle">?</span>
+                                HLTV 2.0
                                 <span class="tooltip-box">
                                     <strong>Рейтинг HLTV 2.0</strong><br>
                                     Официальный киберспортивный стандарт CS2 (среднее 1.00, про-уровень 1.15+).
@@ -364,7 +176,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Оценка <span class="help-circle">?</span>
+                                Оценка
                                 <span class="tooltip-box">
                                     <strong>Оценка мастерства 1-10</strong><br>
                                     Приведенная честная шкала от 1.0 (критический) до 10.0 (мировой уровень).
@@ -373,7 +185,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                K/D <span class="help-circle">?</span>
+                                K/D
                                 <span class="tooltip-box">
                                     <strong>Kill / Death Ratio</strong><br>
                                     Соотношение суммарных убийств к смертям.
@@ -382,7 +194,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                ADR <span class="help-circle">?</span>
+                                ADR
                                 <span class="tooltip-box">
                                     <strong>Average Damage per Round</strong><br>
                                     Средний наносимый урон за один раунд.
@@ -391,7 +203,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Винрейт <span class="help-circle">?</span>
+                                Винрейт
                                 <span class="tooltip-box">
                                     <strong>Процент побед</strong><br>
                                     Доля выигранных командой матчей среди всех игр игрока.
@@ -400,7 +212,7 @@
                         </th>
                         <th class="py-2.5 px-3 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Форма (5) <span class="help-circle">?</span>
+                                Форма (5)
                                 <span class="tooltip-box align-right">
                                     <strong>Форма за последние матчи</strong><br>
                                     Результаты крайних 5 игр: 🟢/🟡 — победа, 🔴 — поражение.
@@ -409,7 +221,7 @@
                         </th>
                         <th class="py-2.5 px-2.5 text-center">
                             <span class="tooltip-trigger" tabindex="0">
-                                Пик <span class="help-circle">?</span>
+                                Пик
                                 <span class="tooltip-box align-right">
                                     <strong>Пиковый рейтинг MMR</strong><br>
                                     Максимальный рейтинг за всю историю.
@@ -608,7 +420,7 @@
                      data-rating="{{ player.rating }}" 
                      data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}" 
                      data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}"
-                     class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group {% if player.rank == 1 %}border-amber-500/40{% elif player.rank == 2 %}border-slate-400/40{% elif player.rank == 3 %}border-amber-700/40{% endif %}">
+                     class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group {% if loop.index > 5 %}mobile-hidden-player{% endif %} {% if player.rank == 1 %}border-amber-500/40{% elif player.rank == 2 %}border-slate-400/40{% elif player.rank == 3 %}border-amber-700/40{% endif %}">
                 <summary class="p-3 bg-slate-900/90 flex items-center justify-between cursor-pointer select-none">
                     <div class="flex items-center gap-2.5">
                         <div class="rank-num w-6 h-6 rounded-md flex items-center justify-center font-mono font-bold text-xs shrink-0
@@ -747,6 +559,11 @@
                 </div>
             </details>
             {% endfor %}
+            {% if players|length > 5 %}
+            <button type="button" id="toggle-all-players-btn" onclick="toggleAllMobilePlayers()" class="show-more-toggle-btn">
+                <span id="toggle-players-text">👥 Показать всех {{ players|length }} игроков ▼</span>
+            </button>
+            {% endif %}
         </div>
 
         <!-- Collapsible Drawer for Calibrating and Inactive Players -->
@@ -1064,101 +881,228 @@
         </details>
         {% endif %}
     </section>
+    </div>
 
-    <!-- Rating System Guide Section -->
-    <section id="rating-guide-section" class="section mb-12">
-        <div class="section-header mb-6 pb-3 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-2">
+    <!-- 2. TAB: Latest Session Summary (Hall of Fame & Momentum) -->
+    <div id="tab-session-summary" class="tab-pane index-tab-pane">
+<!-- 5 Hall of Fame Session Nominations -->
+    {% if session_awards and session_awards.mvp %}
+    <section class="section hall-of-fame-section glassmorphism p-6 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-b from-amber-950/15 via-slate-900/80 to-slate-900/90">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
             <div>
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    📖 Как устроен рейтинг и как подниматься в таблице
+                    👑 Зал Славы крайней сессии
+                    {% if session_awards.session_date %}
+                    <span class="text-xs font-mono text-amber-300 bg-amber-950/70 border border-amber-500/40 px-2.5 py-0.5 rounded-full">
+                        {{ session_awards.session_date[:2] }}.{{ session_awards.session_date[2:4] }}.{{ session_awards.session_date[4:] }}
+                    </span>
+                    {% endif %}
                 </h2>
-                <p class="section-subtitle text-slate-400 text-sm mt-1">Прозрачные правила начисления очков MMR и объективная оценка личного скилла</p>
+                <p class="text-xs text-slate-400 mt-1">Топ-перформансы прошедшего игрового дня по 5 ключевым соревновательным номинациям</p>
             </div>
-            <span class="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full font-mono self-start md:self-auto font-semibold">
-                Zero-Sum Continuous Engine
+            <span class="text-[11px] font-mono text-slate-400 uppercase tracking-wider">HLTV & Match Stats</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <!-- 1. MVP -->
+            {% if session_awards.mvp %}
+            {% set a_mvp = session_awards.mvp %}
+            <div class="nomination-card glassmorphism p-4 rounded-xl border border-amber-500/40 bg-amber-950/20 shadow-lg shadow-amber-950/30 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1">
+                            {{ a_mvp.icon }} {{ a_mvp.title }}
+                        </span>
+                    </div>
+                    <a href="players/{{ a_mvp.steam_id }}.html" class="font-black text-white hover:text-amber-300 transition text-base block truncate">
+                        {{ a_mvp.player }}
+                    </a>
+                    <div class="text-lg font-black font-mono text-amber-300 mt-1">
+                        {{ a_mvp.value }}
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 border-t border-amber-500/20 pt-2 leading-tight">
+                    {{ a_mvp.desc }}
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- 2. ADR Monster -->
+            {% if session_awards.adr_monster %}
+            {% set a_adr = session_awards.adr_monster %}
+            <div class="nomination-card glassmorphism p-4 rounded-xl border border-rose-500/40 bg-rose-950/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-1">
+                            {{ a_adr.icon }} {{ a_adr.title }}
+                        </span>
+                    </div>
+                    <a href="players/{{ a_adr.steam_id }}.html" class="font-black text-white hover:text-rose-300 transition text-base block truncate">
+                        {{ a_adr.player }}
+                    </a>
+                    <div class="text-lg font-black font-mono text-rose-300 mt-1">
+                        {{ a_adr.value }}
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 border-t border-rose-500/20 pt-2 leading-tight">
+                    {{ a_adr.desc }}
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- 3. Headshot King -->
+            {% if session_awards.headshot_king %}
+            {% set a_hs = session_awards.headshot_king %}
+            <div class="nomination-card glassmorphism p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                            {{ a_hs.icon }} {{ a_hs.title }}
+                        </span>
+                    </div>
+                    <a href="players/{{ a_hs.steam_id }}.html" class="font-black text-white hover:text-emerald-300 transition text-base block truncate">
+                        {{ a_hs.player }}
+                    </a>
+                    <div class="text-lg font-black font-mono text-emerald-300 mt-1">
+                        {{ a_hs.value }}
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 border-t border-emerald-500/20 pt-2 leading-tight">
+                    {{ a_hs.desc }}
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- 4. Clutch Master -->
+            {% if session_awards.clutch_master %}
+            {% set a_clutch = session_awards.clutch_master %}
+            <div class="nomination-card glassmorphism p-4 rounded-xl border border-indigo-500/40 bg-indigo-950/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-indigo-400 flex items-center gap-1">
+                            {{ a_clutch.icon }} {{ a_clutch.title }}
+                        </span>
+                    </div>
+                    <a href="players/{{ a_clutch.steam_id }}.html" class="font-black text-white hover:text-indigo-300 transition text-base block truncate">
+                        {{ a_clutch.player }}
+                    </a>
+                    <div class="text-lg font-black font-mono text-indigo-300 mt-1">
+                        {{ a_clutch.value }}
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 border-t border-indigo-500/20 pt-2 leading-tight">
+                    {{ a_clutch.desc }}
+                </p>
+            </div>
+            {% endif %}
+
+            <!-- 5. Bullet Magnet -->
+            {% if session_awards.bullet_magnet %}
+            {% set a_mag = session_awards.bullet_magnet %}
+            <div class="nomination-card glassmorphism p-4 rounded-xl border border-sky-500/40 bg-sky-950/20 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                        <span class="text-xs font-black uppercase tracking-wider text-sky-400 flex items-center gap-1">
+                            {{ a_mag.icon }} {{ a_mag.title }}
+                        </span>
+                    </div>
+                    <a href="players/{{ a_mag.steam_id }}.html" class="font-black text-white hover:text-sky-300 transition text-base block truncate">
+                        {{ a_mag.player }}
+                    </a>
+                    <div class="text-lg font-black font-mono text-sky-300 mt-1">
+                        {{ a_mag.value }}
+                    </div>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-2 border-t border-sky-500/20 pt-2 leading-tight">
+                    {{ a_mag.desc }}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Session Momentum Barometer -->
+    {% if top_gainers or cooling_down %}
+    <section class="section momentum-barometer-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    ⚡ Барометр формы крайней сессии
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Динамика игроков по отношению к их средней индивидуальной форме за карьеру</p>
+            </div>
+            <span class="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/40 px-3 py-1 rounded-full">
+                Сессионный срез vs База
             </span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <!-- Card 1 -->
-            <div onclick="openRatingModal('base')" class="glassmorphism p-5 rounded-2xl border border-emerald-500/20 bg-slate-900/60 hover:border-emerald-500/50 hover:bg-slate-900/80 transition-all flex flex-col justify-between group cursor-pointer">
-                <div>
-                    <div class="w-10 h-10 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
-                        🎯
-                    </div>
-                    <h3 class="text-white font-bold text-base mb-1.5 flex items-center gap-2">
-                        1000 MMR
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-mono">Старт</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Все игроки начинают с одинаковой базы — <strong>1000 MMR</strong>. Рейтинг сквозной (All-Time): без сезонных сбросов, каждый ваш пятничный матч навсегда влияет на историю.
-                    </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Top Gainers -->
+            <div class="bg-emerald-950/15 border border-emerald-500/30 rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-emerald-500/20">
+                    <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                        🔥 На подъёме (Пиковая форма)
+                    </span>
+                    <span class="text-[10px] text-emerald-300 font-mono">Выше нормы</span>
                 </div>
-                <button type="button" onclick="openRatingModal('base'); event.stopPropagation();" class="mt-4 pt-3 border-t border-slate-800/60 text-[11px] text-emerald-300 font-medium flex items-center justify-between w-full hover:text-emerald-200">
-                    <span>Основа рейтинга</span> <span>➔</span>
-                </button>
+                <div class="space-y-3">
+                    {% for p in top_gainers %}
+                    <a href="players/{{ p.steam_id }}.html" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition group">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg">📈</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white group-hover:text-emerald-400 transition">{{ p.name }}</h4>
+                                <span class="text-[10px] text-slate-400 font-mono">Сессия HLTV: <strong class="text-slate-200">{{ p.momentum.session_hltv }}</strong> (Карьера: {{ p.momentum.career_hltv }})</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-black font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/50 px-2 py-0.5 rounded">
+                            +{{ p.momentum.delta }} HLTV
+                        </span>
+                    </a>
+                    {% else %}
+                    <p class="text-xs text-slate-500 py-2">Нет игроков с сильным превышением базового уровня</p>
+                    {% endfor %}
+                </div>
             </div>
 
-            <!-- Card 2 -->
-            <div onclick="openRatingModal('balance')" class="glassmorphism p-5 rounded-2xl border border-blue-500/20 bg-slate-900/60 hover:border-blue-500/50 hover:bg-slate-900/80 transition-all flex flex-col justify-between group cursor-pointer">
-                <div>
-                    <div class="w-10 h-10 rounded-xl bg-blue-900/40 border border-blue-500/30 text-blue-300 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
-                        ⚖️
-                    </div>
-                    <h3 class="text-white font-bold text-base mb-1.5 flex items-center gap-2">
-                        База ±15
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-500/30 font-mono">Команда</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Фундамент системы — результат команды. Победа на карте приносит базовые <strong>+15 MMR</strong>, поражение отнимает <strong>-15 MMR</strong>. Главная цель игры — командная победа.
-                    </p>
+            <!-- Cooling Down -->
+            <div class="bg-rose-950/15 border border-rose-500/30 rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-rose-500/20">
+                    <span class="text-xs font-black uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                        📉 Зона спада (Ниже привычного)
+                    </span>
+                    <span class="text-[10px] text-rose-300 font-mono">Ниже нормы</span>
                 </div>
-                <button type="button" onclick="openRatingModal('balance'); event.stopPropagation();" class="mt-4 pt-3 border-t border-slate-800/60 text-[11px] text-blue-300 font-medium flex items-center justify-between w-full hover:text-blue-200">
-                    <span>Командный баланс</span> <span>➔</span>
-                </button>
-            </div>
-
-            <!-- Card 3 -->
-            <div onclick="openRatingModal('impact')" class="glassmorphism p-5 rounded-2xl border border-emerald-500/20 bg-slate-900/60 hover:border-emerald-500/50 hover:bg-slate-900/80 transition-all flex flex-col justify-between group cursor-pointer">
-                <div>
-                    <div class="w-10 h-10 rounded-xl bg-emerald-900/40 border border-emerald-500/30 text-emerald-300 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
-                        🔥
-                    </div>
-                    <h3 class="text-white font-bold text-base mb-1.5 flex items-center gap-2">
-                        Импакт ±8
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-mono">Скилл</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Ваш личный вклад модифицирует дельту: высокий HLTV 2.0, ADR и открывающие фраги дают до <strong>+8 MMR</strong> (до +23 при победе или всего -7 при поражении!).
-                    </p>
+                <div class="space-y-3">
+                    {% for p in cooling_down %}
+                    <a href="players/{{ p.steam_id }}.html" class="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-rose-500/50 transition group">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg">📉</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white group-hover:text-rose-400 transition">{{ p.name }}</h4>
+                                <span class="text-[10px] text-slate-400 font-mono">Сессия HLTV: <strong class="text-slate-200">{{ p.momentum.session_hltv }}</strong> (Карьера: {{ p.momentum.career_hltv }})</span>
+                            </div>
+                        </div>
+                        <span class="text-xs font-black font-mono text-rose-400 bg-rose-950/80 border border-rose-500/50 px-2 py-0.5 rounded">
+                            {{ p.momentum.delta }} HLTV
+                        </span>
+                    </a>
+                    {% else %}
+                    <p class="text-xs text-slate-500 py-2">Все активные игроки отыграли стабильно</p>
+                    {% endfor %}
                 </div>
-                <button type="button" onclick="openRatingModal('impact'); event.stopPropagation();" class="mt-4 pt-3 border-t border-slate-800/60 text-[11px] text-emerald-300 font-medium flex items-center justify-between w-full hover:text-emerald-200">
-                    <span>Личная эффективность</span> <span>➔</span>
-                </button>
-            </div>
-
-            <!-- Card 4 -->
-            <div onclick="openRatingModal('calibration')" class="glassmorphism p-5 rounded-2xl border border-amber-500/20 bg-slate-900/60 hover:border-amber-500/50 hover:bg-slate-900/80 transition-all flex flex-col justify-between group cursor-pointer">
-                <div>
-                    <div class="w-10 h-10 rounded-xl bg-amber-900/40 border border-amber-500/30 text-amber-300 flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
-                        ⚡
-                    </div>
-                    <h3 class="text-white font-bold text-base mb-1.5 flex items-center gap-2">
-                        Калибровка ×1.5
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500/30 font-mono">1-5 игр</span>
-                    </h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        Первые 5 матчей имеют повышенную волатильность (до ±35 MMR), чтобы быстро найти свой ранг. Игроки без матчей 30+ дней получают статус <em>Неактивен</em>, но очки не сгорают!
-                    </p>
-                </div>
-                <button type="button" onclick="openRatingModal('calibration'); event.stopPropagation();" class="mt-4 pt-3 border-t border-slate-800/60 text-[11px] text-amber-300 font-medium flex items-center justify-between w-full hover:text-amber-200">
-                    <span>Быстрый старт</span> <span>➔</span>
-                </button>
             </div>
         </div>
     </section>
+    {% endif %}
 
-    <!-- Unified Sessions & Matches Section -->
+    
+    </div>
+
+    <!-- 3. TAB: Sessions & Match Archive -->
+    <div id="tab-sessions-archive" class="tab-pane index-tab-pane">
+<!-- Unified Sessions & Matches Section -->
     <section id="sessions-section" class="section mb-12">
         <span id="recent-matches-section" class="block -mt-16 pt-16 invisible" style="pointer-events: none;"></span>
         <div class="section-header mb-6 pb-2 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -1237,7 +1181,9 @@
         </div>
     </section>
 
-    <!-- Interactive Rating Modal Dialog -->
+    
+    </div>
+<!-- Interactive Rating Modal Dialog -->
     <div id="rating-modal" class="rating-modal-backdrop" onclick="closeRatingModal(event)">
         <div class="rating-modal-window p-6 md:p-8 relative" onclick="event.stopPropagation()">
             <!-- Close Button -->
@@ -1259,8 +1205,8 @@
             <!-- Tab Navigation Bar -->
             <div class="flex items-center gap-2 overflow-x-auto pb-2 mb-6 border-b border-slate-800">
                 <button type="button" id="tab-btn-base" onclick="switchRatingTab('base')" class="modal-tab-btn active">🎯 Основа рейтинга</button>
-                <button type="button" id="tab-btn-balance" onclick="switchRatingTab('balance')" class="modal-tab-btn">⚖️ База ±15</button>
-                <button type="button" id="tab-btn-impact" onclick="switchRatingTab('impact')" class="modal-tab-btn">🔥 Личный импакт (±8)</button>
+                <button type="button" id="tab-btn-balance" onclick="switchRatingTab('balance')" class="modal-tab-btn">⚖️ База и счёт карты</button>
+                <button type="button" id="tab-btn-impact" onclick="switchRatingTab('impact')" class="modal-tab-btn">🔥 Личный импакт (±7)</button>
                 <button type="button" id="tab-btn-calibration" onclick="switchRatingTab('calibration')" class="modal-tab-btn">⚡ Калибровка и ранги</button>
             </div>
 
@@ -1287,23 +1233,27 @@
             <!-- Tab 2: Balance -->
             <div id="tab-content-balance" class="modal-tab-content space-y-4 text-sm text-slate-300">
                 <div class="p-4 rounded-xl bg-blue-950/30 border border-blue-500/30">
-                    <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2">⚖️ Командная победа превыше всего (База ±15)</h4>
+                    <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2">⚖️ Командная победа и плотность борьбы</h4>
                     <p class="text-xs leading-relaxed text-slate-300">
-                        Counter-Strike — командная игра. Даже если игрок набил много фрагов, но команда проиграла — матч считается поражением. Базовый исход матча всегда фиксирован:
+                        Победа команды — всегда главный приоритет (+9 MMR). При этом система защищает игроков в упорных дружеских миксах: если матч закончился на тоненького (11:13 или на овертаймах), штраф за поражение минимален.
                     </p>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs">
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-center text-xs">
                     <div class="p-3 bg-emerald-950/40 rounded-xl border border-emerald-500/40">
-                        <span class="block text-emerald-400 font-bold text-lg font-mono mb-0.5">+15 MMR</span>
-                        <span class="text-slate-300">База за победу команды</span>
+                        <span class="block text-emerald-400 font-bold text-base font-mono mb-0.5">+9 MMR</span>
+                        <span class="text-slate-300 text-[11px]">Любая победа команды</span>
                     </div>
-                    <div class="p-3 bg-rose-950/40 rounded-xl border border-rose-500/40">
-                        <span class="block text-rose-400 font-bold text-lg font-mono mb-0.5">-15 MMR</span>
-                        <span class="text-slate-300">База за поражение команды</span>
+                    <div class="p-3 bg-amber-950/40 rounded-xl border border-amber-500/40">
+                        <span class="block text-amber-400 font-bold text-base font-mono mb-0.5">-6 MMR</span>
+                        <span class="text-slate-300 text-[11px]">Близкий бой (11:13, OT)</span>
                     </div>
-                    <div class="p-3 bg-slate-800/60 rounded-xl border border-slate-700">
-                        <span class="block text-slate-300 font-bold text-lg font-mono mb-0.5">0 MMR</span>
-                        <span class="text-slate-400">База при ничьей (12:12)</span>
+                    <div class="p-3 bg-rose-950/30 rounded-xl border border-rose-500/30">
+                        <span class="block text-rose-300 font-bold text-base font-mono mb-0.5">-8 MMR</span>
+                        <span class="text-slate-300 text-[11px]">Обычный матч (8:13, 9:13)</span>
+                    </div>
+                    <div class="p-3 bg-rose-950/60 rounded-xl border border-rose-500/50">
+                        <span class="block text-rose-400 font-bold text-base font-mono mb-0.5">-10 MMR</span>
+                        <span class="text-slate-300 text-[11px]">Разгром (3:13, 5:13)</span>
                     </div>
                 </div>
             </div>
@@ -1311,31 +1261,31 @@
             <!-- Tab 3: Impact -->
             <div id="tab-content-impact" class="modal-tab-content space-y-4 text-sm text-slate-300">
                 <div class="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30">
-                    <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2">🔥 Личный вклад игрока (Модификатор от -8 до +8)</h4>
+                    <h4 class="font-bold text-white text-base mb-1 flex items-center gap-2">🔥 Личный вклад игрока (Модификатор от -7 до +7)</h4>
                     <p class="text-xs leading-relaxed text-slate-300 mb-2">
-                        Чтобы индивидуальное мастерство поощрялось, к командной базе прибавляется модификатор импакта на основе рейтинга <strong>HLTV 2.0</strong>, ADR и открывающих дуэлей:
+                        К командной базе прибавляется личный импакт на основе <strong>HLTV 2.0</strong> (учитываются не просто фраги, а KAST, полезный урон ADR и ассисты):
                     </p>
                     <code class="block font-mono text-[11px] bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-emerald-300">
-                        Дельта = База (±15) + clamp(8.0 × (HLTV - 1.00) / 0.60, -8.0, +8.0)
+                        Дельта = База (+9 / -6..-10) + clamp((HLTV - 1.00) × 12.0, -7.0, +7.0)
                     </code>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                    <div class="p-3 bg-emerald-950/30 rounded-xl border border-emerald-500/40">
-                        <span class="font-bold text-emerald-300 block mb-1">🏆 Пример победы соло-керри:</span>
-                        Победа (+15) + HLTV 1.60 (+8.0 импакт) = <strong class="text-white font-mono text-sm">+23 MMR</strong> (максимальный подъем за матч).
-                    </div>
                     <div class="p-3 bg-amber-950/30 rounded-xl border border-amber-500/40">
-                        <span class="font-bold text-amber-300 block mb-1">🛡️ Пример смягчения поражения:</span>
-                        Поражение (-15) + HLTV 1.60 (+8.0 импакт) = <strong class="text-white font-mono text-sm">-7 MMR</strong> (личный скилл сохранил вам очки).
+                        <span class="font-bold text-amber-300 block mb-1">🛡️ Борьба в близком матче (11:13):</span>
+                        Поражение (-6) + HLTV 1.50 (+6.0 импакт) = <strong class="text-white font-mono text-sm">0 MMR</strong> (рейтинг сохранен за счет борьбы!).
                     </div>
-                    <div class="p-3 bg-blue-950/30 rounded-xl border border-blue-500/40">
-                        <span class="font-bold text-blue-300 block mb-1">🤝 Победа при слабом матче:</span>
-                        Победа (+15) + HLTV 0.60 (-5.3 импакт) = <strong class="text-white font-mono text-sm">+10 MMR</strong> (победа за счет тиммейтов).
+                    <div class="p-3 bg-emerald-950/30 rounded-xl border border-emerald-500/40">
+                        <span class="font-bold text-emerald-300 block mb-1">🤝 Командный саппорт:</span>
+                        Победа (+9) + KAST 80% и флешки (HLTV 1.05, +0.6) = <strong class="text-white font-mono text-sm">+10 MMR</strong> (честный командный плюс).
                     </div>
-                    <div class="p-3 bg-rose-950/30 rounded-xl border border-rose-500/40">
+                    <div class="p-3 bg-emerald-950/40 rounded-xl border border-emerald-500/50">
+                        <span class="font-bold text-amber-400 block mb-1">👑 Звездная победа:</span>
+                        Победа (+9) + соло-перформанс (HLTV 1.55, +6.6) = <strong class="text-white font-mono text-sm">+16 MMR</strong> (быстрый рост).
+                    </div>
+                    <div class="p-3 bg-rose-950/40 rounded-xl border border-rose-500/40">
                         <span class="font-bold text-rose-300 block mb-1">❌ Разгромный проигрыш:</span>
-                        Поражение (-15) + HLTV 0.40 (-8.0 импакт) = <strong class="text-white font-mono text-sm">-23 MMR</strong> (максимальная потеря).
+                        Поражение (-10) + HLTV 0.50 (-6.0 импакт) = <strong class="text-white font-mono text-sm">-16 MMR</strong> (честный штраф за плохую игру).
                     </div>
                 </div>
             </div>
@@ -1350,19 +1300,19 @@
                 </div>
 
                 <div>
-                    <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-3">🏅 Градация уровней сообщества (Faceit-style):</h4>
+                    <h4 class="font-bold text-white text-xs uppercase tracking-wider mb-3">🏅 Соревновательные звания и уровни мастерства:</h4>
                     <div class="grid grid-cols-1 gap-1.5 text-xs font-mono">
                         {% for lvl_info in faceit_levels_info %}
                         <div class="flex items-center justify-between p-2 rounded-lg border {{ lvl_info.classes }}">
                             <span class="font-bold flex items-center gap-2.5">
                                 {{ lvl_info.badge_svg|safe }}
-                                <span class="text-white font-sans">Level {{ lvl_info.level }}</span>
+                                <span class="text-white font-sans font-bold">{{ lvl_info.title }}</span>
                             </span>
                             <span class="text-slate-300 font-mono">{{ lvl_info.mmr }} MMR</span>
                         </div>
                         {% endfor %}
                     </div>
-                    <p class="text-[10px] text-slate-500 mt-2">Стартовый MMR = 1000 → Level 6. Каждая победа +15 pts, поражение −15 pts ± личный импакт.</p>
+                    <p class="text-[10px] text-slate-500 mt-2">Стартовый MMR = 1000 → Адепт (Уровень 6). Победа дает базу +9 pts, поражение от −6 до −10 pts в зависимости от счёта, плюс личный импакт (±7 pts).</p>
                 </div>
             </div>
         </div>
@@ -1468,9 +1418,18 @@ function setupLeaderboardFilters() {
             if (checkItem(c)) matchedInDrawer = true;
         });
 
-        if (drawer && query && matchedInDrawer) {
-            drawer.open = true;
+        const isFiltered = !!query || currentLeaderboardFilter !== 'all';
+        const toggleBtn = document.getElementById('toggle-all-players-btn');
+        if (toggleBtn) {
+            toggleBtn.style.display = isFiltered ? 'none' : '';
         }
+        cards.forEach(c => {
+            if (isFiltered) {
+                c.classList.add('filter-active-show');
+            } else {
+                c.classList.remove('filter-active-show');
+            }
+        });
 
         if (countSpan) countSpan.textContent = visibleCount;
         if (emptyState) {
@@ -1551,7 +1510,94 @@ function setupSessionMapFilters() {
     });
 }
 
+
+// ─── Mobile Players Show More Toggle ───
+function toggleAllMobilePlayers() {
+    const hiddenPlayers = document.querySelectorAll('.mobile-hidden-player');
+    const btnText = document.getElementById('toggle-players-text');
+    if (!hiddenPlayers.length) return;
+    const isExpanded = hiddenPlayers[0].classList.contains('expanded');
+    hiddenPlayers.forEach(el => el.classList.toggle('expanded', !isExpanded));
+    if (btnText) {
+        btnText.textContent = isExpanded 
+            ? '👥 Показать всех {{ players|length }} игроков ▼' 
+            : '▲ Свернуть до Топ-5 игроков';
+    }
+}
+
+// ─── Index Main Tabs Switching (Bulletproof for file:/// & Web) ───
+function setupIndexTabs() {
+    const tabBtns = document.querySelectorAll('[data-index-tab]');
+    const tabPanes = document.querySelectorAll('.index-tab-pane');
+    if (!tabBtns.length) return;
+
+    function activateTab(tabId) {
+        tabBtns.forEach(btn => {
+            const isMatch = btn.getAttribute('data-index-tab') === tabId;
+            btn.classList.toggle('active', isMatch);
+        });
+        tabPanes.forEach(pane => {
+            const isMatch = pane.id === tabId;
+            pane.classList.toggle('active', isMatch);
+            pane.style.display = isMatch ? 'block' : 'none';
+        });
+        try {
+            localStorage.setItem('kase_index_tab', tabId);
+        } catch(e) {}
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-index-tab');
+            if (target) {
+                activateTab(target);
+                try {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, null, '#' + target);
+                    }
+                } catch(err) {
+                    // Suppress DOMException on local file:/// protocol
+                }
+            }
+        });
+    });
+
+    function checkHash() {
+        const hash = window.location.hash.replace('#', '');
+        if (hash && document.getElementById(hash) && hash.startsWith('tab-')) {
+            activateTab(hash);
+        } else if (hash === 'sessions-section') {
+            activateTab('tab-sessions-archive');
+        } else if (hash === 'players-section') {
+            activateTab('tab-leaderboard');
+        }
+    }
+
+    window.addEventListener('hashchange', checkHash);
+
+    const hash = window.location.hash.replace('#', '');
+    if (hash && document.getElementById(hash) && hash.startsWith('tab-')) {
+        activateTab(hash);
+    } else if (hash === 'sessions-section') {
+        activateTab('tab-sessions-archive');
+    } else if (hash === 'players-section') {
+        activateTab('tab-leaderboard');
+    } else {
+        let saved = null;
+        try {
+            saved = localStorage.getItem('kase_index_tab');
+        } catch(e) {}
+        if (saved && document.getElementById(saved)) {
+            activateTab(saved);
+        } else {
+            activateTab('tab-leaderboard');
+        }
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    setupIndexTabs();
     setupLeaderboardFilters();
     setupSessionMapFilters();
 });

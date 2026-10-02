@@ -88,7 +88,61 @@
         </div>
     </section>
 
-    <!-- Scoreboard Section (Desktop Table + Mobile Responsive Cards) -->
+    
+    <!-- Match Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
+        <div class="segmented-nav-track site-tab-nav">
+            <button type="button" class="segmented-nav-btn site-tab-btn active" data-match-tab="match-tab-coach">
+                <span>🧠</span> <span>Разбор тренера и ИИ</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-scoreboard">
+                <span>📋</span> <span>Табло и дуэли 5v5</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-rounds">
+                <span>⏱️</span> <span>Хроника раундов</span>
+                <span class="tab-badge">{{ match.rounds|length }}</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TAB 1: COACH & AI ANALYSIS -->
+    <div id="match-tab-coach" class="tab-pane match-tab-pane active">
+<!-- Match Summary & Coaching Analysis (All 10 players + 3 Takeaways) -->
+    {% if match.summary_analysis %}
+    <section class="section match-coaching-summary-section mb-10">
+        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-slate-900/95 via-emerald-950/20 to-slate-900/95 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800">
+                <span class="text-3xl">🧠</span>
+                <div>
+                    <h2 class="text-2xl font-black text-white">Итоговый тренерский разбор матча</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Комплексная оценка всех 10 игроков и 3 системных вывода для командных тренировок</p>
+                </div>
+            </div>
+            <div class="mt-5">
+                {{ match.summary_analysis | safe }}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+<!-- Match Intro Commentary -->
+    {% if match.ai_analysis %}
+    <section class="section match-commentary-intro-section mb-10">
+        <div class="glassmorphism p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-xl">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🎙️</span>
+                <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed">{{ match.ai_analysis }}</p>
+        </div>
+    </section>
+    {% endif %}
+
+    
+    </div>
+
+    <!-- TAB 2: SCOREBOARD & DUELS -->
+    <div id="match-tab-scoreboard" class="tab-pane match-tab-pane">
+<!-- Scoreboard Section (Desktop Table + Mobile Responsive Cards) -->
     <section class="section scoreboard-section mb-10">
         <div class="flex items-center justify-between mb-4">
             <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
@@ -145,6 +199,11 @@
                                     {{ p.name }}
                                     {% if p.is_mvp %}<span class="text-amber-400 text-xs px-1.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40" title="MVP матча">⭐ MVP</span>{% endif %}
                                 </a>
+                                {% if p.team_share_status == 'titan' %}
+                                    <span class="text-amber-300 text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 font-bold cursor-help" title="👑 Одинокий титан: {{ p.damage_share }}% урона всей команды в проигранном матче. Индивидуальная форма отличная, поражение обусловлено командным контекстом.">👑 Титан</span>
+                                {% elif p.team_share_status == 'passive' %}
+                                    <span class="text-slate-400 text-[10px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 cursor-help" title="💤 Замаскированная пассивность: лишь {{ p.damage_share }}% урона в победном матче. Победа скрывает пассивность в дуэлях.">💤 Пассив</span>
+                                {% endif %}
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">{{ p.kills }}</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">{{ p.deaths }}</td>
@@ -152,7 +211,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold {% if p.kd_diff > 0 %}text-emerald-400{% elif p.kd_diff < 0 %}text-rose-400{% else %}text-slate-400{% endif %}">
                                 {% if p.kd_diff > 0 %}+{{ p.kd_diff }}{% else %}{{ p.kd_diff }}{% endif %}
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">{{ p.adr }}</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: {{ p.damage_share }}%, фраги: {{ p.kill_share }}%">
+                                {{ p.adr }}
+                                <span class="text-[9px] text-slate-400 block font-normal">{{ p.damage_share }}% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">{{ p.kast }}%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">{{ p.hs }}%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">{{ p.fk }}</td>
@@ -201,12 +263,14 @@
                                 {{ p.name[:2]|upper }}
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     {{ p.name }}
                                     {% if p.is_mvp %}<span class="text-amber-400 text-[10px]">⭐</span>{% endif %}
+                                    {% if p.team_share_status == 'titan' %}<span class="text-amber-300 text-[9px] px-1.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 font-bold">👑 Титан</span>{% endif %}
+                                    {% if p.team_share_status == 'passive' %}<span class="text-slate-400 text-[9px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">💤 Пассив</span>{% endif %}
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">{{ p.kills }}/{{ p.deaths }}</span> (ADR: {{ p.adr }})
+                                    K/D: <span class="text-white font-bold">{{ p.kills }}/{{ p.deaths }}</span> (ADR: {{ p.adr }} • <span class="text-emerald-400">{{ p.damage_share }}% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -374,20 +438,12 @@
         </div>
     </section>
 
-    <!-- Match Intro Commentary -->
-    {% if match.ai_analysis %}
-    <section class="section match-commentary-intro-section mb-10">
-        <div class="glassmorphism p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-xl">
-            <div class="flex items-center gap-3 mb-3">
-                <span class="text-2xl">🎙️</span>
-                <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
-            </div>
-            <p class="text-slate-300 text-sm leading-relaxed">{{ match.ai_analysis }}</p>
-        </div>
-    </section>
-    {% endif %}
+    
+    </div>
 
-    <!-- Match Video Recording Accordion -->
+    <!-- TAB 3: ROUNDS & VIDEO -->
+    <div id="match-tab-rounds" class="tab-pane match-tab-pane">
+<!-- Match Video Recording Accordion -->
     <section class="section match-video-section mb-10">
         <details class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden group shadow-lg" id="match-video-accordion" {% if match.video_embed_url or match.highlight %}open{% endif %}>
             <summary class="p-5 bg-slate-900/90 hover:bg-slate-800/70 transition flex items-center justify-between cursor-pointer select-none border-b border-slate-800/60">
@@ -775,29 +831,93 @@
         </div>
     </section>
 
-    <!-- Match Summary & Coaching Analysis (All 10 players + 3 Takeaways) -->
-    {% if match.summary_analysis %}
-    <section class="section match-coaching-summary-section mb-10">
-        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-slate-900/95 via-emerald-950/20 to-slate-900/95 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800">
-                <span class="text-3xl">🧠</span>
-                <div>
-                    <h2 class="text-2xl font-black text-white">Итоговый тренерский разбор матча</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Комплексная оценка всех 10 игроков и 3 системных вывода для командных тренировок</p>
-                </div>
-            </div>
-            <div class="mt-5">
-                {{ match.summary_analysis | safe }}
-            </div>
-        </div>
-    </section>
-    {% endif %}
+    
+    </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    
+// ─── Match Tabs Switching (Bulletproof for file:/// & Web) ───
+function setupMatchTabs() {
+    const tabBtns = document.querySelectorAll('[data-match-tab]');
+    const tabPanes = document.querySelectorAll('.match-tab-pane');
+    if (!tabBtns.length) return;
+
+    // Desktop auto-expansion for team coaching accordions
+    if (window.innerWidth >= 768) {
+        document.querySelectorAll('.team-audit-accordion').forEach(el => el.setAttribute('open', ''));
+    }
+
+    function activateTab(tabId) {
+        tabBtns.forEach(btn => {
+            const isMatch = btn.getAttribute('data-match-tab') === tabId;
+            btn.classList.toggle('active', isMatch);
+        });
+        tabPanes.forEach(pane => {
+            const isMatch = pane.id === tabId;
+            pane.classList.toggle('active', isMatch);
+            pane.style.display = isMatch ? 'block' : 'none';
+        });
+
+        try {
+            if (window.ecoChartInstance) window.ecoChartInstance.resize();
+        } catch(e) {}
+
+        try {
+            localStorage.setItem('kase_match_tab', tabId);
+        } catch(e) {}
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-match-tab');
+            if (target) {
+                activateTab(target);
+                try {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, null, '#' + target.replace('match-tab-', ''));
+                    }
+                } catch(err) {}
+            }
+        });
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    const tabMap = {
+        'coach': 'match-tab-coach',
+        'analysis': 'match-tab-coach',
+        'ai': 'match-tab-coach',
+        'scoreboard': 'match-tab-scoreboard',
+        'duels': 'match-tab-scoreboard',
+        'rounds': 'match-tab-rounds',
+        'timeline': 'match-tab-rounds',
+        'video': 'match-tab-rounds'
+    };
+
+    if (hash && tabMap[hash]) {
+        activateTab(tabMap[hash]);
+    } else if (hash && document.getElementById(hash)) {
+        const targetEl = document.getElementById(hash);
+        const parentPane = targetEl.closest('.match-tab-pane');
+        if (parentPane) {
+            activateTab(parentPane.id);
+            setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 100);
+        }
+    } else {
+        const saved = localStorage.getItem('kase_match_tab');
+        if (saved && document.getElementById(saved)) {
+            activateTab(saved);
+        } else {
+            activateTab('match-tab-coach');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+        setupMatchTabs();
         // 1. Chart.js Economy
         const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
         const chartColor = isLight ? '#0f172a' : '#cbd5e1';
@@ -815,7 +935,7 @@
             ? roundsMeta.map(r => ['R' + r.number, r.winner || ''])
             : ecoData.labels;
 
-        new Chart(ctx, {
+        window.ecoChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: chartLabels,

@@ -42,28 +42,22 @@
             </div>
             <nav class="nav-links">
                 <a href="../index.html" class="nav-item ">
-                    <span class="nav-icon">📊</span> Главная
+                    <span class="nav-icon">📊</span> Рейтинг
                 </a>
-                <a href="../index.html#players-section" class="nav-item ">
-                    <span class="nav-icon">🏆</span> Игроки
+                <a href="../index.html#tab-sessions-archive" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
                 </a>
                 <a href="../skills.html" class="nav-item ">
                     <span class="nav-icon">🎯</span> Навыки
-                </a>
-                <a href="../index.html#sessions-section" class="nav-item ">
-                    <span class="nav-icon">📅</span> Сессии
-                </a>
-                <a href="../achievements.html" class="nav-item ">
-                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="../roles.html" class="nav-item ">
                     <span class="nav-icon">🎭</span> Роли
                 </a>
                 <a href="../compare.html" class="nav-item ">
-                    <span class="nav-icon">⚔️</span> Дуэли
+                    <span class="nav-icon">⚔️</span> Дуэли & Составы
                 </a>
-                <a href="../matchmaker.html" class="nav-item ">
-                    <span class="nav-icon">⚖️</span> Составы
+                <a href="../achievements.html" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
             </nav>
 
@@ -88,8 +82,8 @@
     </header>
 
     <!-- Mobile Navigation Drawer -->
-    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-white/98 dark:bg-slate-950/98 text-slate-900 dark:text-white backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
             <div class="logo">
                 <a href="../index.html" class="flex items-center gap-2">
                     <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
@@ -97,42 +91,36 @@
                         <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
                         <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
                     </svg>
-                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                    <span class="logo-text font-bold text-lg text-slate-900 dark:text-white">CS2 <span class="logo-accent">Аналитика</span></span>
                 </a>
             </div>
-            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
                 ✕
             </button>
         </div>
-        <nav class="flex flex-col gap-2.5 mt-6">
-            <a href="../index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">📊</span> <span>Главная</span>
+        <nav class="flex flex-col gap-2 mt-4">
+            <a href="../index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">📊</span> <span>Рейтинг игроков (MMR)</span>
             </a>
-            <a href="../index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            <a href="../index.html#tab-sessions-archive" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">📅</span> <span>Игровые сессии и матчи</span>
             </a>
-            <a href="../skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            <a href="../skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">🎯</span> <span>Рейтинг навыков</span>
             </a>
-            <a href="../compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            <a href="../roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">🎭</span> <span>Тактические роли</span>
             </a>
-            <a href="../matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            <a href="../compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">⚔️</span> <span>Личные дуэли & Составы</span>
             </a>
-            <a href="../index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
-            </a>
-            <a href="../achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
-            </a>
-            <a href="../roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎭</span> <span>Тактические роли</span>
+            <a href="../achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
         <!-- Mobile Drawer Theme Switcher -->
-        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <span id="drawer-theme-icon">☀️</span>
                 <span>Тема оформления</span>
@@ -142,7 +130,7 @@
             </button>
         </div>
 
-        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+        <div class="mt-auto pt-6 border-t border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 text-center">
             KASE CS2 Analytics Platform &bull; Mobile Nav
         </div>
     </div>
@@ -427,7 +415,290 @@
         </div>
     </section>
 
-    <!-- Scoreboard Section (Desktop Table + Mobile Responsive Cards) -->
+    
+    <!-- Match Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
+        <div class="segmented-nav-track site-tab-nav">
+            <button type="button" class="segmented-nav-btn site-tab-btn active" data-match-tab="match-tab-coach">
+                <span>🧠</span> <span>Разбор тренера и ИИ</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-scoreboard">
+                <span>📋</span> <span>Табло и дуэли 5v5</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-rounds">
+                <span>⏱️</span> <span>Хроника раундов</span>
+                <span class="tab-badge">23</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- TAB 1: COACH & AI ANALYSIS -->
+    <div id="match-tab-coach" class="tab-pane match-tab-pane active">
+<!-- Match Summary & Coaching Analysis (All 10 players + 3 Takeaways) -->
+    
+    <section class="section match-coaching-summary-section mb-10">
+        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-slate-900/95 via-emerald-950/20 to-slate-900/95 shadow-2xl">
+            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800">
+                <span class="text-3xl">🧠</span>
+                <div>
+                    <h2 class="text-2xl font-black text-white">Итоговый тренерский разбор матча</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Комплексная оценка всех 10 игроков и 3 системных вывода для командных тренировок</p>
+                </div>
+            </div>
+            <div class="mt-5">
+                <div class="coach-summary-wrapper space-y-6">
+            <div class="bg-gradient-to-br from-slate-900/90 via-emerald-950/20 to-slate-900/90 border border-emerald-500/30 rounded-2xl p-4 md:p-6 shadow-xl">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl">🏆</span>
+                    <h3 class="text-sm md:text-base font-black text-white uppercase tracking-wider">
+                        Ключевые системные выводы для тренировок
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm text-slate-300 mb-4 leading-relaxed">Матч на Anubis показал катастрофический уровень хаоса в мид-гейме: полное отсутствие ретейков (0 успешных выбиваний) и чудовищный процент неразмененных смертей (56.5%) доказывают, что команды играли в индивидуальный паблик, а не в командный CS. Победа matadorra держалась исключительно на сильном аиме и овераттипе их звездного игрока, а не на системной структуре.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
+                            1
+                        </span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Тотальный провал размена и изоляция опенингов</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
+                        13 из 23 первых смертей остались неразмененными, причем эпицентром бойни стали Канал (9 дуэлей) и Плент B (6 дуэлей). Игроки обеих команд пикали на чистой механике без локти и поддержки тиммейтов, превращая раунды в лотерею. <strong class="text-white font-semibold">Что тренировать:</strong> Отработка парных выходов (двойной пик) на Каналах и удержание плотного кроссфайра на пленте B. Внедрить правило «нет флеша — нет пика».
+                    </p>
+                </div>
+            
+                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
+                            2
+                        </span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Игнорирование командного ретейка и утилиты</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
+                        Убийственные цифры: 0 установок и 0 успешных ретейков на карте при среднем уроне гранатами 35.7 HP на раунд. Команды либо отдавали плент без боя, либо бежали толпой на перестрелку без поп-флешей и молотовых. <strong class="text-white font-semibold">Что тренировать:</strong> Полноценный прак-день на сервере с отработкой стандартных ретейков плентов A и B с использованием комплексной раскидки (молотов на дефолт + флешки под шорт/коннектор).
+                    </p>
+                </div>
+            
+                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
+                            3
+                        </span>
+                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Слив важнейших экономических раундов и тильт на форсах</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
+                        Провал Команды 1 во втором раунде (отдали Full Buy защиты атакующим на эко) сломал экономику и позволил Команде 2 захватить инициативу. <strong class="text-white font-semibold">Что тренировать:</strong> Тренировка анти-эко дефолтов с упором на дистанционный расстрел с позиций повышенной высоты (мост, руины) и запрет на пуш с близкого расстояния с SMG/пистолетами.
+                    </p>
+                </div>
+            
+                </div>
+            </div>
+        
+            <div class="mb-2">
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-xl">👥</span>
+                    <h3 class="text-sm md:text-base font-black text-white uppercase tracking-wider">
+                        Индивидуальный аудит игроков по командам
+                    </h3>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    
+                <details class="team-audit-accordion" id="audit-team-1">
+                    <summary class="team-audit-summary">
+                        <span class="flex items-center gap-2 font-black text-blue-400">
+                            🛡️ Команда 1 (ALIBONYA)
+                        </span>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border-blue-500/30 border">
+                            5 игроков ▼
+                        </span>
+                    </summary>
+                    <div class="team-audit-body space-y-2.5">
+                        
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">ALIBONYA</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Перфомер / Энтри-фрагер</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Высокий импакт и отличный показатель первых дуэлей (6/3), качественный мультифраггинг с AK-47.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> В критических раундах перетягивал одеяло на себя вместо того, чтобы играть через системные размены тиммейтов.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">Nakama_4</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник / Снайпер-гибрид</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Феноменальный контроль спрея и хедшот-процент (68.8%), уверенная стрельба в дуэлях.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Слабый суммарный урон гранатами (68), из-за чего навязывал дуэли на чистой механике без предварительного сетапа утилитой.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">k--9</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Второй номер / Клоузер</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Стабильный вклад в раунды и хорошая позиционная игра на M4A1-S.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Катастрофический провал в клатчах (0/6) из-за спешки при переходе на килл-хантерство в ситуациях 1vN.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">Folie_1</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Флекс / Саппорт</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Отличная работа с гранатами (156 урона) и высокий KAST (81.8%), лучший в команде по командному взаимодействию.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Низкий импакт на открытии раундов (1/2), часто зажимался в пассивных углах вместо расширения спейса.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">DarkAtom</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Агрессивный саппорт / MP9-энтри</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Точный аим (83.3% HS), но провальная выживаемость и низкий урон (36.5 ADR).</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Неоправданный тильт-агресс на эко/форсах с MP9, из-за чего команда теряла контроль над ключевыми зонами с первых секунд.</span>
+                            </div>
+                        </div>
+                    
+                    </div>
+                </details>
+            
+                <details class="team-audit-accordion" id="audit-team-2">
+                    <summary class="team-audit-summary">
+                        <span class="flex items-center gap-2 font-black text-amber-400">
+                            💣 Команда 2 (matadorra)
+                        </span>
+                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border-amber-500/30 border">
+                            5 игроков ▼
+                        </span>
+                    </summary>
+                    <div class="team-audit-body space-y-2.5">
+                        
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">matadorra</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Звезда / Кариер</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Колоссальный импакт (124.5 ADR, 28 фрагов), доминирование на каждом клочке карты.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Победа скрывает индивидуальную перекачку: в тир-1 матче за такие глубокие соло-пуши без инфы его бы мгновенно наказывали кроссфайром.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">mbaliyev</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Второй хиттер</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Отличный мультифраггинг (20 киллов) и высокий ADR (98.2), вовремя подбирал тир-2 фраги.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Ужасный показатель первых смертей (1/6), часто подставлялся под ранний агрессивный пик соперника на Каналах.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">altairinthesky</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Медиатор / Спейс-креатор</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Неплохой размен и позиционная дисциплина, стабильные победы в разменных дуэлях.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Низкая общая плотность стрельбы и пассивный урон гранатами (2), отсутствие влияния на дефолт.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="font-bold text-white text-sm">zikayevg</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Координатор / Утилит-мастер</span>
+                            </div>
+                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
+                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
+                                <span>Лучший в матче по урону гранатами (266) и грамотный сетап пространства.</span>
+                            </div>
+                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
+                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
+                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Просадка по личной стрельбе (10 фрагов), в равной игре слабая индивидуальная дуэль тянет команду на дно.</span>
+                            </div>
+                        </div>
+                    
+                        <div class="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 text-xs text-slate-300">
+                            • <strong class="text-white font-semibold">Yesk0</strong> [Пассивный люкер / [СТАТУС: ЗАМАСКИРОВАННАЯ ПАССИВНОСТЬ]]: Победа скрывает пассивность: минимальный урон (38.7 ADR) и вклад (10.1%), избегал ключевых файтов. <em class="text-slate-300">Зона роста:</em> В тир-1 матче игра 4 в 5 на карте Anubis сделает команду абсолютно уязвимой к быстрым перетяжкам соперника.
+                        </div>
+                    
+                    </div>
+                </details>
+            
+                </div>
+            </div>
+        </div>
+            </div>
+        </div>
+    </section>
+    
+<!-- Match Intro Commentary -->
+    
+    <section class="section match-commentary-intro-section mb-10">
+        <div class="glassmorphism p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-xl">
+            <div class="flex items-center gap-3 mb-3">
+                <span class="text-2xl">🎙️</span>
+                <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
+            </div>
+            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1"><strong class="text-white font-semibold">Добро пожаловать в аналитическую студию!</strong> На карте Anubis развернулась настоящая драма: <strong class="text-white font-semibold">matadorra</strong> в тяжелейшей борьбе вырывает победу у <strong class="text-white font-semibold">ALIBONYA</strong> со счетом <strong class="text-white font-semibold">13:10</strong>. Кульминацией встречи стал затяжной раунд при счете 10:11, когда номинальные гости за счет безупречного размена на точке «Б» сломали экономику соперника и предрешили исход всей карты.</p>
+<p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1">Победа <strong class="text-white font-semibold">matadorra</strong> стала триумфом индивидуального класса: их звездный рифлер и MVP матча просто стер оппонентов с сервера, выигрывая важнейшие дуэли на открытии раундов. В свою очередь, <strong class="text-white font-semibold">ALIBONYA</strong> показала отличную тактическую гибкость и навязала плотную борьбу, но в концовке им банально не хватило огневой мощи для нейтрализации разогнавшегося лидера соперников.</p></p>
+        </div>
+    </section>
+    
+
+    
+    </div>
+
+    <!-- TAB 2: SCOREBOARD & DUELS -->
+    <div id="match-tab-scoreboard" class="tab-pane match-tab-pane">
+<!-- Scoreboard Section (Desktop Table + Mobile Responsive Cards) -->
     <section class="section scoreboard-section mb-10">
         <div class="flex items-center justify-between mb-4">
             <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
@@ -480,6 +751,7 @@
                                     ALIBONYA
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">19</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">15</td>
@@ -487,7 +759,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-emerald-400">
                                 +4
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">84.4</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 23.9%, фраги: 25.7%">
+                                84.4
+                                <span class="text-[9px] text-slate-400 block font-normal">23.9% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">73.9%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">21.1%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">6</td>
@@ -513,8 +788,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
                                     "
-                                    title="База (-15) + Импакт (+2.2) = Итог (-13 MMR)">
-                                    -13
+                                    title="База (-8) + Импакт (+2.2) = Итог (-6 MMR)">
+                                    -6
                                 </span>
                             </td>
                         </tr>
@@ -525,6 +800,7 @@
                                     Nakama_4
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">16</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">15</td>
@@ -532,7 +808,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-emerald-400">
                                 +1
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">83.9</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 23.7%, фраги: 21.6%">
+                                83.9
+                                <span class="text-[9px] text-slate-400 block font-normal">23.7% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">69.6%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">68.8%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">5</td>
@@ -558,8 +837,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
                                     "
-                                    title="База (-15) + Импакт (+1.1) = Итог (-21 MMR)">
-                                    -21
+                                    title="База (-8) + Импакт (+1.1) = Итог (-10 MMR)">
+                                    -10
                                 </span>
                             </td>
                         </tr>
@@ -570,6 +849,7 @@
                                     k--9
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">17</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">17</td>
@@ -577,7 +857,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-slate-400">
                                 0
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">79.1</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 22.4%, фраги: 23.0%">
+                                79.1
+                                <span class="text-[9px] text-slate-400 block font-normal">22.4% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">72.7%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">41.2%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">2</td>
@@ -603,8 +886,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
                                     "
-                                    title="База (-15) + Импакт (+0.6) = Итог (-14 MMR)">
-                                    -14
+                                    title="База (-8) + Импакт (+0.6) = Итог (-7 MMR)">
+                                    -7
                                 </span>
                             </td>
                         </tr>
@@ -615,6 +898,7 @@
                                     Folie_1
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">16</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">16</td>
@@ -622,7 +906,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-slate-400">
                                 0
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">69.4</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 19.6%, фраги: 21.6%">
+                                69.4
+                                <span class="text-[9px] text-slate-400 block font-normal">19.6% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">81.8%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">37.5%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">1</td>
@@ -648,8 +935,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
                                     "
-                                    title="База (-15) + Импакт (+0.2) = Итог (-15 MMR)">
-                                    -15
+                                    title="База (-8) + Импакт (+0.2) = Итог (-8 MMR)">
+                                    -8
                                 </span>
                             </td>
                         </tr>
@@ -660,6 +947,7 @@
                                     DarkAtom
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">6</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">18</td>
@@ -667,7 +955,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-rose-400">
                                 -12
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">36.5</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 10.3%, фраги: 8.1%">
+                                36.5
+                                <span class="text-[9px] text-slate-400 block font-normal">10.3% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">72.7%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">83.3%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">0</td>
@@ -692,8 +983,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-rose-950/80 text-rose-400 border border-rose-500/50 shadow-sm shadow-rose-500/20
                                     "
-                                    title="База (-15) + Импакт (-5.3) = Итог (-30 MMR)">
-                                    -30
+                                    title="База (-8) + Импакт (-5.3) = Итог (-20 MMR)">
+                                    -20
                                 </span>
                             </td>
                         </tr>
@@ -712,12 +1003,14 @@
                                 AL
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     ALIBONYA
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">19/15</span> (ADR: 84.4)
+                                    K/D: <span class="text-white font-bold">19/15</span> (ADR: 84.4 • <span class="text-emerald-400">23.9% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -726,7 +1019,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.18</span>
                                 <span class="text-[10px] font-bold text-rose-400">
-                                    -13 MMR
+                                    -6 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -751,7 +1044,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (-15) + Импакт (+2.2) = Итог (-13 MMR)
+                            База (-8) + Импакт (+2.2) = Итог (-6 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -769,12 +1062,14 @@
                                 NA
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     Nakama_4
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">16/15</span> (ADR: 83.9)
+                                    K/D: <span class="text-white font-bold">16/15</span> (ADR: 83.9 • <span class="text-emerald-400">23.7% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -783,7 +1078,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.09</span>
                                 <span class="text-[10px] font-bold text-rose-400">
-                                    -21 MMR
+                                    -10 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -808,7 +1103,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (-15) + Импакт (+1.1) = Итог (-21 MMR)
+                            База (-8) + Импакт (+1.1) = Итог (-10 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -826,12 +1121,14 @@
                                 K-
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     k--9
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">17/17</span> (ADR: 79.1)
+                                    K/D: <span class="text-white font-bold">17/17</span> (ADR: 79.1 • <span class="text-emerald-400">22.4% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -840,7 +1137,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.05</span>
                                 <span class="text-[10px] font-bold text-rose-400">
-                                    -14 MMR
+                                    -7 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -865,7 +1162,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (-15) + Импакт (+0.6) = Итог (-14 MMR)
+                            База (-8) + Импакт (+0.6) = Итог (-7 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -883,12 +1180,14 @@
                                 FO
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     Folie_1
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">16/16</span> (ADR: 69.4)
+                                    K/D: <span class="text-white font-bold">16/16</span> (ADR: 69.4 • <span class="text-emerald-400">19.6% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -897,7 +1196,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.02</span>
                                 <span class="text-[10px] font-bold text-rose-400">
-                                    -15 MMR
+                                    -8 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -922,7 +1221,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (-15) + Импакт (+0.2) = Итог (-15 MMR)
+                            База (-8) + Импакт (+0.2) = Итог (-8 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -940,12 +1239,14 @@
                                 DA
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     DarkAtom
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">6/18</span> (ADR: 36.5)
+                                    K/D: <span class="text-white font-bold">6/18</span> (ADR: 36.5 • <span class="text-emerald-400">10.3% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -954,7 +1255,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 0.56</span>
                                 <span class="text-[10px] font-bold text-rose-400">
-                                    -30 MMR
+                                    -20 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -979,7 +1280,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (-15) + Импакт (-5.3) = Итог (-30 MMR)
+                            База (-8) + Импакт (-5.3) = Итог (-20 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1035,6 +1336,7 @@
                                     matadorra
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">28</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">10</td>
@@ -1042,7 +1344,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-emerald-400">
                                 +18
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">124.5</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 32.6%, фраги: 34.6%">
+                                124.5
+                                <span class="text-[9px] text-slate-400 block font-normal">32.6% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">73.9%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">32.1%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">0</td>
@@ -1068,8 +1373,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
                                     "
-                                    title="База (+15) + Импакт (+8.0) = Итог (+23 MMR)">
-                                    +23
+                                    title="База (+9) + Импакт (+7.0) = Итог (+16 MMR)">
+                                    +16
                                 </span>
                             </td>
                         </tr>
@@ -1080,6 +1385,7 @@
                                     mbaliyev
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">20</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">17</td>
@@ -1087,7 +1393,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-emerald-400">
                                 +3
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">98.2</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 25.7%, фраги: 24.7%">
+                                98.2
+                                <span class="text-[9px] text-slate-400 block font-normal">25.7% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">73.9%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">30.0%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">1</td>
@@ -1113,8 +1422,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
                                     "
-                                    title="База (+15) + Импакт (+2.3) = Итог (+17 MMR)">
-                                    +17
+                                    title="База (+9) + Импакт (+2.3) = Итог (+11 MMR)">
+                                    +11
                                 </span>
                             </td>
                         </tr>
@@ -1125,6 +1434,7 @@
                                     altairinthesky
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">13</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">17</td>
@@ -1132,7 +1442,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-rose-400">
                                 -4
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">64.2</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 16.8%, фраги: 16.0%">
+                                64.2
+                                <span class="text-[9px] text-slate-400 block font-normal">16.8% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">69.6%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">38.5%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">3</td>
@@ -1157,8 +1470,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
                                     "
-                                    title="База (+15) + Импакт (-1.6) = Итог (+13 MMR)">
-                                    +13
+                                    title="База (+9) + Импакт (-1.6) = Итог (+7 MMR)">
+                                    +7
                                 </span>
                             </td>
                         </tr>
@@ -1169,6 +1482,7 @@
                                     zikayevg
                                     
                                 </a>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">10</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">14</td>
@@ -1176,7 +1490,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-rose-400">
                                 -4
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">56.9</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 14.9%, фраги: 12.3%">
+                                56.9
+                                <span class="text-[9px] text-slate-400 block font-normal">14.9% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">69.6%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">30.0%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">2</td>
@@ -1201,8 +1518,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
                                     "
-                                    title="База (+15) + Импакт (-1.9) = Итог (+13 MMR)">
-                                    +13
+                                    title="База (+9) + Импакт (-1.9) = Итог (+7 MMR)">
+                                    +7
                                 </span>
                             </td>
                         </tr>
@@ -1213,6 +1530,9 @@
                                     Yesk0
                                     
                                 </a>
+                                
+                                    <span class="text-slate-400 text-[10px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700 cursor-help" title="💤 Замаскированная пассивность: лишь 10.1% урона в победном матче. Победа скрывает пассивность в дуэлях.">💤 Пассив</span>
+                                
                             </td>
                             <td class="py-3 px-2 text-center font-mono font-semibold">10</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-400">16</td>
@@ -1220,7 +1540,10 @@
                             <td class="py-3 px-2 text-center font-mono font-bold text-rose-400">
                                 -6
                             </td>
-                            <td class="py-3 px-2 text-center font-mono text-slate-200">38.7</td>
+                            <td class="py-3 px-2 text-center font-mono text-slate-200" title="Вклад в урон команды: 10.1%, фраги: 12.3%">
+                                38.7
+                                <span class="text-[9px] text-slate-400 block font-normal">10.1% dmg</span>
+                            </td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">69.6%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-200">50.0%</td>
                             <td class="py-3 px-2 text-center font-mono text-slate-300">3</td>
@@ -1245,8 +1568,8 @@
                                 <span class="inline-block px-2.5 py-0.5 rounded font-mono font-bold text-xs cursor-help
                                     bg-emerald-950/80 text-emerald-400 border border-emerald-500/50 shadow-sm shadow-emerald-500/20
                                     "
-                                    title="База (+15) + Импакт (-3.4) = Итог (+12 MMR)">
-                                    +12
+                                    title="База (+9) + Импакт (-3.4) = Итог (+6 MMR)">
+                                    +6
                                 </span>
                             </td>
                         </tr>
@@ -1265,12 +1588,14 @@
                                 MA
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     matadorra
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">28/10</span> (ADR: 124.5)
+                                    K/D: <span class="text-white font-bold">28/10</span> (ADR: 124.5 • <span class="text-emerald-400">32.6% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -1279,7 +1604,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.7</span>
                                 <span class="text-[10px] font-bold text-emerald-400">
-                                    +23 MMR
+                                    +16 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -1304,7 +1629,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (+15) + Импакт (+8.0) = Итог (+23 MMR)
+                            База (+9) + Импакт (+7.0) = Итог (+16 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1322,12 +1647,14 @@
                                 MB
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     mbaliyev
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">20/17</span> (ADR: 98.2)
+                                    K/D: <span class="text-white font-bold">20/17</span> (ADR: 98.2 • <span class="text-emerald-400">25.7% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -1336,7 +1663,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 1.19</span>
                                 <span class="text-[10px] font-bold text-emerald-400">
-                                    +17 MMR
+                                    +11 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -1361,7 +1688,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (+15) + Импакт (+2.3) = Итог (+17 MMR)
+                            База (+9) + Импакт (+2.3) = Итог (+11 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1379,12 +1706,14 @@
                                 AL
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     altairinthesky
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">13/17</span> (ADR: 64.2)
+                                    K/D: <span class="text-white font-bold">13/17</span> (ADR: 64.2 • <span class="text-emerald-400">16.8% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -1393,7 +1722,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 0.87</span>
                                 <span class="text-[10px] font-bold text-emerald-400">
-                                    +13 MMR
+                                    +7 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -1418,7 +1747,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (+15) + Импакт (-1.6) = Итог (+13 MMR)
+                            База (+9) + Импакт (-1.6) = Итог (+7 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1436,12 +1765,14 @@
                                 ZI
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     zikayevg
+                                    
+                                    
                                     
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">10/14</span> (ADR: 56.9)
+                                    K/D: <span class="text-white font-bold">10/14</span> (ADR: 56.9 • <span class="text-emerald-400">14.9% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -1450,7 +1781,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 0.84</span>
                                 <span class="text-[10px] font-bold text-emerald-400">
-                                    +13 MMR
+                                    +7 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -1475,7 +1806,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (+15) + Импакт (-1.9) = Итог (+13 MMR)
+                            База (+9) + Импакт (-1.9) = Итог (+7 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1493,12 +1824,14 @@
                                 YE
                             </div>
                             <div>
-                                <div class="font-bold text-white text-sm flex items-center gap-1.5">
+                                <div class="font-bold text-white text-sm flex items-center gap-1.5 flex-wrap">
                                     Yesk0
                                     
+                                    
+                                    <span class="text-slate-400 text-[9px] px-1.5 py-0.5 rounded bg-slate-800 border border-slate-700">💤 Пассив</span>
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono">
-                                    K/D: <span class="text-white font-bold">10/16</span> (ADR: 38.7)
+                                    K/D: <span class="text-white font-bold">10/16</span> (ADR: 38.7 • <span class="text-emerald-400">10.1% dmg</span>)
                                 </div>
                             </div>
                         </div>
@@ -1507,7 +1840,7 @@
                             <div class="text-right font-mono">
                                 <span class="text-xs font-bold text-white block">HLTV 0.72</span>
                                 <span class="text-[10px] font-bold text-emerald-400">
-                                    +12 MMR
+                                    +6 MMR
                                 </span>
                             </div>
                             <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
@@ -1532,7 +1865,7 @@
                         
                         <div class="bg-slate-900/80 p-2 rounded border border-slate-800 text-[11px] text-slate-300 font-mono">
                             <span class="text-emerald-400 font-bold block mb-0.5">Расчёт рейтинга MMR:</span>
-                            База (+15) + Импакт (-3.4) = Итог (+12 MMR)
+                            База (+9) + Импакт (-3.4) = Итог (+6 MMR)
                         </div>
                         
                         <div class="pt-1">
@@ -1924,20 +2257,12 @@
         </div>
     </section>
 
-    <!-- Match Intro Commentary -->
     
-    <section class="section match-commentary-intro-section mb-10">
-        <div class="glassmorphism p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-xl">
-            <div class="flex items-center gap-3 mb-3">
-                <span class="text-2xl">🎙️</span>
-                <h2 class="text-xl font-bold text-white">Обзор матча от комментаторов студии</h2>
-            </div>
-            <p class="text-slate-300 text-sm leading-relaxed"><p class="text-slate-200 text-xs md:text-sm leading-relaxed mb-1">Матч на карте <strong class="text-white font-semibold">Anubis</strong> прошел в плотной конкурентной борьбе — счет <strong class="text-white font-semibold">10 : 13</strong> в пользу <strong class="text-white font-semibold">Команда 2 (matadorra)</strong>. Судьба матча решалась в последних оружейных раундах, где Команда 2 (matadorra) проявила хладнокровие в ключевых ситуациях. Ключевой фигурой противостояния стал <strong class="text-white font-semibold">matadorra</strong>, продемонстрировавший высокий ADR и импакт во всех фазах игры.</p></p>
-        </div>
-    </section>
-    
+    </div>
 
-    <!-- Match Video Recording Accordion -->
+    <!-- TAB 3: ROUNDS & VIDEO -->
+    <div id="match-tab-rounds" class="tab-pane match-tab-pane">
+<!-- Match Video Recording Accordion -->
     <section class="section match-video-section mb-10">
         <details class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden group shadow-lg" id="match-video-accordion" open>
             <summary class="p-5 bg-slate-900/90 hover:bg-slate-800/70 transition flex items-center justify-between cursor-pointer select-none border-b border-slate-800/60">
@@ -2008,7 +2333,7 @@
                                         Nakama_4
                                     </span>
                                     
-                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Level 5">
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Ветеран">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
                                     </span>
                                     
@@ -2068,7 +2393,7 @@
                                         matadorra
                                     </span>
                                     
-                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Level 7">
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Эксперт">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
                                     </span>
                                     
@@ -2128,7 +2453,7 @@
                                         matadorra
                                     </span>
                                     
-                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Level 7">
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Эксперт">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
                                     </span>
                                     
@@ -2188,7 +2513,7 @@
                                         mbaliyev
                                     </span>
                                     
-                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Level 7">
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Эксперт">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
                                     </span>
                                     
@@ -2248,7 +2573,7 @@
                                         Nakama_4
                                     </span>
                                     
-                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Level 5">
+                                    <span class="inline-block shrink-0 scale-75 origin-left" title="Ветеран">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
                                     </span>
                                     
@@ -7898,262 +8223,8 @@
         </div>
     </section>
 
-    <!-- Match Summary & Coaching Analysis (All 10 players + 3 Takeaways) -->
     
-    <section class="section match-coaching-summary-section mb-10">
-        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-slate-900/95 via-emerald-950/20 to-slate-900/95 shadow-2xl">
-            <div class="flex items-center gap-3 mb-4 pb-3 border-b border-slate-800">
-                <span class="text-3xl">🧠</span>
-                <div>
-                    <h2 class="text-2xl font-black text-white">Итоговый тренерский разбор матча</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Комплексная оценка всех 10 игроков и 3 системных вывода для командных тренировок</p>
-                </div>
-            </div>
-            <div class="mt-5">
-                <div class="coach-summary-wrapper space-y-6">
-            <div class="mb-6">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="text-xl">👥</span>
-                    <h3 class="text-sm md:text-base font-black text-white uppercase tracking-wider">
-                        Индивидуальный аудит игроков матча
-                    </h3>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                    
-                <div class="bg-slate-900/80 border border-blue-500/30 rounded-2xl p-4 md:p-5 shadow-lg flex flex-col gap-3">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-black text-sm md:text-base text-blue-400 uppercase tracking-wider flex items-center gap-2">
-                            🛡️ Команда 1 (ALIBONYA)
-                        </span>
-                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-blue-500/20 text-blue-300 border-blue-500/30 border">
-                            5 игроков
-                        </span>
-                    </div>
-                    <div class="space-y-2.5">
-                        
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">ALIBONYA</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Энтри-фрагер (Entry Duelist)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Отличный опенинг-импакт (6 первых фрагов), открывающий точки для команды.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">Nakama_4</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Энтри-фрагер (Entry Duelist)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Отличный опенинг-импакт (5 первых фрагов), открывающий точки для команды.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">k--9</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Универсал (Flex Rifle)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Стабильная работа по дефолту карты (17/17 K/D).</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Повышать процент размена погибших тиммейтов и коммуникацию при перетяжках.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">Folie_1</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Стабильный якорь / Саппорт (Support Anchor)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Высокая командная полезность (81.8% KAST) и надежный холд позиций.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Увеличивать личный урон за счет своевременного использования осколочных гранат.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-blue-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">DarkAtom</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник рубежа (Rotator)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Принятие на себя первого удара при штурме соперника.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Минимизировать открытые дуэли (2 первых смертей), играть глубже от укрытий и засад.</span>
-                            </div>
-                        </div>
-                    
-                    </div>
-                </div>
-            
-                <div class="bg-slate-900/80 border border-amber-500/30 rounded-2xl p-4 md:p-5 shadow-lg flex flex-col gap-3">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-black text-sm md:text-base text-amber-400 uppercase tracking-wider flex items-center gap-2">
-                            💣 Команда 2 (matadorra)
-                        </span>
-                        <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border-amber-500/30 border">
-                            5 игроков
-                        </span>
-                    </div>
-                    <div class="space-y-2.5">
-                        
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">matadorra</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Главный огневой удар (Primary Fragger)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Великолепный урон (124.5 ADR) и постоянное давление на соперника.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Не форсировать лишние соло-дуэли при наличии численного преимущества.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">mbaliyev</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Универсал (Flex Rifle)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Стабильная работа по дефолту карты (20/17 K/D).</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Повышать процент размена погибших тиммейтов и коммуникацию при перетяжках.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">altairinthesky</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Энтри-фрагер (Entry Duelist)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Отличный опенинг-импакт (3 первых фрагов), открывающий точки для команды.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">zikayevg</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Опорник рубежа (Rotator)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Принятие на себя первого удара при штурме соперника.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Минимизировать открытые дуэли (3 первых смертей), играть глубже от укрытий и засад.</span>
-                            </div>
-                        </div>
-                    
-                        <div class="bg-slate-950/60 border border-slate-800/80 hover:border-amber-500/40 rounded-xl p-3.5 transition flex flex-col gap-2">
-                            <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span class="font-bold text-white text-sm">Yesk0</span>
-                                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Энтри-фрагер (Entry Duelist)</span>
-                            </div>
-                            <div class="text-xs text-slate-300 leading-relaxed flex items-start gap-2">
-                                <span class="text-emerald-400 text-xs shrink-0 mt-0.5">💪</span>
-                                <span>Отличный опенинг-импакт (3 первых фрагов), открывающий точки для команды.</span>
-                            </div>
-                            <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
-                                <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения.</span>
-                            </div>
-                        </div>
-                    
-                    </div>
-                </div>
-            
-                </div>
-            </div>
-        
-            <div class="bg-gradient-to-br from-slate-900/90 via-emerald-950/20 to-slate-900/90 border border-emerald-500/30 rounded-2xl p-4 md:p-6 shadow-xl">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="text-xl">🏆</span>
-                    <h3 class="text-sm md:text-base font-black text-white uppercase tracking-wider">
-                        Ключевые системные выводы для тренировок
-                    </h3>
-                </div>
-                <p class="text-xs md:text-sm text-slate-300 mb-4 leading-relaxed">На основе тактического разбора матча на карте <strong class="text-white font-semibold">Anubis</strong> выделены 3 ключевых системных проблемы для тренировок:</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    
-                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
-                            1
-                        </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Позиционная уязвимость опорника (mbaliyev):</span>
-                    </div>
-                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        Игрок <strong class="text-white font-semibold">mbaliyev</strong> отдал <strong class="text-white font-semibold">6 первых смертей</strong> за матч в районе зоны Канал, регулярно оставляя свою команду в ситуации 4v5 со стартовых секунд. Соперник явно нащупал эту брешь в расстановке и раз за разом форсировал контакт на его направлении. <strong class="text-white font-semibold">Что тренировать:</strong> перестроить дефолт, играть более пассивно от глубины сайта, либо выделять второго игрока для создания перекрестного огня и быстрой страховки.
-                    </p>
-                </div>
-            
-                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
-                            2
-                        </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Недооценка соперника на эко-раундах (1 сданных раундов):</span>
-                    </div>
-                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        Команды допустили критические ошибки в оружейных раундах против пистолетов (раунд 2 (защита слила эко T)). Имея подавляющее превосходство в дальности и огневой мощи винтовок, игроки лезли в узкие коридоры и принимали упор-дуэли против Deagle и фарм-ганов. <strong class="text-white font-semibold">Что тренировать:</strong> на анти-эко запрещено входить в ближний контакт без предварительного закидывания хаешками и молотовыми; растягивать оборону и расстреливать соперника исключительно на дальних дистанциях.
-                    </p>
-                </div>
-            
-                <div class="bg-slate-950/70 border border-emerald-500/25 hover:border-emerald-500/50 rounded-xl p-4 transition flex flex-col gap-2">
-                    <div class="flex items-center gap-2.5">
-                        <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black flex items-center justify-center shrink-0">
-                            3
-                        </span>
-                        <span class="font-bold text-white text-xs md:text-sm leading-snug">Изолированные дуэли и разрыв дистанции на Канал, Плент B:</span>
-                    </div>
-                    <p class="text-xs text-slate-300 leading-relaxed flex-1 mt-0.5">
-                        <strong class="text-white font-semibold">56.5% первых столкновений</strong> (13 из 23) закончились гибелью игрока без ответа со стороны тиммейтов. Игроки предпринимают агрессивные индивидуальные выпады на дистанции, где партнеры физически не успевают среагировать и дать размен. <strong class="text-white font-semibold">Что тренировать:</strong> отработка правила 2 секунд — второй номер должен двигаться строго позади энтри и быть готовым пикать на размен мгновенно после звука выстрелов.
-                    </p>
-                </div>
-            
-                </div>
-            </div>
-        </div>
-            </div>
-        </div>
-    </section>
-    
+    </div>
 </div>
 
     </main>
@@ -8169,7 +8240,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 20.09.2026 02:54</p>
+                <p class="footer-timestamp">Данные обновлены: 02.10.2026 18:05</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -8299,7 +8370,86 @@
     
     
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    
+// ─── Match Tabs Switching (Bulletproof for file:/// & Web) ───
+function setupMatchTabs() {
+    const tabBtns = document.querySelectorAll('[data-match-tab]');
+    const tabPanes = document.querySelectorAll('.match-tab-pane');
+    if (!tabBtns.length) return;
+
+    // Desktop auto-expansion for team coaching accordions
+    if (window.innerWidth >= 768) {
+        document.querySelectorAll('.team-audit-accordion').forEach(el => el.setAttribute('open', ''));
+    }
+
+    function activateTab(tabId) {
+        tabBtns.forEach(btn => {
+            const isMatch = btn.getAttribute('data-match-tab') === tabId;
+            btn.classList.toggle('active', isMatch);
+        });
+        tabPanes.forEach(pane => {
+            const isMatch = pane.id === tabId;
+            pane.classList.toggle('active', isMatch);
+            pane.style.display = isMatch ? 'block' : 'none';
+        });
+
+        try {
+            if (window.ecoChartInstance) window.ecoChartInstance.resize();
+        } catch(e) {}
+
+        try {
+            localStorage.setItem('kase_match_tab', tabId);
+        } catch(e) {}
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-match-tab');
+            if (target) {
+                activateTab(target);
+                try {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, null, '#' + target.replace('match-tab-', ''));
+                    }
+                } catch(err) {}
+            }
+        });
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    const tabMap = {
+        'coach': 'match-tab-coach',
+        'analysis': 'match-tab-coach',
+        'ai': 'match-tab-coach',
+        'scoreboard': 'match-tab-scoreboard',
+        'duels': 'match-tab-scoreboard',
+        'rounds': 'match-tab-rounds',
+        'timeline': 'match-tab-rounds',
+        'video': 'match-tab-rounds'
+    };
+
+    if (hash && tabMap[hash]) {
+        activateTab(tabMap[hash]);
+    } else if (hash && document.getElementById(hash)) {
+        const targetEl = document.getElementById(hash);
+        const parentPane = targetEl.closest('.match-tab-pane');
+        if (parentPane) {
+            activateTab(parentPane.id);
+            setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 100);
+        }
+    } else {
+        const saved = localStorage.getItem('kase_match_tab');
+        if (saved && document.getElementById(saved)) {
+            activateTab(saved);
+        } else {
+            activateTab('match-tab-coach');
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+        setupMatchTabs();
         // 1. Chart.js Economy
         const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
         const chartColor = isLight ? '#0f172a' : '#cbd5e1';
@@ -8317,7 +8467,7 @@
             ? roundsMeta.map(r => ['R' + r.number, r.winner || ''])
             : ecoData.labels;
 
-        new Chart(ctx, {
+        window.ecoChartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: chartLabels,

@@ -11,6 +11,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 from jinja2 import Environment, FileSystemLoader
 from scripts.config import *
 from scripts.faceit_icons import render_faceit_svg, generate_faceit_svg_files
+from scripts.achievement_icons import render_achievement_badge_svg
 
 
 
@@ -607,27 +608,27 @@ def format_coach_summary(text: str) -> str:
                     """)
 
             team_cards_html.append(f"""
-                <div class="bg-slate-900/80 border {border_color} rounded-2xl p-4 md:p-5 shadow-lg flex flex-col gap-3">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                        <span class="font-black text-sm md:text-base {header_text_color} uppercase tracking-wider flex items-center gap-2">
+                <details class="team-audit-accordion" id="audit-team-{idx}">
+                    <summary class="team-audit-summary">
+                        <span class="flex items-center gap-2 font-black {header_text_color}">
                             {raw_title}
                         </span>
                         <span class="text-[11px] font-bold px-2.5 py-0.5 rounded {badge_bg} border">
-                            {len(player_items_html)} игроков
+                            {len(player_items_html)} игроков ▼
                         </span>
-                    </div>
-                    <div class="space-y-2.5">
+                    </summary>
+                    <div class="team-audit-body space-y-2.5">
                         {''.join(player_items_html)}
                     </div>
-                </div>
+                </details>
             """)
 
         audit_html = f"""
-            <div class="mb-6">
+            <div class="mb-2">
                 <div class="flex items-center gap-2 mb-3">
                     <span class="text-xl">👥</span>
                     <h3 class="text-sm md:text-base font-black text-white uppercase tracking-wider">
-                        Индивидуальный аудит игроков матча
+                        Индивидуальный аудит игроков по командам
                     </h3>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -689,7 +690,7 @@ def format_coach_summary(text: str) -> str:
             </div>
         """
 
-        return f'<div class="coach-summary-wrapper space-y-6">{audit_html}{takeaways_section_html}</div>'
+        return f'<div class="coach-summary-wrapper space-y-6">{takeaways_section_html}{audit_html}</div>'
 
     # Fallback на случай нестандартного формата: чистим все ### и строим параграфы
     clean_lines = []
@@ -710,12 +711,25 @@ def format_coach_summary(text: str) -> str:
 
 
 def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bool = False) -> dict:
-    """10-уровневая система рангов в стиле Faceit с аутентичными SVG-иконками:
-    Lv10: >= 1180 | Lv9: 1135-1179 | Lv8: 1090-1134 | Lv7: 1045-1089 | Lv6: 1000-1044
-    Lv5:  955-999 | Lv4: 910-954   | Lv3: 865-909   | Lv2: 820-864   | Lv1: < 820
+    """10-уровневая система рангов в стиле Faceit с соревновательными званиями и аутентичными SVG-иконками:
+    Lv10: >= 1180 (Легенда) | Lv9: 1135-1179 (Грандмастер) | Lv8: 1090-1134 (Мастер) | Lv7: 1045-1089 (Эксперт) | Lv6: 1000-1044 (Адепт)
+    Lv5:  955-999  (Ветеран) | Lv4: 910-954   (Боец)        | Lv3: 865-909   (Стрелок) | Lv2: 820-864   (Рядовой) | Lv1: < 820     (Рекрут)
     Для калибрующихся: Faceit Unranked значок (?), серый цвет MMR.
     Для неактивных: сохраненный уровень, но серый цвет MMR.
     """
+    LEVEL_TITLES = {
+        10: "Легенда",
+        9: "Грандмастер",
+        8: "Мастер",
+        7: "Эксперт",
+        6: "Адепт",
+        5: "Ветеран",
+        4: "Боец",
+        3: "Стрелок",
+        2: "Рядовой",
+        1: "Рекрут",
+    }
+
     if is_calibrating:
         svg_icon = render_faceit_svg(0, size=20)
         svg_icon_sm = render_faceit_svg(0, size=16)
@@ -731,7 +745,7 @@ def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bo
             "badge_svg_large": svg_icon_lg,
             "level": 0,
             "next_level": 1,
-            "next_level_name": "Level 1",
+            "next_level_name": LEVEL_TITLES.get(1, "Рекрут"),
             "next_level_mmr": 820,
             "min_level_mmr": 0,
             "mmr_to_next": 0,
@@ -853,18 +867,21 @@ def get_player_rank_tier(mmr: int, is_calibrating: bool = False, is_inactive: bo
     span = max(1, next_mmr - min_mmr)
     prog_pct = 100.0 if is_max else round(min(100.0, max(0.0, (mmr - min_mmr) / span * 100.0)), 1)
 
+    cur_title = LEVEL_TITLES.get(lvl, f"Уровень {lvl}")
+    next_title = LEVEL_TITLES.get(next_lvl, f"Уровень {next_lvl}")
+
     return {
         "tier_id": f"level{lvl}",
-        "tier_name": f"Level {lvl}",
-        "tier_badge": f"Level {lvl}",
-        "tier_short": f"Lv{lvl}",
+        "tier_name": cur_title,
+        "tier_badge": cur_title,
+        "tier_short": cur_title,
         "icon": svg_icon,
         "badge_svg": svg_icon,
         "badge_svg_small": svg_icon_sm,
         "badge_svg_large": svg_icon_lg,
         "level": lvl,
         "next_level": next_lvl,
-        "next_level_name": f"Level {next_lvl}",
+        "next_level_name": next_title,
         "next_level_mmr": next_mmr,
         "min_level_mmr": min_mmr,
         "mmr_to_next": mmr_to_next,
@@ -1062,7 +1079,10 @@ def format_match_data(m: dict) -> dict:
             "mmr_breakdown": mmr_breakdown,
             "mmr_after": mmr_after,
             "is_calibrating": is_calibrating,
-            "is_mvp": sid == mvp_sid
+            "is_mvp": sid == mvp_sid,
+            "damage_share": p.get("damage_share", 0.0),
+            "kill_share": p.get("kill_share", 0.0),
+            "team_share_status": p.get("team_share_status", "normal")
         }
 
     t1_rows = [build_player_row(p) for p in raw_team1]
@@ -1986,7 +2006,14 @@ def format_player_data(p: dict) -> dict:
             "current_role": current_role_text,
             "role_comparison": raw_recs.get("role_comparison", f"Текущий стиль: {current_role_text} ➔ Рекомендуется: {role_text}"),
             "quests": formatted_quests,
-            "target_quest": tq_copy
+            "target_quest": tq_copy,
+            "individual_skill": raw_recs.get("individual_skill", []),
+            "team_context": raw_recs.get("team_context", []),
+            "verdict_summary": raw_recs.get("verdict_summary", ""),
+            "avg_damage_share": raw_recs.get("avg_damage_share", ov_stats.get("avg_damage_share", 20.0)),
+            "avg_kill_share": raw_recs.get("avg_kill_share", ov_stats.get("avg_kill_share", 20.0)),
+            "titan_matches": raw_recs.get("titan_matches", ov_stats.get("titan_matches", 0)),
+            "passive_matches": raw_recs.get("passive_matches", ov_stats.get("passive_matches", 0))
         },
         "role_affinities": player_role_affinities,
         "session_progress": p.get("session_progress"),
@@ -2121,7 +2148,8 @@ def format_session_data(s: dict) -> dict:
         }
     }
 
-def generate_site():
+def generate_site(output_dir=None):
+    out_dir = Path(output_dir) if output_dir else SITE_DIR
     """Основная функция генерации всех HTML страниц сайта."""
     logging.info("Начинаем генерацию HTML сайта...")
     
@@ -2131,11 +2159,14 @@ def generate_site():
     
     import shutil
     for sub in ["matches", "players", "sessions"]:
-        d_path = SITE_DIR / sub
+        d_path = out_dir / sub
         if d_path.exists():
             shutil.rmtree(d_path)
         os.makedirs(d_path, exist_ok=True)
-    os.makedirs(SITE_DIR / "css", exist_ok=True)
+    os.makedirs(out_dir / "css", exist_ok=True)
+    if out_dir != SITE_DIR and (SITE_DIR / "css" / "style.css").exists():
+        import shutil
+        shutil.copy2(SITE_DIR / "css" / "style.css", out_dir / "css" / "style.css")
 
     generated_at = datetime.now().strftime("%d.%m.%Y %H:%M")
 
@@ -2157,6 +2188,7 @@ def generate_site():
     all_players_compact.sort(key=lambda x: x["name"].lower())
     env.globals["all_players_compact"] = all_players_compact
     env.globals["render_faceit_svg"] = render_faceit_svg
+    env.globals["render_achievement_badge_svg"] = render_achievement_badge_svg
 
     # Сборка непрерывного лидерборда игроков по MMR
     leaderboard_players = []
@@ -2263,20 +2295,20 @@ def generate_site():
         })
 
     # Генерация статических Faceit SVG иконок
-    generate_faceit_svg_files(SITE_DIR / "icons" / "faceit")
+    generate_faceit_svg_files(out_dir / "icons" / "faceit")
 
     # Конфигурация уровней Faceit для модального окна на главной
     faceit_levels_info = [
-        {"level": 10, "mmr": "≥ 1180", "badge_svg": render_faceit_svg(10, 22), "classes": "bg-red-950/40 border-red-500/50 text-red-200"},
-        {"level": 9,  "mmr": "1135 – 1179", "badge_svg": render_faceit_svg(9, 22), "classes": "bg-orange-950/40 border-orange-500/40 text-orange-200"},
-        {"level": 8,  "mmr": "1090 – 1134", "badge_svg": render_faceit_svg(8, 22), "classes": "bg-orange-950/40 border-orange-500/40 text-orange-200"},
-        {"level": 7,  "mmr": "1045 – 1089", "badge_svg": render_faceit_svg(7, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
-        {"level": 6,  "mmr": "1000 – 1044", "badge_svg": render_faceit_svg(6, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
-        {"level": 5,  "mmr": "955 – 999",   "badge_svg": render_faceit_svg(5, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
-        {"level": 4,  "mmr": "910 – 954",   "badge_svg": render_faceit_svg(4, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
-        {"level": 3,  "mmr": "865 – 909",   "badge_svg": render_faceit_svg(3, 22), "classes": "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"},
-        {"level": 2,  "mmr": "820 – 864",   "badge_svg": render_faceit_svg(2, 22), "classes": "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"},
-        {"level": 1,  "mmr": "< 820",       "badge_svg": render_faceit_svg(1, 22), "classes": "bg-slate-800/40 border-slate-500/40 text-slate-300"},
+        {"level": 10, "title": "Легенда", "mmr": "≥ 1180", "badge_svg": render_faceit_svg(10, 22), "classes": "bg-red-950/40 border-red-500/50 text-red-200"},
+        {"level": 9,  "title": "Грандмастер", "mmr": "1135 – 1179", "badge_svg": render_faceit_svg(9, 22), "classes": "bg-orange-950/40 border-orange-500/40 text-orange-200"},
+        {"level": 8,  "title": "Мастер", "mmr": "1090 – 1134", "badge_svg": render_faceit_svg(8, 22), "classes": "bg-orange-950/40 border-orange-500/40 text-orange-200"},
+        {"level": 7,  "title": "Эксперт", "mmr": "1045 – 1089", "badge_svg": render_faceit_svg(7, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
+        {"level": 6,  "title": "Адепт", "mmr": "1000 – 1044", "badge_svg": render_faceit_svg(6, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
+        {"level": 5,  "title": "Ветеран", "mmr": "955 – 999",   "badge_svg": render_faceit_svg(5, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
+        {"level": 4,  "title": "Боец", "mmr": "910 – 954",   "badge_svg": render_faceit_svg(4, 22), "classes": "bg-amber-950/40 border-amber-400/40 text-amber-200"},
+        {"level": 3,  "title": "Стрелок", "mmr": "865 – 909",   "badge_svg": render_faceit_svg(3, 22), "classes": "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"},
+        {"level": 2,  "title": "Рядовой", "mmr": "820 – 864",   "badge_svg": render_faceit_svg(2, 22), "classes": "bg-emerald-950/40 border-emerald-500/40 text-emerald-200"},
+        {"level": 1,  "title": "Рекрут", "mmr": "< 820",       "badge_svg": render_faceit_svg(1, 22), "classes": "bg-slate-800/40 border-slate-500/40 text-slate-300"},
     ]
 
     # Форматирование игровых сессий для главной страницы и детальных страниц сессий
@@ -2402,7 +2434,7 @@ def generate_site():
             cooling_down=cooling_down,
             generated_at=generated_at
         ),
-        SITE_DIR / "index.html"
+        out_dir / "index.html"
     )
     logging.info("Сгенерирована главная страница: site/index.html")
 
@@ -2423,7 +2455,7 @@ def generate_site():
                 score2=formatted_m.get("score2", 0),
                 generated_at=generated_at
             ),
-            SITE_DIR / "matches" / f"{match_id}.html"
+            out_dir / "matches" / f"{match_id}.html"
         )
     logging.info(f"Сгенерированы страницы для {len(matches)} матчей")
 
@@ -2443,7 +2475,7 @@ def generate_site():
                 player=formatted_p,
                 generated_at=generated_at
             ),
-            SITE_DIR / "players" / f"{sid}.html"
+            out_dir / "players" / f"{sid}.html"
         )
     logging.info(f"Сгенерированы страницы для {len(players)} игроков")
 
@@ -2462,7 +2494,7 @@ def generate_site():
                 session=formatted_s,
                 generated_at=generated_at
             ),
-            SITE_DIR / "sessions" / f"{s_date}.html"
+            out_dir / "sessions" / f"{s_date}.html"
         )
     logging.info(f"Сгенерированы страницы для {len(formatted_sessions)} игровых сессий")
 
@@ -2553,7 +2585,7 @@ def generate_site():
             skills_data=skills_data,
             generated_at=generated_at
         ),
-        SITE_DIR / "skills.html"
+        out_dir / "skills.html"
     )
     logging.info("Сгенерирована страница навыков: site/skills.html")
 
@@ -2603,7 +2635,7 @@ def generate_site():
     for idx, pl in enumerate(glory_leaderboard, start=1):
         pl["glory_rank"] = idx
 
-    achievements_dir = SITE_DIR / "achievements"
+    achievements_dir = out_dir / "achievements"
     achievements_dir.mkdir(parents=True, exist_ok=True)
     ach_detail_template = env.get_template("achievement_detail.html")
 
@@ -2741,7 +2773,7 @@ def generate_site():
             all_achievements_catalog=all_achievements_catalog,
             generated_at=generated_at
         ),
-        SITE_DIR / "achievements.html"
+        out_dir / "achievements.html"
     )
     logging.info("Сгенерирована страница достижений: site/achievements.html и 30 персональных страниц в site/achievements/")
 
@@ -2755,7 +2787,7 @@ def generate_site():
             root_path="",
             generated_at=generated_at
         ),
-        SITE_DIR / "demos.html"
+        out_dir / "demos.html"
     )
     logging.info("Сгенерирована страница демок: site/demos.html")
 
@@ -2780,7 +2812,7 @@ def generate_site():
             players=h2h_data.get("players", []),
             generated_at=generated_at
         ),
-        SITE_DIR / "compare.html"
+        out_dir / "compare.html"
     )
     logging.info("Сгенерирована страница дуэлей: site/compare.html")
 
@@ -2796,7 +2828,7 @@ def generate_site():
             h2h_data=h2h_data,
             generated_at=generated_at
         ),
-        SITE_DIR / "matchmaker.html"
+        out_dir / "matchmaker.html"
     )
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
 
@@ -3019,14 +3051,16 @@ def generate_site():
             roster_overview=roster_overview,
             generated_at=generated_at
         ),
-        SITE_DIR / "roles.html"
+        out_dir / "roles.html"
     )
     logging.info("Сгенерирована страница тактических ролей: site/roles.html")
 
     logging.info("🔥 Генерация HTML-сайта успешно завершена!")
 
 if __name__ == "__main__":
-    generate_site()
+    import sys
+    target = sys.argv[1] if len(sys.argv) > 1 else None
+    generate_site(output_dir=target)
 
 
 

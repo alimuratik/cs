@@ -63,7 +63,11 @@
         "clutch_attempts_per_match": 3.67,
         "late_round_kills": 15.0,
         "awp_kills_percent": 0.0,
-        "rifle_kills_percent": 63.0
+        "rifle_kills_percent": 63.0,
+        "avg_damage_share": 28.0,
+        "avg_kill_share": 26.6,
+        "titan_matches": 1,
+        "passive_matches": 0
     },
     "overall_stats": {
         "total_matches": 3,
@@ -82,12 +86,16 @@
         "total_utility_damage": 336,
         "total_flash_assists": 1,
         "total_trades": 13,
-        "pistol_round_kills": 3
+        "pistol_round_kills": 3,
+        "avg_damage_share": 28.0,
+        "avg_kill_share": 26.6,
+        "titan_matches": 1,
+        "passive_matches": 0
     },
     "mmr": {
-        "current_mmr": 989,
-        "peak_mmr": 1015,
-        "last_delta": -26,
+        "current_mmr": 998,
+        "peak_mmr": 1016,
+        "last_delta": -18,
         "wins": 1,
         "losses": 2,
         "ties": 0,
@@ -101,9 +109,9 @@
             "loss"
         ],
         "sparkline": [
-            988,
-            1015,
-            989
+            998,
+            1016,
+            998
         ],
         "history": [
             {
@@ -111,45 +119,45 @@
                 "date": "18092026",
                 "map": "de_ancient",
                 "team_result": "loss",
-                "delta": -12,
-                "base_delta": -15,
+                "delta": -2,
+                "base_delta": -8,
                 "modifier": 7.0,
                 "mmr_before": 1000,
-                "mmr_after": 988,
+                "mmr_after": 998,
                 "hltv": 1.58,
                 "score_10": 7.9,
                 "is_calibrating": true,
-                "breakdown": "База (-15) + Импакт (+7.0) = Итог (-12 MMR)"
+                "breakdown": "База (-8) + Импакт (+7.0) = Итог (-2 MMR)"
             },
             {
                 "match_id": "18092026_anubis_27223582_245",
                 "date": "18092026",
                 "map": "de_anubis",
                 "team_result": "win",
-                "delta": 27,
-                "base_delta": 15,
+                "delta": 18,
+                "base_delta": 9,
                 "modifier": 3.2,
-                "mmr_before": 988,
-                "mmr_after": 1015,
+                "mmr_before": 998,
+                "mmr_after": 1016,
                 "hltv": 1.27,
                 "score_10": 6.3,
                 "is_calibrating": true,
-                "breakdown": "База (+15) + Импакт (+3.2) = Итог (+27 MMR)"
+                "breakdown": "База (+9) + Импакт (+3.2) = Итог (+18 MMR)"
             },
             {
                 "match_id": "18092026_inferno_27224699_245",
                 "date": "18092026",
                 "map": "de_inferno",
                 "team_result": "loss",
-                "delta": -26,
-                "base_delta": -15,
+                "delta": -18,
+                "base_delta": -10,
                 "modifier": -2.0,
-                "mmr_before": 1015,
-                "mmr_after": 989,
+                "mmr_before": 1016,
+                "mmr_after": 998,
                 "hltv": 0.83,
                 "score_10": 4.1,
                 "is_calibrating": true,
-                "breakdown": "База (-15) + Импакт (-2.0) = Итог (-26 MMR)"
+                "breakdown": "База (-10) + Импакт (-2.0) = Итог (-18 MMR)"
             }
         ]
     },
@@ -367,7 +375,48 @@
             ],
             "advice": "Твой параметр Entry (3.5/10) требует внимания. Низкий винрейт в опенинг-дуэлях. Никогда не выходи первым без звукового фейка или саппорт-флешки.",
             "radar_boost_text": "Выполнение этого квеста на следующий ранг (Бронза 🥉) даст мощный прирост параметра Entry на радарной диаграмме и увеличит All-Time MMR."
-        }
+        },
+        "individual_skill": [
+            {
+                "icon": "🎯",
+                "title": "Элитная точность первого выстрела (61.8% HS)",
+                "desc": "Прицел удерживается строго на уровне головы независимо от счета на табло. Продолжай тренировать пре-пики и микро-доводки."
+            },
+            {
+                "icon": "⚔️",
+                "title": "Превосходство в равных закупах (K/D 1.24 на Full Buy)",
+                "desc": "В честных перестрелках винтовка против винтовки ты перестреливаешь соперников на чистом индивидуальном мастерстве."
+            },
+            {
+                "icon": "🔄",
+                "title": "Задержка разменов (24.1% трейдов)",
+                "desc": "Партнеры нередко погибают без твоего размена. Держи дистанцию контакта до 2 секунд за энтри и пикай строго на звук перестрелки."
+            }
+        ],
+        "team_context": [
+            {
+                "icon": "👑",
+                "title": "Одинокий титан (1 матчей с долей урона ≥30%)",
+                "desc": "В проигранных матчах ты давал ≥30% командного урона (в среднем 28.0%). Личная форма отличная: поражение обусловлено провалом общекомандного контроля карты или эко-раундов, а не твоей стрельбой."
+            },
+            {
+                "icon": "💰",
+                "title": "Синхронизация командного банка",
+                "desc": "Не докупай девайсы в одиночку на командном эко. Смерти с дефолтным пистолетом против винтовок естественны и не портят твою оценку, главное — копить на полноценный Full Buy."
+            },
+            {
+                "icon": "🛡️",
+                "title": "Удержание преимущества",
+                "desc": "Надежная позиционная игра при численном преимуществе без лишнего риска."
+            }
+        ],
+        "verdict_summary": "Твоя индивидуальна стрельба с AK-47 и феноменальные 105.9 ADR на дистанции — это база тир-1 уровня, которая позволяла тебе забирать раунды в одиночку, но 33% винрейта при 28% общего урона команды показывают критический дисбаланс между личной статистикой и победным влиянием. С твоим аимом 9.4 ты обязан играть агрессивнее, а не отдавать энтри-дуэли с жалкими 7% First Kill Rate, теряя инициативу на карте. Нам нужно срочно подтягивать позиционирование с 4.8 до системного уровня и учиться читать раунды на Mirage и Ancient, иначе твои индивидуальные цифры так и останутся просто цифрами в проигранных матчах.",
+        "coach_verdict": "Твоя индивидуальна стрельба с AK-47 и феноменальные 105.9 ADR на дистанции — это база тир-1 уровня, которая позволяла тебе забирать раунды в одиночку, но 33% винрейта при 28% общего урона команды показывают критический дисбаланс между личной статистикой и победным влиянием. С твоим аимом 9.4 ты обязан играть агрессивнее, а не отдавать энтри-дуэли с жалкими 7% First Kill Rate, теряя инициативу на карте. Нам нужно срочно подтягивать позиционирование с 4.8 до системного уровня и учиться читать раунды на Mirage и Ancient, иначе твои индивидуальные цифры так и останутся просто цифрами в проигранных матчах.",
+        "coach_verdict_matches_count": 3,
+        "avg_damage_share": 28.0,
+        "avg_kill_share": 26.6,
+        "titan_matches": 1,
+        "passive_matches": 0
     },
     "stability": {
         "stability_score": 5.0,
@@ -517,7 +566,7 @@
             "adr": 105.9,
             "kd": 1.23,
             "hs_percent": 61.8,
-            "mmr_delta": -11,
+            "mmr_delta": -2,
             "wins": 1,
             "losses": 2,
             "kills": 54,
@@ -532,7 +581,7 @@
             "kd": 0.0,
             "hs_percent": 0.0,
             "kast": 0.0,
-            "mmr_delta": -11
+            "mmr_delta": -2
         },
         "better": [
             "Уверенный старт: рейтинг HLTV 1.23 в первых матчах",
@@ -542,7 +591,7 @@
         ],
         "worse": [
             "Проигрыш ранних дуэлей: 9 первых смертей при 4 опен-киллах",
-            "Отрицательный баланс MMR за сессию: -11"
+            "Отрицательный баланс MMR за сессию: -2"
         ]
     },
     "momentum": {
@@ -2792,8 +2841,8 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 1.58,
             "score_10": 7.9,
-            "mmr_delta": -12,
-            "mmr_breakdown": "База (-15) + Импакт (+7.0) = Итог (-12 MMR)",
+            "mmr_delta": -2,
+            "mmr_breakdown": "База (-8) + Импакт (+7.0) = Итог (-2 MMR)",
             "team_result": "loss",
             "is_win": false,
             "is_loss": true,
@@ -2803,7 +2852,10 @@
             "score_team2": 10,
             "rounds_count": 23,
             "vs_full_buy_kd": 1.5,
-            "tactical_kills": 2
+            "tactical_kills": 2,
+            "damage_share": 29.7,
+            "kill_share": 30.3,
+            "team_share_status": "normal"
         },
         {
             "match_id": "18092026_anubis_27223582_245",
@@ -2835,8 +2887,8 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 1.27,
             "score_10": 6.3,
-            "mmr_delta": 27,
-            "mmr_breakdown": "База (+15) + Импакт (+3.2) = Итог (+27 MMR)",
+            "mmr_delta": 18,
+            "mmr_breakdown": "База (+9) + Импакт (+3.2) = Итог (+18 MMR)",
             "team_result": "win",
             "is_win": true,
             "is_loss": false,
@@ -2846,7 +2898,10 @@
             "score_team2": 13,
             "rounds_count": 19,
             "vs_full_buy_kd": 3.5,
-            "tactical_kills": 1
+            "tactical_kills": 1,
+            "damage_share": 24.1,
+            "kill_share": 22.2,
+            "team_share_status": "normal"
         },
         {
             "match_id": "18092026_inferno_27224699_245",
@@ -2877,8 +2932,8 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 0.83,
             "score_10": 4.1,
-            "mmr_delta": -26,
-            "mmr_breakdown": "База (-15) + Импакт (-2.0) = Итог (-26 MMR)",
+            "mmr_delta": -18,
+            "mmr_breakdown": "База (-10) + Импакт (-2.0) = Итог (-18 MMR)",
             "team_result": "loss",
             "is_win": false,
             "is_loss": true,
@@ -2888,7 +2943,10 @@
             "score_team2": 1,
             "rounds_count": 14,
             "vs_full_buy_kd": 0.56,
-            "tactical_kills": 0
+            "tactical_kills": 0,
+            "damage_share": 30.2,
+            "kill_share": 27.3,
+            "team_share_status": "titan"
         }
     ]
 }

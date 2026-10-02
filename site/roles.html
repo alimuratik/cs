@@ -42,28 +42,22 @@
             </div>
             <nav class="nav-links">
                 <a href="index.html" class="nav-item ">
-                    <span class="nav-icon">📊</span> Главная
+                    <span class="nav-icon">📊</span> Рейтинг
                 </a>
-                <a href="index.html#players-section" class="nav-item ">
-                    <span class="nav-icon">🏆</span> Игроки
+                <a href="index.html#tab-sessions-archive" class="nav-item ">
+                    <span class="nav-icon">📅</span> Сессии
                 </a>
                 <a href="skills.html" class="nav-item ">
                     <span class="nav-icon">🎯</span> Навыки
-                </a>
-                <a href="index.html#sessions-section" class="nav-item ">
-                    <span class="nav-icon">📅</span> Сессии
-                </a>
-                <a href="achievements.html" class="nav-item ">
-                    <span class="nav-icon">🏆</span> Достижения
                 </a>
                 <a href="roles.html" class="nav-item active">
                     <span class="nav-icon">🎭</span> Роли
                 </a>
                 <a href="compare.html" class="nav-item ">
-                    <span class="nav-icon">⚔️</span> Дуэли
+                    <span class="nav-icon">⚔️</span> Дуэли & Составы
                 </a>
-                <a href="matchmaker.html" class="nav-item ">
-                    <span class="nav-icon">⚖️</span> Составы
+                <a href="achievements.html" class="nav-item ">
+                    <span class="nav-icon">🏆</span> Достижения
                 </a>
             </nav>
 
@@ -88,8 +82,8 @@
     </header>
 
     <!-- Mobile Navigation Drawer -->
-    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
-        <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer fixed inset-0 z-50 bg-white/98 dark:bg-slate-950/98 text-slate-900 dark:text-white backdrop-blur-xl md:hidden hidden flex-col p-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
             <div class="logo">
                 <a href="index.html" class="flex items-center gap-2">
                     <svg viewBox="0 0 100 86.6" class="w-7 h-7 shrink-0" style="filter: drop-shadow(0 0 8px rgba(80,170,64,0.45));">
@@ -97,42 +91,36 @@
                         <polygon points="50,0 100,86.6 50,61.9" fill="#8abc39" />
                         <polygon points="0,86.6 50,61.9 100,86.6" fill="#1d7334" />
                     </svg>
-                    <span class="logo-text font-bold text-lg text-white">CS2 <span class="logo-accent">Аналитика</span></span>
+                    <span class="logo-text font-bold text-lg text-slate-900 dark:text-white">CS2 <span class="logo-accent">Аналитика</span></span>
                 </a>
             </div>
-            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
+            <button type="button" id="mobile-menu-close" class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:text-white flex items-center justify-center text-lg font-bold transition" aria-label="Закрыть меню">
                 ✕
             </button>
         </div>
-        <nav class="flex flex-col gap-2.5 mt-6">
-            <a href="index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">📊</span> <span>Главная</span>
+        <nav class="flex flex-col gap-2 mt-4">
+            <a href="index.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">📊</span> <span>Рейтинг игроков (MMR)</span>
             </a>
-            <a href="index.html#players-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🏆</span> <span>Рейтинг игроков</span>
+            <a href="index.html#tab-sessions-archive" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">📅</span> <span>Игровые сессии и матчи</span>
             </a>
-            <a href="skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🎯</span> <span>Рейтинг навыков</span>
+            <a href="skills.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">🎯</span> <span>Рейтинг навыков</span>
             </a>
-            <a href="compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">⚔️</span> <span>Личные дуэли 1v1</span>
+            <a href="roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-sm">
+                <span class="text-xl">🎭</span> <span>Тактические роли</span>
             </a>
-            <a href="matchmaker.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">⚖️</span> <span>Баланс команд 5v5</span>
+            <a href="compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">⚔️</span> <span>Личные дуэли & Составы</span>
             </a>
-            <a href="index.html#sessions-section" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">📅</span> <span>Сессии и матчи</span>
-            </a>
-            <a href="achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm text-slate-300 hover:bg-slate-800/60">
-                <span class="text-lg">🏆</span> <span>Зал славы и Достижения</span>
-            </a>
-            <a href="roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-semibold text-sm bg-emerald-950/70 text-emerald-300 border border-emerald-700/60 shadow-lg shadow-emerald-950/50">
-                <span class="text-lg">🎭</span> <span>Тактические роли</span>
+            <a href="achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60">
+                <span class="text-xl">🏆</span> <span>Зал славы и Достижения</span>
             </a>
         </nav>
 
         <!-- Mobile Drawer Theme Switcher -->
-        <div class="mt-4 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
+        <div class="mt-4 p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-between shadow-sm" id="drawer-theme-box">
             <span class="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-2">
                 <span id="drawer-theme-icon">☀️</span>
                 <span>Тема оформления</span>
@@ -142,7 +130,7 @@
             </button>
         </div>
 
-        <div class="mt-auto pt-6 border-t border-slate-800/80 text-xs text-slate-500 text-center">
+        <div class="mt-auto pt-6 border-t border-slate-200 dark:border-slate-800/80 text-xs text-slate-500 text-center">
             KASE CS2 Analytics Platform &bull; Mobile Nav
         </div>
     </div>
@@ -376,8 +364,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 938</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 977</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">32 матчей</span>
                                         </div>
@@ -448,7 +436,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198243149322">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RA
                                     </div>
                                     <div>
@@ -457,8 +445,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1108</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1079</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -503,7 +491,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -538,7 +526,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -547,8 +535,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -583,7 +571,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -592,8 +580,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -723,7 +711,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198243149322">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RA
                                     </div>
                                     <div>
@@ -732,8 +720,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1108</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1079</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">9 матчей</span>
                                         </div>
@@ -784,7 +772,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -793,8 +781,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">23 матчей</span>
                                         </div>
@@ -855,7 +843,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 961</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 980</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">9 матчей</span>
                                         </div>
@@ -916,7 +904,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">23 матчей</span>
                                         </div>
@@ -967,7 +955,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198998095898">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-red-950/80 border-red-500/60 text-red-200 group-hover:border-red-400 group-hover:shadow-red-500/40 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
                                         C 
                                     </div>
                                     <div>
@@ -976,8 +964,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#ef4444" stroke-width="2.6" /><text x="16" y="20" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="11" fill="#ef4444">10</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1188</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1120</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">12 матчей</span>
                                         </div>
@@ -1028,7 +1016,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -1037,8 +1025,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">11 матчей</span>
                                         </div>
@@ -1098,8 +1086,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 938</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 977</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">32 матчей</span>
                                         </div>
@@ -1160,7 +1148,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 962</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 982</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">13 матчей</span>
                                         </div>
@@ -1221,7 +1209,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 991</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 974</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">32 матчей</span>
                                         </div>
@@ -1282,7 +1270,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 994</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 992</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">17 матчей</span>
                                         </div>
@@ -1353,7 +1341,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -1362,8 +1350,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Второй номер</strong></span>
                                         </div>
@@ -1503,7 +1491,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 994</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 992</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">17 матчей</span>
                                         </div>
@@ -1554,7 +1542,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -1563,8 +1551,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">8 матчей</span>
                                         </div>
@@ -1625,7 +1613,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 969</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 979</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">27 матчей</span>
                                         </div>
@@ -1686,7 +1674,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 928</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 942</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">24 матчей</span>
                                         </div>
@@ -1857,7 +1845,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -1866,8 +1854,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">8 матчей</span>
                                         </div>
@@ -1918,7 +1906,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -1927,8 +1915,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">11 матчей</span>
                                         </div>
@@ -1989,7 +1977,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 969</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 979</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">27 матчей</span>
                                         </div>
@@ -2050,7 +2038,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 961</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 980</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">9 матчей</span>
                                         </div>
@@ -2111,7 +2099,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 928</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 942</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">24 матчей</span>
                                         </div>
@@ -2172,7 +2160,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 991</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 974</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">32 матчей</span>
                                         </div>
@@ -2232,8 +2220,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1046</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="46.97 25.29" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">6</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1043</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">34 матчей</span>
                                         </div>
@@ -2293,8 +2281,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 944</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 961</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">8 матчей</span>
                                         </div>
@@ -2355,7 +2343,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 997</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 978</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">19 матчей</span>
                                         </div>
@@ -2416,7 +2404,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#e2e8f0" stroke-width="2.6" stroke-dasharray="5.78 66.48" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#ffffff">1</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 779</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 819</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">30 матчей</span>
                                         </div>
@@ -2497,7 +2485,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -2532,7 +2520,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198243149322">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RA
                                     </div>
                                     <div>
@@ -2541,8 +2529,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1108</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1079</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -2577,7 +2565,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -2586,8 +2574,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -2727,7 +2715,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">23 матчей</span>
                                         </div>
@@ -2925,7 +2913,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198998095898">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-red-950/80 border-red-500/60 text-red-200 group-hover:border-red-400 group-hover:shadow-red-500/40 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
                                         C 
                                     </div>
                                     <div>
@@ -2934,8 +2922,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#ef4444" stroke-width="2.6" /><text x="16" y="20" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="11" fill="#ef4444">10</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1188</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1120</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -2970,7 +2958,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -2979,8 +2967,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3015,7 +3003,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -3024,8 +3012,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Второй номер</strong></span>
                                         </div>
@@ -3070,7 +3058,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3105,7 +3093,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -3114,8 +3102,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3160,7 +3148,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 994</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 992</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3294,7 +3282,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198998095898">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-red-950/80 border-red-500/60 text-red-200 group-hover:border-red-400 group-hover:shadow-red-500/40 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
                                         C 
                                     </div>
                                     <div>
@@ -3303,8 +3291,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#ef4444" stroke-width="2.6" /><text x="16" y="20" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="11" fill="#ef4444">10</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1188</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1120</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">12 матчей</span>
                                         </div>
@@ -3375,7 +3363,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -3384,8 +3372,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3430,7 +3418,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 994</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 992</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3465,7 +3453,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -3474,8 +3462,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3510,7 +3498,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -3519,8 +3507,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Второй номер</strong></span>
                                         </div>
@@ -3565,7 +3553,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3600,7 +3588,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198243149322">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RA
                                     </div>
                                     <div>
@@ -3609,8 +3597,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1108</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1079</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -3754,7 +3742,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">23 матчей</span>
                                         </div>
@@ -3805,7 +3793,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198356069369">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         IN
                                     </div>
                                     <div>
@@ -3814,8 +3802,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1122</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1080</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">8 матчей</span>
                                         </div>
@@ -3876,7 +3864,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 969</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 979</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">27 матчей</span>
                                         </div>
@@ -3937,7 +3925,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 962</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 982</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">13 матчей</span>
                                         </div>
@@ -3998,7 +3986,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 994</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 992</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400 font-mono">17 матчей</span>
                                         </div>
@@ -4069,7 +4057,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198243149322">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RA
                                     </div>
                                     <div>
@@ -4078,8 +4066,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1108</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1079</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -4114,7 +4102,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561199508661466">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         RE
                                     </div>
                                     <div>
@@ -4123,8 +4111,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1066</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -4159,7 +4147,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198431427139">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-amber-950/80 border-amber-400/50 text-amber-200 group-hover:border-amber-300 group-hover:shadow-amber-500/30 group-hover:shadow-md">
                                         AL
                                     </div>
                                     <div>
@@ -4168,8 +4156,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1090</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1084</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -4214,7 +4202,7 @@
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 961</span>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 980</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -4249,7 +4237,7 @@
                         <div class="glassmorphism p-4 rounded-2xl border border-slate-800 hover:border-amber-500/40 transition-all duration-200 bg-slate-900/60 flex flex-col justify-between gap-3 relative group" data-steamid="76561198998095898">
                             <div class="flex items-center justify-between gap-3">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-red-950/80 border-red-500/60 text-red-200 group-hover:border-red-400 group-hover:shadow-red-500/40 group-hover:shadow-md">
+                                    <div class="w-11 h-11 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 bg-orange-950/80 border-orange-500/50 text-orange-200 group-hover:border-orange-400 group-hover:shadow-orange-500/30 group-hover:shadow-md">
                                         C 
                                     </div>
                                     <div>
@@ -4258,8 +4246,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#ef4444" stroke-width="2.6" /><text x="16" y="20" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="11" fill="#ef4444">10</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1188</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="54.19 18.07" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#f97316">8</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 1120</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Энтри-фраггер</strong></span>
                                         </div>
@@ -4303,8 +4291,8 @@
                                             <span class="text-[10px] text-slate-400 font-normal">➔</span>
                                         </a>
                                         <div class="flex items-center gap-2 mt-0.5">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="27.46 44.8" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">4</text></svg>
-                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 938</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                            <span class="text-xs font-mono text-slate-300 font-bold">MMR: 977</span>
                                             <span class="text-slate-600">•</span>
                                             <span class="text-[11px] text-slate-400">Стиль: <strong class="text-slate-200">Снайпер</strong></span>
                                         </div>
@@ -4380,7 +4368,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 20.09.2026 02:54</p>
+                <p class="footer-timestamp">Данные обновлены: 02.10.2026 18:05</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

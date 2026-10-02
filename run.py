@@ -13,6 +13,7 @@ def main():
     parser = argparse.ArgumentParser(description="CS2 Demo Analytics Platform Entrypoint")
     parser.add_argument("--stage", choices=["all", "parse", "calc", "ai", "faceit", "site", "verify"], default="all",
                         help="Запустить конкретный этап пайплайна (all, parse, calc, ai, faceit, site, verify)")
+    parser.add_argument("--output", type=str, default="site", help="Целевая папка для сайта: 'site' или 'test'")
     parser.add_argument("--force", action="store_true", help="Перепарсить все демки с нуля / принудительно обновить кэш")
     parser.add_argument("--ai", action="store_true", help="Запустить AI-анализ через Gemini API")
     args = parser.parse_args()
@@ -68,7 +69,8 @@ def main():
     if args.stage in ["all", "site"]:
         print("\n--- [4/5] Генерация HTML сайта ---")
         from scripts.generate_site import generate_site
-        generate_site()
+        target_dir = BASE_DIR / args.output
+        generate_site(output_dir=target_dir)
 
     # Этап 5: Проверка целостности данных
     if args.stage in ["all", "verify"]:
@@ -78,7 +80,8 @@ def main():
 
     print("\n==================================================")
     print("✅ ЭТАПЫ ЗАВЕРШЕНЫ УСПЕШНО!")
-    print(f"🌐 Откройте сайт: file:///{SITE_DIR / 'index.html'}")
+    final_dir = BASE_DIR / args.output
+    print(f"🌐 Откройте сайт: file:///{final_dir / 'index.html'}")
     print("==================================================")
 
 if __name__ == "__main__":

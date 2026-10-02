@@ -63,7 +63,11 @@
         "clutch_attempts_per_match": 2.0,
         "late_round_kills": 15.0,
         "awp_kills_percent": 2.1,
-        "rifle_kills_percent": 66.0
+        "rifle_kills_percent": 66.0,
+        "avg_damage_share": 17.2,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
+        "passive_matches": 0
     },
     "overall_stats": {
         "total_matches": 4,
@@ -82,12 +86,16 @@
         "total_utility_damage": 106,
         "total_flash_assists": 0,
         "total_trades": 6,
-        "pistol_round_kills": 5
+        "pistol_round_kills": 5,
+        "avg_damage_share": 17.2,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
+        "passive_matches": 0
     },
     "mmr": {
-        "current_mmr": 994,
+        "current_mmr": 991,
         "peak_mmr": 1000,
-        "last_delta": 22,
+        "last_delta": 13,
         "wins": 2,
         "losses": 2,
         "ties": 0,
@@ -102,10 +110,10 @@
             "win_low"
         ],
         "sparkline": [
-            976,
-            999,
-            972,
-            994
+            983,
+            997,
+            978,
+            991
         ],
         "history": [
             {
@@ -113,60 +121,60 @@
                 "date": "22052026",
                 "map": "de_dust2",
                 "team_result": "loss",
-                "delta": -24,
-                "base_delta": -15,
+                "delta": -17,
+                "base_delta": -10,
                 "modifier": -1.1,
                 "mmr_before": 1000,
-                "mmr_after": 976,
+                "mmr_after": 983,
                 "hltv": 0.91,
                 "score_10": 4.5,
                 "is_calibrating": true,
-                "breakdown": "База (-15) + Импакт (-1.1) = Итог (-24 MMR)"
+                "breakdown": "База (-10) + Импакт (-1.1) = Итог (-17 MMR)"
             },
             {
                 "match_id": "22052026_inferno_24372368_229",
                 "date": "22052026",
                 "map": "de_inferno",
                 "team_result": "win",
-                "delta": 23,
-                "base_delta": 15,
+                "delta": 14,
+                "base_delta": 9,
                 "modifier": 0.2,
-                "mmr_before": 976,
-                "mmr_after": 999,
+                "mmr_before": 983,
+                "mmr_after": 997,
                 "hltv": 1.02,
                 "score_10": 5.1,
                 "is_calibrating": true,
-                "breakdown": "База (+15) + Импакт (+0.2) = Итог (+23 MMR)"
+                "breakdown": "База (+9) + Импакт (+0.2) = Итог (+14 MMR)"
             },
             {
                 "match_id": "22052026_mirage_de_mirage220",
                 "date": "22052026",
                 "map": "de_mirage",
                 "team_result": "loss",
-                "delta": -27,
-                "base_delta": -15,
+                "delta": -19,
+                "base_delta": -10,
                 "modifier": -2.8,
-                "mmr_before": 999,
-                "mmr_after": 972,
+                "mmr_before": 997,
+                "mmr_after": 978,
                 "hltv": 0.77,
                 "score_10": 3.9,
                 "is_calibrating": true,
-                "breakdown": "База (-15) + Импакт (-2.8) = Итог (-27 MMR)"
+                "breakdown": "База (-10) + Импакт (-2.8) = Итог (-19 MMR)"
             },
             {
                 "match_id": "22052026_nuke_24373500_229",
                 "date": "22052026",
                 "map": "de_nuke",
                 "team_result": "win",
-                "delta": 22,
-                "base_delta": 15,
+                "delta": 13,
+                "base_delta": 9,
                 "modifier": -0.2,
-                "mmr_before": 972,
-                "mmr_after": 994,
+                "mmr_before": 978,
+                "mmr_after": 991,
                 "hltv": 0.98,
                 "score_10": 4.9,
                 "is_calibrating": true,
-                "breakdown": "База (+15) + Импакт (-0.2) = Итог (+22 MMR)"
+                "breakdown": "База (+9) + Импакт (-0.2) = Итог (+13 MMR)"
             }
         ]
     },
@@ -385,7 +393,48 @@
             ],
             "advice": "Твой параметр Utility (2.3/10) требует внимания. Дефицит полезного урона и тиммейт-флешек. Заучи по 2 ключевые моменталки и ретейк-смока на каждой соревновательной карте.",
             "radar_boost_text": "Выполнение этого квеста на следующий ранг (Бронза 🥉) даст мощный прирост параметра Utility на радарной диаграмме и увеличит All-Time MMR."
-        }
+        },
+        "individual_skill": [
+            {
+                "icon": "🎯",
+                "title": "Элитная точность первого выстрела (68.6% HS)",
+                "desc": "Прицел удерживается строго на уровне головы независимо от счета на табло. Продолжай тренировать пре-пики и микро-доводки."
+            },
+            {
+                "icon": "⚔️",
+                "title": "Проблемы при равном закупе (K/D 0.71 на Full Buy)",
+                "desc": "При равенстве экипировки проигрываешь лобовые дуэли. Изолируй углы (angle isolation), используй jiggle-peek и не принимай бой без укрытия."
+            },
+            {
+                "icon": "🔄",
+                "title": "Задержка разменов (12.8% трейдов)",
+                "desc": "Партнеры нередко погибают без твоего размена. Держи дистанцию контакта до 2 секунд за энтри и пикай строго на звук перестрелки."
+            }
+        ],
+        "team_context": [
+            {
+                "icon": "🤝",
+                "title": "Сбалансированная командная нагрузка (17.2% урона, 17.8% фрагов)",
+                "desc": "Урон и фраги равномерно распределены внутри состава без экстремальных перекосов."
+            },
+            {
+                "icon": "💰",
+                "title": "Синхронизация командного банка",
+                "desc": "Не докупай девайсы в одиночку на командном эко. Смерти с дефолтным пистолетом против винтовок естественны и не портят твою оценку, главное — копить на полноценный Full Buy."
+            },
+            {
+                "icon": "🛡️",
+                "title": "Удержание преимущества",
+                "desc": "Надежная позиционная игра при численном преимуществе без лишнего риска."
+            }
+        ],
+        "verdict_summary": "Твой игровой почерк на Mirage с AK-47 в руках строится на неплохом аиме с высоким процентом хедшотов, но на этом структура заканчивается. Твоя главная суперсила — это базовое попадание по головам в стандартных перестрелках, однако полный провал в позиционировании и абсолютная пассивность в энтри-дуэлях убивают любой импакт. С такими метриками на фулл-бае и винрейтом в клатчах ты даешь команде лишь минимальный урон, из-за чего твой личный вклад держится на критически низком уровне. Половина матчей выиграна исключительно за счет усилий остальных игроков, и без серьезной работы над выбором позиции и инициативой на карте тебе не закрепиться на тир-1 уровне.",
+        "coach_verdict": "Твой игровой почерк на Mirage с AK-47 в руках строится на неплохом аиме с высоким процентом хедшотов, но на этом структура заканчивается. Твоя главная суперсила — это базовое попадание по головам в стандартных перестрелках, однако полный провал в позиционировании и абсолютная пассивность в энтри-дуэлях убивают любой импакт. С такими метриками на фулл-бае и винрейтом в клатчах ты даешь команде лишь минимальный урон, из-за чего твой личный вклад держится на критически низком уровне. Половина матчей выиграна исключительно за счет усилий остальных игроков, и без серьезной работы над выбором позиции и инициативой на карте тебе не закрепиться на тир-1 уровне.",
+        "coach_verdict_matches_count": 4,
+        "avg_damage_share": 17.2,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
+        "passive_matches": 0
     },
     "stability": {
         "stability_score": 5.0,
@@ -556,7 +605,7 @@
             "adr": 66.0,
             "kd": 0.87,
             "hs_percent": 68.6,
-            "mmr_delta": -6,
+            "mmr_delta": -9,
             "wins": 2,
             "losses": 2,
             "kills": 47,
@@ -571,7 +620,7 @@
             "kd": 0.0,
             "hs_percent": 0.0,
             "kast": 0.0,
-            "mmr_delta": -6
+            "mmr_delta": -9
         },
         "better": [
             "Отличная точность хедшотов: 68.6% HS",
@@ -581,7 +630,7 @@
             "Отрицательный K/D (0.87) — необходимо меньше рисковать в ранних дуэлях",
             "Низкий урон гранатами (1.4 HP/раунд)",
             "Проигрыш ранних дуэлей: 4 первых смертей при 2 опен-киллах",
-            "Отрицательный баланс MMR за сессию: -6"
+            "Отрицательный баланс MMR за сессию: -9"
         ]
     },
     "momentum": {
@@ -2830,8 +2879,8 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 0.91,
             "score_10": 4.5,
-            "mmr_delta": -24,
-            "mmr_breakdown": "База (-15) + Импакт (-1.1) = Итог (-24 MMR)",
+            "mmr_delta": -17,
+            "mmr_breakdown": "База (-10) + Импакт (-1.1) = Итог (-17 MMR)",
             "team_result": "loss",
             "is_win": false,
             "is_loss": true,
@@ -2841,7 +2890,10 @@
             "score_team2": 13,
             "rounds_count": 20,
             "vs_full_buy_kd": 1.0,
-            "tactical_kills": 1
+            "tactical_kills": 1,
+            "damage_share": 17.9,
+            "kill_share": 19.4,
+            "team_share_status": "normal"
         },
         {
             "match_id": "22052026_inferno_24372368_229",
@@ -2872,8 +2924,8 @@
             "pistol_round_deaths": 0,
             "hltv_rating": 1.02,
             "score_10": 5.1,
-            "mmr_delta": 23,
-            "mmr_breakdown": "База (+15) + Импакт (+0.2) = Итог (+23 MMR)",
+            "mmr_delta": 14,
+            "mmr_breakdown": "База (+9) + Импакт (+0.2) = Итог (+14 MMR)",
             "team_result": "win",
             "is_win": true,
             "is_loss": false,
@@ -2883,7 +2935,10 @@
             "score_team2": 8,
             "rounds_count": 21,
             "vs_full_buy_kd": 0.5,
-            "tactical_kills": 0
+            "tactical_kills": 0,
+            "damage_share": 16.8,
+            "kill_share": 14.9,
+            "team_share_status": "normal"
         },
         {
             "match_id": "22052026_mirage_de_mirage220",
@@ -2911,8 +2966,8 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 0.77,
             "score_10": 3.9,
-            "mmr_delta": -27,
-            "mmr_breakdown": "База (-15) + Импакт (-2.8) = Итог (-27 MMR)",
+            "mmr_delta": -19,
+            "mmr_breakdown": "База (-10) + Импакт (-2.8) = Итог (-19 MMR)",
             "team_result": "loss",
             "is_win": false,
             "is_loss": true,
@@ -2922,7 +2977,10 @@
             "score_team2": 2,
             "rounds_count": 15,
             "vs_full_buy_kd": 0.89,
-            "tactical_kills": 0
+            "tactical_kills": 0,
+            "damage_share": 21.6,
+            "kill_share": 20.9,
+            "team_share_status": "normal"
         },
         {
             "match_id": "22052026_nuke_24373500_229",
@@ -2951,8 +3009,8 @@
             "pistol_round_deaths": 0,
             "hltv_rating": 0.98,
             "score_10": 4.9,
-            "mmr_delta": 22,
-            "mmr_breakdown": "База (+15) + Импакт (-0.2) = Итог (+22 MMR)",
+            "mmr_delta": 13,
+            "mmr_breakdown": "База (+9) + Импакт (-0.2) = Итог (+13 MMR)",
             "team_result": "win",
             "is_win": true,
             "is_loss": false,
@@ -2962,7 +3020,10 @@
             "score_team2": 5,
             "rounds_count": 18,
             "vs_full_buy_kd": 0.2,
-            "tactical_kills": 1
+            "tactical_kills": 1,
+            "damage_share": 12.6,
+            "kill_share": 16.2,
+            "team_share_status": "normal"
         }
     ]
 }

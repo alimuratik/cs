@@ -107,132 +107,34 @@
         </div>
     </header>
 
-    <!-- Latest Session Progress Block -->
-    {% if player.session_progress %}
-    <section class="section session-progress-section glassmorphism p-5 rounded-2xl border border-slate-800 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
-            <div class="flex items-center gap-2">
-                <span class="text-xl">⚡</span>
-                <div>
-                    <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
-                        Динамика крайней сессии
-                        <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2 py-0.5 rounded-full">
-                            {{ player.session_progress.date_display }}
-                        </span>
-                    </h2>
-                    <p class="text-xs text-slate-400 mt-0.5">
-                        Матчей за день: <strong class="text-slate-200">{{ player.session_progress.matches_count }}</strong> 
-                        &bull; Сравнение: <span class="text-slate-300">{{ player.session_progress.compare_label }}</span>
-                    </p>
-                </div>
-            </div>
-            
-            <!-- Quick Delta Badges -->
-            <div class="flex flex-wrap items-center gap-2">
-                <!-- HLTV Delta -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-                    <span class="text-slate-400">HLTV:</span>
-                    <span class="font-bold text-slate-200">{{ player.session_progress.current.hltv }}</span>
-                    {% if player.session_progress.deltas.hltv > 0 %}
-                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.hltv }}</span>
-                    {% elif player.session_progress.deltas.hltv < 0 %}
-                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.hltv }}</span>
-                    {% else %}
-                    <span class="text-slate-500 font-bold">&plusmn;0</span>
-                    {% endif %}
-                </div>
-
-                <!-- ADR Delta -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-                    <span class="text-slate-400">ADR:</span>
-                    <span class="font-bold text-slate-200">{{ player.session_progress.current.adr }}</span>
-                    {% if player.session_progress.deltas.adr > 0 %}
-                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.adr }}</span>
-                    {% elif player.session_progress.deltas.adr < 0 %}
-                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.adr }}</span>
-                    {% else %}
-                    <span class="text-slate-500 font-bold">&plusmn;0</span>
-                    {% endif %}
-                </div>
-
-                <!-- K/D Delta -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-                    <span class="text-slate-400">K/D:</span>
-                    <span class="font-bold text-slate-200">{{ player.session_progress.current.kd }}</span>
-                    {% if player.session_progress.deltas.kd > 0 %}
-                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.kd }}</span>
-                    {% elif player.session_progress.deltas.kd < 0 %}
-                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.kd }}</span>
-                    {% else %}
-                    <span class="text-slate-500 font-bold">&plusmn;0</span>
-                    {% endif %}
-                </div>
-
-                <!-- HS% Delta -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-                    <span class="text-slate-400">HS%:</span>
-                    <span class="font-bold text-slate-200">{{ player.session_progress.current.hs_percent }}%</span>
-                    {% if player.session_progress.deltas.hs_percent > 0 %}
-                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.hs_percent }}%</span>
-                    {% elif player.session_progress.deltas.hs_percent < 0 %}
-                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.hs_percent }}%</span>
-                    {% else %}
-                    <span class="text-slate-500 font-bold">&plusmn;0</span>
-                    {% endif %}
-                </div>
-
-                <!-- MMR Delta -->
-                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-                    <span class="text-slate-400">MMR:</span>
-                    {% if player.session_progress.deltas.mmr_delta > 0 %}
-                    <span class="text-emerald-400 font-bold">+{{ player.session_progress.deltas.mmr_delta }}</span>
-                    {% elif player.session_progress.deltas.mmr_delta < 0 %}
-                    <span class="text-rose-400 font-bold">{{ player.session_progress.deltas.mmr_delta }}</span>
-                    {% else %}
-                    <span class="text-slate-400 font-bold">0</span>
-                    {% endif %}
-                </div>
-            </div>
+    
+    <!-- Player Profile Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
+        <div class="segmented-nav-track site-tab-nav">
+            <button type="button" class="segmented-nav-btn site-tab-btn active" data-player-tab="player-tab-overview">
+                <span>📊</span> <span>Обзор</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-player-tab="player-tab-tactics">
+                <span>🎭</span> <span>Тактика & Роли</span>
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-player-tab="player-tab-achievements">
+                <span>🏆</span> <span>Квесты</span>
+                {% if player.achievements and player.achievements.summary %}
+                <span class="tab-badge">
+                    {{ player.achievements.summary.unlocked_count }}/{{ player.achievements.summary.total_count }}
+                </span>
+                {% endif %}
+            </button>
+            <button type="button" class="segmented-nav-btn site-tab-btn" data-player-tab="player-tab-matches">
+                <span>📜</span> <span>Матчи</span>
+                <span class="tab-badge">{{ player.total_matches }}</span>
+            </button>
         </div>
+    </div>
 
-        <!-- 2 Columns: Better vs Worse -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- What got better -->
-            <div class="bg-emerald-950/20 border border-emerald-800/40 rounded-xl p-3.5">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="text-sm">📈</span>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300">Что стало лучше (Прогресс)</h3>
-                </div>
-                <ul class="space-y-1.5">
-                    {% for item in player.session_progress.better %}
-                    <li class="text-xs text-slate-200 flex items-start gap-2">
-                        <span class="text-emerald-400 mt-0.5">&bull;</span>
-                        <span>{{ item }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <!-- Areas of improvement / What got worse -->
-            <div class="bg-rose-950/20 border border-rose-800/40 rounded-xl p-3.5">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="text-sm">📉</span>
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-rose-300">Зоны внимания (Что просело)</h3>
-                </div>
-                <ul class="space-y-1.5">
-                    {% for item in player.session_progress.worse %}
-                    <li class="text-xs text-slate-200 flex items-start gap-2">
-                        <span class="text-rose-400 mt-0.5">&bull;</span>
-                        <span>{{ item }}</span>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Unified Competitive Profile & Overview Stats Hub (KASE vs FACEIT Tabs) -->
+    <!-- TAB 1: OVERVIEW & STATS -->
+    <div id="player-tab-overview" class="tab-pane player-tab-pane active">
+<!-- Unified Competitive Profile & Overview Stats Hub (KASE vs FACEIT Tabs) -->
     <section class="section stats-hub-section glassmorphism p-6 rounded-2xl border border-slate-800/80 mb-8 shadow-2xl relative overflow-hidden">
         <!-- Ambient Decorative Watermark -->
         <div id="stats-hub-watermark-kase" class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none select-none transition-opacity duration-300">
@@ -347,7 +249,7 @@
             {% elif player.rank_tier.level == 10 %}
             <div class="kase-level-progress-box mb-5 p-3 px-4 rounded-xl bg-red-950/30 border border-red-500/40 flex items-center justify-between text-xs font-mono">
                 <span class="text-red-400 font-bold flex items-center gap-2">
-                    <span>👑</span> <span>Максимальный уровень мастерства (Level 10)</span>
+                    <span>👑</span> <span>Высший ранг мастерства (Легенда)</span>
                 </span>
                 <span class="text-white font-bold">{{ player.mmr.current_mmr }} MMR</span>
             </div>
@@ -608,6 +510,131 @@
         </div>
     </section>
 
+    <!-- Latest Session Progress Block -->
+    {% if player.session_progress %}
+    <section class="section session-progress-section glassmorphism p-5 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800/80 pb-3 mb-4">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">⚡</span>
+                <div>
+                    <h2 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                        Динамика крайней сессии
+                        <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/50 px-2 py-0.5 rounded-full">
+                            {{ player.session_progress.date_display }}
+                        </span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Матчей за день: <strong class="text-slate-200">{{ player.session_progress.matches_count }}</strong> 
+                        &bull; Сравнение: <span class="text-slate-300">{{ player.session_progress.compare_label }}</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Quick Delta Badges -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- HLTV Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">HLTV:</span>
+                    <span class="font-bold text-slate-200">{{ player.session_progress.current.hltv }}</span>
+                    {% if player.session_progress.deltas.hltv > 0 %}
+                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.hltv }}</span>
+                    {% elif player.session_progress.deltas.hltv < 0 %}
+                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.hltv }}</span>
+                    {% else %}
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    {% endif %}
+                </div>
+
+                <!-- ADR Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">ADR:</span>
+                    <span class="font-bold text-slate-200">{{ player.session_progress.current.adr }}</span>
+                    {% if player.session_progress.deltas.adr > 0 %}
+                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.adr }}</span>
+                    {% elif player.session_progress.deltas.adr < 0 %}
+                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.adr }}</span>
+                    {% else %}
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    {% endif %}
+                </div>
+
+                <!-- K/D Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">K/D:</span>
+                    <span class="font-bold text-slate-200">{{ player.session_progress.current.kd }}</span>
+                    {% if player.session_progress.deltas.kd > 0 %}
+                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.kd }}</span>
+                    {% elif player.session_progress.deltas.kd < 0 %}
+                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.kd }}</span>
+                    {% else %}
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    {% endif %}
+                </div>
+
+                <!-- HS% Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">HS%:</span>
+                    <span class="font-bold text-slate-200">{{ player.session_progress.current.hs_percent }}%</span>
+                    {% if player.session_progress.deltas.hs_percent > 0 %}
+                    <span class="text-emerald-400 font-bold">▲+{{ player.session_progress.deltas.hs_percent }}%</span>
+                    {% elif player.session_progress.deltas.hs_percent < 0 %}
+                    <span class="text-rose-400 font-bold">▼{{ player.session_progress.deltas.hs_percent }}%</span>
+                    {% else %}
+                    <span class="text-slate-500 font-bold">&plusmn;0</span>
+                    {% endif %}
+                </div>
+
+                <!-- MMR Delta -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
+                    <span class="text-slate-400">MMR:</span>
+                    {% if player.session_progress.deltas.mmr_delta > 0 %}
+                    <span class="text-emerald-400 font-bold">+{{ player.session_progress.deltas.mmr_delta }}</span>
+                    {% elif player.session_progress.deltas.mmr_delta < 0 %}
+                    <span class="text-rose-400 font-bold">{{ player.session_progress.deltas.mmr_delta }}</span>
+                    {% else %}
+                    <span class="text-slate-400 font-bold">0</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 Columns: Better vs Worse -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- What got better -->
+            <div class="bg-emerald-950/20 border border-emerald-800/40 rounded-xl p-3.5">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-sm">📈</span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-300">Что стало лучше (Прогресс)</h3>
+                </div>
+                <ul class="space-y-1.5">
+                    {% for item in player.session_progress.better %}
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-emerald-400 mt-0.5">&bull;</span>
+                        <span>{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Areas of improvement / What got worse -->
+            <div class="bg-rose-950/20 border border-rose-800/40 rounded-xl p-3.5">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-sm">📉</span>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-rose-300">Зоны внимания (Что просело)</h3>
+                </div>
+                <ul class="space-y-1.5">
+                    {% for item in player.session_progress.worse %}
+                    <li class="text-xs text-slate-200 flex items-start gap-2">
+                        <span class="text-rose-400 mt-0.5">&bull;</span>
+                        <span>{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
     <!-- Radar & Skill Bars Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Radar Chart Section -->
@@ -649,6 +676,259 @@
         </section>
     </div>
 
+
+    
+    </div>
+
+    <!-- TAB 2: TACTICS & ROLES -->
+    <div id="player-tab-tactics" class="tab-pane player-tab-pane">
+<!-- 2D Player Archetype Matrix -->
+    {% if player.archetype %}
+    <section class="section archetype-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800/80">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    🧭 2D Матрица игрового архетипа
+                </h2>
+                <p class="text-xs text-slate-400 mt-1">Оси позиционирования: Агрессия/Опенинг (Ось X) и Звездный керри vs Командная опора (Ось Y)</p>
+            </div>
+            <div class="inline-flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
+                <span class="text-emerald-400 text-sm">🎯</span>
+                <span class="text-xs font-bold text-white">{{ player.archetype.title }}</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+            <!-- Matrix Visual -->
+            <div class="lg:col-span-6 flex justify-center">
+                <div class="archetype-matrix-wrapper relative w-full max-w-[300px] sm:max-w-[340px] aspect-square bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-inner overflow-hidden">
+                    <!-- Crosshairs -->
+                    <div class="matrix-crosshair-x absolute left-0 right-0 top-1/2 h-[1px] bg-slate-700/60 border-t border-dashed border-slate-600/50"></div>
+                    <div class="matrix-crosshair-y absolute top-0 bottom-0 left-1/2 w-[1px] bg-slate-700/60 border-l border-dashed border-slate-600/50"></div>
+
+                    <!-- Labels -->
+                    <span class="matrix-label label-top absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-amber-400 tracking-wider">
+                        <span class="sm:hidden">⭐ Керри (+Y)</span>
+                        <span class="hidden sm:inline">⭐ Звездный керри (+Y)</span>
+                    </span>
+                    <span class="matrix-label label-bottom absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-sky-400 tracking-wider">
+                        <span class="sm:hidden">🛡️ Опора (-Y)</span>
+                        <span class="hidden sm:inline">🛡️ Системная опора (-Y)</span>
+                    </span>
+                    <span class="matrix-label label-left absolute left-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-slate-400 tracking-wider">
+                        🧠 Пассив (-X)
+                    </span>
+                    <span class="matrix-label label-right absolute right-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-rose-400 tracking-wider">
+                        ⚔️ Агрессия (+X)
+                    </span>
+
+                    <!-- Archetype Dot -->
+                    <div class="archetype-dot absolute w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-lg shadow-emerald-400/80 -translate-x-1/2 -translate-y-1/2 z-10"
+                         style="left: {{ (50 + (player.archetype.x * 0.4))|round(1) }}%; top: {{ (50 - (player.archetype.y * 0.4))|round(1) }}%;">
+                        <div class="archetype-pulse absolute inset-0 rounded-full bg-emerald-400/50 animate-ping"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archetype Description & Explanation -->
+            <div class="lg:col-span-6 space-y-4">
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Характеристика профиля</span>
+                    <h3 class="text-lg font-black text-white mt-0.5">{{ player.archetype.title }}</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mt-2">{{ player.archetype.desc }}</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Индекс агрессии (X)</span>
+                        <span class="text-base font-bold {% if player.archetype.x > 0 %}text-rose-400{% else %}text-sky-400{% endif %}">
+                            {{ player.archetype.x > 0 and '+' or '' }}{{ player.archetype.x }}
+                        </span>
+                    </div>
+                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Фактор влияния (Y)</span>
+                        <span class="text-base font-bold {% if player.archetype.y > 0 %}text-amber-400{% else %}text-emerald-400{% endif %}">
+                            {{ player.archetype.y > 0 and '+' or '' }}{{ player.archetype.y }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Связка: Фактический стиль ➔ Рекомендуемая роль -->
+                <a href="{{ root_path }}roles.html#{{ player.best_role_slug }}" class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs hover:border-emerald-500/40 transition no-underline block" title="Подробнее о рекомендованной тактической роли">
+                    <div>
+                        <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль (демки)</span>
+                        <strong class="text-emerald-400 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
+                    </div>
+                    <span class="text-slate-500 font-mono text-base px-2">➔</span>
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 block uppercase">Рекомендуемая роль</span>
+                        <strong class="text-amber-300 font-mono">{{ player.recommendations.best_role if player.recommendations else 'Универсал' }}</strong>
+                    </div>
+                </a>
+
+                <!-- Ролевой анализ: Командная роль vs Соло-класс Faceit -->
+                {% if player.faceit and player.faceit.found %}
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-orange-500/30">
+                    <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-orange-500/20">
+                        <span class="text-[10px] font-black uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
+                            <span>⚖️</span> <span>Командная роль vs Соло-класс Faceit</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">Level {{ player.faceit.skill_level }} • {{ player.faceit.elo }} ELO</span>
+                    </div>
+                    <div class="text-xs text-slate-300 leading-relaxed">
+                        {% if player.faceit.skill_level >= 7 and player.archetype.y < 0 %}
+                        <p>В пачке игрок выполняет системную черновую работу и дисциплинированно закрывает опорные позиции (<strong class="text-sky-300">{{ player.archetype.title }}</strong>), но высокий уровень на Faceit (<strong class="text-amber-300">{{ player.faceit.elo }} Elo, K/D {{ player.faceit.stats.kd }}</strong>) указывает на мощный скрытый потенциал индивидуального керри.</p>
+                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd >= 1.15 %}
+                        <p>Сбалансированный энтри-фрагер: высокий индивидуальный класс на Faceit (<strong class="text-emerald-400">K/D {{ player.faceit.stats.kd }}</strong>) подтверждает, что агрессивные опенинг-дуэли в пачке подкреплены стабильной механикой стрельбы.</p>
+                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd < 1.0 %}
+                        <p>Командно-зависимая агрессия: высокая активность на первых дуэлях эффективна в пачке с командным разменом, но в открытых соло-играх (<strong class="text-rose-400">Faceit K/D {{ player.faceit.stats.kd }}</strong>) игрок чаще оказывается уязвимым без командных флешек.</p>
+                        {% else %}
+                        <p>Сбалансированная синергия: стиль позиционирования в команде (<strong class="text-emerald-300">{{ player.archetype.title }}</strong>) гармонично сочетается с личной эффективностью в открытом ладдере Faceit (<strong class="text-white">{{ player.faceit.elo }} Elo</strong>).</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="text-[11px] text-slate-400 bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
+                    💡 Координаты формируются динамически: ось X рассчитывается по частоте опенинг-дуэлей (FK/FD) и ранней агрессии, ось Y — по вкладу в победы раундов (HLTV, KAST, клатчи).
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 🎭 ТАКТИЧЕСКИЕ РОЛИ И СПЕЦИАЛИЗАЦИЯ (СОВМЕСТИМОСТЬ СО ВСЕМИ 8 РОЛЯМИ) -->
+    {% if player.role_affinities %}
+    <section class="section roles-affinity-section mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div>
+                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                    <span>🎭</span> <span>Совместимость с 8 тактическими ролями</span>
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">
+                    Тактическая предрасположенность по демкам, боевым метрикам и матрице 10 навыков
+                </p>
+            </div>
+            <a href="{{ root_path }}roles.html" class="self-start sm:self-auto text-xs font-bold px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-1.5 shadow-sm">
+                <span>Штаб ролей</span>
+                <span class="text-xs font-mono">➔</span>
+            </a>
+        </div>
+
+        <!-- 1. Топ-2 профильные роли игрока (Ключевые акценты) -->
+        <div class="role-top-highlights-grid">
+            {% for ra in player.role_affinities[:2] %}
+            <div class="role-highlight-card">
+                <div class="flex items-center justify-between gap-3 mb-2.5">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-2xl shrink-0">{{ ra.icon }}</span>
+                        <div class="min-w-0">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold flex items-center gap-1.5">
+                                {% if loop.first %}
+                                <span class="text-amber-400">👑 Профиль #1</span>
+                                {% else %}
+                                <span class="text-emerald-400">⭐ Профиль #2</span>
+                                {% endif %}
+                                {% if ra.badge_text %}
+                                <span>•</span>
+                                <span class="text-[9px] px-1.5 py-0.2 rounded-full {{ ra.badge_class }}">{{ ra.badge_text }}</span>
+                                {% endif %}
+                            </div>
+                            <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="font-bold text-sm sm:text-base text-white hover:text-emerald-400 transition truncate block" title="Подробнее о роли в тактическом штабе">
+                                {{ ra.title }}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0 font-mono">
+                        <div class="text-xl font-black {{ ra.text_class }} leading-none">{{ ra.affinity }}%</div>
+                        <span class="text-[9px] text-slate-500 block mt-0.5">порог ≥{{ ra.threshold }}%</span>
+                    </div>
+                </div>
+
+                <!-- Progress bar -->
+                <div class="h-2 w-full bg-slate-800/80 rounded-full overflow-hidden border border-slate-700/60 p-0.5 mb-2.5">
+                    <div class="h-full rounded-full transition-all duration-500 {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
+                </div>
+
+                <!-- Metric & Coach note -->
+                <div class="flex items-center justify-between text-xs font-mono text-slate-300 pb-2 mb-2 border-b border-slate-800/60">
+                    <span class="text-slate-400 text-[11px]">{{ ra.primary_metric.name }}:</span>
+                    <span class="font-bold {% if ra.primary_metric.is_met %}text-emerald-400{% else %}text-amber-400{% endif %}">
+                        {{ ra.primary_metric.value }} <span class="text-[10px] text-slate-500 font-normal">({{ ra.primary_metric.norm }})</span>
+                    </span>
+                </div>
+                <p class="text-[11px] text-slate-300 leading-relaxed line-clamp-2">
+                    {{ ra.reasoning }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- 2. Компактная матрица всех 8 ролей с раскрытием формул -->
+        <div class="role-compact-grid">
+            {% for ra in player.role_affinities %}
+            <details class="role-compact-item group">
+                <summary class="role-compact-summary">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="text-xl shrink-0">{{ ra.icon }}</span>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="font-bold text-xs sm:text-sm text-white hover:text-emerald-400 transition truncate" onclick="event.stopPropagation();">
+                                    {{ ra.short_title }}
+                                </a>
+                                <span class="text-[9px] font-bold px-1.5 py-0.2 rounded-full {{ ra.badge_class }}">
+                                    {{ ra.verdict }}
+                                </span>
+                            </div>
+                            <div class="text-[10px] text-slate-400 font-mono mt-0.5 truncate">
+                                <span>{{ ra.primary_metric.name }}:</span>
+                                <strong class="{% if ra.primary_metric.is_met %}text-emerald-400{% else %}text-amber-400{% endif %} font-semibold">{{ ra.primary_metric.value }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 shrink-0">
+                        <div class="w-16 h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700/60 p-0.5 hidden sm:block">
+                            <div class="h-full rounded-full {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
+                        </div>
+                        <div class="text-right font-mono min-w-[42px]">
+                            <span class="font-black text-sm {{ ra.text_class }}">{{ ra.affinity }}%</span>
+                        </div>
+                        <span class="text-slate-400 text-[10px] transition-transform duration-200 group-open:rotate-180 p-1">▼</span>
+                    </div>
+                </summary>
+
+                <div class="role-compact-details space-y-3">
+                    <!-- Skills weight breakdown -->
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                            🧮 Формула и влияющие навыки:
+                        </span>
+                        <div class="flex flex-wrap gap-1.5">
+                            {% for sk in ra.skills_breakdown %}
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-[11px]">
+                                <span>{{ sk.icon }}</span>
+                                <span class="text-slate-300">{{ sk.name }} <span class="text-[9px] text-slate-500 font-mono">({{ sk.weight_pct }}%)</span>:</span>
+                                <span class="font-bold font-mono {{ sk.rating_class }}">{{ sk.rating }}/10</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Coach reasoning & lore -->
+                    <div class="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80 text-[11px] leading-relaxed text-slate-300">
+                        <strong class="text-emerald-400 block mb-0.5">💡 Вердикт тренера:</strong>
+                        {{ ra.reasoning }}
+                        <div class="text-[10px] text-slate-400 mt-2 pt-2 border-t border-slate-800/60">
+                            <strong>Описание роли:</strong> {{ ra.lore }}
+                        </div>
+                    </div>
+                </div>
+            </details>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
 
     <!-- Map Highlights: Signature Fortress & Kryptonite (KASE vs FACEIT Tabs) -->
     {% if (player.map_performance and (player.map_performance.favorite_map or player.map_performance.kryptonite_map)) or (player.faceit_map_performance and player.faceit_map_performance.has_data) %}
@@ -861,158 +1141,109 @@
     </section>
     {% endif %}
 
-    <!-- 2D Player Archetype Matrix -->
-    {% if player.archetype %}
-    <section class="section archetype-section glassmorphism p-6 rounded-2xl border border-slate-800 mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-800/80">
-            <div>
-                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    🧭 2D Матрица игрового архетипа
-                </h2>
-                <p class="text-xs text-slate-400 mt-1">Оси позиционирования: Агрессия/Опенинг (Ось X) и Звездный керри vs Командная опора (Ось Y)</p>
-            </div>
-            <div class="inline-flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-emerald-500/30">
-                <span class="text-emerald-400 text-sm">🎯</span>
-                <span class="text-xs font-bold text-white">{{ player.archetype.title }}</span>
-            </div>
-        </div>
+    
+    </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-            <!-- Matrix Visual -->
-            <div class="lg:col-span-6 flex justify-center">
-                <div class="archetype-matrix-wrapper relative w-full max-w-[300px] sm:max-w-[340px] aspect-square bg-slate-950/80 border border-slate-800 rounded-2xl p-4 shadow-inner overflow-hidden">
-                    <!-- Crosshairs -->
-                    <div class="matrix-crosshair-x absolute left-0 right-0 top-1/2 h-[1px] bg-slate-700/60 border-t border-dashed border-slate-600/50"></div>
-                    <div class="matrix-crosshair-y absolute top-0 bottom-0 left-1/2 w-[1px] bg-slate-700/60 border-l border-dashed border-slate-600/50"></div>
-
-                    <!-- Labels -->
-                    <span class="matrix-label label-top absolute top-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-amber-400 tracking-wider">
-                        <span class="sm:hidden">⭐ Керри (+Y)</span>
-                        <span class="hidden sm:inline">⭐ Звездный керри (+Y)</span>
-                    </span>
-                    <span class="matrix-label label-bottom absolute bottom-2.5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase text-sky-400 tracking-wider">
-                        <span class="sm:hidden">🛡️ Опора (-Y)</span>
-                        <span class="hidden sm:inline">🛡️ Системная опора (-Y)</span>
-                    </span>
-                    <span class="matrix-label label-left absolute left-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-slate-400 tracking-wider">
-                        🧠 Пассив (-X)
-                    </span>
-                    <span class="matrix-label label-right absolute right-2.5 top-[calc(50%-22px)] text-[10px] font-black uppercase text-rose-400 tracking-wider">
-                        ⚔️ Агрессия (+X)
-                    </span>
-
-                    <!-- Archetype Dot -->
-                    <div class="archetype-dot absolute w-4 h-4 bg-emerald-400 rounded-full border-2 border-white shadow-lg shadow-emerald-400/80 -translate-x-1/2 -translate-y-1/2 z-10"
-                         style="left: {{ (50 + (player.archetype.x * 0.4))|round(1) }}%; top: {{ (50 - (player.archetype.y * 0.4))|round(1) }}%;">
-                        <div class="archetype-pulse absolute inset-0 rounded-full bg-emerald-400/50 animate-ping"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Archetype Description & Explanation -->
-            <div class="lg:col-span-6 space-y-4">
-                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800">
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Характеристика профиля</span>
-                    <h3 class="text-lg font-black text-white mt-0.5">{{ player.archetype.title }}</h3>
-                    <p class="text-xs text-slate-300 leading-relaxed mt-2">{{ player.archetype.desc }}</p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 font-mono text-xs">
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
-                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Индекс агрессии (X)</span>
-                        <span class="text-base font-bold {% if player.archetype.x > 0 %}text-rose-400{% else %}text-sky-400{% endif %}">
-                            {{ player.archetype.x > 0 and '+' or '' }}{{ player.archetype.x }}
-                        </span>
-                    </div>
-                    <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
-                        <span class="text-slate-400 text-[10px] uppercase block mb-1">Фактор влияния (Y)</span>
-                        <span class="text-base font-bold {% if player.archetype.y > 0 %}text-amber-400{% else %}text-emerald-400{% endif %}">
-                            {{ player.archetype.y > 0 and '+' or '' }}{{ player.archetype.y }}
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Связка: Фактический стиль ➔ Рекомендуемая роль -->
-                <a href="{{ root_path }}roles.html#{{ player.best_role_slug }}" class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs hover:border-emerald-500/40 transition no-underline block" title="Подробнее о рекомендованной тактической роли">
-                    <div>
-                        <span class="text-[10px] text-slate-400 block uppercase">Фактический стиль (демки)</span>
-                        <strong class="text-emerald-400 font-mono">{{ player.roles[0] if player.roles else 'Рифлер' }}</strong>
-                    </div>
-                    <span class="text-slate-500 font-mono text-base px-2">➔</span>
-                    <div class="text-right">
-                        <span class="text-[10px] text-slate-400 block uppercase">Рекомендуемая роль</span>
-                        <strong class="text-amber-300 font-mono">{{ player.recommendations.best_role if player.recommendations else 'Универсал' }}</strong>
-                    </div>
-                </a>
-
-                <!-- Ролевой анализ: Командная роль vs Соло-класс Faceit -->
-                {% if player.faceit and player.faceit.found %}
-                <div class="bg-slate-900/80 p-4 rounded-xl border border-orange-500/30">
-                    <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-orange-500/20">
-                        <span class="text-[10px] font-black uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
-                            <span>⚖️</span> <span>Командная роль vs Соло-класс Faceit</span>
-                        </span>
-                        <span class="text-[10px] font-mono text-slate-400">Level {{ player.faceit.skill_level }} • {{ player.faceit.elo }} ELO</span>
-                    </div>
-                    <div class="text-xs text-slate-300 leading-relaxed">
-                        {% if player.faceit.skill_level >= 7 and player.archetype.y < 0 %}
-                        <p>В пачке игрок выполняет системную черновую работу и дисциплинированно закрывает опорные позиции (<strong class="text-sky-300">{{ player.archetype.title }}</strong>), но высокий уровень на Faceit (<strong class="text-amber-300">{{ player.faceit.elo }} Elo, K/D {{ player.faceit.stats.kd }}</strong>) указывает на мощный скрытый потенциал индивидуального керри.</p>
-                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd >= 1.15 %}
-                        <p>Сбалансированный энтри-фрагер: высокий индивидуальный класс на Faceit (<strong class="text-emerald-400">K/D {{ player.faceit.stats.kd }}</strong>) подтверждает, что агрессивные опенинг-дуэли в пачке подкреплены стабильной механикой стрельбы.</p>
-                        {% elif player.archetype.x > 1.5 and player.faceit.stats.kd < 1.0 %}
-                        <p>Командно-зависимая агрессия: высокая активность на первых дуэлях эффективна в пачке с командным разменом, но в открытых соло-играх (<strong class="text-rose-400">Faceit K/D {{ player.faceit.stats.kd }}</strong>) игрок чаще оказывается уязвимым без командных флешек.</p>
-                        {% else %}
-                        <p>Сбалансированная синергия: стиль позиционирования в команде (<strong class="text-emerald-300">{{ player.archetype.title }}</strong>) гармонично сочетается с личной эффективностью в открытом ладдере Faceit (<strong class="text-white">{{ player.faceit.elo }} Elo</strong>).</p>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="text-[11px] text-slate-400 bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 leading-relaxed">
-                    💡 Координаты формируются динамически: ось X рассчитывается по частоте опенинг-дуэлей (FK/FD) и ранней агрессии, ось Y — по вкладу в победы раундов (HLTV, KAST, клатчи).
-                </div>
-            </div>
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Strengths & Weaknesses SWOT Grid -->
-    <section class="section swot-section mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="swot-column glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
-                <h2 class="section-title text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
-                    💪 Сильные стороны
-                </h2>
-                <ul class="space-y-2 text-sm text-slate-200">
-                    {% for strength in player.strengths %}
-                    <li class="flex items-start gap-2"><span class="text-emerald-400">✅</span> {{ strength }}</li>
-                    {% else %}
-                    <li class="flex items-start gap-2"><span class="text-emerald-400">✅</span> Базовая стабильность в стрельбе</li>
-                    {% endfor %}
-                </ul>
-            </div>
-
-            <div class="swot-column glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-rose-950/10">
-                <h2 class="section-title text-lg font-bold text-rose-400 mb-3 flex items-center gap-2">
-                    ⚠️ Слабые стороны
-                </h2>
-                <ul class="space-y-2 text-sm text-slate-200">
-                    {% for weakness in player.weaknesses %}
-                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> {{ weakness }}</li>
-                    {% else %}
-                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> Требуется больше практики на картах</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- Recommendations Section -->
+    <!-- TAB 3: QUESTS & ACHIEVEMENTS -->
+    <div id="player-tab-achievements" class="tab-pane player-tab-pane">
+<!-- Recommendations Section -->
     <section class="section personal-recs-section mb-8">
         <div class="mb-4">
-            <h2 class="section-title text-2xl font-bold text-white">🧠 Персональные рекомендации</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Автоматические советы по тренировкам и роли в команде</p>
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                <span>🧠 Персональный тренерский аудит</span>
+                <span class="text-xs font-mono px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">Anti-Outcome Bias</span>
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">Объективная оценка личного мастерства и командных условий без когнитивного искажения счётом матча</p>
         </div>
+
+        {% if player.recommendations.verdict_summary %}
+        <!-- Честный вердикт главного тренера (Anti-Outcome Bias) -->
+        <div class="mb-6 p-4 sm:p-5 rounded-2xl glassmorphism border border-amber-500/40 bg-gradient-to-r from-amber-950/30 via-slate-900/90 to-emerald-950/20 shadow-lg">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2 pb-2 border-b border-slate-800/80">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">⚖️</span>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-amber-300">Честный вердикт тренера</h3>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap text-[11px] font-mono">
+                    <span class="px-2 py-0.5 rounded bg-slate-800/80 text-slate-300 border border-slate-700" title="Средняя доля урона команды за матч">
+                        🔥 Вклад в урон: <strong class="text-emerald-400">{{ player.recommendations.avg_damage_share }}%</strong>
+                    </span>
+                    <span class="px-2 py-0.5 rounded bg-slate-800/80 text-slate-300 border border-slate-700" title="Средняя доля фрагов команды за матч">
+                        🎯 Вклад во фраги: <strong class="text-amber-400">{{ player.recommendations.avg_kill_share }}%</strong>
+                    </span>
+                    {% if player.recommendations.titan_matches > 0 %}
+                    <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold" title="Матчи с поражением, где игрок набил ≥30% командного урона">
+                        👑 Титан: {{ player.recommendations.titan_matches }} игр
+                    </span>
+                    {% endif %}
+                    {% if player.recommendations.passive_matches > 0 %}
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700" title="Победные матчи с долей командного урона ≤11%">
+                        💤 Пассивность: {{ player.recommendations.passive_matches }} игр
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-200 leading-relaxed italic">
+                «{{ player.recommendations.verdict_summary }}»
+            </p>
+        </div>
+        {% endif %}
+
+        {% if player.recommendations.individual_skill or player.recommendations.team_context %}
+        <!-- ДВЕ КАТЕГОРИИ РЕКОМЕНДАЦИЙ -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+            <!-- Категория А: Личный скилл -->
+            <div class="glassmorphism p-4 sm:p-5 rounded-2xl border border-blue-500/30 bg-blue-950/10 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-blue-500/20">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🎯</span>
+                            <h3 class="text-sm font-bold text-blue-300 uppercase tracking-wide">Категория А: Личный скилл</h3>
+                        </div>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">Не зависит от счёта</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mb-3">Техническая точность, микро-дуэли при равном закупе (Full Buy) и тайминги размена</p>
+                    <div class="space-y-2.5">
+                        {% for item in player.recommendations.individual_skill %}
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/30 transition">
+                            <div class="flex items-center gap-2 text-xs font-bold text-white mb-1">
+                                <span>{{ item.icon }}</span>
+                                <span>{{ item.title }}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed">{{ item.desc }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Категория Б: Командный контекст -->
+            <div class="glassmorphism p-4 sm:p-5 rounded-2xl border border-amber-500/30 bg-amber-950/10 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-amber-500/20">
+                        <div class="flex items-center gap-2">
+                            <span class="text-base">🤝</span>
+                            <h3 class="text-sm font-bold text-amber-300 uppercase tracking-wide">Категория Б: Командный контекст</h3>
+                        </div>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">Влияние условий игры</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mb-3">Доля вклада в команду (Team Share), выживание на эко, дисциплина в большинстве 5v3</p>
+                    <div class="space-y-2.5">
+                        {% for item in player.recommendations.team_context %}
+                        <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-amber-500/30 transition">
+                            <div class="flex items-center gap-2 text-xs font-bold text-white mb-1">
+                                <span>{{ item.icon }}</span>
+                                <span>{{ item.title }}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 leading-relaxed">{{ item.desc }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="rec-card glassmorphism p-4 rounded-xl border border-blue-500/30 bg-blue-950/10">
                 <div class="font-bold text-blue-400 text-sm mb-2 flex items-center gap-2">🎯 Что тренировать</div>
@@ -1067,9 +1298,9 @@
                         {% if tq.tier == 3 %}medallion-gold
                         {% elif tq.tier == 2 %}medallion-silver
                         {% elif tq.tier == 1 %}medallion-bronze
-                        {% else %}medallion-locked{% endif %}" style="width: 58px; height: 58px;">
-                        <span class="medallion-icon text-3xl">{{ tq.icon }}</span>
-                        <div class="medallion-stars-ribbon font-mono text-[10px]">
+                        {% else %}medallion-locked{% endif %}" style="width: 42px; height: 42px;">
+                        <span class="medallion-icon text-xl">{{ tq.icon }}</span>
+                        <div class="medallion-stars-ribbon font-mono text-[7px]">
                             {% if tq.tier == 3 %}★★★{% elif tq.tier == 2 %}★★{% elif tq.tier == 1 %}★{% else %}☆☆☆{% endif %}
                         </div>
                     </div>
@@ -1170,9 +1401,9 @@
                                 {% if q.tier == 3 %}medallion-gold
                                 {% elif q.tier == 2 %}medallion-silver
                                 {% elif q.tier == 1 %}medallion-bronze
-                                {% else %}medallion-locked{% endif %}" style="width: 44px; height: 44px;">
-                                <span class="medallion-icon text-xl">{{ q.icon }}</span>
-                                <div class="medallion-stars-ribbon font-mono text-[8px]">
+                                {% else %}medallion-locked{% endif %}" style="width: 36px; height: 36px;">
+                                <span class="medallion-icon text-base">{{ q.icon }}</span>
+                                <div class="medallion-stars-ribbon font-mono text-[7px]">
                                     {% if q.tier == 3 %}★★★{% elif q.tier == 2 %}★★{% elif q.tier == 1 %}★{% else %}☆☆☆{% endif %}
                                 </div>
                             </div>
@@ -1229,120 +1460,289 @@
         {% endif %}
     </section>
 
-    <!-- 🎭 ТАКТИЧЕСКИЕ РОЛИ И СПЕЦИАЛИЗАЦИЯ (СОВМЕСТИМОСТЬ СО ВСЕМИ 8 РОЛЯМИ) -->
-    {% if player.role_affinities %}
-    <section class="section roles-affinity-section mb-8">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+    <!-- Achievements & Badges Showcase (Gamified 3-Tier System) -->
+    {% if player.achievements %}
+    <section class="section achievements-section glassmorphism p-5 sm:p-6 rounded-2xl border border-slate-800 mb-8">
+        <!-- Glory Header -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-800/80">
             <div>
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    <span>🎭</span> <span>Совместимость с 8 тактическими ролями</span>
+                    🏆 Зал славы и Достижения
                 </h2>
-                <p class="text-xs text-slate-400 mt-0.5">
-                    Индивидуальная оценка пригодности по 10 параметрам рейтинговой матрицы, формуле весов и боевой статистике из демок.
-                </p>
+                <p class="text-xs text-slate-400 mt-1">30 соревновательных киберспортивных испытаний: Золото 🥇 · Серебро 🥈 · Бронза 🥉</p>
             </div>
-            <a href="{{ root_path }}roles.html" class="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-emerald-950/80 border border-slate-700/80 hover:border-emerald-500/50 text-slate-300 hover:text-emerald-300 transition flex items-center gap-2 shadow-sm">
-                <span>Тактический штаб ролей</span>
-                <span class="text-xs font-mono">➔</span>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Summary Pill: Unlocked Count -->
+                <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-slate-700/80 text-xs font-mono font-bold">
+                    <span class="text-slate-400 uppercase tracking-wider text-[11px]">ПОЛУЧЕНО:</span>
+                    <span class="text-emerald-400 font-extrabold text-sm">{{ player.achievements_summary.total_unlocked }}</span>
+                    <span class="text-slate-500">из {{ player.achievements_summary.total_count }}</span>
+                </div>
+
+                <!-- Summary Pill: Glory Points -->
+                <div class="flex items-center gap-2 bg-amber-950/40 px-3.5 py-1.5 rounded-xl border border-amber-500/40 text-xs font-mono font-bold shadow-sm shadow-amber-950/20">
+                    <span class="text-amber-400 text-sm">🌟</span>
+                    <span class="text-amber-300 font-black text-sm">{{ player.achievements_summary.total_points }}</span>
+                    <span class="text-amber-500/80 uppercase text-[10px]">ОЧКОВ СЛАВЫ</span>
+                </div>
+
+                <!-- Tier Badges Counter -->
+                <div class="flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
+                    <span class="px-2 py-0.5 rounded bg-amber-950/70 text-amber-300 font-bold border border-amber-400/50" title="Золото">🥇 {{ player.achievements_summary.tier3_count }}</span>
+                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-500" title="Серебро">🥈 {{ player.achievements_summary.tier2_count }}</span>
+                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Бронза">🥉 {{ player.achievements_summary.tier1_count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex items-center justify-between gap-3 mb-5 flex-wrap" id="player-shelf-filters">
+            <div class="flex items-center gap-1.5 flex-wrap font-mono text-xs">
+                <button type="button" class="player-filter-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition border border-amber-500/60 bg-amber-500/20 text-amber-300" data-filter="all">
+                    Все ({{ player.achievements|length }})
+                </button>
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-emerald-400 hover:border-emerald-500/50" data-filter="unlocked">
+                    👑 Полученные ({{ player.achievements_summary.total_unlocked }})
+                </button>
+                {% if player.achievements_summary.tier3_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-300 hover:border-amber-400/50" data-filter="3">
+                    🥇 Золото ({{ player.achievements_summary.tier3_count }})
+                </button>
+                {% endif %}
+                {% if player.achievements_summary.tier2_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-200 hover:border-slate-400/50" data-filter="2">
+                    🥈 Серебро ({{ player.achievements_summary.tier2_count }})
+                </button>
+                {% endif %}
+                {% if player.achievements_summary.tier1_count > 0 %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-500 hover:border-amber-600/50" data-filter="1">
+                    🥉 Бронза ({{ player.achievements_summary.tier1_count }})
+                </button>
+                {% endif %}
+                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-400 hover:border-slate-500" data-filter="locked">
+                    🔒 В процессе ({{ player.achievements_summary.total_count - player.achievements_summary.total_unlocked }})
+                </button>
+            </div>
+            <a href="../achievements.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1">
+                <span>Зал Славы сообщества ➔</span>
             </a>
         </div>
 
-        <div class="space-y-3.5">
-            {% for ra in player.role_affinities %}
-            <div class="role-affinity-row glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800/80 hover:border-emerald-500/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-950/90 transition-all duration-200 shadow-lg">
-                <!-- Top Row: Role Title, Badges & Compatibility Score -->
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-3.5 border-b border-slate-800/70">
-                    <div class="flex items-start sm:items-center gap-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-slate-950/90 border border-slate-800 flex items-center justify-center text-2xl shrink-0 shadow-inner">
-                            {{ ra.icon }}
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2 flex-wrap">
-                                <h3 class="text-base sm:text-lg font-black text-white font-rajdhani tracking-wide">
-                                    <a href="{{ root_path }}roles.html#{{ ra.role_id }}" class="hover:text-emerald-300 transition flex items-center gap-1.5" title="Перейти к роли {{ ra.short_title }} в тактическом штабе">
-                                        <span>{{ ra.title }}</span>
-                                        <span class="text-xs text-slate-500 hover:text-emerald-400 font-mono">↗</span>
-                                    </a>
-                                </h3>
-                                {% if ra.badge_text %}
-                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full {{ ra.badge_class }}">
-                                    {{ ra.badge_text }}
-                                </span>
-                                {% endif %}
-                            </div>
-                            <p class="text-xs text-slate-400 mt-1 max-w-3xl leading-relaxed">
-                                {{ ra.lore }}
-                            </p>
-                        </div>
-                    </div>
+        <!-- Shelf Grid: Cards with 3D Medallions -->
+        <div class="player-shelf-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
+            {% for ach in player.achievements %}
+            <a href="{{ root_path }}achievements/{{ ach.id }}.html"
+               class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
+               data-tier="{{ ach.tier }}"
+               data-unlocked="{{ 'true' if ach.unlocked else 'false' }}"
+               title="Открыть страницу испытания {{ ach.title }}">
 
-                    <!-- Score, Progress Track & Verdict Block -->
-                    <div class="w-full md:w-64 shrink-0 role-inner-box bg-slate-950/70 p-3 rounded-xl border border-slate-800/90 flex flex-col justify-between gap-2 shadow-inner">
-                        <div class="flex items-center justify-between">
-                            <span class="text-[11px] uppercase tracking-wider text-slate-400 font-medium">Совместимость:</span>
-                            <span class="text-xl font-black font-mono {{ ra.text_class }}">{{ ra.affinity }}%</span>
-                        </div>
-                        <div class="h-2.5 w-full affinity-progress-track">
-                            <div class="h-full rounded-full transition-all duration-500 {{ ra.bar_class }}" style="width: {{ ra.affinity }}%;"></div>
-                        </div>
-                        <div class="flex items-center justify-between text-[10px] font-mono">
-                            <span class="text-slate-500">Порог: ≥{{ ra.threshold }}%</span>
-                            <span class="{{ ra.text_class }} font-bold uppercase tracking-wider">● {{ ra.verdict }}</span>
-                        </div>
+                <!-- Top Badge: Tier + Points -->
+                <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
+                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
+                        {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
+                        {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
+                        {% elif ach.tier == 1 %}bg-amber-950/60 text-amber-400 border border-amber-700/50
+                        {% else %}bg-slate-900 text-slate-400 border border-slate-700/60{% endif %}">
+                        {% if ach.tier == 3 %}🥇 Золото{% elif ach.tier == 2 %}🥈 Серебро{% elif ach.tier == 1 %}🥉 Бронза{% else %}🔒 В процессе{% endif %}
+                    </span>
+                    <span class="font-extrabold {% if ach.unlocked %}text-amber-400{% else %}text-slate-500{% endif %}">
+                        {% if ach.unlocked %}+{{ ach.points }} PTS{% else %}0 PTS{% endif %}
+                    </span>
+                </div>
+
+                <!-- 3D Vector SVG Medallion -->
+                <div class="my-1.5 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    {{ render_achievement_badge_svg(ach.tier, ach.icon, 52)|safe }}
+                </div>
+
+                <!-- Title & Desc -->
+                <div class="w-full mt-2">
+                    <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="{{ ach.title }}">
+                        {{ ach.title }}
+                    </h5>
+                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="{{ ach.desc }}">
+                        {{ ach.desc }}
+                    </p>
+                </div>
+
+                <!-- Progress Footer -->
+                <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
+                    <div class="flex items-center justify-between text-[10px] leading-tight">
+                        <span class="text-[9px] uppercase tracking-wider text-slate-500">{% if ach.unlocked %}{% if ach.is_max %}Макс.{% else %}След.{% endif %}{% else %}Цель:{% endif %}</span>
+                        <span class="font-bold {% if ach.tier == 3 %}text-amber-400{% elif ach.tier == 2 %}text-slate-200{% elif ach.tier == 1 %}text-amber-500{% else %}text-slate-300{% endif %} truncate ml-1 text-right" title="{{ ach.progress }}">{{ ach.progress }}</span>
+                    </div>
+                    <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
+                        <div class="h-full rounded-full transition-all duration-500
+                            {% if ach.tier == 3 %}rating-fill-gold
+                            {% elif ach.tier == 2 %}rating-fill-silver
+                            {% elif ach.tier == 1 %}rating-fill-bronze
+                            {% else %}rating-fill-locked{% endif %}"
+                             style="width: {{ ach.progress_pct }}%;"></div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Strengths & Weaknesses SWOT Grid -->
+    <section class="section swot-section mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="swot-column glassmorphism p-5 rounded-2xl border border-emerald-500/30 bg-emerald-950/10">
+                <h2 class="section-title text-lg font-bold text-emerald-400 mb-3 flex items-center gap-2">
+                    💪 Сильные стороны
+                </h2>
+                <ul class="space-y-2 text-sm text-slate-200">
+                    {% for strength in player.strengths %}
+                    <li class="flex items-start gap-2"><span class="text-emerald-400">✅</span> {{ strength }}</li>
+                    {% else %}
+                    <li class="flex items-start gap-2"><span class="text-emerald-400">✅</span> Базовая стабильность в стрельбе</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="swot-column glassmorphism p-5 rounded-2xl border border-rose-500/30 bg-rose-950/10">
+                <h2 class="section-title text-lg font-bold text-rose-400 mb-3 flex items-center gap-2">
+                    ⚠️ Слабые стороны
+                </h2>
+                <ul class="space-y-2 text-sm text-slate-200">
+                    {% for weakness in player.weaknesses %}
+                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> {{ weakness }}</li>
+                    {% else %}
+                    <li class="flex items-start gap-2"><span class="text-rose-400">❌</span> Требуется больше практики на картах</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    
+    </div>
+
+    <!-- TAB 4: MATCHES & CONNECTIONS -->
+    <div id="player-tab-matches" class="tab-pane player-tab-pane">
+<!-- Match History Grouped by Game Days (Sessions) -->
+    <section class="section match-history-section mb-8">
+        <div class="mb-4">
+            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
+                🕒 История сыгранных матчей игрока
+            </h2>
+            <p class="text-xs text-slate-400 mt-1">Сгруппировано по игровым дням (пятничным сессиям) с прямыми ссылками на разборы</p>
+        </div>
+
+        <!-- Interactive Match History Filters -->
+        <div class="player-match-filters glassmorphism p-3.5 rounded-xl border border-slate-800 mb-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Result Filters -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Исход:</span>
+                    <div class="filter-bar" id="player-result-filters">
+                        <button type="button" class="filter-pill active" data-res-filter="all">Все ({{ player.total_matches }})</button>
+                        <button type="button" class="filter-pill" data-res-filter="win">🟢 Победы ({{ player.wins }})</button>
+                        <button type="button" class="filter-pill filter-pill-rose" data-res-filter="loss">🔴 Поражения ({{ player.losses }})</button>
                     </div>
                 </div>
 
-                <!-- Bottom Row: Formula breakdown, in-demo stats & justification reasoning -->
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 pt-3.5 items-stretch text-xs">
-                    <!-- 1. Влияющие навыки с весами (5 cols) -->
-                    <div class="lg:col-span-5 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                            <span>🧮</span> <span>Формула и влияющие навыки:</span>
-                        </span>
-                        <div class="flex flex-wrap gap-1.5">
-                            {% for sk in ra.skills_breakdown %}
-                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-xs">
-                                <span>{{ sk.icon }}</span>
-                                <span class="text-slate-300 font-medium">{{ sk.name }} <span class="text-[10px] text-slate-500 font-mono">({{ sk.weight_pct }}%)</span>:</span>
-                                <span class="font-bold font-mono {{ sk.rating_class }}">{{ sk.rating }}/10</span>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
+                <span class="text-slate-700 hidden md:inline">|</span>
 
-                    <!-- 2. Фактическая статистика из демок (3 cols) -->
-                    <div class="lg:col-span-3 role-inner-box bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-2">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                            <span>📊</span> <span>Ключевая статистика в демках:</span>
-                        </span>
-                        <div>
-                            <div class="flex items-center justify-between font-mono text-xs">
-                                <span class="text-slate-400 truncate max-w-[130px]">{{ ra.primary_metric.name }}:</span>
-                                <span class="font-bold {% if ra.primary_metric.is_met %}text-emerald-400{% else %}text-amber-400{% endif %}">
-                                    {{ ra.primary_metric.value }}
+                <!-- Map Filters -->
+                <div class="flex items-center gap-1.5">
+                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Карта:</span>
+                    <div class="filter-bar" id="player-map-filters">
+                        <button type="button" class="filter-pill active" data-player-map="all">Все карты</button>
+                        <button type="button" class="filter-pill" data-player-map="ancient">Ancient</button>
+                        <button type="button" class="filter-pill" data-player-map="mirage">Mirage</button>
+                        <button type="button" class="filter-pill" data-player-map="inferno">Inferno</button>
+                        <button type="button" class="filter-pill" data-player-map="anubis">Anubis</button>
+                        <button type="button" class="filter-pill" data-player-map="dust2">Dust2</button>
+                        <button type="button" class="filter-pill" data-player-map="nuke">Nuke</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Counter -->
+            <div class="text-xs text-slate-400 font-mono shrink-0">
+                Показано: <span id="player-matches-count" class="text-emerald-400 font-bold">{{ player.total_matches }}</span> из {{ player.total_matches }}
+            </div>
+        </div>
+
+        <!-- Empty Filter State -->
+        <div id="player-matches-empty" class="hidden text-center py-8 glassmorphism rounded-2xl border border-slate-800 mb-6">
+            <span class="text-3xl block mb-2">🔍</span>
+            <h4 class="text-white font-bold text-base">Матчи не найдены</h4>
+            <p class="text-xs text-slate-400 mt-1">Для выбранной комбинации карты и исхода матчей нет</p>
+            <button type="button" onclick="resetPlayerMatchFilters()" class="mt-3 px-3.5 py-1.5 bg-emerald-950 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-semibold hover:bg-emerald-900/50 transition">Сбросить фильтры</button>
+        </div>
+
+        <div class="space-y-6">
+            {% for session in player.session_groups %}
+            <div class="session-match-group glassmorphism p-5 rounded-2xl border border-slate-800">
+                <h3 class="text-sm font-bold text-emerald-300 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-800/80 pb-2">
+                    📅 Игровой день: {{ session.date_display }}
+                </h3>
+
+                <div class="space-y-3">
+                    {% for m in session.matches %}
+                    <a href="{{ m.match_url }}" 
+                       data-result="{{ m.team_result }}"
+                       data-map="{{ m.map|lower }}"
+                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
+                        <div class="flex items-center gap-3">
+                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
+                                {% if m.team_result == 'win' %}bg-emerald-950/90 text-emerald-300 border-emerald-500/60 shadow-sm shadow-emerald-500/25
+                                {% elif m.team_result == 'loss' %}bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
+                                {% else %}bg-slate-800 text-slate-300 border-slate-700{% endif %}">
+                                {% if m.team_result == 'win' %}🟢 ПОБЕДА{% elif m.team_result == 'loss' %}🔴 ПОРАЖЕНИЕ{% else %}🤝 НИЧЬЯ{% endif %}
+                            </span>
+                            <div>
+                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
+                                    🗺️ {{ m.map }}
+                                </div>
+                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
+                                    <span>KDA: <strong class="text-white">{{ m.kda }}</strong></span>
+                                    <span>ADR: <strong class="text-slate-200">{{ m.adr }}</strong></span>
+                                    <span>KAST: <strong class="text-slate-200">{{ m.kast }}%</strong></span>
+                                    <span>HLTV: <strong class="text-white">{{ m.hltv }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-end md:self-center">
+                            <!-- MMR Delta Pill -->
+                            <div class="text-center font-mono">
+                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
+                                    {% if m.mmr_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/50
+                                    {% elif m.mmr_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/50
+                                    {% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}"
+                                    title="{{ m.mmr_breakdown }}">
+                                    {{ m.mmr_delta_text }}
                                 </span>
                             </div>
-                            <div class="text-[10px] text-slate-500 font-mono mt-1">
-                                {{ ra.primary_metric.norm }}
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- 3. Обоснование оценки / Аналитика тренера (4 cols) -->
-                    <div class="lg:col-span-4 role-inner-box bg-slate-950/40 p-3 rounded-xl border border-slate-800/80 flex flex-col justify-between gap-1.5">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                            <span>💡</span> <span>Обоснование оценки:</span>
-                        </span>
-                        <p class="text-[11px] text-slate-300 leading-relaxed">
-                            {{ ra.reasoning }}
-                        </p>
-                    </div>
+                            <!-- Rating 1-10 Pill -->
+                            <div class="text-right">
+                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
+                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
+                                    {% if m.rating >= 8.0 %}bg-gradient-to-r from-amber-950 to-yellow-950 text-amber-300 border border-amber-400/60 font-bold
+                                    {% elif m.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50
+                                    {% elif m.rating >= 5.0 %}bg-amber-950 text-amber-300 border border-amber-500/50
+                                    {% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                    {{ m.rating }}
+                                </span>
+                            </div>
+                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
+                        </div>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             {% endfor %}
         </div>
     </section>
-    {% endif %}
 
     <!-- Connections & Rivalry Section (Связи и Противостояния) -->
     {% if player.connections %}
@@ -1486,261 +1886,6 @@
     </section>
     {% endif %}
 
-    <!-- Achievements & Badges Showcase (Gamified 3-Tier System) -->
-    {% if player.achievements %}
-    <section class="section achievements-section glassmorphism p-5 sm:p-6 rounded-2xl border border-slate-800 mb-8">
-        <!-- Glory Header -->
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-slate-800/80">
-            <div>
-                <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                    🏆 Зал славы и Достижения
-                </h2>
-                <p class="text-xs text-slate-400 mt-1">30 соревновательных киберспортивных испытаний: Золото 🥇 · Серебро 🥈 · Бронза 🥉</p>
-            </div>
-            
-            <div class="flex flex-wrap items-center gap-3">
-                <!-- Summary Pill: Unlocked Count -->
-                <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-xl border border-slate-700/80 text-xs font-mono font-bold">
-                    <span class="text-slate-400 uppercase tracking-wider text-[11px]">ПОЛУЧЕНО:</span>
-                    <span class="text-emerald-400 font-extrabold text-sm">{{ player.achievements_summary.total_unlocked }}</span>
-                    <span class="text-slate-500">из {{ player.achievements_summary.total_count }}</span>
-                </div>
-
-                <!-- Summary Pill: Glory Points -->
-                <div class="flex items-center gap-2 bg-amber-950/40 px-3.5 py-1.5 rounded-xl border border-amber-500/40 text-xs font-mono font-bold shadow-sm shadow-amber-950/20">
-                    <span class="text-amber-400 text-sm">🌟</span>
-                    <span class="text-amber-300 font-black text-sm">{{ player.achievements_summary.total_points }}</span>
-                    <span class="text-amber-500/80 uppercase text-[10px]">ОЧКОВ СЛАВЫ</span>
-                </div>
-
-                <!-- Tier Badges Counter -->
-                <div class="flex items-center gap-1.5 font-mono text-[11px] bg-slate-900/60 px-3 py-1 rounded-xl border border-slate-800">
-                    <span class="px-2 py-0.5 rounded bg-amber-950/70 text-amber-300 font-bold border border-amber-400/50" title="Золото">🥇 {{ player.achievements_summary.tier3_count }}</span>
-                    <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold border border-slate-500" title="Серебро">🥈 {{ player.achievements_summary.tier2_count }}</span>
-                    <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-500 font-bold border border-amber-800/40" title="Бронза">🥉 {{ player.achievements_summary.tier1_count }}</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Filter Tabs -->
-        <div class="flex items-center justify-between gap-3 mb-5 flex-wrap" id="player-shelf-filters">
-            <div class="flex items-center gap-1.5 flex-wrap font-mono text-xs">
-                <button type="button" class="player-filter-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition border border-amber-500/60 bg-amber-500/20 text-amber-300" data-filter="all">
-                    Все ({{ player.achievements|length }})
-                </button>
-                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-emerald-400 hover:border-emerald-500/50" data-filter="unlocked">
-                    👑 Полученные ({{ player.achievements_summary.total_unlocked }})
-                </button>
-                {% if player.achievements_summary.tier3_count > 0 %}
-                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-300 hover:border-amber-400/50" data-filter="3">
-                    🥇 Золото ({{ player.achievements_summary.tier3_count }})
-                </button>
-                {% endif %}
-                {% if player.achievements_summary.tier2_count > 0 %}
-                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-200 hover:border-slate-400/50" data-filter="2">
-                    🥈 Серебро ({{ player.achievements_summary.tier2_count }})
-                </button>
-                {% endif %}
-                {% if player.achievements_summary.tier1_count > 0 %}
-                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-amber-500 hover:border-amber-600/50" data-filter="1">
-                    🥉 Бронза ({{ player.achievements_summary.tier1_count }})
-                </button>
-                {% endif %}
-                <button type="button" class="player-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-700 bg-slate-900/80 text-slate-400 hover:border-slate-500" data-filter="locked">
-                    🔒 В процессе ({{ player.achievements_summary.total_count - player.achievements_summary.total_unlocked }})
-                </button>
-            </div>
-            <a href="../achievements.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 hover:underline flex items-center gap-1">
-                <span>Зал Славы сообщества ➔</span>
-            </a>
-        </div>
-
-        <!-- Shelf Grid: Cards with 3D Medallions -->
-        <div class="player-shelf-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4">
-            {% for ach in player.achievements %}
-            <a href="{{ root_path }}achievements/{{ ach.id }}.html"
-               class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
-               data-tier="{{ ach.tier }}"
-               data-unlocked="{{ 'true' if ach.unlocked else 'false' }}"
-               title="Открыть страницу испытания {{ ach.title }}">
-
-                <!-- Top Badge: Tier + Points -->
-                <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
-                    <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
-                        {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
-                        {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
-                        {% elif ach.tier == 1 %}bg-amber-950/60 text-amber-400 border border-amber-700/50
-                        {% else %}bg-slate-900 text-slate-400 border border-slate-700/60{% endif %}">
-                        {% if ach.tier == 3 %}👑 Золото{% elif ach.tier == 2 %}🥈 Серебро{% elif ach.tier == 1 %}🥉 Бронза{% else %}🔒 В процессе{% endif %}
-                    </span>
-                    <span class="font-extrabold {% if ach.unlocked %}text-amber-400{% else %}text-slate-500{% endif %}">
-                        {% if ach.unlocked %}+{{ ach.points }} PTS{% else %}0 PTS{% endif %}
-                    </span>
-                </div>
-
-                <!-- 3D Metallic Medallion -->
-                <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
-                    {% if ach.tier == 3 %}medallion-gold
-                    {% elif ach.tier == 2 %}medallion-silver
-                    {% elif ach.tier == 1 %}medallion-bronze
-                    {% else %}medallion-locked{% endif %}">
-                    <span class="medallion-icon text-2xl">{{ ach.icon }}</span>
-                    <div class="medallion-stars-ribbon font-mono">
-                        {% if ach.tier == 3 %}★★★{% elif ach.tier == 2 %}★★{% elif ach.tier == 1 %}★{% else %}☆☆☆{% endif %}
-                    </div>
-                </div>
-
-                <!-- Title & Desc -->
-                <div class="w-full mt-2">
-                    <h5 class="text-xs font-black uppercase tracking-tight text-white line-clamp-1 group-hover:text-amber-300 transition" title="{{ ach.title }}">
-                        {{ ach.title }}
-                    </h5>
-                    <p class="text-[10px] text-slate-400 leading-snug mt-1 line-clamp-2" title="{{ ach.desc }}">
-                        {{ ach.desc }}
-                    </p>
-                </div>
-
-                <!-- Progress Footer -->
-                <div class="shelf-card-footer w-full mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-mono flex flex-col gap-1">
-                    <div class="flex items-center justify-between text-[10px] leading-tight">
-                        <span class="text-[9px] uppercase tracking-wider text-slate-500">{% if ach.unlocked %}{% if ach.is_max %}Макс.{% else %}След.{% endif %}{% else %}Цель:{% endif %}</span>
-                        <span class="font-bold {% if ach.tier == 3 %}text-amber-400{% elif ach.tier == 2 %}text-slate-200{% elif ach.tier == 1 %}text-amber-500{% else %}text-slate-300{% endif %} truncate ml-1 text-right" title="{{ ach.progress }}">{{ ach.progress }}</span>
-                    </div>
-                    <div class="w-full bg-slate-800/80 rounded-full h-1.5 overflow-hidden border border-slate-700/60 p-0.2">
-                        <div class="h-full rounded-full transition-all duration-500
-                            {% if ach.tier == 3 %}rating-fill-gold
-                            {% elif ach.tier == 2 %}rating-fill-silver
-                            {% elif ach.tier == 1 %}rating-fill-bronze
-                            {% else %}rating-fill-locked{% endif %}"
-                             style="width: {{ ach.progress_pct }}%;"></div>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
-    </section>
-    {% endif %}
-
-    <!-- Match History Grouped by Game Days (Sessions) -->
-    <section class="section match-history-section mb-8">
-        <div class="mb-4">
-            <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
-                🕒 История сыгранных матчей игрока
-            </h2>
-            <p class="text-xs text-slate-400 mt-1">Сгруппировано по игровым дням (пятничным сессиям) с прямыми ссылками на разборы</p>
-        </div>
-
-        <!-- Interactive Match History Filters -->
-        <div class="player-match-filters glassmorphism p-3.5 rounded-xl border border-slate-800 mb-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-            <div class="flex flex-wrap items-center gap-3">
-                <!-- Result Filters -->
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Исход:</span>
-                    <div class="filter-bar" id="player-result-filters">
-                        <button type="button" class="filter-pill active" data-res-filter="all">Все ({{ player.total_matches }})</button>
-                        <button type="button" class="filter-pill" data-res-filter="win">🟢 Победы ({{ player.wins }})</button>
-                        <button type="button" class="filter-pill filter-pill-rose" data-res-filter="loss">🔴 Поражения ({{ player.losses }})</button>
-                    </div>
-                </div>
-
-                <span class="text-slate-700 hidden md:inline">|</span>
-
-                <!-- Map Filters -->
-                <div class="flex items-center gap-1.5">
-                    <span class="text-[11px] font-semibold uppercase text-slate-400 tracking-wider">Карта:</span>
-                    <div class="filter-bar" id="player-map-filters">
-                        <button type="button" class="filter-pill active" data-player-map="all">Все карты</button>
-                        <button type="button" class="filter-pill" data-player-map="ancient">Ancient</button>
-                        <button type="button" class="filter-pill" data-player-map="mirage">Mirage</button>
-                        <button type="button" class="filter-pill" data-player-map="inferno">Inferno</button>
-                        <button type="button" class="filter-pill" data-player-map="anubis">Anubis</button>
-                        <button type="button" class="filter-pill" data-player-map="dust2">Dust2</button>
-                        <button type="button" class="filter-pill" data-player-map="nuke">Nuke</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Counter -->
-            <div class="text-xs text-slate-400 font-mono shrink-0">
-                Показано: <span id="player-matches-count" class="text-emerald-400 font-bold">{{ player.total_matches }}</span> из {{ player.total_matches }}
-            </div>
-        </div>
-
-        <!-- Empty Filter State -->
-        <div id="player-matches-empty" class="hidden text-center py-8 glassmorphism rounded-2xl border border-slate-800 mb-6">
-            <span class="text-3xl block mb-2">🔍</span>
-            <h4 class="text-white font-bold text-base">Матчи не найдены</h4>
-            <p class="text-xs text-slate-400 mt-1">Для выбранной комбинации карты и исхода матчей нет</p>
-            <button type="button" onclick="resetPlayerMatchFilters()" class="mt-3 px-3.5 py-1.5 bg-emerald-950 text-emerald-300 border border-emerald-500/40 rounded-lg text-xs font-semibold hover:bg-emerald-900/50 transition">Сбросить фильтры</button>
-        </div>
-
-        <div class="space-y-6">
-            {% for session in player.session_groups %}
-            <div class="session-match-group glassmorphism p-5 rounded-2xl border border-slate-800">
-                <h3 class="text-sm font-bold text-emerald-300 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-800/80 pb-2">
-                    📅 Игровой день: {{ session.date_display }}
-                </h3>
-
-                <div class="space-y-3">
-                    {% for m in session.matches %}
-                    <a href="{{ m.match_url }}" 
-                       data-result="{{ m.team_result }}"
-                       data-map="{{ m.map|lower }}"
-                       class="match-history-card flex flex-col md:flex-row items-start md:items-center justify-between p-3.5 rounded-xl border border-slate-800/80 hover:border-emerald-500/50 bg-slate-900/60 hover:bg-slate-900 transition group gap-3">
-                        <div class="flex items-center gap-3">
-                            <span class="px-2.5 py-1 rounded font-bold text-xs uppercase border tracking-wider
-                                {% if m.team_result == 'win' %}bg-emerald-950/90 text-emerald-300 border-emerald-500/60 shadow-sm shadow-emerald-500/25
-                                {% elif m.team_result == 'loss' %}bg-rose-950/90 text-rose-300 border-rose-500/60 shadow-sm shadow-rose-500/25
-                                {% else %}bg-slate-800 text-slate-300 border-slate-700{% endif %}">
-                                {% if m.team_result == 'win' %}🟢 ПОБЕДА{% elif m.team_result == 'loss' %}🔴 ПОРАЖЕНИЕ{% else %}🤝 НИЧЬЯ{% endif %}
-                            </span>
-                            <div>
-                                <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
-                                    🗺️ {{ m.map }}
-                                </div>
-                                <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
-                                    <span>KDA: <strong class="text-white">{{ m.kda }}</strong></span>
-                                    <span>ADR: <strong class="text-slate-200">{{ m.adr }}</strong></span>
-                                    <span>KAST: <strong class="text-slate-200">{{ m.kast }}%</strong></span>
-                                    <span>HLTV: <strong class="text-white">{{ m.hltv }}</strong></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center gap-3 self-end md:self-center">
-                            <!-- MMR Delta Pill -->
-                            <div class="text-center font-mono">
-                                <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
-                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
-                                    {% if m.mmr_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/50
-                                    {% elif m.mmr_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/50
-                                    {% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}"
-                                    title="{{ m.mmr_breakdown }}">
-                                    {{ m.mmr_delta_text }}
-                                </span>
-                            </div>
-
-                            <!-- Rating 1-10 Pill -->
-                            <div class="text-right">
-                                <span class="block text-[9px] text-slate-400 uppercase">Оценка</span>
-                                <span class="font-mono font-bold text-xs px-2 py-0.5 rounded
-                                    {% if m.rating >= 8.0 %}bg-gradient-to-r from-amber-950 to-yellow-950 text-amber-300 border border-amber-400/60 font-bold
-                                    {% elif m.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50
-                                    {% elif m.rating >= 5.0 %}bg-amber-950 text-amber-300 border border-amber-500/50
-                                    {% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
-                                    {{ m.rating }}
-                                </span>
-                            </div>
-                            <span class="text-slate-400 group-hover:text-emerald-300 transition text-sm font-medium ml-1">➔</span>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </section>
-
     <!-- Performance Trends Line Chart -->
     <section class="section trend-section mb-8">
         <div class="flex items-center justify-between mb-4">
@@ -1757,8 +1902,86 @@
 {% endblock %}
 
 {% block scripts %}
+
+    </div>
 <script>
+
+// ─── Player Tabs Switching (Bulletproof for file:/// & Web) ───
+function setupPlayerTabs() {
+    const tabBtns = document.querySelectorAll('[data-player-tab]');
+    const tabPanes = document.querySelectorAll('.player-tab-pane');
+    if (!tabBtns.length) return;
+
+    function activateTab(tabId) {
+        tabBtns.forEach(btn => {
+            const isMatch = btn.getAttribute('data-player-tab') === tabId;
+            btn.classList.toggle('active', isMatch);
+        });
+        tabPanes.forEach(pane => {
+            const isMatch = pane.id === tabId;
+            pane.classList.toggle('active', isMatch);
+            pane.style.display = isMatch ? 'block' : 'none';
+        });
+
+        // Trigger chart resize if chart exists
+        try {
+            if (window.radarChartInstance) window.radarChartInstance.resize();
+            if (window.trendsChartInstance) window.trendsChartInstance.resize();
+        } catch(e) {}
+
+        try {
+            localStorage.setItem('kase_player_tab', tabId);
+        } catch(e) {}
+    }
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-player-tab');
+            if (target) {
+                activateTab(target);
+                try {
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState(null, null, '#' + target.replace('player-tab-', ''));
+                    }
+                } catch(err) {}
+            }
+        });
+    });
+
+    const hash = window.location.hash.replace('#', '');
+    const tabMap = {
+        'overview': 'player-tab-overview',
+        'tactics': 'player-tab-tactics',
+        'roles': 'player-tab-tactics',
+        'achievements': 'player-tab-achievements',
+        'quests': 'player-tab-achievements',
+        'matches': 'player-tab-matches',
+        'history': 'player-tab-matches'
+    };
+
+    if (hash && tabMap[hash]) {
+        activateTab(tabMap[hash]);
+    } else if (hash && document.getElementById(hash)) {
+        // If an element id inside a tab was targeted (e.g. role anchor or achievement)
+        const targetEl = document.getElementById(hash);
+        const parentPane = targetEl.closest('.player-tab-pane');
+        if (parentPane) {
+            activateTab(parentPane.id);
+            setTimeout(() => targetEl.scrollIntoView({ behavior: 'smooth' }), 100);
+        }
+    } else {
+        const saved = localStorage.getItem('kase_player_tab');
+        if (saved && document.getElementById(saved)) {
+            activateTab(saved);
+        } else {
+            activateTab('player-tab-overview');
+        }
+    }
+}
+
     document.addEventListener('DOMContentLoaded', function() {
+    setupPlayerTabs();
         const isLight = document.documentElement.getAttribute('data-theme') !== 'dark' && !document.body.classList.contains('dark-theme');
         const chartColor = isLight ? '#1e293b' : '#cbd5e1';
         const chartSubColor = isLight ? '#64748b' : '#94a3b8';

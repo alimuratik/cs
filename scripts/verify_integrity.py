@@ -103,20 +103,21 @@ def test_faceit():
         print(f'-> Поврежденных файлов кэша: {corrupt_count}')
     return corrupt_count == 0
 
-def test_site():
-    print('=== 4. Проверка сгенерированного сайта (site/) ===')
-    if not SITE_DIR.exists():
-        print('Папка site не найдена!')
+def test_site(target_dir=None):
+    s_dir = Path(target_dir) if target_dir else SITE_DIR
+    print(f'=== 4. Проверка сгенерированного сайта ({s_dir.name}/) ===')
+    if not s_dir.exists():
+        print(f'Папка {s_dir.name} не найдена!')
         return False
         
     core_pages = ['index.html', 'skills.html', 'demos.html', 'compare.html', 'matchmaker.html']
-    missing_pages = [p for p in core_pages if not (SITE_DIR / p).exists()]
+    missing_pages = [p for p in core_pages if not (s_dir / p).exists()]
     
     if missing_pages:
         print(f'-> Отсутствуют основные HTML страницы: {missing_pages}')
         return False
         
-    faceit_icons_dir = SITE_DIR / 'icons' / 'faceit'
+    faceit_icons_dir = s_dir / 'icons' / 'faceit'
     missing_icons = []
     if faceit_icons_dir.exists():
         for lvl in range(0, 11):
@@ -132,11 +133,11 @@ def test_site():
     print('-> Все основные HTML страницы и Faceit SVG иконки на месте')
     return True
 
-def verify_all() -> bool:
+def verify_all(site_dir=None) -> bool:
     ok1 = test_matches()
     ok2 = test_players()
     ok3 = test_faceit()
-    ok4 = test_site()
+    ok4 = test_site(target_dir=site_dir)
     all_ok = ok1 and ok2 and ok3 and ok4
     if all_ok:
         print('\n✅ Все проверки целостности данных пройдены успешно!')
@@ -145,5 +146,6 @@ def verify_all() -> bool:
     return all_ok
 
 if __name__ == '__main__':
-    verify_all()
+    target = sys.argv[1] if len(sys.argv) > 1 else None
+    verify_all(site_dir=target)
 

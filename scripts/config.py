@@ -324,14 +324,17 @@ RATING_THRESHOLDS = {
     "poor": 0.8
 }
 
-# Константы непрерывной системы MMR
+# Константы непрерывной системы MMR (Мягкий пятничный баланс)
 STARTING_MMR = 1000
-BASE_TEAM_DELTA = 15
-MAX_IMPACT_MODIFIER = 8
-MAX_REGULAR_DELTA = 25
+BASE_WIN_DELTA = 9          # База за командную победу
+BASE_LOSS_CLOSE = 6         # База при близком счете (разрыв <= 2 раунда: 11:13, OT)
+BASE_LOSS_NORMAL = 8        # База при среднем счете (разрыв 3-5 раундов)
+BASE_LOSS_BLOWOUT = 10      # База при разгроме (разрыв >= 6 раундов)
+MAX_IMPACT_MODIFIER = 7.0   # Максимальный личный импакт по HLTV 2.0 (±7.0)
+MAX_REGULAR_DELTA = 20      # Максимальная дельта за матч в обычном режиме
 CALIBRATION_MATCH_LIMIT = 5
 CALIBRATION_VOLATILITY = 1.5
-MAX_CALIBRATION_DELTA = 37
+MAX_CALIBRATION_DELTA = 30
 INACTIVITY_DAYS_THRESHOLD = 30
 
 # Официальный реестр 30 соревновательных киберспортивных достижений (Часть А: 20 навыковых, Часть Б: 10 хайлайтов)

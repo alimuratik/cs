@@ -753,27 +753,39 @@ def generate_match_summary_analysis_fallback(match_data: dict) -> str:
         kast = p.get('kast', 0.0)
         fk = p.get('first_kills', 0)
         fd = p.get('first_deaths', 0)
-        
-        if adr >= 100:
+        hs = p.get('hs_percent', 0.0)
+        dmg_share = p.get('damage_share', 0.0)
+        k_share = p.get('kill_share', 0.0)
+        status = p.get('team_share_status', 'normal')
+
+        if status == "titan" or dmg_share >= 30.0:
+            role = "Одинокий титан (Solo Carry)"
+            strength = f"Выдающаяся индивидуальная стрельба: {dmg_share}% всего командного урона ({adr} ADR) и {k_share}% фрагов."
+            growth = "Форма на высоте — поражение обусловлено командным контекстом (эко, размены партнеров), а не личной стрельбой."
+        elif status == "passive" or (dmg_share <= 11.0 and dmg_share > 0):
+            role = "Вспомогательный стрелок (Passive Anchor)"
+            strength = f"Дисциплинированное удержание точки ({kast}% KAST) без глупых смертей."
+            growth = f"Победа маскирует пассивность: лишь {dmg_share}% командного урона. В плотном матче избегание дуэлей станет критичным."
+        elif adr >= 95.0:
             role = "Главный огневой удар (Primary Fragger)"
-            strength = f"Великолепный урон ({adr} ADR) и постоянное давление на соперника."
-            growth = "Не форсировать лишние соло-дуэли при наличии численного преимущества."
+            strength = f"Мощный прессинг и {dmg_share}% урона команды ({adr} ADR, {hs}% HS)."
+            growth = "Не форсировать соло-выпады в большинстве (5v3, 4v2), сохраняя винтовку."
         elif fk >= 3 and fk >= fd:
-            role = "Энтри-фрагер (Entry Duelist)"
-            strength = f"Отличный опенинг-импакт ({fk} первых фрагов), открывающий точки для команды."
-            growth = "Синхронизировать выход с флеш-поддержкой саппортов для уменьшения риска первого падения."
+            role = "Энтри-фрагер (Opening Duelist)"
+            strength = f"Высокий опенинг-импакт ({fk} первых дуэлей выиграно), создающий спейс для команды."
+            growth = "Синхронизировать выход с флеш-поддержкой саппортов, чтобы исключить изолированные смерти."
         elif kast >= 75:
-            role = "Стабильный якорь / Саппорт (Support Anchor)"
-            strength = f"Высокая командная полезность ({kast}% KAST) и надежный холд позиций."
-            growth = "Увеличивать личный урон за счет своевременного использования осколочных гранат."
-        elif k < d and fd > fk:
-            role = "Опорник рубежа (Rotator)"
-            strength = "Принятие на себя первого удара при штурме соперника."
-            growth = f"Минимизировать открытые дуэли ({fd} первых смертей), играть глубже от укрытий и засад."
+            role = "Опорник / Саппорт (Support Anchor)"
+            strength = f"Высокая командная дисциплина ({kast}% KAST) и надежный холд зоны."
+            growth = "Активнее использовать гранаты для сдерживания первого темпа соперника."
+        elif fd > fk and fd >= 3:
+            role = "Передовой контакт (Point Man)"
+            strength = "Принятие на себя первого контакта при агрессии соперника."
+            growth = f"Исключить открытые дуэли ({fd} первых смертей без размена), играть от глубоких укрытий."
         else:
-            role = "Универсал (Flex Rifle)"
-            strength = f"Стабильная работа по дефолту карты ({k}/{d} K/D)."
-            growth = "Повышать процент размена погибших тиммейтов и коммуникацию при перетяжках."
+            role = "Универсал (Flex Rifler)"
+            strength = f"Сбалансированная работа по дефолту ({dmg_share}% командного урона, K/D {k}/{d})."
+            growth = "Улучшать тайминг размена тиммейтов (сокращать задержку пика до 1.5 сек)."
 
         return f"• **{name}** [{role}]: {strength} *Зона роста:* {growth}"
 
@@ -827,7 +839,15 @@ def generate_match_summary_analysis(match_data: dict) -> str:
                 cl_a = p.get('clutch_attempts', 0)
                 wpns = p.get('weapon_kills', {})
                 top_wpn = max(wpns.items(), key=lambda x: x[1])[0] if wpns else 'rifle'
-                return f"- {p.get('name')}: {k}K/{d}D/{a}A, ADR {adr}, KAST {kast}%, FK:{fk}/FD:{fd}, HS {hs}%, Урон гранатами: {ud}, Flash-ассисты: {fa}, Клатчи: {cl_w}/{cl_a}, топ оружие: {top_wpn}"
+                dmg_share = p.get('damage_share', 0.0)
+                k_share = p.get('kill_share', 0.0)
+                t_status = p.get('team_share_status', 'normal')
+                share_desc = f"{dmg_share}% урона команды"
+                if t_status == 'titan':
+                    share_desc += " [СТАТУС: ОДИНОКИЙ ТИТАН]"
+                elif t_status == 'passive':
+                    share_desc += " [СТАТУС: ЗАМАСКИРОВАННАЯ ПАССИВНОСТЬ]"
+                return f"- {p.get('name')}: {k}K/{d}D/{a}A, ADR {adr}, KAST {kast}%, Вклад: {share_desc}, {k_share}% фрагов, FK:{fk}/FD:{fd}, HS {hs}%, Урон гранатами: {ud}, Flash-ассисты: {fa}, Клатчи: {cl_w}/{cl_a}, топ оружие: {top_wpn}"
 
             t1_desc = "\n".join([fmt_player(p) for p in t1_players])
             t2_desc = "\n".join([fmt_player(p) for p in t2_players])
@@ -848,6 +868,18 @@ def generate_match_summary_analysis(match_data: dict) -> str:
 
 Игроки {t2_name}:
 {t2_desc}
+
+КРИТИЧЕСКИЙ ПРИНЦИП БЕСПРИСТРАСТНОСТИ ТРЕНЕРА (ANTI-OUTCOME BIAS — СТРОГО ОБЯЗАТЕЛЬНО!):
+Устрани когнитивное искажение «предвзятости к счёту на табло»! Оценивай каждого игрока строго по его личным микро-решениям, дуэлям, таймингам и позиционированию, абстрагируясь от того, победила или проиграла его команда:
+
+1. «ПОБЕДИТЕЛЬ ПОД МИКРОСКОПОМ»:
+Обязательно находи у победителей плохие привычки, которые прокатили только потому, что соперник был слабее. Например: в раундах 5v3 пушил один и отдавал оружие; неоправданно пикал без флешки; отдавал спейс. Сильная команда за такое накажет! Если игрок выиграл, но набил мало урона (<11%, статус ЗАМАСКИРОВАННАЯ ПАССИВНОСТЬ) — укажи прямо: «Победа скрывает пассивность: ты избегал дуэлей, в равном матче это станет обузой».
+
+2. «СПРАВЕДЛИВОСТЬ К ПРОИГРАВШИМ»:
+КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО винить игроков за смерти на эко-раундах (с пистолетом против винтовок) и в безнадежных клатчах 1v3/1v4. Если игрок проигравшей команды набил высокий процент урона (≥30%, статус ОДИНОКИЙ ТИТАН) — признай его «Одиноким титаном», похвали форму и подчеркни: индивидуальная форма на высоте, поражение обусловлено провалом общекомандного контроля карты или эко-раундов, а не личной стрельбой.
+
+3. «ФОКУС НА МИКРО-РЕШЕНИЯХ, А НЕ НА ТАБЛО»:
+Оценивай не «почему команда проиграла/победила», а «как конкретно этот игрок ставил прицел (crosshair placement), занимал углы, изолировал дуэли, отдавал утилиту и разменивал тиммейтов».
 
 ТРЕБОВАНИЯ К ФОРМАТУ (СТРОГО СОБЛЮДАЙ СТРУКТУРУ И РАЗМЕТКУ!):
 Разбор должен состоять ровно из 2 секций:
@@ -910,3 +942,157 @@ def generate_match_summary_analysis(match_data: dict) -> str:
 
     # Fallback локальный экспертный движок
     return generate_match_summary_analysis_fallback(match_data)
+
+
+def generate_career_verdict_fallback(
+    name: str,
+    ratings: dict,
+    metrics: dict,
+    map_perf: dict,
+    career_stats: dict
+) -> str:
+    """
+    Модульный алгоритмический генератор вердикта тренера по карьере (сотни комбинаций).
+    """
+    tot_m = career_stats.get("total_matches", 1)
+    wr = career_stats.get("win_rate", 50.0)
+    avg_dmg_sh = career_stats.get("avg_damage_share", 20.0)
+    titan_cnt = career_stats.get("titan_matches", 0)
+    passive_cnt = career_stats.get("passive_matches", 0)
+    
+    top_wpn = career_stats.get("top_weapon", "AK-47")
+    hs = metrics.get("hs_percent", 40.0)
+    vs_full_kd = metrics.get("vs_full_buy_kd", 1.0)
+    fkr = metrics.get("first_kill_rate", 12.0)
+    entry_succ = metrics.get("entry_success", 50.0)
+    clutch_wins = metrics.get("clutch_wins", 0)
+    clutch_wr = metrics.get("clutch_win_rate", 20.0)
+    kast = metrics.get("kast", 70.0)
+    tr_rate = metrics.get("trade_rate", 20.0)
+    
+    r_get = lambda k: ratings.get(k, ratings.get(k.lower(), 5.0))
+    worst_map = map_perf.get("worst_map_display")
+    best_map = map_perf.get("best_map_display")
+
+    # 1. Почерк и стиль
+    if fkr >= 15.0 or r_get("Entry") >= 7.0:
+        style_clause = f"Агрессивный наконечник атаки с ключевой ставкой на {top_wpn}."
+    elif r_get("Aim") >= 7.5 or hs >= 50.0:
+        style_clause = f"Хладнокровный стрелок с филигранным первым выстрелом ({hs}% HS) на базе {top_wpn}."
+    elif r_get("Positioning") >= 7.0 or kast >= 77.0:
+        style_clause = f"Дисциплинированный системный якорь состава с надежным контролем зон ({kast}% KAST)."
+    else:
+        style_clause = f"Сбалансированный универсал, закрывающий дефолтные позиции с {top_wpn}."
+
+    # 2. Главная суперсила карьеры
+    if entry_succ >= 58.0 and fkr >= 14.0:
+        power_clause = f"Главный соревновательный козырь — выдающаяся реализация опенинг-дуэлей ({entry_succ}% выигранных первых стычек)."
+    elif clutch_wins >= 5 or clutch_wr >= 30.0:
+        power_clause = f"Ключевая опора в концовках раундов: {clutch_wins} выигранных клатчей ({clutch_wr}% винрейт в 1vX)."
+    elif vs_full_kd >= 1.15:
+        power_clause = f"Высокая стрелковая стабильность: K/D {vs_full_kd} в равных оружейных стычках (Full Buy против Full Buy)."
+    elif avg_dmg_sh >= 24.0:
+        power_clause = f"Огневой фундамент команды — стабильно генерирует {avg_dmg_sh}% суммарного урона состава."
+    else:
+        power_clause = f"Стабильная командная работа: KAST {kast}% и дисциплинированная игра вторым темпом."
+
+    # 3. Ахиллесова пята (точка роста)
+    if worst_map and map_perf.get("maps", {}).get(map_perf.get("worst_map", ""), {}).get("win_rate", 100) < 40:
+        flaw_clause = f"Основная зона риска — нестабильность на {worst_map}; требуется подтянуть тайминги раскидок."
+    elif tr_rate < 18.0:
+        flaw_clause = "Главный резерв для роста — тайминг размена тиммейтов (сокращать задержку пика до 1.5 сек)."
+    elif vs_full_kd < 0.90:
+        flaw_clause = "В равных оружейных перестрелках не хватает изоляции углов (angle isolation) и укрытий."
+    else:
+        flaw_clause = "Фокусируйся на синхронизации флеш-поддержки при агрессивных выходах."
+
+    # 4. Командный контекст
+    if titan_cnt >= 2 or (avg_dmg_sh >= 25.0 and wr < 50.0):
+        team_clause = f"В трудных матчах берет на себя роль лидера ({titan_cnt} игр в статусе Титана), но команде нужно надежнее удерживать созданный спейс."
+    elif passive_cnt >= 2:
+        team_clause = f"При серии побед наблюдается спад личной активности ({avg_dmg_sh}% урона команды); важно не выпадать из первых контактов."
+    else:
+        team_clause = f"Органично вписан в командный баланс ({avg_dmg_sh}% урона состава, {wr}% побед на дистанции {tot_m} матчей)."
+
+    return f"{style_clause} {power_clause} {flaw_clause} {team_clause}"
+
+
+def generate_player_career_coach_verdict(
+    player_data: dict,
+    ratings: dict,
+    metrics: dict,
+    map_perf: dict,
+    career_stats: dict
+) -> str:
+    """
+    Генерирует персональный тренерский вердикт карьеры через Gemini API
+    с умным кэшированием и автоматическим fallback.
+    """
+    cached_verdict = player_data.get("coach_verdict", "") or player_data.get("recommendations", {}).get("coach_verdict", "")
+    cached_matches = player_data.get("coach_verdict_matches_count", 0) or player_data.get("recommendations", {}).get("coach_verdict_matches_count", 0)
+    current_matches = career_stats.get("total_matches", 0)
+
+    # Используем кэш, если количество сыгранных матчей не изменилось
+    if cached_verdict and cached_matches == current_matches and current_matches > 0:
+        return cached_verdict
+
+    client = get_gemini_client()
+    if client:
+        try:
+            name = player_data.get("name", "Игрок")
+            tot_m = career_stats.get("total_matches", 1)
+            wr = career_stats.get("win_rate", 50.0)
+            avg_dmg = career_stats.get("avg_damage_share", 20.0)
+            titan_cnt = career_stats.get("titan_matches", 0)
+            passive_cnt = career_stats.get("passive_matches", 0)
+            top_wpn = career_stats.get("top_weapon", "AK-47")
+            best_map = map_perf.get("best_map_display", "Mirage")
+            worst_map = map_perf.get("worst_map_display", "Ancient")
+            
+            prompt = f"""Ты — главный тренер тир-1 команды по CS2 (в авторитетном, спокойном стиле B1ad3).
+Твоя задача: написать персональный послематчевый «Честный вердикт тренера» по итогам ВСЕЙ КАРЬЕРЫ игрока в нашей соревновательной лиге.
+
+ДАННЫЕ ИГРОКА ({name}):
+- Всего сыграно матчей: {tot_m}, общий винрейт: {wr}%
+- Рейтинги (1-10): Aim {ratings.get('Aim')}, Positioning {ratings.get('Positioning')}, Entry {ratings.get('Entry')}, Utility {ratings.get('Utility')}, Clutch {ratings.get('Clutch')}
+- Боевые метрики: ADR {metrics.get('adr')}, HS {metrics.get('hs_percent')}%, KAST {metrics.get('kast')}%, K/D на равном закупе (Full Buy): {metrics.get('vs_full_buy_kd')}
+- Опенинг-дуэли: First Kill Rate {metrics.get('first_kill_rate')}%, побед в энтри: {metrics.get('entry_success')}%
+- Клатчи: {metrics.get('clutch_wins')} побед (винрейт {metrics.get('clutch_win_rate')}%)
+- Доля вклада в команду: в среднем {avg_dmg}% урона состава за матч
+- Статусы: {titan_cnt} матчей в роли «Титана» (соло-тягач при поражении), {passive_cnt} матчей с низкой активностью при победе
+- Сигнатурное оружие: {top_wpn} | Лучшая карта: {best_map} | Худшая карта: {worst_map}
+
+ТРЕБОВАНИЯ К ВЕРДИКТУ:
+1. Строго 3-4 емких, живых предложения на русском языке.
+2. Никаких общих клише (запрещены фразы «ты отыгрываешь технически правильно», «командный контекст», «микро-дуэли»).
+3. Обязательно отрази:
+   - Игровой почерк игрока и его ключевое оружие;
+   - Главную суперсилу карьеры (в чем он реально хорош по цифрам);
+   - Конкретную зону роста (что тянет его или команду вниз);
+   - Командный баланс (как его игра соотносится с победами).
+4. Начни сразу с текста вердикта без вступительных фраз и кавычек.
+"""
+            response = client.models.generate_content(
+                model=AI_MODEL,
+                contents=prompt
+            )
+            if response and response.text:
+                text = response.text.strip().strip('"\'')
+                if len(text) > 40:
+                    player_data["coach_verdict"] = text
+                    player_data["coach_verdict_matches_count"] = current_matches
+                    return text
+        except Exception as e:
+            logging.warning(f"Ошибка Gemini API для карьерного вердикта {player_data.get('name')}: {e}")
+
+    # Fallback на умный алгоритмический генератор
+    fallback_text = generate_career_verdict_fallback(
+        player_data.get("name", "Игрок"),
+        ratings,
+        metrics,
+        map_perf,
+        career_stats
+    )
+    player_data["coach_verdict"] = fallback_text
+    player_data["coach_verdict_matches_count"] = current_matches
+    return fallback_text

@@ -15,7 +15,8 @@ from scripts.ai_analysis import (
     get_gemini_client
 )
 from scripts.config import (
-    PLAYER_ALIASES, CANONICAL_PLAYERS, STARTING_MMR, BASE_TEAM_DELTA,
+    PLAYER_ALIASES, CANONICAL_PLAYERS, STARTING_MMR, BASE_WIN_DELTA,
+    BASE_LOSS_CLOSE, BASE_LOSS_NORMAL, BASE_LOSS_BLOWOUT,
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
     AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR
@@ -399,26 +400,52 @@ def analyze_match(match_data: dict) -> dict:
     if not match_data.get("ai_analysis"):
         match_data["ai_analysis"] = generate_match_intro_commentary(match_data)
 
-    # Генерация итогового сводного тренерского анализа (10 игроков + 3 системных вывода)
-    old_static_marker = "При нехватке девайсов команды часто принимают лобовые перестрелки"
-    fallback_marker = "Игроки предпринимали рискованные"
-    current_summary = match_data.get("summary_analysis", "")
-    match_date = match_data.get("date", "")
-    target_sessions = {"11092026", "18092026"}
+    # Расчет вклада каждого игрока в суммарные показатели команды (Team Share)
+    rounds_count = max(1, len(match_data.get("rounds", [])))
+    t1_p_list = [p for p in match_data.get("players", {}).values() if p.get("team") == "team1"]
+    t2_p_list = [p for p in match_data.get("players", {}).values() if p.get("team") == "team2"]
 
+    t1_tot_dmg = sum(p.get("total_damage") or (p.get("adr", 0.0) * rounds_count) for p in t1_p_list) or 1.0
+    t2_tot_dmg = sum(p.get("total_damage") or (p.get("adr", 0.0) * rounds_count) for p in t2_p_list) or 1.0
+    t1_tot_k = sum(p.get("kills", 0) for p in t1_p_list) or 1
+    t2_tot_k = sum(p.get("kills", 0) for p in t2_p_list) or 1
+
+    s1 = match_data.get("score_team1", 0)
+    s2 = match_data.get("score_team2", 0)
+
+    for p in t1_p_list:
+        p_dmg = p.get("total_damage") or (p.get("adr", 0.0) * rounds_count)
+        p["damage_share"] = round((p_dmg / t1_tot_dmg) * 100.0, 1)
+        p["kill_share"] = round((p.get("kills", 0) / t1_tot_k) * 100.0, 1)
+        if s1 < s2 and p["damage_share"] >= 30.0:
+            p["team_share_status"] = "titan"  # Одинокий титан
+        elif s1 > s2 and p["damage_share"] <= 11.0:
+            p["team_share_status"] = "passive"  # Замаскированная пассивность
+        else:
+            p["team_share_status"] = "normal"
+
+    for p in t2_p_list:
+        p_dmg = p.get("total_damage") or (p.get("adr", 0.0) * rounds_count)
+        p["damage_share"] = round((p_dmg / t2_tot_dmg) * 100.0, 1)
+        p["kill_share"] = round((p.get("kills", 0) / t2_tot_k) * 100.0, 1)
+        if s2 < s1 and p["damage_share"] >= 30.0:
+            p["team_share_status"] = "titan"  # Одинокий титан
+        elif s2 > s1 and p["damage_share"] <= 11.0:
+            p["team_share_status"] = "passive"  # Замаскированная пассивность
+        else:
+            p["team_share_status"] = "normal"
+
+    # Генерация итогового сводного тренерского анализа (10 игроков + 3 системных вывода)
+    current_summary = match_data.get("summary_analysis", "")
     needs_summary_recalc = False
-    if match_date in target_sessions and match_data.get("summary_version") != 4:
-        needs_summary_recalc = True
-    elif (not current_summary 
-            or old_static_marker in current_summary 
-            or fallback_marker in current_summary 
-            or "Рассинхрон опенинг-дуэлей на" in current_summary 
-            or match_data.get("summary_version") not in (3, 4)):
+    
+    # Пересчитываем, если версия ниже 5 или текст отсутствует/устарел
+    if match_data.get("summary_version") != 5 or not current_summary:
         needs_summary_recalc = True
 
     if needs_summary_recalc:
         match_data["summary_analysis"] = generate_match_summary_analysis(match_data)
-        match_data["summary_version"] = 4 if match_date in target_sessions else 3
+        match_data["summary_version"] = 5
     
     return match_data
 
@@ -2649,6 +2676,168 @@ def generate_recommendations(player_data: dict, ratings: dict, style: list[str],
         recs["target_quest"] = tq
     else:
         recs["target_quest"] = None
+
+    # =========================================================================
+    # ШАГ 3. ДВУХКАТЕГОРИЙНЫЕ РЕКОМЕНДАЦИИ И ЧЕСТНЫЙ ВЕРДИКТ (ANTI-OUTCOME BIAS)
+    # Категория А: «Личный скилл (не зависит от счета)»
+    # Категория Б: «Командный контекст (влияние раундов)»
+    # Честный вердикт тренера
+    # =========================================================================
+    tot_m_cnt = max(1, len(matches))
+    avg_dmg_share = round(sum(match_item.get("damage_share", 0.0) for match_item in matches) / tot_m_cnt, 1) if matches else 20.0
+    avg_k_share = round(sum(match_item.get("kill_share", 0.0) for match_item in matches) / tot_m_cnt, 1) if matches else 20.0
+    titan_cnt = sum(1 for match_item in matches if match_item.get("team_share_status") == "titan")
+    passive_cnt = sum(1 for match_item in matches if match_item.get("team_share_status") == "passive")
+    win_cnt = sum(1 for match_item in matches if match_item.get("is_win"))
+    p_wr = round((win_cnt / tot_m_cnt) * 100, 1)
+
+    avg_hs = m.get("hs_percent", 40.0)
+    vs_full_kd = m.get("vs_full_buy_kd", 1.0)
+    tr_rate = m.get("trade_rate", 20.0)
+    eco_disc = m.get("eco_discipline", 60.0)
+
+    # Категория А: Личный скилл
+    individual_skill = []
+    if avg_hs >= 52.0:
+        individual_skill.append({
+            "icon": "🎯",
+            "title": f"Элитная точность первого выстрела ({avg_hs}% HS)",
+            "desc": "Прицел удерживается строго на уровне головы независимо от счета на табло. Продолжай тренировать пре-пики и микро-доводки."
+        })
+    elif avg_hs < 38.0:
+        individual_skill.append({
+            "icon": "🎯",
+            "title": f"Постановка прицела ({avg_hs}% HS)",
+            "desc": "Прицел часто опускается на уровень груди. Тренируй кроссхейр-плейсмент на FFA DM строго с фокусом на ван-тапы."
+        })
+    else:
+        individual_skill.append({
+            "icon": "🎯",
+            "title": f"Стабильная точность ({avg_hs}% HS)",
+            "desc": "Базовый прицел на месте. Для выхода на следующий уровень отрабатывай контр-стрейфы и стрельбу короткими очередями."
+        })
+
+    if vs_full_kd >= 1.15:
+        individual_skill.append({
+            "icon": "⚔️",
+            "title": f"Превосходство в равных закупах (K/D {vs_full_kd} на Full Buy)",
+            "desc": "В честных перестрелках винтовка против винтовки ты перестреливаешь соперников на чистом индивидуальном мастерстве."
+        })
+    elif vs_full_kd < 0.85:
+        individual_skill.append({
+            "icon": "⚔️",
+            "title": f"Проблемы при равном закупе (K/D {vs_full_kd} на Full Buy)",
+            "desc": "При равенстве экипировки проигрываешь лобовые дуэли. Изолируй углы (angle isolation), используй jiggle-peek и не принимай бой без укрытия."
+        })
+    else:
+        individual_skill.append({
+            "icon": "⚔️",
+            "title": f"Баланс в оружейных дуэлях (K/D {vs_full_kd} на Full Buy)",
+            "desc": "Дуэли 1v1 на винтовках проходят на равных. Добавляй поддержку флешками тиммейтов для создания решающего перевеса."
+        })
+
+    if tr_rate >= 28.0:
+        individual_skill.append({
+            "icon": "🔄",
+            "title": f"Мгновенный размен ({tr_rate}% трейдов)",
+            "desc": "Высокая реакция на гибель партнера: оппонент наказывается за фраг в течение 1-2 секунд."
+        })
+    else:
+        individual_skill.append({
+            "icon": "🔄",
+            "title": f"Задержка разменов ({tr_rate}% трейдов)",
+            "desc": "Партнеры нередко погибают без твоего размена. Держи дистанцию контакта до 2 секунд за энтри и пикай строго на звук перестрелки."
+        })
+
+    # Категория Б: Командный контекст
+    team_context = []
+    if titan_cnt > 0:
+        team_context.append({
+            "icon": "👑",
+            "title": f"Одинокий титан ({titan_cnt} матчей с долей урона ≥30%)",
+            "desc": f"В проигранных матчах ты давал ≥30% командного урона (в среднем {avg_dmg_share}%). Личная форма отличная: поражение обусловлено провалом общекомандного контроля карты или эко-раундов, а не твоей стрельбой."
+        })
+    elif avg_dmg_share >= 25.0:
+        team_context.append({
+            "icon": "💥",
+            "title": f"Огневой стержень команды ({avg_dmg_share}% урона)",
+            "desc": "Ты берешь на себя основной груз огневых контактов. Составу необходимо учиться надежнее удерживать завоеванное тобой преимущество."
+        })
+    elif passive_cnt > 0:
+        team_context.append({
+            "icon": "💤",
+            "title": f"Замаскированная пассивность ({passive_cnt} побед с уроном ≤11%)",
+            "desc": f"В ряде победных матчей твой урон был минимальным ({avg_dmg_share}%). Победы скрывают избегание дуэлей; в плотном равном матче это станет критической брешью."
+        })
+    else:
+        team_context.append({
+            "icon": "🤝",
+            "title": f"Сбалансированная командная нагрузка ({avg_dmg_share}% урона, {avg_k_share}% фрагов)",
+            "desc": "Урон и фраги равномерно распределены внутри состава без экстремальных перекосов."
+        })
+
+    if eco_disc >= 70.0:
+        team_context.append({
+            "icon": "💰",
+            "title": f"Экономическая выдержка ({eco_disc:.0f}/100)",
+            "desc": "Дисциплинированное сохранение девайсов и синхронные закупки без растраты командного банка."
+        })
+    else:
+        team_context.append({
+            "icon": "💰",
+            "title": "Синхронизация командного банка",
+            "desc": "Не докупай девайсы в одиночку на командном эко. Смерти с дефолтным пистолетом против винтовок естественны и не портят твою оценку, главное — копить на полноценный Full Buy."
+        })
+
+    if disc_v < 5.0:
+        team_context.append({
+            "icon": "🧘",
+            "title": "Дисциплина в большинстве (5v3, 4v2)",
+            "desc": "Зафиксированы неоправданные агрессивные пуши при численном перевесе. Играй на удержание позиций и время, не отдавай винтовку сопернику."
+        })
+    else:
+        team_context.append({
+            "icon": "🛡️",
+            "title": "Удержание преимущества",
+            "desc": "Надежная позиционная игра при численном преимуществе без лишнего риска."
+        })
+
+    # Определение любимого оружия игрока и параметров карьеры
+    wpns = player_data.get("overall_stats", {}).get("weapon_kills", {}) or player_data.get("metrics", {}).get("weapon_kills", {})
+    top_wpn = max(wpns.items(), key=lambda x: x[1])[0] if isinstance(wpns, dict) and wpns else "AK-47"
+    top_wpn_display = WEAPON_DISPLAY_NAMES.get(top_wpn, top_wpn.upper())
+
+    career_stats = {
+        "total_matches": tot_m_cnt,
+        "win_rate": p_wr,
+        "avg_damage_share": avg_dmg_share,
+        "avg_kill_share": avg_k_share,
+        "titan_matches": titan_cnt,
+        "passive_matches": passive_cnt,
+        "top_weapon": top_wpn_display
+    }
+
+    # Генерация честного вердикта тренера (Гибрид: Gemini API с кэшем + Алгоритмический Fallback)
+    from scripts.ai_analysis import generate_player_career_coach_verdict
+
+    verdict_summary = generate_player_career_coach_verdict(
+        player_data,
+        ratings,
+        m,
+        map_perf,
+        career_stats
+    )
+
+    recs["individual_skill"] = individual_skill
+    recs["team_context"] = team_context
+    recs["verdict_summary"] = verdict_summary
+    recs["coach_verdict"] = verdict_summary
+    recs["coach_verdict_matches_count"] = tot_m_cnt
+    recs["avg_damage_share"] = avg_dmg_share
+    recs["avg_kill_share"] = avg_k_share
+    recs["titan_matches"] = titan_cnt
+    recs["passive_matches"] = passive_cnt
+
     return recs
 
 
@@ -3365,7 +3554,8 @@ def run_analysis(force_ai: bool = False):
             p_mmr["latest_date"] = max(p_mmr["latest_date"], match_dt)
             p_team = p_stat.get("team", "team1")
 
-            # Определение исхода для команды игрока
+            # Определение исхода для команды игрока и учет плотности счёта
+            round_diff = abs(s1 - s2)
             if s1 > s2:
                 team_won = (p_team == "team1")
                 team_lost = (p_team != "team1")
@@ -3379,7 +3569,17 @@ def run_analysis(force_ai: bool = False):
                 team_lost = False
                 is_tie = True
 
-            base_delta = BASE_TEAM_DELTA if team_won else (-BASE_TEAM_DELTA if team_lost else 0)
+            if team_won:
+                base_delta = BASE_WIN_DELTA
+            elif team_lost:
+                if round_diff <= 2:
+                    base_delta = -BASE_LOSS_CLOSE
+                elif round_diff <= 5:
+                    base_delta = -BASE_LOSS_NORMAL
+                else:
+                    base_delta = -BASE_LOSS_BLOWOUT
+            else:
+                base_delta = 0
 
             # Честный расчет HLTV 2.0 и приведенного балла 1.0 - 10.0
             k = p_stat.get("kills", 0)
@@ -3393,7 +3593,7 @@ def run_analysis(force_ai: bool = False):
 
             hltv, score_10 = compute_hltv_rating(k, d, a, adr_val, kast_val, fk, fd, rounds_cnt)
 
-            # Модификатор импакта (-8 до +8)
+            # Модификатор импакта (от -7.0 до +7.0) на основе HLTV 2.0
             raw_mod = (hltv - 1.00) * 12.0
             mod = round(max(-float(MAX_IMPACT_MODIFIER), min(float(MAX_IMPACT_MODIFIER), raw_mod)), 1)
 
@@ -3486,7 +3686,10 @@ def run_analysis(force_ai: bool = False):
                 "score_team2": s2,
                 "rounds_count": rounds_cnt,
                 "vs_full_buy_kd": match_vs_full_kd.get(clean_sid, {}).get("vs_full_kd", 1.0),
-                "tactical_kills": match_vs_full_kd.get(clean_sid, {}).get("tactical_kills", 0)
+                "tactical_kills": match_vs_full_kd.get(clean_sid, {}).get("tactical_kills", 0),
+                "damage_share": p_stat.get("damage_share", 0.0),
+                "kill_share": p_stat.get("kill_share", 0.0),
+                "team_share_status": p_stat.get("team_share_status", "normal")
             })
 
         # Сбор данных по тиммейтам (синергия) и очным дуэлям (Head-to-Head)
@@ -3620,6 +3823,12 @@ def run_analysis(force_ai: bool = False):
         tot_ud = sum(m.get("utility_damage", 0) for m in matches)
         tot_fa = sum(m.get("flash_assists", 0) for m in matches)
         tot_tr = sum(m.get("trades", 0) for m in matches)
+        tot_dmg_share = sum(m.get("damage_share", 0.0) for m in matches)
+        tot_k_share = sum(m.get("kill_share", 0.0) for m in matches)
+        avg_dmg_share = round(tot_dmg_share / max(1, total_m), 1)
+        avg_k_share = round(tot_k_share / max(1, total_m), 1)
+        titan_matches = sum(1 for m in matches if m.get("team_share_status") == "titan")
+        passive_matches = sum(1 for m in matches if m.get("team_share_status") == "passive")
 
         # Сбор реальной статистики оружия и клатчей
         total_weapon_kills = Counter()
@@ -3715,7 +3924,11 @@ def run_analysis(force_ai: bool = False):
             "clutch_attempts_per_match": round(tot_clutch_attempts / total_m if total_m > 0 else 0, 2),
             "late_round_kills": 15.0,
             "awp_kills_percent": round(awp_pct, 1),
-            "rifle_kills_percent": round(rifle_pct, 1)
+            "rifle_kills_percent": round(rifle_pct, 1),
+            "avg_damage_share": avg_dmg_share,
+            "avg_kill_share": avg_k_share,
+            "titan_matches": titan_matches,
+            "passive_matches": passive_matches
         }
 
         p_data_temp = {"metrics": metrics}
@@ -3838,7 +4051,11 @@ def run_analysis(force_ai: bool = False):
             "total_utility_damage": tot_ud,
             "total_flash_assists": tot_fa,
             "total_trades": tot_tr,
-            "pistol_round_kills": sum(m.get("pistol_round_kills", 0) for m in matches)
+            "pistol_round_kills": sum(m.get("pistol_round_kills", 0) for m in matches),
+            "avg_damage_share": avg_dmg_share,
+            "avg_kill_share": avg_k_share,
+            "titan_matches": titan_matches,
+            "passive_matches": passive_matches
         }
 
         # Специальные показатели для ачивок (Хайлайты, Оружие, Спец-раунды)

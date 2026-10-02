@@ -150,7 +150,8 @@
             </div>
         </div>
 
-        <div class="glassmorphism rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
+        <!-- Desktop Glory Leaderboard Table (Hidden on mobile, visible on md+) -->
+        <div class="hidden md:block glassmorphism rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse" id="glory-table">
                     <thead>
@@ -272,35 +273,29 @@
 
                                     <!-- Shelf Grid: Cards with 3D Medallions -->
                                     {% if p.unlocked_achievements %}
-                                    <div class="shelf-cards-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                                    <div class="shelf-cards-grid grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
                                         {% for ach in p.unlocked_achievements %}
                                         <a href="{{ root_path }}achievements/{{ ach.id }}.html" 
-                                           class="shelf-medal-card p-3 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
+                                           class="shelf-medal-card p-2.5 rounded-xl border flex flex-col items-center text-center justify-between relative transition-all duration-200 hover:scale-[1.02] group/card block text-inherit no-underline"
                                            data-tier="{{ ach.tier }}"
                                            title="Открыть страницу испытания {{ ach.title }}">
 
                                             <!-- Top Badge: Tier + Points -->
-                                            <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-2">
+                                            <div class="w-full flex items-center justify-between text-[10px] font-mono font-bold mb-1.5">
                                                 <span class="px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider
                                                     {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
                                                     {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
                                                     {% else %}bg-amber-950/60 text-amber-400 border border-amber-700/50{% endif %}">
-                                                    {% if ach.tier == 3 %}👑 Золото{% elif ach.tier == 2 %}🥈 Серебро{% else %}🥉 Бронза{% endif %}
+                                                    {% if ach.tier == 3 %}🥇 Золото{% elif ach.tier == 2 %}🥈 Серебро{% else %}🥉 Бронза{% endif %}
                                                 </span>
                                                 <span class="font-extrabold text-amber-400">
                                                     +{{ ach.points }} PTS
                                                 </span>
                                             </div>
 
-                                            <!-- 3D Metallic Medallion -->
-                                            <div class="medallion-badge-3d my-1 relative flex items-center justify-center shrink-0
-                                                {% if ach.tier == 3 %}medallion-gold
-                                                {% elif ach.tier == 2 %}medallion-silver
-                                                {% else %}medallion-bronze{% endif %}">
-                                                <span class="medallion-icon text-2xl">{{ ach.icon }}</span>
-                                                <div class="medallion-stars-ribbon font-mono">
-                                                    {% if ach.tier == 3 %}★★★{% elif ach.tier == 2 %}★★{% else %}★{% endif %}
-                                                </div>
+                                            <!-- 3D Vector SVG Medallion -->
+                                            <div class="my-1.5 flex items-center justify-center shrink-0 group-hover/card:scale-105 transition-transform duration-200">
+                                                {{ render_achievement_badge_svg(ach.tier, ach.icon, 50)|safe }}
                                             </div>
 
                                             <!-- Title & Desc -->
@@ -333,6 +328,146 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Mobile Glory Cards Stack (Visible on mobile, hidden on md+) -->
+        <div class="block md:hidden space-y-3 mb-10" id="glory-mobile-list">
+            {% for p in glory_leaderboard %}
+            <div class="mobile-glory-card rounded-2xl border border-slate-800 bg-slate-900/70 overflow-hidden shadow-lg transition-all" data-player-card="glory-mobile-{{ p.steam_id }}">
+                <!-- Card Header -->
+                <div class="p-3.5 flex items-center justify-between gap-2.5">
+                    <!-- Left: Rank + Avatar + Name + MMR -->
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="font-mono font-black text-sm shrink-0 w-7 text-center">
+                            {% if p.glory_rank == 1 %}
+                            <span class="text-amber-400 font-bold text-base">🥇1</span>
+                            {% elif p.glory_rank == 2 %}
+                            <span class="text-slate-300 font-bold text-base">🥈2</span>
+                            {% elif p.glory_rank == 3 %}
+                            <span class="text-amber-600 font-bold text-base">🥉3</span>
+                            {% else %}
+                            <span class="text-slate-400">#{{ p.glory_rank }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="w-10 h-10 rounded-xl border flex items-center justify-center font-black text-xs shrink-0 {{ p.avatar_classes }}">
+                            {{ (p.name or 'P')[:2]|upper }}
+                        </div>
+
+                        <div class="min-w-0">
+                            <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="font-bold text-white text-sm hover:text-emerald-400 transition truncate block">
+                                {{ p.name }}
+                            </a>
+                            <div class="flex items-center gap-2 text-[11px] font-mono text-slate-400 mt-0.5">
+                                <span>{{ p.current_mmr }} MMR</span>
+                                <span>•</span>
+                                <span class="text-amber-400 font-bold">🌟 {{ p.glory_points }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Touch-Friendly Obvious Toggle Button -->
+                    <button type="button" 
+                            class="mobile-showcase-toggle-btn shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-amber-500/40 bg-amber-950/35 text-amber-300 hover:bg-amber-950/60 transition active:scale-95 text-xs font-mono font-bold shadow-sm"
+                            data-mobile-target="mobile-shelf-{{ p.steam_id }}"
+                            aria-expanded="{% if p.glory_rank == 1 %}true{% else %}false{% endif %}">
+                        <span class="text-sm leading-none">🎖️</span>
+                        <span class="toggle-text">{% if p.glory_rank == 1 %}Скрыть{% else %}Награды ({{ p.unlocked_achievements|length }}){% endif %}</span>
+                        <span class="chevron-arrow text-[10px] text-amber-400/80 transition-transform duration-200 {% if p.glory_rank == 1 %}rotate-180{% endif %}">▼</span>
+                    </button>
+                </div>
+
+                <!-- Sub-bar: Progress + Medal counts (Clickable trigger) -->
+                <div class="mobile-shelf-toggle-bar px-3.5 pb-2.5 pt-1 flex items-center justify-between gap-2 border-b border-slate-800/50 text-[11px] font-mono cursor-pointer hover:bg-slate-800/30 transition select-none"
+                     data-mobile-target="mobile-shelf-{{ p.steam_id }}"
+                     title="Нажмите, чтобы развернуть или скрыть полку наград">
+                    <div class="flex items-center gap-1.5 text-slate-400">
+                        <span>Награды:</span>
+                        <strong class="text-white">{{ p.unlocked_count }}/{{ p.total_count }}</strong>
+                        <span class="text-slate-500">({{ p.completion_pct }}%)</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <span class="px-1.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/30 font-bold text-[10px]">🥇 {{ p.gold_count }}</span>
+                        <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-bold text-[10px]">🥈 {{ p.silver_count }}</span>
+                        <span class="px-1.5 py-0.5 rounded bg-amber-950/30 text-amber-500 border border-amber-800/30 font-bold text-[10px]">🥉 {{ p.bronze_count }}</span>
+                    </div>
+                </div>
+
+                <!-- Mobile Shelf Body -->
+                <div id="mobile-shelf-{{ p.steam_id }}" class="mobile-shelf-panel {% if p.glory_rank != 1 %}hidden{% endif %} p-2.5 bg-slate-950/90 border-t border-amber-500/20">
+                    <!-- Mobile Filter Tabs -->
+                    <div class="flex items-center gap-1 overflow-x-auto pb-2 mb-2 font-mono text-[10px] mobile-shelf-filters scrollbar-none" data-shelf="mobile-shelf-{{ p.steam_id }}">
+                        <button type="button" class="filter-btn active px-2 py-0.5 rounded-lg font-bold border border-amber-500/60 bg-amber-500/20 text-amber-300 shrink-0" data-filter="all">
+                            Все ({{ p.unlocked_achievements|length }})
+                        </button>
+                        {% if p.gold_count > 0 %}
+                        <button type="button" class="filter-btn px-2 py-0.5 rounded-lg font-bold border border-slate-700 bg-slate-900/80 text-amber-300 shrink-0" data-filter="3">
+                            🥇 Золото ({{ p.gold_count }})
+                        </button>
+                        {% endif %}
+                        {% if p.silver_count > 0 %}
+                        <button type="button" class="filter-btn px-2 py-0.5 rounded-lg font-bold border border-slate-700 bg-slate-900/80 text-slate-200 shrink-0" data-filter="2">
+                            🥈 Серебро ({{ p.silver_count }})
+                        </button>
+                        {% endif %}
+                        {% if p.bronze_count > 0 %}
+                        <button type="button" class="filter-btn px-2 py-0.5 rounded-lg font-bold border border-slate-700 bg-slate-900/80 text-amber-500 shrink-0" data-filter="1">
+                            🥉 Бронза ({{ p.bronze_count }})
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <!-- 3-col Compact Trophy Showcase with smooth scroll container -->
+                    {% if p.unlocked_achievements %}
+                    <div class="grid grid-cols-3 gap-2 mobile-shelf-cards max-h-[360px] overflow-y-auto pr-1">
+                        {% for ach in p.unlocked_achievements %}
+                        <a href="{{ root_path }}achievements/{{ ach.id }}.html" 
+                           class="shelf-medal-card p-2 rounded-xl border flex flex-col items-center text-center justify-between relative transition active:scale-95 group/card block text-inherit no-underline min-h-[95px]"
+                           data-tier="{{ ach.tier }}"
+                           title="{{ ach.title }}: {{ ach.desc }}">
+                            
+                            <!-- Top tier indicator -->
+                            <div class="w-full flex items-center justify-between text-[8px] font-mono font-bold leading-none mb-1">
+                                <span class="px-1 py-0.5 rounded font-bold uppercase
+                                    {% if ach.tier == 3 %}bg-amber-950 text-amber-300 border border-amber-400/50
+                                    {% elif ach.tier == 2 %}bg-slate-800 text-slate-200 border border-slate-500
+                                    {% else %}bg-amber-950/60 text-amber-400 border border-amber-700/50{% endif %}">
+                                    {% if ach.tier == 3 %}🥇{% elif ach.tier == 2 %}🥈{% else %}🥉{% endif %}
+                                </span>
+                                <span class="font-black text-amber-400">
+                                    +{{ ach.points }}
+                                </span>
+                            </div>
+
+                            <!-- 3D Vector SVG Medallion (Compact 38px) -->
+                            <div class="my-0.5 flex items-center justify-center shrink-0">
+                                {{ render_achievement_badge_svg(ach.tier, ach.icon, 38)|safe }}
+                            </div>
+
+                            <!-- Title -->
+                            <div class="w-full mt-1">
+                                <h5 class="text-[10px] font-black uppercase tracking-tight text-white line-clamp-1 group-hover/card:text-amber-300 transition leading-tight" title="{{ ach.title }}">
+                                    {{ ach.title }}
+                                </h5>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="p-4 text-center text-slate-500 font-mono text-xs">
+                        Нет разблокированных наград
+                    </div>
+                    {% endif %}
+
+                    <!-- Player Profile Quick Link -->
+                    <div class="mt-2.5 pt-2 border-t border-slate-800/60 text-center">
+                        <a href="{{ root_path }}players/{{ p.steam_id }}.html" class="text-xs font-mono font-bold text-emerald-400 hover:underline inline-flex items-center gap-1">
+                            Профиль и подробная статистика {{ p.name }} ➔
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -447,7 +582,55 @@
             });
         });
 
-        // 2. Shelf Quick Filter Tabs (Все / Золотые / Серебряные / Бронзовые)
+        // 1b. Mobile Showcase Shelf Toggle
+        function toggleMobileShelf(targetId) {
+            const shelf = document.getElementById(targetId);
+            if (!shelf) return;
+            const btn = document.querySelector(`.mobile-showcase-toggle-btn[data-mobile-target="${targetId}"]`);
+            if (!btn) return;
+
+            const isCurrentlyExpanded = btn.getAttribute('aria-expanded') === 'true';
+            const nextState = !isCurrentlyExpanded;
+
+            btn.setAttribute('aria-expanded', nextState ? 'true' : 'false');
+            const chevron = btn.querySelector('.chevron-arrow');
+            if (chevron) {
+                chevron.classList.toggle('rotate-180', nextState);
+            }
+            const toggleText = btn.querySelector('.toggle-text');
+            if (toggleText) {
+                if (nextState) {
+                    toggleText.textContent = 'Скрыть';
+                } else {
+                    const count = shelf.querySelectorAll('.shelf-medal-card').length;
+                    toggleText.textContent = `Награды (${count})`;
+                }
+            }
+
+            if (nextState) {
+                shelf.classList.remove('hidden');
+            } else {
+                shelf.classList.add('hidden');
+            }
+        }
+
+        document.querySelectorAll('.mobile-showcase-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const targetId = this.getAttribute('data-mobile-target');
+                toggleMobileShelf(targetId);
+            });
+        });
+
+        document.querySelectorAll('.mobile-shelf-toggle-bar').forEach(bar => {
+            bar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const targetId = this.getAttribute('data-mobile-target');
+                toggleMobileShelf(targetId);
+            });
+        });
+
+        // 2. Desktop Shelf Quick Filter Tabs (Все / Золотые / Серебряные / Бронзовые)
         document.querySelectorAll('.shelf-filters .filter-btn').forEach(fBtn => {
             fBtn.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -475,11 +658,41 @@
             });
         });
 
-        // 3. Live Search for Glory Table
+        // 2b. Mobile Shelf Quick Filter Tabs
+        document.querySelectorAll('.mobile-shelf-filters .filter-btn').forEach(fBtn => {
+            fBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const shelfPanel = this.closest('.mobile-shelf-panel');
+                if (!shelfPanel) return;
+
+                const buttons = shelfPanel.querySelectorAll('.mobile-shelf-filters .filter-btn');
+                buttons.forEach(b => {
+                    b.classList.remove('active', 'border-amber-500/60', 'bg-amber-500/20', 'text-amber-300');
+                    b.classList.add('border-slate-700', 'bg-slate-900/80');
+                });
+                this.classList.add('active', 'border-amber-500/60', 'bg-amber-500/20', 'text-amber-300');
+                this.classList.remove('border-slate-700', 'bg-slate-900/80');
+
+                const filterVal = this.getAttribute('data-filter');
+                const cards = shelfPanel.querySelectorAll('.shelf-medal-card');
+                cards.forEach(card => {
+                    const cardTier = card.getAttribute('data-tier');
+                    if (filterVal === 'all' || cardTier === filterVal) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 3. Live Search for Glory Table & Mobile List
         const searchInput = document.getElementById('glory-search');
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
                 const query = e.target.value.toLowerCase().trim();
+                
+                // Desktop table rows
                 const playerRows = document.querySelectorAll('#glory-table tbody tr.glory-row');
                 playerRows.forEach(row => {
                     const text = row.textContent.toLowerCase();
@@ -496,6 +709,13 @@
                             shelfRow.style.display = isExpanded ? '' : 'none';
                         }
                     }
+                });
+
+                // Mobile glory cards
+                const mobileCards = document.querySelectorAll('#glory-mobile-list .mobile-glory-card');
+                mobileCards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    card.style.display = text.includes(query) ? '' : 'none';
                 });
             });
         }
