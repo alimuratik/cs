@@ -1065,7 +1065,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 05.10.2026 16:55</p>
+                <p class="footer-timestamp">Данные обновлены: 05.10.2026 17:12</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -3234,9 +3234,240 @@
         };
     }
 
+    // Parse utility string into structured items
+    function parseTacticUtilityItems(utilityStr) {
+        const items = {
+            smokes: [],
+            molotovs: [],
+            flashes: [],
+            he: []
+        };
+        if (!utilityStr) return items;
+
+        // Smokes: "3 Дыма (CT Ticket, Stairs, Jungle)" or "1 Дым (Top Mid)"
+        const smokeMatch = utilityStr.match(/(\d+)\s*Дым[а-я]*\s*(?:\(([^)]+)\))?/i);
+        if (smokeMatch) {
+            const count = parseInt(smokeMatch[1], 10) || 1;
+            const targets = smokeMatch[2] ? smokeMatch[2].split(',').map(s => s.trim()) : [];
+            for (let i = 0; i < count; i++) {
+                items.smokes.push(targets[i] ? `Дым (${targets[i]})` : `Тактический Дым`);
+            }
+        }
+
+        // Molotovs: "2 Молотовых (Under Palace, Sandbags)" or "1 Молотов (Underpass)"
+        const moloMatch = utilityStr.match(/(\d+)\s*Молот[а-я]*\s*(?:\(([^)]+)\))?/i);
+        if (moloMatch) {
+            const count = parseInt(moloMatch[1], 10) || 1;
+            const targets = moloMatch[2] ? moloMatch[2].split(',').map(s => s.trim()) : [];
+            for (let i = 0; i < count; i++) {
+                items.molotovs.push(targets[i] ? `Молотов (${targets[i]})` : `Зажигательная / Молотов`);
+            }
+        }
+
+        // Flashes: "4 Флешки" or "2 Поп-флешки" or "3 Световые"
+        const flashMatch = utilityStr.match(/(\d+)\s*(?:Флеш[а-я]*|Поп-флеш[а-я]*|Светов[а-я]*)/i);
+        if (flashMatch) {
+            const count = parseInt(flashMatch[1], 10) || 1;
+            for (let i = 0; i < count; i++) {
+                items.flashes.push(`Световая флешка`);
+            }
+        }
+
+        // HE: "1 Осколочная" or "2 Хаешки"
+        const heMatch = utilityStr.match(/(\d+)\s*(?:Осколочн[а-я]*|Хаеш[а-я]*|HE)/i);
+        if (heMatch) {
+            const count = parseInt(heMatch[1], 10) || 1;
+            for (let i = 0; i < count; i++) {
+                items.he.push(`Осколочная HE`);
+            }
+        }
+
+        return items;
+    }
+
+    // Build granular, structured instructions and utility assignments for all 5 roles
+    function buildDetailedRoleDirectives(baseTactic, roster, side, mapKey) {
+        const parsedUtil = parseTacticUtilityItems(baseTactic.utility);
+        const smokesPool = [...parsedUtil.smokes];
+        const molosPool = [...parsedUtil.molotovs];
+        const flashesPool = [...parsedUtil.flashes];
+        const hePool = [...parsedUtil.he];
+
+        const isT = (side === 't');
+
+        // Player shortcuts
+        const awpP = roster.awp.player;
+        const entryP = roster.entry.player;
+        const refragP = roster.refragger.player;
+        const anchorP = roster.anchor.player;
+        const iglP = roster.igl.player;
+
+        const awpAim = Number(awpP.ratings?.Aim || 7.0);
+        const awpPos = Number(awpP.ratings?.Positioning || 7.0);
+        const entryEntry = Number(entryP.ratings?.Entry || 7.0);
+        const entryAim = Number(entryP.ratings?.Aim || 7.0);
+        const refragTrade = Number(refragP.ratings?.Trading || 7.0);
+        const anchorClutch = Number(anchorP.ratings?.Clutch || 7.0);
+        const anchorPos = Number(anchorP.ratings?.Positioning || 7.0);
+        const iglUtil = Number(iglP.ratings?.Utility || 7.0);
+        const iglGs = Number(iglP.ratings?.['Game Sense'] || 7.0);
+
+        const awpKillsPct = Number(awpP.metrics?.awp_kills_percent || 0);
+        const isTrueAwp = awpKillsPct >= 15 || (awpP.roles || []).some(r => r.toLowerCase().includes('awp')) || awpAim >= 7.8;
+
+        // Distribute utility among roles
+        const kits = { awp: [], entry: [], refragger: [], anchor: [], igl: [] };
+
+        // 1. IGL / Support: primary deep smoke & support flash
+        if (smokesPool.length > 0) kits.igl.push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' });
+        if (smokesPool.length > 0 && iglUtil >= 6.0) kits.igl.push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' });
+        if (flashesPool.length > 0) kits.igl.push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' });
+
+        // 2. Trader / Refragger: close molotov & support entry flash
+        if (molosPool.length > 0) kits.refragger.push({ name: molosPool.shift(), type: 'molotov', icon: '🔥' });
+        if (flashesPool.length > 0) kits.refragger.push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' });
+        if (smokesPool.length > 0) kits.refragger.push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' });
+
+        // 3. Anchor: site cutoff smoke or defensive molotov
+        if (smokesPool.length > 0) kits.anchor.push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' });
+        else if (molosPool.length > 0) kits.anchor.push({ name: molosPool.shift(), type: 'molotov', icon: '🔥' });
+        if (flashesPool.length > 0) kits.anchor.push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' });
+
+        // 4. Entry: pop-flash or HE
+        if (flashesPool.length > 0) kits.entry.push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' });
+        if (hePool.length > 0) kits.entry.push({ name: hePool.shift(), type: 'he', icon: '💣' });
+        else if (molosPool.length > 0) kits.entry.push({ name: molosPool.shift(), type: 'molotov', icon: '🔥' });
+
+        // 5. AWP: self-flash or defensive smoke
+        if (flashesPool.length > 0) kits.awp.push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' });
+        else if (smokesPool.length > 0) kits.awp.push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' });
+
+        // Distribute remaining utility
+        const order = ['igl', 'refragger', 'anchor', 'entry', 'awp'];
+        let oi = 0;
+        while (smokesPool.length > 0) { kits[order[oi % order.length]].push({ name: smokesPool.shift(), type: 'smoke', icon: '💨' }); oi++; }
+        while (molosPool.length > 0) { kits[order[oi % order.length]].push({ name: molosPool.shift(), type: 'molotov', icon: '🔥' }); oi++; }
+        while (flashesPool.length > 0) { kits[order[oi % order.length]].push({ name: flashesPool.shift(), type: 'flash', icon: '⚡' }); oi++; }
+        while (hePool.length > 0) { kits[order[oi % order.length]].push({ name: hePool.shift(), type: 'he', icon: '💣' }); oi++; }
+
+        // Fallbacks if 0 utility
+        if (kits.awp.length === 0) kits.awp.push({ name: 'Само-флеш (под снайперский пик)', type: 'flash', icon: '⚡' });
+        if (kits.entry.length === 0) kits.entry.push({ name: 'Поп-флеш на контакт', type: 'flash', icon: '⚡' });
+        if (kits.refragger.length === 0) kits.refragger.push({ name: 'Моменталка на размен', type: 'flash', icon: '⚡' });
+        if (kits.anchor.length === 0) kits.anchor.push({ name: isT ? 'Скрытный дым на ротацию' : 'Сейв-дым на задержку', type: 'smoke', icon: '💨' });
+        if (kits.igl.length === 0) kits.igl.push({ name: isT ? 'Дым под установку бомбы' : 'Командный дым на ретейк', type: 'smoke', icon: '💨' });
+
+        const timingFirst = baseTactic.timings ? baseTactic.timings.split('•')[0].trim() : '0:00-0:30';
+
+        const res = {};
+
+        // 1. AWP
+        const awpGrens = kits.awp.map(g => `${g.icon} ${g.name}`).join(' • ');
+        res.awp = {
+            roleKey: 'awp',
+            player: awpP,
+            playerName: awpP.name,
+            statSummary: `Aim ${awpAim.toFixed(1)}, Pos ${awpPos.toFixed(1)}`,
+            weapon: isTrueAwp ? 'AWP + Desert Eagle / Kevlar' : 'AK-47 / SSG 08 + Kevlar + Helmet',
+            utilityKit: kits.awp,
+            utilityBadgesHtml: kits.awp.map(g => `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-amber-300">${g.icon} ${g.name}</span>`).join(' '),
+            utilityTimingLabel: `${timingFirst}: Самораскид`,
+            utilityAction: `Использует ${awpGrens}. Держит гранату для изоляции собственного пика или отхода в укрытие. Не тратит время на командные раскидки, держа ствол на прицеле.`,
+            movementAndCombat: `${baseTactic.roles.awp} Фиксирует главную снайперскую дистанцию, отсекает быстрые ротации соперника.`,
+            personalAiTip: isTrueAwp 
+                ? (awpAim >= 7.6 ? `Высокая точность стрельбы (Aim ${awpAim.toFixed(1)}): бери узкий агрессивный угол и лови противника на первом пике.` : `Действуй от сейвовой дистанции (Позиционка ${awpPos.toFixed(1)}), исключая ближний бой с рифлерами.`)
+                : `Бесснайперский сетап: заменяй AWP на AK-47 / Scout. Играй с напарником ${entryP.name} в плотный дабл-пик.`
+        };
+
+        // 2. ENTRY
+        const entryGrens = kits.entry.map(g => `${g.icon} ${g.name}`).join(' • ');
+        res.entry = {
+            roleKey: 'entry',
+            player: entryP,
+            playerName: entryP.name,
+            statSummary: `Entry ${entryEntry.toFixed(1)}, Aim ${entryAim.toFixed(1)}`,
+            weapon: isT ? 'AK-47 / Galil + Kevlar + Helmet' : 'M4A1-S / MP9 + Kevlar + Helmet',
+            utilityKit: kits.entry,
+            utilityBadgesHtml: kits.entry.map(g => `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-rose-300">${g.icon} ${g.name}</span>`).join(' '),
+            utilityTimingLabel: `${timingFirst}: Контактный сброс`,
+            utilityAction: `Использует ${entryGrens}. Бросает быструю гранату перед непосредственным столкновением (об стену / поп-флеш) и мгновенно выбегает с оружием наготове.`,
+            movementAndCombat: `${baseTactic.roles.entry} Врывается первым номером, зачищает приоритетный упор. Задача: выиграть первую дуэль или забайтить перекрестный огонь под размен.`,
+            personalAiTip: entryEntry >= 7.4
+                ? `Взрывной показатель входа (Entry ${entryEntry.toFixed(1)}): выходи широким агрессивным стрейфом на префаере, забирая первый фраг.`
+                : `Entry ${entryEntry.toFixed(1)}: не выходи в одиночку в сухую! Жди моменталку от ${refragP.name} и двигайся строго по таймингу вспышки.`
+        };
+
+        // 3. REFRAGGER / TRADER
+        const refragGrens = kits.refragger.map(g => `${g.icon} ${g.name}`).join(' • ');
+        res.refragger = {
+            roleKey: 'refragger',
+            player: refragP,
+            playerName: refragP.name,
+            statSummary: `Trading ${refragTrade.toFixed(1)}, Aim ${Number(refragP.ratings?.Aim || 7.0).toFixed(1)}`,
+            weapon: isT ? 'AK-47 + Kevlar + Helmet' : 'M4A1-S / M4A4 + Kevlar + Defuser',
+            utilityKit: kits.refragger,
+            utilityBadgesHtml: kits.refragger.map(g => `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-orange-300">${g.icon} ${g.name}</span>`).join(' '),
+            utilityTimingLabel: `${timingFirst}: Поддержка выхода`,
+            utilityAction: `Применяет ${refragGrens}. Выжигает ключевой упор врага за укрытием молотовым, после чего дает глубокую моменталку поверх стен для ${entryP.name}.`,
+            movementAndCombat: `${baseTactic.roles.refragger} Движется за ${entryP.name} с шагом 1.2–1.5 секунды. При контакте немедленно разменивает позицию врага и заливает угол спреем.`,
+            personalAiTip: refragTrade >= 7.2
+                ? `Элитный трейдинг (Trading ${refragTrade.toFixed(1)}): держи прицел строго на уровне головы за плечом ${entryP.name}, гарантируя моментальный размен.`
+                : `Trading ${refragTrade.toFixed(1)}: сокращай дистанцию до энтри, не оставайся за углом после начала перестрелки.`
+        };
+
+        // 4. ANCHOR / LURKER
+        const anchorGrens = kits.anchor.map(g => `${g.icon} ${g.name}`).join(' • ');
+        res.anchor = {
+            roleKey: 'anchor',
+            player: anchorP,
+            playerName: anchorP.name,
+            statSummary: `Pos ${anchorPos.toFixed(1)}, Clutch ${anchorClutch.toFixed(1)}`,
+            weapon: isT ? 'AK-47 / Galil + Kevlar + Helmet' : 'M4A1-S / AUG + Kevlar + Defuser',
+            utilityKit: kits.anchor,
+            utilityBadgesHtml: kits.anchor.map(g => `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-sky-300">${g.icon} ${g.name}</span>`).join(' '),
+            utilityTimingLabel: `${timingFirst}: Удержание / Фланг`,
+            utilityAction: `Использует ${anchorGrens}. Придерживает отсекающий дым/молотов до момента взрыва на противоположной стороне карты или по команде IGL блокирует перетяжку.`,
+            movementAndCombat: `${baseTactic.roles.anchor} Держит скрытную пассивную позицию. Не выдает присутствия шагами, отрезает ротацию врага и затягивает раунд при численном меньшинстве.`,
+            personalAiTip: anchorClutch >= 7.0
+                ? `Высокое хладнокровие (Clutch ${anchorClutch.toFixed(1)}): оставаясь соло на точке, разрывай дистанцию и принимай соперников по одиночке на ошибках.`
+                : `Positioning ${anchorPos.toFixed(1)}: играй максимально закрыто от информации, не рискуй в открытых перестрелках до подхода тиммейтов.`
+        };
+
+        // 5. IGL / COORDINATOR
+        const iglGrens = kits.igl.map(g => `${g.icon} ${g.name}`).join(' • ');
+        res.igl = {
+            roleKey: 'igl',
+            player: iglP,
+            playerName: iglP.name,
+            statSummary: `Game Sense ${iglGs.toFixed(1)}, Util ${iglUtil.toFixed(1)}`,
+            weapon: isT ? 'AK-47 / SMG + Kevlar + Bomb' : 'M4A1-S / Famas + Kevlar + Defuser',
+            utilityKit: kits.igl,
+            utilityBadgesHtml: kits.igl.map(g => `<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-emerald-300">${g.icon} ${g.name}</span>`).join(' '),
+            utilityTimingLabel: `${timingFirst}: Синхронный раскид`,
+            utilityAction: `Закладывает ${iglGrens}. Основной координатор дымовой завесы: откидывает ориентировочный смок в ключевой проход точно в стартовый тайминг, дает командную флешку над сайтом.`,
+            movementAndCombat: `${baseTactic.roles.igl} Координирует сигналы выхода, контролирует радар и миникарту. ${isT ? 'Несет бомбу и производит установку под прикрытием команды.' : 'Руководит сбором информации и определяет тайминг перетяжки.'}`,
+            personalAiTip: iglUtil >= 6.5
+                ? `Высокая утилита (Util ${iglUtil.toFixed(1)}): исполняй сложные дальние смоки с ювелирной точностью, координируя общий темп раунда.`
+                : (isT 
+                    ? `Упор на координацию (Game Sense ${iglGs.toFixed(1)}): делай простой настильный раскид без риска ошибки и сосредоточься на коллах и тайминге установки бомбы.`
+                    : `Упор на координацию (Game Sense ${iglGs.toFixed(1)}): читай перемещения врага по радару и координируй синхронный ретейк 5vX.`)
+        };
+
+        return res;
+    }
+
     // Dynamic Roster-Adaptive Tactics Formatter
     function adaptTacticForRoster(baseTactic, roster, side, mapKey) {
-        if (!roster) return baseTactic;
+        if (!roster) {
+            const mockRoster = {
+                awp: { player: { name: 'Снайпер (AWP)', ratings: { Aim: 7.5, Positioning: 7.0 }, metrics: { awp_kills_percent: 20 } } },
+                entry: { player: { name: 'Первый энтри', ratings: { Entry: 7.5, Aim: 7.5 } } },
+                refragger: { player: { name: 'Второй энтри / Трейдер', ratings: { Trading: 7.5, Aim: 7.0 } } },
+                anchor: { player: { name: 'Опорник / Люркер', ratings: { Positioning: 7.5, Clutch: 7.0 } } },
+                igl: { player: { name: 'Капитан (IGL & Support)', ratings: { Utility: 7.0, 'Game Sense': 7.5 } } }
+            };
+            return adaptTacticForRoster(baseTactic, mockRoster, side, mapKey);
+        }
 
         const awpP = roster.awp.player;
         const entryP = roster.entry.player;
@@ -3251,18 +3482,11 @@
         const iglRatings = iglP.ratings || {};
 
         const awpAim = Number(awpRatings.Aim || 7.0);
-        const awpPos = Number(awpRatings.Positioning || 7.0);
         const entryEntry = Number(entryRatings.Entry || 7.0);
         const entryAim = Number(entryRatings.Aim || 7.0);
         const refragTrade = Number(refragRatings.Trading || 7.0);
-        const refragAdr = Number(refragP.adr || (refragP.stats && refragP.stats.adr) || 75.0);
-        const anchorClutch = Number(anchorRatings.Clutch || 7.0);
-        const anchorPos = Number(anchorRatings.Positioning || 7.0);
         const iglUtil = Number(iglRatings.Utility || 7.0);
         const iglGs = Number(iglRatings['Game Sense'] || 7.0);
-
-        const awpKillsPct = Number(awpP.metrics?.awp_kills_percent || 0);
-        const isTrueAwp = awpKillsPct >= 15 || (awpP.roles || []).some(r => r.toLowerCase().includes('awp')) || awpAim >= 7.8;
 
         const teamFirepower = (awpAim + entryAim) / 2;
         const teamTactics = (iglUtil + iglGs) / 2;
@@ -3284,28 +3508,14 @@
             detailedNote = `Состав обладает высокой универсальностью: тактика сбалансирована под надежный пошаговый контроль зон.`;
         }
 
-        // Handle No-AWP role adaptation
-        let awpRoleText = "";
-        if (isTrueAwp) {
-            awpRoleText = `[${awpP.name} · Снайпер AWP · Aim ${awpAim.toFixed(1)}]: ${baseTactic.roles.awp} ${awpAim >= 7.6 ? `Используя высокую точность, берет агрессивный пик по узкому углу.` : `Действует от сейвовой позиции (Позиционка ${awpPos.toFixed(1)}), отсекая перетяжки.`}`;
-        } else {
-            awpRoleText = `[${awpP.name} · Агрессивный рифлер / Scout · Aim ${awpAim.toFixed(1)}]: ⚠️ Бесснайперский сетап. Замена AWP на Калаш / Scout: ${baseTactic.roles.awp.replace(/снайпер[а-я]*/gi, "рифлер").replace(/AWP/gi, "AK-47 / Scout")}. Играет агрессивный дабл-пик со вторым рифлером.`;
-        }
-
-        // Handle Low Utility adaptation for IGL / Support
-        let iglRoleText = "";
-        if (iglUtil < 5.5) {
-            iglRoleText = `[${iglP.name} · IGL / Координатор · Util ${iglUtil.toFixed(1)}]: ⚠️ Дефицит раскидок (${iglUtil.toFixed(1)}). Сложный глубокий смок передан ${entryAim >= 7.0 ? refragP.name : entryP.name}, а ${iglP.name} контролирует радар (Game Sense ${iglGs.toFixed(1)}) и ставит бомбу.`;
-        } else {
-            iglRoleText = `[${iglP.name} · IGL & Support · Util ${iglUtil.toFixed(1)}]: ${baseTactic.roles.igl} ${iglUtil >= 7.0 ? `Точная раскидка (${iglUtil.toFixed(1)}): закладывает ключевой дым и дает глубокую моменталку над сайтом.` : `Контролирует радар (Game Sense ${iglGs.toFixed(1)}), координирует тайминг установки.`}`;
-        }
+        const rolesDetailed = buildDetailedRoleDirectives(baseTactic, roster, side, mapKey);
 
         const roles = {
-            awp: awpRoleText,
-            entry: `[${entryP.name} · Entry ${entryEntry.toFixed(1)}]: ${baseTactic.roles.entry} ${entryEntry >= 7.4 ? `Реализует взрывной опенинг (${entryEntry.toFixed(1)}), агрессивно вскрывая угол на первой секунде.` : `Выходит под моменталку широким стрейфом, собирая инфу и байтя огонь на себя.`}`,
-            refragger: `[${refragP.name} · Trade ${refragTrade.toFixed(1)}]: ${baseTactic.roles.refragger} ${refragTrade >= 7.2 ? `Дистанция 1.2м за ${entryP.name}: мгновенный размен (Trading ${refragTrade.toFixed(1)}) за доли секунды.` : `Движется во 2-м темпе, заливает зону подавляющим спреем (ADR ${refragAdr.toFixed(0)}).`}`,
-            anchor: `[${anchorP.name} · Clutch ${anchorClutch.toFixed(1)}]: ${baseTactic.roles.anchor} ${anchorClutch >= 7.0 ? `Клатч-хладнокровие (${anchorClutch.toFixed(1)}): сохраняет позицию для изоляции дуэлей и выигрыша времени.` : `Глубокая позиционка (${anchorPos.toFixed(1)}): играет сейвово до прихода тиммейтов.`}`,
-            igl: iglRoleText
+            awp: `[${rolesDetailed.awp.playerName} · AWP · ${rolesDetailed.awp.statSummary}]: Закуп: ${rolesDetailed.awp.utilityKit.map(g => g.name).join(', ')}. ${rolesDetailed.awp.movementAndCombat}`,
+            entry: `[${rolesDetailed.entry.playerName} · Entry · ${rolesDetailed.entry.statSummary}]: Закуп: ${rolesDetailed.entry.utilityKit.map(g => g.name).join(', ')}. ${rolesDetailed.entry.movementAndCombat}`,
+            refragger: `[${rolesDetailed.refragger.playerName} · Trade · ${rolesDetailed.refragger.statSummary}]: Закуп: ${rolesDetailed.refragger.utilityKit.map(g => g.name).join(', ')}. ${rolesDetailed.refragger.movementAndCombat}`,
+            anchor: `[${rolesDetailed.anchor.playerName} · Anchor · ${rolesDetailed.anchor.statSummary}]: Закуп: ${rolesDetailed.anchor.utilityKit.map(g => g.name).join(', ')}. ${rolesDetailed.anchor.movementAndCombat}`,
+            igl: `[${rolesDetailed.igl.playerName} · IGL · ${rolesDetailed.igl.statSummary}]: Закуп: ${rolesDetailed.igl.utilityKit.map(g => g.name).join(', ')}. ${rolesDetailed.igl.movementAndCombat}`
         };
 
         const counter = `${baseTactic.counter} (При раннем выбывании ${entryP.name} — разменную инициативу немедленно перехватывает ${refragP.name}, а ${awpP.name} отсекает перетяжку).`;
@@ -3315,8 +3525,71 @@
             adaptationSummary,
             detailedNote,
             roles,
+            rolesDetailed,
             counter
         };
+    }
+
+    // Render individual detailed role briefing card
+    function renderDetailedRoleCard(roleData, spec) {
+        if (!roleData || !spec) return '';
+        return `
+            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700 transition flex flex-col gap-2.5">
+                <!-- Header: Role badge, Player name, weapon -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-slate-800/80">
+                    <div class="flex items-center gap-2 flex-wrap min-w-0">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${spec.badgeClass}">
+                            <span>${spec.icon}</span> <span>${spec.title}</span>
+                        </span>
+                        <div class="flex items-center gap-1.5 min-w-0">
+                            <span class="text-xs font-black text-white hover:text-amber-300 transition truncate">${roleData.playerName}</span>
+                            <span class="text-[10px] font-mono text-slate-400">(${roleData.statSummary})</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-950 text-slate-300 border border-slate-800">
+                            🔫 ${roleData.weapon}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Assigned Utility Kit & Lineup Instruction -->
+                <div class="p-2.5 rounded-lg bg-slate-950/80 border border-slate-800/90 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                        <span class="text-[10px] font-mono font-bold uppercase text-amber-400 shrink-0">🎒 Инвентарь:</span>
+                        ${roleData.utilityBadgesHtml}
+                    </div>
+                    <div class="text-[10px] text-emerald-400 font-mono font-bold shrink-0">
+                        ${roleData.utilityTimingLabel}
+                    </div>
+                </div>
+
+                <!-- Granular Instructions: Action, Combat & Positioning -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 text-xs">
+                    <div class="md:col-span-6 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/60 flex flex-col gap-1">
+                        <span class="text-[10px] font-mono font-bold uppercase text-amber-400 flex items-center gap-1">
+                            <span>🎯</span> Раскид и применение утилиты:
+                        </span>
+                        <p class="text-slate-200 leading-relaxed">${roleData.utilityAction}</p>
+                    </div>
+                    <div class="md:col-span-6 p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/60 flex flex-col gap-1">
+                        <span class="text-[10px] font-mono font-bold uppercase text-sky-400 flex items-center gap-1">
+                            <span>📍</span> Маршрут, прицел и боевой контакт:
+                        </span>
+                        <p class="text-slate-200 leading-relaxed">${roleData.movementAndCombat}</p>
+                    </div>
+                </div>
+
+                <!-- Personal Coach Directive -->
+                <div class="pt-2 border-t border-slate-800/60 flex items-start sm:items-center gap-2 text-[11px]">
+                    <span class="text-amber-400 shrink-0">🤖</span>
+                    <div class="text-slate-300">
+                        <span class="text-amber-300 font-bold">Установка тренера: </span>
+                        <span>${roleData.personalAiTip}</span>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 
     // Render Slots Bar
@@ -3766,45 +4039,21 @@
                     </div>
 
                     <!-- 5 Step-by-Step Roles Execution -->
-                    <div class="space-y-2.5 mb-5">
-                        <span class="text-[11px] font-black text-white uppercase tracking-wider block mb-2">
-                            👥 Пошаговые действия игроков (кто и что делает):
-                        </span>
-
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.awp.badgeClass}">
-                                <span>${ROLE_SPECS.awp.icon}</span> <span>AWP / Rifle</span>
-                            </div>
-                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.awp}</p>
+                    <div class="space-y-3 mb-5">
+                        <div class="flex items-center justify-between pb-1 border-b border-slate-800">
+                            <span class="text-[11px] font-black text-white uppercase tracking-wider flex items-center gap-1.5">
+                                <span>👥</span> Пошаговые боевые инструкции и персональный раскид (5 игроков):
+                            </span>
+                            <span class="text-[10px] font-mono text-amber-400 hidden sm:inline-block">
+                                Закуп гранат, тайминги и зоны ответственности
+                            </span>
                         </div>
 
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.entry.badgeClass}">
-                                <span>${ROLE_SPECS.entry.icon}</span> <span>Entry</span>
-                            </div>
-                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.entry}</p>
-                        </div>
-
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.refragger.badgeClass}">
-                                <span>${ROLE_SPECS.refragger.icon}</span> <span>Trader</span>
-                            </div>
-                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.refragger}</p>
-                        </div>
-
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.anchor.badgeClass}">
-                                <span>${ROLE_SPECS.anchor.icon}</span> <span>Anchor</span>
-                            </div>
-                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.anchor}</p>
-                        </div>
-
-                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
-                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.igl.badgeClass}">
-                                <span>${ROLE_SPECS.igl.icon}</span> <span>IGL</span>
-                            </div>
-                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.igl}</p>
-                        </div>
+                        ${renderDetailedRoleCard(tactic.rolesDetailed ? tactic.rolesDetailed.awp : null, ROLE_SPECS.awp)}
+                        ${renderDetailedRoleCard(tactic.rolesDetailed ? tactic.rolesDetailed.entry : null, ROLE_SPECS.entry)}
+                        ${renderDetailedRoleCard(tactic.rolesDetailed ? tactic.rolesDetailed.refragger : null, ROLE_SPECS.refragger)}
+                        ${renderDetailedRoleCard(tactic.rolesDetailed ? tactic.rolesDetailed.anchor : null, ROLE_SPECS.anchor)}
+                        ${renderDetailedRoleCard(tactic.rolesDetailed ? tactic.rolesDetailed.igl : null, ROLE_SPECS.igl)}
                     </div>
 
                     <!-- Timings & Plan B -->
@@ -3868,6 +4117,43 @@
 
         const tactic = adaptTacticForRoster(rawTactic, currentAssignedRoster, activeSide, activeMap);
 
+        const d = tactic.rolesDetailed || {};
+        let rolesBlock = '';
+        if (d.awp && d.entry && d.refragger && d.anchor && d.igl) {
+            rolesBlock = 
+`🔭 **[AWP] ${d.awp.playerName}** (${d.awp.statSummary})
+   • Закуп гранат: ${d.awp.utilityKit.map(g => g.name).join(', ')}
+   • Раскид: ${d.awp.utilityAction}
+   • Задача: ${d.awp.movementAndCombat}
+
+⚡ **[Entry] ${d.entry.playerName}** (${d.entry.statSummary})
+   • Закуп гранат: ${d.entry.utilityKit.map(g => g.name).join(', ')}
+   • Раскид: ${d.entry.utilityAction}
+   • Задача: ${d.entry.movementAndCombat}
+
+🤝 **[Trader] ${d.refragger.playerName}** (${d.refragger.statSummary})
+   • Закуп гранат: ${d.refragger.utilityKit.map(g => g.name).join(', ')}
+   • Раскид: ${d.refragger.utilityAction}
+   • Задача: ${d.refragger.movementAndCombat}
+
+🛡️ **[Anchor] ${d.anchor.playerName}** (${d.anchor.statSummary})
+   • Закуп гранат: ${d.anchor.utilityKit.map(g => g.name).join(', ')}
+   • Раскид: ${d.anchor.utilityAction}
+   • Задача: ${d.anchor.movementAndCombat}
+
+🧠 **[IGL] ${d.igl.playerName}** (${d.igl.statSummary})
+   • Закуп гранат: ${d.igl.utilityKit.map(g => g.name).join(', ')}
+   • Раскид: ${d.igl.utilityAction}
+   • Задача: ${d.igl.movementAndCombat}`;
+        } else {
+            rolesBlock = 
+`🔭 ${tactic.roles.awp}
+⚡ ${tactic.roles.entry}
+🤝 ${tactic.roles.refragger}
+🛡️ ${tactic.roles.anchor}
+🧠 ${tactic.roles.igl}`;
+        }
+
         const text = 
 `🏆 **ТАКТИЧЕСКИЙ ПЛАН CS2:** ${mapData.name} — ${tactic.title}
 Сторона: ${activeSide.toUpperCase()} | Тип: ${tactic.type} | Сложность: ${tactic.diff}
@@ -3876,15 +4162,11 @@
 🎯 **Концепция:**
 ${tactic.concept}
 
-💣 **Утилити:**
+💣 **Командный инвентарь:**
 ${tactic.utility}
 
-👥 **РАСПРЕДЕЛЕНИЕ РОЛЕЙ И ЗАДАЧИ:**
-🔭 ${tactic.roles.awp}
-⚡ ${tactic.roles.entry}
-🤝 ${tactic.roles.refragger}
-🛡️ ${tactic.roles.anchor}
-🧠 ${tactic.roles.igl}
+👥 **ПЕРСОНАЛЬНЫЙ РАСКИД И ЗАДАЧИ ИГРОКОВ:**
+${rolesBlock}
 
 ⏱️ **Тайминги:** ${tactic.timings}
 🔄 **План Б:** ${tactic.counter}`;
