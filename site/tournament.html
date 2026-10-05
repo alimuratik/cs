@@ -235,7 +235,7 @@
                     </span>
                     <!-- Role filter pills -->
                     <div class="inline-flex items-center gap-1 flex-wrap" id="picker-filter-chips">
-                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer" data-filter="all">Все</button>
+                        <button type="button" class="filter-chip active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer" data-filter="all">Все</button>
                         <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="top">Топ MMR</button>
                         <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="awp">Снайперы</button>
                         <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="entry">Энтри</button>
@@ -1065,7 +1065,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 05.10.2026 16:42</p>
+                <p class="footer-timestamp">Данные обновлены: 05.10.2026 16:55</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -2862,6 +2862,7 @@
     let tacticsViewMode = "top3"; // "top3" or "all"
     let radarChartInstance = null;
     let expandedTacticIds = new Set(); // Stores expanded accordion rows
+    let currentPickerFilter = 'all'; // Active filter chip: all | top | awp | entry | anchor
 
     // Tactical Roles Metadata
     const ROLE_SPECS = {
@@ -3961,29 +3962,61 @@ ${tactic.utility}
     // Filter cards in inline picker
     function applyPlayerFilters() {
         const searchVal = (document.getElementById('player-search-input')?.value || '').toLowerCase().trim();
-        const activeChip = document.querySelector('#picker-filter-chips .filter-chip.bg-amber-500\/20');
-        const filterType = activeChip ? activeChip.getAttribute('data-filter') : 'all';
+        const filterType = currentPickerFilter || 'all';
+
+        // Pre-create player lookup for fast attribute and rating checks
+        const playersBySteamId = new Map(ALL_PLAYERS.map(p => [String(p.steam_id), p]));
+
+        // Calculate top MMR threshold dynamically (top 35% of player pool, min 1040)
+        const sortedMmrs = [...ALL_PLAYERS].map(p => Number(p.current_mmr || 0)).sort((a, b) => b - a);
+        const topMmrCutoff = sortedMmrs.length > 10 ? sortedMmrs[Math.min(11, sortedMmrs.length - 1)] : 1040;
+
+        let visibleCount = 0;
 
         document.querySelectorAll('.player-select-card').forEach(card => {
-            const name = (card.querySelector('.truncate')?.textContent || '').toLowerCase();
-            const rolesStr = (card.getAttribute('data-roles') || '').toLowerCase();
-            const mmr = parseInt(card.getAttribute('data-mmr') || '0', 10);
+            const sid = String(card.getAttribute('data-steamid') || '');
+            const p = playersBySteamId.get(sid);
+            const name = (p?.name || card.querySelector('.truncate')?.textContent || '').toLowerCase();
+            const rolesStr = (card.getAttribute('data-roles') || (p?.roles || []).join(',') || '').toLowerCase();
+            const mmr = parseInt(card.getAttribute('data-mmr') || p?.current_mmr || '0', 10);
 
             let matchesSearch = !searchVal || name.includes(searchVal);
             let matchesFilter = true;
 
             if (filterType === 'top') {
-                matchesFilter = mmr >= 1050;
+                matchesFilter = mmr >= Math.min(topMmrCutoff, 1040);
             } else if (filterType === 'awp') {
-                matchesFilter = rolesStr.includes('awp') || rolesStr.includes('снайпер');
+                const awpPct = Number(p?.metrics?.awp_kills_percent || 0);
+                const aimRating = Number(p?.ratings?.Aim || 0);
+                matchesFilter = rolesStr.includes('awp') || rolesStr.includes('снайпер') || awpPct >= 8.0 || (aimRating >= 8.0 && awpPct >= 3.0);
             } else if (filterType === 'entry') {
-                matchesFilter = rolesStr.includes('entry') || rolesStr.includes('энтри');
+                const entryRating = Number(p?.ratings?.Entry || 0);
+                matchesFilter = rolesStr.includes('entry') || rolesStr.includes('энтри') || entryRating >= 7.0;
             } else if (filterType === 'anchor') {
-                matchesFilter = rolesStr.includes('опор') || rolesStr.includes('anchor') || rolesStr.includes('люрк');
+                const posRating = Number(p?.ratings?.Positioning || 0);
+                const clutchRating = Number(p?.ratings?.Clutch || 0);
+                matchesFilter = rolesStr.includes('опор') || rolesStr.includes('anchor') || rolesStr.includes('люрк') || rolesStr.includes('клатч') || posRating >= 6.5 || clutchRating >= 7.5;
             }
 
-            card.style.display = (matchesSearch && matchesFilter) ? 'flex' : 'none';
+            const shouldShow = matchesSearch && matchesFilter;
+            card.style.display = shouldShow ? 'flex' : 'none';
+            if (shouldShow) visibleCount++;
         });
+
+        // Empty state message if no players match
+        let noResultsEl = document.getElementById('player-picker-no-results');
+        if (visibleCount === 0) {
+            if (!noResultsEl) {
+                noResultsEl = document.createElement('div');
+                noResultsEl.id = 'player-picker-no-results';
+                noResultsEl.className = 'col-span-full py-8 text-center text-xs text-slate-500 font-mono';
+                noResultsEl.innerHTML = '🔍 Игроки по выбранному фильтру не найдены';
+                document.getElementById('player-selection-grid')?.appendChild(noResultsEl);
+            }
+            noResultsEl.style.display = 'block';
+        } else if (noResultsEl) {
+            noResultsEl.style.display = 'none';
+        }
     }
 
     // Storage persistence
@@ -4031,10 +4064,11 @@ ${tactic.utility}
         // Filter chips
         document.querySelectorAll('#picker-filter-chips .filter-chip').forEach(chip => {
             chip.addEventListener('click', (e) => {
+                currentPickerFilter = chip.getAttribute('data-filter') || 'all';
                 document.querySelectorAll('#picker-filter-chips .filter-chip').forEach(c => {
-                    c.className = 'filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer';
+                    c.className = 'filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition';
                 });
-                chip.className = 'filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer';
+                chip.className = 'filter-chip active px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer transition';
                 applyPlayerFilters();
             });
         });
@@ -4146,6 +4180,7 @@ ${tactic.utility}
 
         // Initial UI Render
         updateUiState();
+        applyPlayerFilters();
     });
 </script>
 
