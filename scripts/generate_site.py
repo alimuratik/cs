@@ -2254,6 +2254,8 @@ def generate_site(output_dir=None):
             "form_dots": mmr_data.get("form_dots", []),
             "momentum": p.get("momentum", {}),
             "archetype": p.get("archetype", {}),
+            "metrics": p.get("metrics", {}),
+            "overall_stats": p.get("overall_stats", {}),
             "faceit": p.get("faceit")
         })
 
