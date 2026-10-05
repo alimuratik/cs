@@ -1,0 +1,2071 @@
+{% extends "base.html" %}
+{% set active_page = 'tournament' %}
+
+{% block title %}Турнирный состав 5v5 & Тактический плейбук | CS2 Аналитика{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <span class="text-white font-medium">🏆 Турнирный состав & Тактический плейбук</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Hub Navigation: Duels 1v1 vs Team Generator 5v5 vs Tournament Playbook -->
+    <div class="mb-6 flex justify-center">
+        <div class="segmented-nav-track">
+            <a href="compare.html" class="segmented-nav-btn">
+                <span>⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="matchmaker.html" class="segmented-nav-btn">
+                <span>⚖️</span> <span>Генератор составов 5v5</span>
+            </a>
+            <a href="tournament.html" class="segmented-nav-btn active">
+                <span>🏆</span> <span>Турнирный состав & Тактики</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 mb-6 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-amber-950/20">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    🏆 ТАКТИЧЕСКИЙ ШТАБ И ТУРНИРНЫЙ ХАБ
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Турнирный состав 5v5 & Тактический плейбук
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Формируйте состав из 5 игроков прямо в панели ниже. Алгоритм распределит тактические роли (AWP, Entry, Trader, Anchor, IGL) и динамически адаптирует 42 тактики под сильные стороны и рейтинги выбранных игроков.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <button id="btn-select-top5" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/40 text-xs font-bold text-amber-300 transition flex items-center gap-2 shadow-lg cursor-pointer">
+                    <span>👑</span>
+                    <span>Топ-5 по MMR</span>
+                </button>
+                <button id="btn-select-balanced" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/40 text-xs font-bold text-emerald-300 transition flex items-center gap-2 shadow-lg cursor-pointer">
+                    <span>🎯</span>
+                    <span>Сбалансированный состав</span>
+                </button>
+                <button id="btn-reset-roster" class="px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-rose-950/60 border border-slate-700 hover:border-rose-500/40 text-xs font-bold text-slate-300 hover:text-rose-300 transition cursor-pointer">
+                    Сбросить
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Squad Control Center (Roster Slots + Inline Player Selector) -->
+    <section class="section glassmorphism p-5 md:p-6 rounded-2xl border border-slate-800 mb-8 bg-slate-950/70 shadow-2xl">
+        <!-- Top bar with counter -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800/80">
+            <div>
+                <h2 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
+                    <span>🎖️</span> Стартовая боевая пятерка (Roster Slots)
+                </h2>
+                <span class="text-xs text-slate-400">Нажмите на крестик у любого игрока для точечной замены, или выберите нужных игроков ниже</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="roster-counter-badge" class="px-3.5 py-1.5 rounded-full font-mono text-xs font-bold bg-slate-900 text-amber-300 border border-amber-500/30 flex items-center gap-1.5">
+                    <span>Выбрано:</span>
+                    <span id="roster-count" class="font-black text-amber-400">0</span>
+                    <span>/ 5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 Slots Row (Always retains non-removed players!) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 mb-5" id="roster-slots-container">
+            <!-- 5 Slots populated dynamically -->
+        </div>
+
+        <!-- Incomplete squad warning banner -->
+        <div id="squad-incomplete-banner" class="hidden p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-center justify-between gap-3 mb-4 font-mono">
+            <span class="flex items-center gap-2">
+                <span>⚠️</span>
+                <span id="squad-incomplete-text">В составе 4 из 5 игроков. Выберите еще 1 игрока ниже для расчета ролей и генерации тактик.</span>
+            </span>
+            <span class="text-[10px] text-slate-400">Кликните по карточке игрока в каталоге</span>
+        </div>
+
+        <!-- Inline Player Selector Panel (Directly Under Slots — No Scrolling Needed!) -->
+        <div class="pt-4 border-t border-slate-800/80">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
+                <div class="flex items-center gap-2 flex-wrap">
+                    <span class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+                        <span>👥</span> Каталог игроков сообщества:
+                    </span>
+                    <!-- Role filter pills -->
+                    <div class="inline-flex items-center gap-1 flex-wrap" id="picker-filter-chips">
+                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer" data-filter="all">Все</button>
+                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="top">Топ MMR</button>
+                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="awp">Снайперы</button>
+                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="entry">Энтри</button>
+                        <button type="button" class="filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer" data-filter="anchor">Опорники</button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="player-search-input" placeholder="🔍 Поиск по имени..." class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 w-full md:w-56">
+                </div>
+            </div>
+
+            <!-- Compact scrollable player chips grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 max-h-72 overflow-y-auto custom-scrollbar p-1" id="player-selection-grid">
+                {% for p in players %}
+                <div class="player-select-card p-2.5 rounded-xl border border-slate-800/80 bg-slate-900/60 hover:bg-slate-900 transition flex items-center justify-between gap-2 cursor-pointer select-none group" data-steamid="{{ p.steam_id }}" data-roles="{{ p.roles|join(',') if p.roles else '' }}" data-mmr="{{ p.current_mmr }}">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <input type="checkbox" value="{{ p.steam_id }}" class="tournament-player-cb w-4 h-4 rounded bg-slate-800 border-slate-700 text-amber-500 focus:ring-0 cursor-pointer pointer-events-none">
+                        <div class="min-w-0">
+                            <div class="font-bold text-white text-xs truncate group-hover:text-amber-300 transition">
+                                {{ p.name }}
+                            </div>
+                            <div class="text-[10px] text-slate-400 font-mono truncate">
+                                {{ p.roles[0] if p.roles else 'Рифлер' }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="font-mono font-bold text-xs text-amber-300 block">{{ p.current_mmr }}</span>
+                        <span class="text-[9px] text-slate-500 font-mono">MMR</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tactical Assignment & Synergy Section (Displays when 5 players selected) -->
+    <section id="tournament-ai-section" class="section hidden mb-8">
+        <!-- Synergy Overview Card -->
+        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/40 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-950/90 shadow-2xl mb-8">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-slate-800">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+                        🧠 АНАЛИЗ ИИ-ТРЕНЕРА И ОЦЕНКА СИНЕРГИИ
+                    </div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2.5">
+                        <span>⚡</span> Индекс сыгранности и баланс ролей
+                    </h2>
+                    <p id="synergy-verdict-text" class="text-xs font-mono text-amber-300 mt-1">
+                        Рассчитывается синергия ролей, средний MMR и боевой потенциал...
+                    </p>
+                </div>
+                <div class="flex items-center gap-4 bg-slate-950/80 p-4 rounded-xl border border-slate-800">
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Сыгранность</span>
+                        <span id="stat-synergy-pct" class="font-mono font-black text-2xl text-emerald-400">0%</span>
+                    </div>
+                    <div class="h-8 w-px bg-slate-800"></div>
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Средний MMR</span>
+                        <span id="stat-avg-mmr" class="font-mono font-black text-2xl text-amber-400">0</span>
+                    </div>
+                    <div class="h-8 w-px bg-slate-800"></div>
+                    <div class="text-center">
+                        <span class="text-[10px] text-slate-400 uppercase tracking-wider block">Ср. HLTV 2.0</span>
+                        <span id="stat-avg-hltv" class="font-mono font-black text-2xl text-sky-400">0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Skill Metrics Grid & Radar -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6 items-center">
+                <!-- Sub-metrics -->
+                <div class="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Огневая мощь (Aim/Entry)</span>
+                        <span id="metric-firepower" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">10-балльная шкала</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Тактика (Util/Game Sense)</span>
+                        <span id="metric-tactics" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">10-балльная шкала</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Дисциплина и Эко</span>
+                        <span id="metric-discipline" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">10-балльная шкала</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Размены (Trade Sync)</span>
+                        <span id="metric-tradesync" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">10-балльная шкала</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Клатч-потенциал (1vX)</span>
+                        <span id="metric-clutch" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">10-балльная шкала</span>
+                    </div>
+                    <div class="p-3.5 rounded-xl bg-slate-950/60 border border-slate-800/80">
+                        <span class="text-[10px] text-slate-400 uppercase font-mono block">Суммарный ADR</span>
+                        <span id="metric-team-adr" class="text-lg font-mono font-black text-white mt-1 block">0.0</span>
+                        <span class="text-[10px] text-slate-500 font-mono">Средний урон состава</span>
+                    </div>
+                </div>
+
+                <!-- Radar Chart Container -->
+                <div class="lg:col-span-6 bg-slate-950/70 p-4 rounded-xl border border-slate-800">
+                    <div class="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center justify-between">
+                        <span>🕸️ Командный профиль 10 навыков</span>
+                        <span class="text-[10px] text-emerald-400 font-mono">vs Соревновательный базис</span>
+                    </div>
+                    <div class="relative h-[250px] w-full">
+                        <canvas id="team-synergy-radar"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 Assigned Tactical Roles Grid -->
+            <div class="mt-8 pt-6 border-t border-slate-800">
+                <h3 class="text-lg font-black text-white mb-4 flex items-center gap-2">
+                    <span>🎭</span> Оптимальное распределение 5 ролей в составе
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4" id="assigned-roles-container">
+                    <!-- 5 Role Cards rendered dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 5v5 Tactical Playbook Section (Accordion by rows + Dynamic adaptation) -->
+        <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-emerald-500/40 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-950/90 shadow-2xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2">
+                        📋 ТАКТИЧЕСКИЙ ПЛЕЙБУК 5v5 (42 ТАКТИКИ)
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-black text-white flex items-center gap-2.5">
+                        <span>🗺️</span> Пошаговый план раундов под ваш состав
+                    </h2>
+                    <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                        По 3 персонализированные тактики за атаку и защиту для каждой карты. Нажмите на строку любой тактики, чтобы развернуть подробный поминутный план и действия каждого игрока.
+                    </p>
+                </div>
+
+                <!-- Side Switcher (T / CT) -->
+                <div class="inline-flex p-1 rounded-xl bg-slate-950 border border-slate-800 self-start md:self-auto shadow-inner">
+                    <button type="button" id="side-btn-t" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow cursor-pointer">
+                        <span>💣</span>
+                        <span>T (Атака)</span>
+                    </button>
+                    <button type="button" id="side-btn-ct" class="px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-slate-400 hover:text-white transition flex items-center gap-2 cursor-pointer">
+                        <span>🛡️</span>
+                        <span>CT (Оборона)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Map Selector Navigation Tabs -->
+            <div class="mt-6 flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="map-tabs-container">
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow cursor-pointer" data-map="mirage">
+                    <span>🏛️</span> Mirage
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="inferno">
+                    <span>🏰</span> Inferno
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="dust2">
+                    <span>🏜️</span> Dust 2
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="ancient">
+                    <span>🗿</span> Ancient
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="anubis">
+                    <span>🌊</span> Anubis
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="nuke">
+                    <span>☢️</span> Nuke
+                </button>
+                <button type="button" class="map-tab-btn px-4 py-2.5 rounded-xl font-bold text-xs shrink-0 transition flex items-center gap-2 bg-slate-900 text-slate-300 hover:text-white border border-slate-800 cursor-pointer" data-map="overpass">
+                    <span>🚂</span> Overpass
+                </button>
+            </div>
+
+            <!-- Tactics Rows Accordion Container -->
+            <div class="mt-6 flex flex-col gap-3.5" id="tactics-list-container">
+                <!-- 3 Collapsible Tactic Rows dynamically rendered here -->
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Toast Notification -->
+<div id="tournament-toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 px-4 py-2.5 rounded-xl bg-slate-900 text-white border border-emerald-500/50 shadow-2xl flex items-center gap-2 font-mono text-xs">
+    <span class="text-emerald-400">✓</span>
+    <span id="toast-message">Тактика скопирована в буфер обмена!</span>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Embedded Player Catalog
+    const ALL_PLAYERS = {{ players | tojson }};
+
+    // Tactical Playbook Database: 7 Maps × 6 Tactics (3 T, 3 CT) = 42 Tactics
+    const TACTICS_DATA = {
+        mirage: {
+            name: "Mirage",
+            icon: "🏛️",
+            t: [
+                {
+                    id: "mirage_t_1",
+                    title: "Сплит плента А через Мид и Коннектор (Mid-to-A Split)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Установление контроля над серединой карты с отсечением окна и шорта, после чего одновременный удар по А через Коннектор, Яму и Ковры.",
+                    utility: "2 Дыма (Top Mid, Jungle), 2 Молотовых (Underpass, Stairs), 3 Световые",
+                    timings: "0:00-0:25: Занятие Мида • 0:25-0:50: Раскид джунглей и флеш в Коннектор • 0:50-End: Выход на А и установка",
+                    counter: "При агрессивном поджиме шорта — откат на T-Spawn и мгновенный контактный выход B через апартаменты.",
+                    roles: {
+                        awp: "Выходит Top Mid, отстреливает выглядывающих из Окна и Шорта. После пробития фиксирует Коннектор со стороны Мида.",
+                        entry: "Заходит в Underpass (андер), выбивает Коннектор снизу под моменталку тиммейта и первым выходит на плент А к Тетрису.",
+                        refragger: "Движется за энтри с шагом 1.5 секунды, мгновенно разменивает контакт в Коннекторе и зачищает зону за коробками (Firebox).",
+                        anchor: "Остается в Коврах (Palace), не выдает шагов до контакта в Коннекторе. По звуку взрыва врывается на Балкон и забирает спавн CT.",
+                        igl: "Откидывает глубокий дым в Top Mid и дым в Jungle, дает флеш через ковры над сайтом, берет бомбу и ставит под Palace."
+                    }
+                },
+                {
+                    id: "mirage_t_2",
+                    title: "Быстрый контактный выход B через Апартаменты (B-Apps Rush & Catwalk Pinch)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Скоростной раунд без предварительных дымов. Нацелен на заставание врасплох соло-опорника B до прихода подкрепления.",
+                    utility: "1 Дым (Market Window), 2 Молотовых (Van, Short Corner), 2 Поп-флешки",
+                    timings: "0:00-0:18: Быстрый пробег апартаментов • 0:18-0:30: Вылет на плент B • 0:30-End: Кросс-файр плента",
+                    counter: "Если лежит глубокий молотов под апарты — прокурить тушением и сразу прорываться с флешкой.",
+                    roles: {
+                        awp: "Быстро поднимается на Catwalk (Шорт) через Мид, отрезая перетяжку защитников из Коннектора и снайпера из Окна.",
+                        entry: "Первым выпрыгивает из окна апартаментов B на машину (Van), проверяет упор под окном и сайт.",
+                        refragger: "Прыгает следом за энтри вторым темпом, зачищает темный угол (Kitchen/Forest) и удерживает Market Door.",
+                        anchor: "Контролирует T-Spawn и TV Room, отрезает возможный пуш КТ через Яму А или Андерпас в спину.",
+                        igl: "Закидывает молотов в угол Шорта, дает две флешки через крышу апартаментов, ставит бомбу за столбом (Default B)."
+                    }
+                },
+                {
+                    id: "mirage_t_3",
+                    title: "Полный сплит плента А с раскидкой «3 Дыма» (Default A 3-Smoke Execute)",
+                    type: "Фулл-экзекьют",
+                    diff: "Экспертная",
+                    concept: "Синхронная классическая раскидка профессиональной сцены. Полная изоляция сайта А от ротаций КТ с трех направлений.",
+                    utility: "3 Дыма (CT Ticket, Stairs, Jungle), 2 Молотовых (Under Palace, Sandbags), 4 Флешки",
+                    timings: "0:00-0:35: Сбор инфы и сброс лишней утилиты • 0:35-0:45: Синхронный раскид • 0:45-End: Штурм плента",
+                    counter: "Если КТ тушат дымы хаешками — не останавливаться в яме, а прорываться на сайт и зажимать КТ-спавн.",
+                    roles: {
+                        awp: "Поднимается в Ковры (Palace), под общий взрыв выглядывает с балкона и снайпит лестницу/Ticket.",
+                        entry: "Вылетает из Ямы (Ramp) первым, бежит сразу к Тетрису, зачищая сэндбэгс и дефолтный ящик.",
+                        refragger: "Выходит вторым номером из Ямы, молотовит под коврами (Shadow) и достреливает любого раненого врага.",
+                        anchor: "Держит Underpass и Top Mid против агрессивного поджима, по сигналу смещается в Коннектор отрезать B-ротацию.",
+                        igl: "Откидывает дым на Stairs, дает две высокие флешки над Ямой, ставит бомбу под Palace и командует пост-плент."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "mirage_ct_1",
+                    title: "Классический дефолт 2-1-2 с железобетонным замком Мида (Default Mid Lock)",
+                    type: "Контроль карты",
+                    diff: "Базовая",
+                    concept: "Снайперская фиксация центра карты при взаимной поддержке коннектора и шорта, исключающая ранний выход террористов.",
+                    utility: "1 Дым (Top Mid), 1 Молотов (Underpass), 2 Флешки",
+                    timings: "0:00-0:20: Занятие Окна и Шорта • 0:20-1:00: Пассивный сбор инфы • 1:00-End: Перетяжка по контакту",
+                    counter: "При потере снайпера в Окне — Шорт и Коннектор немедленно бросают дым в выход коннектора и стягиваются.",
+                    roles: {
+                        awp: "Занимает Окно (Sniper Nest), дает первый пик по Top Mid. Контролирует проход террористов в андерпас.",
+                        entry: "Играет на А (Тетрис/Яма), агрессивно слушает шаги в коврах, готов принять первый контакт с разменом.",
+                        refragger: "Занимает Ticket/CT на А, страхует снайпера с лестницы, держит вторую линию обороны плента А.",
+                        anchor: "Соло-опорник на B (Car/Van). Играет максимально пассивно на инфу, задерживает выход дымом и молотовым.",
+                        igl: "Играет на Catwalk/Short, дает молотов в Underpass, координирует перетяжки команды по радиосигналам."
+                    }
+                },
+                {
+                    id: "mirage_ct_2",
+                    title: "Двойной агрессивный поджим Апартаментов B (Aggressive B-Apps Trap)",
+                    type: "Агрессивный поджим",
+                    diff: "Средняя",
+                    concept: "Ранняя контратака в узком горлышке апартаментов с целью уничтожить террористов на спавне или выбить их оружие.",
+                    utility: "1 Молотов (B-Apps Entrance), 1 Дым (TV Room), 2 Световые",
+                    timings: "0:00-0:15: Синхронный рывок в апартаменты • 0:15-0:30: Зачистка коридора • 0:30-End: Закрепление контроля",
+                    counter: "Если слышен массивный топот на А — немедленно бросить дым в ТВ-рум и бежать на ретейк А через КТ.",
+                    roles: {
+                        awp: "Контролирует Мид с Catwalk/Short, готовый срезать любого, кто попытается выбежать из ковров на улицу.",
+                        entry: "Бежит первым в Апартаменты B под флеш, дает контактную очередь по лестнице и проверяет ТВ-рум.",
+                        refragger: "Идет в шаге за энтри в апартаментах B, накидывает молотов в узкий проход и разменивает напарника.",
+                        anchor: "Остается в Дефолте на B с зажатым дымом на случай, если часть врагов пойдет в обход.",
+                        igl: "Одиночно закрывает А с глубокой позиции на Ticket, контролирует радар и готовит быстрый стяг."
+                    }
+                },
+                {
+                    id: "mirage_ct_3",
+                    title: "Ловушка на А с перекрестным огнем Ниндзя и Трипла (A-Site Crossfire Trap)",
+                    type: "Перекрестный огонь",
+                    diff: "Экспертная",
+                    concept: "Имитация слабого присутствия на А. Защитники прячутся в глухих углах, пропуская врага под перекрестный расстрел.",
+                    utility: "2 Зажигательные (Ramp, Palace), 2 Хаешки",
+                    timings: "0:00-0:30: Пассивная маскировка на А • 0:30-0:45: Встреча выхода в перекрестном огне • 0:45-End: Добивание",
+                    counter: "Если террористы откинули 3 глубоких дыма — взорвать один дым осколочной и начать спам сквозь завесу.",
+                    roles: {
+                        awp: "Занимает Jungle/Stairs, держит узкий зазор между дымами по выходу из Ямы.",
+                        entry: "Садится под балкон в позицию Ninja (Dark), пропускает первого выходящего и расстреливает в спину.",
+                        refragger: "Занимает позицию Triple (тройной ящик), синхронно с Ninja открывает огонь по выходящим из Ямы.",
+                        anchor: "Играет на B в глубине кухни (Market), держит ухо востро и готов бежать через КТ на помощь.",
+                        igl: "Держит Коннектор с выходом на Stairs, дает координирующую световую над сайтом в момент плента."
+                    }
+                }
+            ]
+        },
+        inferno: {
+            name: "Inferno",
+            icon: "🏰",
+            t: [
+                {
+                    id: "inferno_t_1",
+                    title: "Контроль Банана и сжатие плента B (Banana Control & B-Box Squeeze)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Пошаговый выжим КТ с Банана гранатами, блокировка гробов и спавна CT, с последующим захватом B.",
+                    utility: "2 Дыма (Coffins, CT), 2 Молотовых (Car, Sandbags), 3 Флешки",
+                    timings: "0:00-0:30: Борьба за Банан • 0:30-0:50: Раскид гробов и КТ • 0:50-End: Зачистка сайта B",
+                    counter: "Если КТ закидали Банан тонной гранат — выждать рассеивания дыма и на 1:05 провести второй накат.",
+                    roles: {
+                        awp: "Контролирует угол Car на Банане, выцеливает пикающего снайпера у Гробов или Бревна.",
+                        entry: "Врывается на Банан первым под саппорт-гранаты, зачищает мешки (Sandbags) и сайт B.",
+                        refragger: "Идет вторым номером на Банане, разменивает энтри и выжигает позицию Dark (первая линия B).",
+                        anchor: "Контролирует Второй Мид и Бойлер, не позволяя защитникам обойти команду в спину через спавн Т.",
+                        igl: "Откидывает дым на Спавн CT и дым на Coffins, дает поп-флешки через крышу и ставит бомбу за фонтаном."
+                    }
+                },
+                {
+                    id: "inferno_t_2",
+                    title: "Быстрый выход на А через Апартаменты и Бойлер (Boiler & Apps Fast Strike)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Мгновенное вскрытие обороны А через жилые помещения до того, как защитники успеют пробросить глубокие молотовы.",
+                    utility: "1 Дым (Library/Moto), 2 Молотовых (Pit, Balcony), 2 Флешки",
+                    timings: "0:00-0:25: Проход через Второй Мид в Апарты • 0:25-0:40: Вылет на Балкон • 0:40-End: Кросс-файр А",
+                    counter: "Если в Апартаментах встретили плотный огонь — сместиться на Шорт и соединиться с бойлерным звеном.",
+                    roles: {
+                        awp: "Держит Мид, ликвидирует КТ в окне Бойлера или на выходе из Ребер.",
+                        entry: "Первым выпрыгивает с Балкона в сайт А, проверяет нижний угол и бежит в сторону песков (Pit).",
+                        refragger: "Выходит следом через Бойлер и Шорт, срезает защитника на сене (Hay-cart) и разменивает вход.",
+                        anchor: "Остается на спавне Т, контролирует Банан от флангового поджима КТ.",
+                        igl: "Дает световую через крышу дома на А-сайт, дымит Библиотеку и берет на себя установку бомбы."
+                    }
+                },
+                {
+                    id: "inferno_t_3",
+                    title: "Затяжной сплит А через Арку и Библиотеку (Arch & Library Flank Split)",
+                    type: "Экспертный сплит",
+                    diff: "Экспертная",
+                    concept: "Имитация давления на B, после чего быстрый разворот через Лонг и Арку с отрезанием ротаций противника.",
+                    utility: "2 Дыма (Moto, Long Corner), 2 Молотовых (Arch, Pit), 3 Флешки",
+                    timings: "0:00-0:45: Шум на Банане • 0:45-1:10: Перетяжка на Лонг • 1:10-End: Удар в спину обороны А",
+                    counter: "Если Арку закрыли глухим дымом — использовать молотов в проход и выходить на сайт через Шорт.",
+                    roles: {
+                        awp: "Фиксирует проход из Арки в сторону КТ, отрезая перетяжку снайпера врага с Банана.",
+                        entry: "Врывается через Арку в Библиотеку под флешку, зачищает тылы обороны А.",
+                        refragger: "Идет через Шорт, создавая второй фронт атаки на А, зажимает защитников на кладбище.",
+                        anchor: "Шумит на Банане, сбрасывает одну гранату для фейка, затем закрывает тыл атаки.",
+                        igl: "Координирует тайминг разворота, дымит КТ-проход, ставит бомбу под Библиотеку."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "inferno_ct_1",
+                    title: "Тройной бетонный контроль Банана (Heavy 3-Man Banana Aggression)",
+                    type: "Контроль карты",
+                    diff: "Средняя",
+                    concept: "Массированный залп утилити со старта раунда, запирающий террористов на их половине и лишающий контроля над Бананом.",
+                    utility: "2 Молотовых (Car, Deep Banana), 2 Хаешки, 2 Дыма",
+                    timings: "0:00-0:20: Залп гранат на Банан • 0:20-0:50: Закрепление у Car • 0:50-End: Оттяжка одного игрока на А",
+                    counter: "Если террористы пошли быстрым рашем через Мид — один игрок Банана немедленно бежит через КТ в Арку.",
+                    roles: {
+                        awp: "Контролирует Мид/Лонг из Арки, обеспечивая дальнее прикрытие половины карты А.",
+                        entry: "Бежит первым на Банан к машине (Car), накидывает глубокий молотов и принимает первый контакт.",
+                        refragger: "Идет вторым на Банан, дает двойную хаешку по таймингу с энтри и разменивает возможную дуэль.",
+                        anchor: "Третий игрок Банана, бросает глубокий дым, после чего занимает пассивную позицию на B (Coffins).",
+                        igl: "Одиночно контролирует Апартаменты и Шорт на А, собирая аудио-информацию."
+                    }
+                },
+                {
+                    id: "inferno_ct_2",
+                    title: "Перекрестная ловушка на А: Пески и Мотоцикл (Pit & Moto Crossfire)",
+                    type: "Перекрестный огонь",
+                    diff: "Базовая",
+                    concept: "Глубокая оборонительная позиция в Больших Песках с поддержкой напарника на Мотоцикле, делающая вход на А смертельным.",
+                    utility: "1 Дым (Short), 1 Молотов (Balcony Exit), 2 Флешки",
+                    timings: "0:00-0:30: Пассивный холд • 0:30-1:00: Встреча выхода на А • 1:00-End: Зачистка",
+                    counter: "Если террористы отрезали Пески дымом — дать флеш над дымом и выйти в упор к выходящим.",
+                    roles: {
+                        awp: "Играет в Библиотеке или на Лонге, встречает попытки сплита через Арку.",
+                        entry: "Занимает Большие Пески (Pit), сидит закрыто до того, как враг окажется на пленте.",
+                        refragger: "Играет на Мотоцикле/Сайт, отвлекает на себя первый огонь, давая игроку из Pit расстрелять врагов в бок.",
+                        anchor: "Держит соло-B за столбом у фонтана, не отдает сайт без боя.",
+                        igl: "Играет на Шорте у Бойлера, дает инфу о начале атаки и встречает гранатами."
+                    }
+                },
+                {
+                    id: "inferno_ct_3",
+                    title: "Агрессивный фланговый пуш Бойлера и Апартаментов (Boiler Flank Pinch)",
+                    type: "Агрессивный поджим",
+                    diff: "Экспертная",
+                    concept: "Неожиданный поджим через Бойлер на Второй Мид с выходом в спину террористам, готовящимся штурмовать Банан.",
+                    utility: "1 Дым (Second Mid), 1 Молотов (Alt Mid), 2 Флешки",
+                    timings: "0:00-0:25: Проход через Бойлер • 0:25-0:45: Удар в спину Т на спавне • 0:45-End: Клещи на карте",
+                    counter: "При встрече сопротивления в Бойлере — не пушить вслепую, а закрыть дверь дымом и отойти в Ребра.",
+                    roles: {
+                        awp: "Страхует Банан с пассивной дистанции от гробов.",
+                        entry: "Врывается в Бойлер под флеш напарника, пробивает дверь на Второй Мид и делает фраг.",
+                        refragger: "Идет следом за энтри, прикрывает лестницу апартаментов и помогает в зачистке.",
+                        anchor: "Играет на B в Темной (Dark), надежно запирая плент.",
+                        igl: "Накидывает флешку из Ребер над крышей Бойлера, координирует отход."
+                    }
+                }
+            ]
+        },
+        dust2: {
+            name: "Dust 2",
+            icon: "🏜️",
+            t: [
+                {
+                    id: "dust2_t_1",
+                    title: "Классический захват Лонга и перекрестный выход на А (Long A Take & Cross)",
+                    type: "Сплит-атака",
+                    diff: "Базовая",
+                    concept: "Выбивание дверей Лонга взрывной гранатной волной, захват Ямы и пересечение КТ-кросса под стену дымов.",
+                    utility: "2 Дыма (CT Cross, Long Corner), 2 Молотовых (Pit, Blue), 4 Флешки",
+                    timings: "0:00-0:20: Занятие Дверей Лонга • 0:20-0:40: Падение в Яму • 0:40-End: Переход на сайт А",
+                    counter: "Если КТ опередили на дверях — не отдавать жизни, а развернуться через T-Spawn на Шорт.",
+                    roles: {
+                        awp: "Выходит в Двери Лонга первым под флеш, снайпит КТ на углу и в Яме.",
+                        entry: "Вылетает вторым на спринте, падает в Яму (Pit), выбивает защитников на платформе А.",
+                        refragger: "Движется по Лонгу, зачищает Синий ящик (Blue) и разменивает любой контакт.",
+                        anchor: "Контролирует Верхнюю Тёмку (Upper Tunnels), исключая поджим КТ через B.",
+                        igl: "Откидывает дым на CT Cross, дает саппорт-флешки через крышу Лонга, ставит бомбу под Яму."
+                    }
+                },
+                {
+                    id: "dust2_t_2",
+                    title: "Сплит плента B через Тёмку и Мид-ту-Б (Mid-to-B & Tunnels Split)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Одновременный штурм плента B с двух направлений: через Верхнюю Тёмку и через взломанные Двери Мида.",
+                    utility: "2 Дыма (Mid Doors, CT to B), 2 Молотовых (B Doors, Car), 3 Флешки",
+                    timings: "0:00-0:30: Подготовка в темке и на миду • 0:30-0:45: Синхронный взрыв • 0:45-End: Зажим сайта B",
+                    counter: "При плотном молотове в Тёмке — мид-группа ускоряется и отвлекает весь огонь B-защиты на себя.",
+                    roles: {
+                        awp: "Контролирует Мид со спавна Т, после дыма в двери смещается резать КТ в Окне B.",
+                        entry: "Первым вылетает из Верхней Тёмки на сайт B, прыгает в сторону танцпола (Platform).",
+                        refragger: "Пробивает двери Мида в Окно B синхронно с выходом Тёмки, зажимая защитников сайта.",
+                        anchor: "Идет вторым номером в Тёмке, добивает раненых и выжигает позицию за машиной (Car).",
+                        igl: "Дымит двери Мида, дает флешку через Окно B, ставит бомбу за коробками на B."
+                    }
+                },
+                {
+                    id: "dust2_t_3",
+                    title: "Быстрый раш на Шорт через Пальму (Fast Short A Catwalk Push)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Стремительное восхождение на парапет (Шорт) с дымом на X-Box и подавлением защиты А с ближней дистанции.",
+                    utility: "1 Дым (X-Box), 1 Дым (CT Spawn), 2 Флешки",
+                    timings: "0:00-0:22: Запрыг на X-Box и подъем • 0:22-0:35: Выход на сайт А • 0:35-End: Установка",
+                    counter: "Если КТ забросали подъем гранатами — AWP отстреливает выглядывающих с Гуся, пока команда перегруппируется.",
+                    roles: {
+                        awp: "Держит Мид, ликвидирует снайпера врага в щели дверей.",
+                        entry: "Первым взлетает по лестнице на Шорт, бежит на угол сайта А, стреляя на опережение.",
+                        refragger: "Идет за энтри след в след, зачищает точку Goose (Гусь) и верхний ящик.",
+                        anchor: "Контролирует Лонг против поджимающих КТ, отрезает ротацию через рампу.",
+                        igl: "Откидывает идеальный дым на X-Box со спавна, дает поп-флеш на Шорт, ставит бомбу под Шорт."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "dust2_ct_1",
+                    title: "Агрессивный двойной захват Ямы на Лонге (Aggressive Long Control)",
+                    type: "Агрессивный поджим",
+                    diff: "Средняя",
+                    concept: "Занятие Ямы и угла Лонга со старта раунда с целью пресечь выход террористов на корню.",
+                    utility: "1 Дым (Long Doors), 1 Молотов (Outside Long), 2 Флешки",
+                    timings: "0:00-0:15: Спринт на Лонг • 0:15-0:35: Занятие Ямы • 0:35-End: Закрепление позиций",
+                    counter: "Если у врага лучший спавн и вы получили урон — немедленно откатиться за угол машины и дымить.",
+                    roles: {
+                        awp: "Держит щель дверей Мида со спавна, давая инфу о числе пробежавших на B.",
+                        entry: "Бежит первым на Лонг на спринте под флеш, прыгает прямо в Яму (Pit).",
+                        refragger: "Занимает Угол Лонга (Corner), создавая перекрестный огонь с игроком в Яме.",
+                        anchor: "Одиночно бетонирует B за машиной или из Окна.",
+                        igl: "Дает две световые гранаты через стену на Лонг, страхует Шорт со стороны КТ."
+                    }
+                },
+                {
+                    id: "dust2_ct_2",
+                    title: "Монолитный замок Мида и Окна B (Heavy Mid & Window Defense)",
+                    type: "Контроль карты",
+                    diff: "Базовая",
+                    concept: "Снайперская блокировка центрального коридора с мгновенной поддержкой защитника B через Окно.",
+                    utility: "1 Дым (Mid Doors), 1 Молотов (Lower Tunnels), 2 Флешки",
+                    timings: "0:00-0:30: Удержание Мида • 0:30-1:00: Встреча попыток сплита • 1:00-End: Перетяжка",
+                    counter: "При дыме в Двери Мида — простреливать сквозь дым и закинуть хаешку в проход.",
+                    roles: {
+                        awp: "Стоит в Дверях Мида, отстреливает любого выходящего с Т-спавна или Нижней Темки.",
+                        entry: "Держит Шорт с позиции Goose (Гусь), готов принять раш.",
+                        refragger: "Играет на сайте А на Рампе, страхует снайпера с фланга.",
+                        anchor: "Занимает Окно B, держит как Мид, так и выход из Верхней Темки.",
+                        igl: "Играет на Платформе B (Танцпол), дает молотов в выход из Тёмки."
+                    }
+                },
+                {
+                    id: "dust2_ct_3",
+                    title: "Соло-опорник B с мгновенным ретейк-сетапом (Solo B Anchor & Retake)",
+                    type: "Ретейк сетап",
+                    diff: "Экспертная",
+                    concept: "Осознанная игра в одного защитника на B, сохраняющего жизнь при атаке и вызывающего 4 тиммейтов на зачистку.",
+                    utility: "2 Дыма (B Doors, Window), 2 Зажигательные, 4 Флешки",
+                    timings: "0:00-0:40: Пассивный сбор инфы • 0:40-0:55: Задержка плента утилитой • 0:55-End: Ретейк 5vX",
+                    counter: "Если террористы фейкуют B и идут на А — 4 игрока на А легко принимают атаку в большинстве.",
+                    roles: {
+                        awp: "Играет на А (Лонг/Шорт), гарантирует неприступность половины карты А.",
+                        entry: "Занимает Шорт А, первый по скорости на перетяжку на B через КТ.",
+                        refragger: "Играет на КТ-спавне, соединяет фланги обороны.",
+                        anchor: "Опорник B: сидит за машиной, дает глубокий дым под себя, выживает любой ценой.",
+                        igl: "Координирует ретейк: дает синхронный проброс флешек через двери и окно B."
+                    }
+                }
+            ]
+        },
+        ancient: {
+            name: "Ancient",
+            icon: "🗿",
+            t: [
+                {
+                    id: "ancient_t_1",
+                    title: "Сплит плента А через Пончик и Мейн (Donut & Main A Split)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Захват середины карты с пробитием позиции Donut и одновременным штурмом А через главный вход.",
+                    utility: "2 Дыма (CT Spawn, Temple), 2 Молотовых (Site Box, Donut Exit), 3 Флешки",
+                    timings: "0:00-0:25: Зачистка Мида и Донта • 0:25-0:45: Синхронный выход на А • 0:45-End: Закладка",
+                    counter: "Если Donut залит молотовым — перегруппироваться в Main и продавить сайт единым кулаком.",
+                    roles: {
+                        awp: "Контролирует Мид со стороны T-Ramp, срезает пикающих из Red Room или Донута.",
+                        entry: "Первым выбегает из Main на сайт А под флеш, зачищает ближний правый угол.",
+                        refragger: "Пробивает Donut синхронно с выходом из Main, разменивает и захватывает Temple.",
+                        anchor: "Контролирует B Ramp и Cave, отрезая ротацию защитников в спину.",
+                        igl: "Откидывает дым на КТ-спавн, дает две флешки над сайтом А, ставит бомбу под Main."
+                    }
+                },
+                {
+                    id: "ancient_t_2",
+                    title: "Быстрый взлом B через Рампу и Пещеру (B Ramp & Cave Execute)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Агрессивный прорыв на плент B через два смежных прохода с отсечением хэвена и шорта.",
+                    utility: "2 Дыма (Short B, CT Alley), 2 Молотовых (Pillar, Dark), 3 Флешки",
+                    timings: "0:00-0:20: Быстрый сбор в Cave • 0:20-0:35: Вылет на сайт B • 0:35-End: Занятие позиций",
+                    counter: "Если на Рампе лежит зажигательная — не топтаться, а потушить дымом и вылетать на размен.",
+                    roles: {
+                        awp: "Отрезает выход из Short B, фиксируя узкую щель между ящиками.",
+                        entry: "Вылетает из Рампы первым, прыгает к центральному столбу (Pillar) и зачищает сайт.",
+                        refragger: "Выходит из Cave следом за энтри, зачищает левую сторону и зону установки.",
+                        anchor: "Держит Мид от агрессивного пуша КТ через Cheetah.",
+                        igl: "Дымит КТ-проход, закидывает молотов за столб, ставит бомбу в открытую под Рампу."
+                    }
+                },
+                {
+                    id: "ancient_t_3",
+                    title: "Тотальный контроль Мида с переходом на B через Cheetah (Mid-to-B)",
+                    type: "Контроль карты",
+                    diff: "Экспертная",
+                    concept: "Выбивание КТ из центра карты и захват комнаты Cheetah для нанесения удара во фланг B-защиты.",
+                    utility: "2 Дыма (Red Room, Top Mid), 2 Молотовых (Cheetah, Donut), 3 Флешки",
+                    timings: "0:00-0:35: Отжим Мида и Cheetah • 0:35-0:55: Переход на Short B • 0:55-End: Штурм плента",
+                    counter: "При потере игрока на Миду — оттянуться назад и провести скрытный контакт на А.",
+                    roles: {
+                        awp: "Выбивает Red Room метким выстрелом со стороны Mid T-Spawn.",
+                        entry: "Первым штурмует Cheetah под поп-флеш, ликвидирует окопавшегося КТ.",
+                        refragger: "Идет следом через Cheetah, зачищает Short B и выходит на плент B.",
+                        anchor: "Синхронно начинает шуметь на B Ramp, создавая клещи.",
+                        igl: "Дымит Red Room, координирует одновременный заход на B, ставит бомбу."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "ancient_ct_1",
+                    title: "Агрессивный пуш Cheetah и захват Мида (Cheetah Aggression)",
+                    type: "Агрессивный поджим",
+                    diff: "Средняя",
+                    concept: "Ранняя контратака в центре карты, лишающая террористов пространства для сплит-маневров.",
+                    utility: "1 Дым (Top Mid), 1 Молотов (Mid T-Ramp), 2 Флешки",
+                    timings: "0:00-0:18: Рывок в Cheetah • 0:18-0:35: Зачистка углов Мида • 0:35-End: Защита периметра",
+                    counter: "Если террористы встречают плотным огнем — откатиться в Donut и принять позиционку.",
+                    roles: {
+                        awp: "Занимает Red Room, держит дальний угол выхода с Т-спавна.",
+                        entry: "Пушит Cheetah под световую тиммейта, делает первый фраг и занимает позицию.",
+                        refragger: "Поддерживает энтри из Donut, накидывает молотов в T-Ramp и разменивает.",
+                        anchor: "Одиночно держит B-Ramp, играя от утилити и затягивая время.",
+                        igl: "Играет в Temple на А, контролирует радар и готовит перетяжки."
+                    }
+                },
+                {
+                    id: "ancient_ct_2",
+                    title: "Кросс-файр на А: Храм и Пончик (Temple & Donut Crossfire)",
+                    type: "Перекрестный огонь",
+                    diff: "Базовая",
+                    concept: "Непробиваемая расстановка вокруг плента А, где любая попытка захода с Main простреливается с двух сторон.",
+                    utility: "1 Дым (Main A), 1 Молотов (Main Exit), 2 Флешки",
+                    timings: "0:00-0:30: Пассивный холд • 0:30-1:00: Встреча выхода на А • 1:00-End: Добивание",
+                    counter: "Если Donut пробит — игрок из Temple дает глубокий дым на сайт и ждет помощи с КТ.",
+                    roles: {
+                        awp: "Контролирует Main A из Temple или с дальнего ящика.",
+                        entry: "Занимает ближний угол на сайте А, прячется за ящиком до контакта.",
+                        refragger: "Держит выход на сайт со стороны Donut, открывает синхронный огонь.",
+                        anchor: "Держит B-Сайт в пассивной позиции за Pillar.",
+                        igl: "Играет на Short B, контролирует центр и готов мгновенно стянуться на А."
+                    }
+                },
+                {
+                    id: "ancient_ct_3",
+                    title: "Ловушка на B с глубокой оттяжкой под ретейк (B Retake Trap)",
+                    type: "Ретейк сетап",
+                    diff: "Экспертная",
+                    concept: "Сознательная уступка первой линии B с последующим массированным ретейком вчетвером через КТ и Шорт.",
+                    utility: "2 Дыма (Site Retake), 2 Зажигательные, 4 Флешки",
+                    timings: "0:00-0:40: Пассивный сбор инфы • 0:40-0:55: Задержка установки • 0:55-End: Штурм сайта",
+                    counter: "Если враги не идут на B — оставаться в позициях и принять поздний выход на А.",
+                    roles: {
+                        awp: "Остается живым на КТ-спавне, готовит дальний отстрел плентящего бомбу.",
+                        entry: "Первым идет в ретейк через КТ-аллею под моменталки команды.",
+                        refragger: "Заходит в ретейк через Short B, создавая перекрестный огонь по сайту.",
+                        anchor: "Опорник B: задерживает выход гранатами и сейвит позицию в глубине Cave.",
+                        igl: "Координирует тайминг раскидки на ретейк, дает флешки над сайтом."
+                    }
+                }
+            ]
+        },
+        anubis: {
+            name: "Anubis",
+            icon: "🌊",
+            t: [
+                {
+                    id: "anubis_t_1",
+                    title: "Контроль Каналов и мощный выход на B (Canal & B-Main Squeeze)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Зачистка водного пространства (Canal) с выходом во фланг B-защиты и одновременным штурмом B-Main.",
+                    utility: "2 Дыма (B-Connector, Alley), 2 Молотовых (Dark, Column), 3 Флешки",
+                    timings: "0:00-0:25: Захват Воды • 0:25-0:45: Заход на сайт B • 0:45-End: Закладка и защита",
+                    counter: "При ранней агрессии КТ в воде — отбросить хаешку и расстрелять врага на лестнице.",
+                    roles: {
+                        awp: "Контролирует Мост и выходы из Мида со стороны T-Spawn.",
+                        entry: "Первым выбегает из B-Main, зачищает угол за колонной и сам сайт B.",
+                        refragger: "Поднимается из Воды (Canal) на B, разменивает энтри и выжигает Dark.",
+                        anchor: "Контролирует А-Main, пресекая попытки КТ зайти в спину через руины.",
+                        igl: "Дымит B-Connector, дает две флешки над сайтом, ставит бомбу в открытую под воду."
+                    }
+                },
+                {
+                    id: "anubis_t_2",
+                    title: "Сплит плента А через Мост и Главный вход (Bridge to A Split)",
+                    type: "Сплит-атака",
+                    diff: "Базовая",
+                    concept: "Штурм А с двух сторон: фронтально через A-Main и через центральный Мост в Коннектор на А.",
+                    utility: "2 Дыма (Heaven, Platform), 2 Молотовых (Fountain, Back Site), 3 Флешки",
+                    timings: "0:00-0:25: Подход к A-Main и Мосту • 0:25-0:45: Синхронный выход • 0:45-End: Плент",
+                    counter: "Если выход из A-Main закрыт дымом — прошивать сквозь дым и ждать прорыва через Мост.",
+                    roles: {
+                        awp: "Занимает позицию на Мосту, отстреливает снайпера в окне Коннектора.",
+                        entry: "Первым врывается через A-Main, срезает защитника на Фонтане.",
+                        refragger: "Заходит через Мост и Коннектор на А, берет защитников на сайте в клещи.",
+                        anchor: "Держит тыл на B, исключая пуш КТ через B-Main.",
+                        igl: "Дымит Heaven, дает флешку через стену руин, ставит бомбу под A-Main."
+                    }
+                },
+                {
+                    id: "anubis_t_3",
+                    title: "Быстрый захват Мида и прорыв на B через Коннектор (Mid Control to B)",
+                    type: "Быстрый раш",
+                    diff: "Экспертная",
+                    concept: "Мгновенное взламывание центра карты с выходом в спину B-опорников через переход.",
+                    utility: "2 Дыма (House, Camera), 2 Молотовых (Mid Doors, B Pillar), 3 Флешки",
+                    timings: "0:00-0:20: Прорыв дверей Мида • 0:20-0:35: Проход через Коннектор • 0:35-End: Захват B",
+                    counter: "Если двери Мида забросаны зажигалками — перенаправить атаку на А через Мост.",
+                    roles: {
+                        awp: "Снайпит окно дверей Мида, уничтожает первого вышедшего КТ.",
+                        entry: "Первым пролетает двери Мида под поп-флеш, бежит в B-Connector.",
+                        refragger: "Идет за энтри, зачищает угол Камеры и выходит на сайт B сзади.",
+                        anchor: "Шумит гранатами на A-Main, создавая иллюзию атаки на А.",
+                        igl: "Дымит House, координирует тайминг атаки, ставит бомбу."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "anubis_ct_1",
+                    title: "Агрессивный контроль Воды и Каналов (Water Dominance Push)",
+                    type: "Агрессивный поджим",
+                    diff: "Средняя",
+                    concept: "Ранний спуск в воду для отрезания ротаций террористов и захвата инициативы на карте.",
+                    utility: "1 Дым (Canal Entrance), 1 Молотов (Water Ramp), 2 Флешки",
+                    timings: "0:00-0:18: Спуск в Воду • 0:18-0:35: Зачистка каналов • 0:35-End: Закрепление",
+                    counter: "При массированном выходе врага из B-Main — отойти на сайт B и принять перекрестный бой.",
+                    roles: {
+                        awp: "Контролирует Мид с высокой площадки возле Camera.",
+                        entry: "Спускается в Воду первым под моменталку тиммейта, принимает дуэль.",
+                        refragger: "Страхует с лестницы Воды, накидывает молотов и разменивает контакт.",
+                        anchor: "Играет на сайте B за столбами в пассивной стойке.",
+                        igl: "Держит сайт А у Фонтана, координирует отход и радар."
+                    }
+                },
+                {
+                    id: "anubis_ct_2",
+                    title: "Двойная фиксация А-Сайта с Хэвена и Фонтана (Heaven & Fountain Crossfire)",
+                    type: "Перекрестный огонь",
+                    diff: "Базовая",
+                    concept: "Классический перекрестный замок сайта А, не оставляющий выходящим из A-Main шансов на выживание.",
+                    utility: "1 Дым (A-Main), 1 Молотов (Main Choke), 2 Флешки",
+                    timings: "0:00-0:30: Пассивный холд • 0:30-1:00: Встреча выхода • 1:00-End: Зачистка",
+                    counter: "Если Хэвен задымили — игрок с Хэвена спускается на сайт и играет в упоре у колонны.",
+                    roles: {
+                        awp: "Занимает Heaven на А, держит дальний пик по выходу из A-Main.",
+                        entry: "Играет у Фонтана/Платформы, открывает огонь по выходящим в упор.",
+                        refragger: "Держит A-Connector, готов помочь как на А, так и сместиться на Мид.",
+                        anchor: "Соло-опорник на B за дальними ящиками.",
+                        igl: "Контролирует центр (Camera), готов мгновенно отдать флешки на А."
+                    }
+                },
+                {
+                    id: "anubis_ct_3",
+                    title: "Пассивная расстановка на B с глубокими молотовыми (B Site Lock)",
+                    type: "Контроль карты",
+                    diff: "Экспертная",
+                    concept: "Экономия сил на B с упором на сдерживание утилитой до стягивания команды с центра.",
+                    utility: "2 Зажигательные (B-Main, Canal), 2 Дыма, 2 Флешки",
+                    timings: "0:00-0:35: Сдерживание гранатами • 0:35-0:50: Прием штурма • 0:50-End: Контратака",
+                    counter: "Если молотовы потушили — дать глубокий дым прямо под свои ноги и играть от инфы.",
+                    roles: {
+                        awp: "Держит Мид и Мост, готовый быстро сместиться в B-Connector.",
+                        entry: "Помогает опорнику на B, играет за колонной, отвлекает огонь.",
+                        refragger: "Играет в Коннекторе, накидывает флешки через стену на B.",
+                        anchor: "Опорник B: сидит в Темной (Dark), выжидает закладку и стреляет в спины.",
+                        igl: "Одиночно закрывает А с глубокой позиции на Heaven."
+                    }
+                }
+            ]
+        },
+        nuke: {
+            name: "Nuke",
+            icon: "☢️",
+            t: [
+                {
+                    id: "nuke_t_1",
+                    title: "Стена дымов на Улице и спуск в Сикрет (Outside 3-Smoke Secret Wall)",
+                    type: "Контроль карты",
+                    diff: "Средняя",
+                    concept: "Изоляция снайпера КТ на Улице линией дымов с беспрепятственным проходом на нижний плент B.",
+                    utility: "3 Дыма (Cross, Garage, Secret), 1 Молотов (Vents/Dark), 3 Флешки",
+                    timings: "0:00-0:25: Раскид стены дымов на Улице • 0:25-0:45: Пробег в Сикрет • 0:45-End: Захват B",
+                    counter: "Если КТ прошивают стену дымов с Гаража — AWP отстреливает вспышки выстрелов, пока команда бежит.",
+                    roles: {
+                        awp: "Контролирует Улицу с T-Roof, срезает выглядывающих из Гаража и Мейна.",
+                        entry: "Первым сбегает по лестнице в Сикрет, зачищает нижний плент B и входы из вентиляции.",
+                        refragger: "Бежит вторым в Сикрет, выжигает позицию за стеклами (Dark) и разменивает.",
+                        anchor: "Остается в Лобби, контролирует Скрипучку и Будку против агрессивного пуша КТ.",
+                        igl: "Откидывает 2 ключевых дыма на Улицу со спавна, заходит на B и ставит бомбу."
+                    }
+                },
+                {
+                    id: "nuke_t_2",
+                    title: "Быстрый раш на Рампу с выходом на нижний B (Fast Ramp to Lower B)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Стремительный прорыв через Рампу числом и гранатами с последующим закреплением на нижнем пленте.",
+                    utility: "1 Дым (Ramp CT), 1 Молотов (Big Box), 3 Флешки",
+                    timings: "0:00-0:20: Сбор на Радио • 0:20-0:35: Прорыв Рампы • 0:35-End: Спуск на B и плент",
+                    counter: "Если на Рампе встретили плотный огонь — развернуться в Лобби и выйти на верхний А через Скрипучку.",
+                    roles: {
+                        awp: "Контролирует верхнюю линию Рампы, снайпит опорника КТ за коробками.",
+                        entry: "Первым вылетает на Рампу под флеш, бежит к Биг Боксу и открывает путь вниз.",
+                        refragger: "Идет за энтри, разменивает дуэль и контролирует проход из Хэвена.",
+                        anchor: "Контролирует Улицу против пуша КТ через Сикрет.",
+                        igl: "Дает две слеповые над Рампой, дымит КТ-проход, ставит бомбу на нижнем пленте."
+                    }
+                },
+                {
+                    id: "nuke_t_3",
+                    title: "Сжатие верхнего плента А через Будку и Скрипучку (Hut & Squeaky Squeeze)",
+                    type: "Сплит-атака",
+                    diff: "Экспертная",
+                    concept: "Одновременный выход на А с двух смежных входов с ослеплением КТ над стеклянной крышей.",
+                    utility: "1 Дым (Main Mini), 2 Молотовых (Rafters, Site Box), 3 Флешки",
+                    timings: "0:00-0:30: Подготовка в Лобби • 0:30-0:45: Одновременный взрыв • 0:45-End: Захват А",
+                    counter: "При зажиме с девятки (Heaven) — задымить подъем и уйти в вентиляцию на нижний B.",
+                    roles: {
+                        awp: "Занимает улицу, отстреливает окно Mini и контролирует перетяжку КТ.",
+                        entry: "Открывает Скрипучку (Squeaky), вылетает на сайт А и зачищает девятку.",
+                        refragger: "Синхронно выпрыгивает из Будки (Hut), берет под прицел будку сверху и сайт.",
+                        anchor: "Держит Радио против поджимающих с Рампы КТ.",
+                        igl: "Дает две флешки через стекло на крыше, дымит Mini, ставит бомбу под Будку."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "nuke_ct_1",
+                    title: "Снайперский замок на Улице из Гаража (Garage AWP Lock)",
+                    type: "Контроль карты",
+                    diff: "Базовая",
+                    concept: "Полный снайперский контроль внешнего пространства, блокирующий любые попытки пройти в Сикрет.",
+                    utility: "1 Дым (Outside Red), 1 Молотов (Secret Entrance), 2 Флешки",
+                    timings: "0:00-0:20: Занятие Гаража • 0:20-1:00: Отстрел проходящих • 1:00-End: Перетяжка",
+                    counter: "При раскидке стены дымов — прошивать сквозь дымы и сместиться в Сикрет на прием.",
+                    roles: {
+                        awp: "Занимает Гараж на Улице, отстреливает любого террориста на открытом пространстве.",
+                        entry: "Держит верхний плент А с позиции Mini/Rafters, готов принять контакт.",
+                        refragger: "Играет на Хэвене на А, страхует снайпера и контролирует Будку.",
+                        anchor: "Одиночно бетонирует Рампу за Биг Боксом.",
+                        igl: "Играет на нижнем пленте B, контролирует вентиляцию и готовит команду."
+                    }
+                },
+                {
+                    id: "nuke_ct_2",
+                    title: "Агрессивный двойной зажим Лобби через Радио и Скрипучку (Lobby Pinch)",
+                    type: "Агрессивный поджим",
+                    diff: "Экспертная",
+                    concept: "Ранняя атака с двух сторон в закрытое помещение Лобби, уничтожающая подготовку атаки террористов.",
+                    utility: "2 Хаешки (Lobby Doors), 2 Флешки",
+                    timings: "0:00-0:15: Рывок со Скрипучки и Радио • 0:15-0:30: Зачистка Лобби • 0:30-End: Отход",
+                    counter: "Если в Лобби фулл-стак врага — мгновенно бросить дым под ноги и отступить назад.",
+                    roles: {
+                        awp: "Держит Улицу с безопасной дистанции из Гаража.",
+                        entry: "Пробивает Скрипучку под флеш, врывается в Лобби с левого фланга.",
+                        refragger: "Синхронно пушит из Радио с правого фланга, зажимая террористов в клещи.",
+                        anchor: "Остается глубоко на Рампе, держит тыл.",
+                        igl: "Дает саппорт-флешки с А-сайта, контролирует радар."
+                    }
+                },
+                {
+                    id: "nuke_ct_3",
+                    title: "Черепашья оборона Рампы и нижнего плента (Ramp Turtle & B Anchor)",
+                    type: "Перекрестный огонь",
+                    diff: "Средняя",
+                    concept: "Глубокая связка двух игроков на Рампе с мгновенным отходом на B через вентиляцию при потере контроля.",
+                    utility: "1 Дым (Ramp), 1 Молотов (Radio Exit), 2 Флешки",
+                    timings: "0:00-0:30: Пассивный холд • 0:30-1:00: Встреча штурма Рампы • 1:00-End: Зачистка",
+                    counter: "При потере верхнего плента — подняться по вентиляции в спину террористам на А.",
+                    roles: {
+                        awp: "Играет на Хэвене/Девятке, видит как А-сайт, так и подходы с Рампы.",
+                        entry: "Играет за Биг Боксом на Рампе, встречает первый накат.",
+                        refragger: "Занимает позицию на Хэвене у Рампы, ведет перекрестный огонь по выходящим.",
+                        anchor: "Держит нижний B в секрете, страхует двери и вент.",
+                        igl: "Одиночно контролирует Улицу и Mini, дает инфу о перемещениях врага."
+                    }
+                }
+            ]
+        },
+        overpass: {
+            name: "Overpass",
+            icon: "🚂",
+            t: [
+                {
+                    id: "overpass_t_1",
+                    title: "Сплит плента B через Монстр и Шорт B (Monster & Short B Execute)",
+                    type: "Сплит-атака",
+                    diff: "Средняя",
+                    concept: "Зажим точки B с двух направлений: взрыв через трубу Монстра и прорыв с Воды через Шорт B.",
+                    utility: "2 Дыма (Bridge, Toxic/Barrels), 2 Молотовых (Graffiti, Pillar), 3 Флешки",
+                    timings: "0:00-0:25: Захват Воды и подход к Монстру • 0:25-0:45: Синхронный штурм • 0:45-End: Плент",
+                    counter: "Если выход из Монстра залит молотовым — потушить дымом и выходить под хай-флеш.",
+                    roles: {
+                        awp: "Занимает позицию на Воде, снайпит защитников на Шорте B и у Моста.",
+                        entry: "Первым вылетает из трубы Монстра, прыгает на бочки и открывает сайт.",
+                        refragger: "Выходит со стороны Шорта B синхронно с Монстром, зажимает КТ в клещи.",
+                        anchor: "Контролирует Коннектор, не позволяя защитникам зайти во фланг с Туалетов.",
+                        igl: "Дымит Мост, дает две флешки над трубой Монстра, ставит бомбу за колонной."
+                    }
+                },
+                {
+                    id: "overpass_t_2",
+                    title: "Быстрый штурм А через Туалеты и Лонг (Bathrooms & Long A Squeeze)",
+                    type: "Быстрый раш",
+                    diff: "Базовая",
+                    concept: "Стремительный выжим обороны А через верхнюю часть карты с подавлением опорников в Банке и на пленте.",
+                    utility: "2 Дыма (Bank, CT Spawn), 2 Молотовых (Van, Site A), 3 Флешки",
+                    timings: "0:00-0:25: Захват Туалетов • 0:25-0:40: Выход на сайт А • 0:40-End: Закладка",
+                    counter: "При сильном снайперском сопротивлении на Лонге — перенаправить всех через Туалеты в упор.",
+                    roles: {
+                        awp: "Выходит на Лонг А, отстреливает снайпера у Банка или на Ваннах.",
+                        entry: "Первым врывается через Туалеты, зачищает ящики и ближний угол сайта А.",
+                        refragger: "Идет по Лонгу вторым темпом, разменивает энтри и контролирует Банк.",
+                        anchor: "Контролирует Воду и Коннектор, отрезая перетяжку КТ с нижнего плента.",
+                        igl: "Дымит Банк, накидывает флешки через крышу туалетов, ставит бомбу под мусорку."
+                    }
+                },
+                {
+                    id: "overpass_t_3",
+                    title: "Контроль Коннектора и поздний сплит на А (Connector Control & Late A)",
+                    type: "Контроль карты",
+                    diff: "Экспертная",
+                    concept: "Медленный раунд со сбором информации по всей карте, выбиванием Коннектора и ударом по А на последних секундах.",
+                    utility: "2 Дыма (CT, Bank), 2 Молотовых (Stairs, Site A), 3 Флешки",
+                    timings: "0:00-0:50: Рассеянный контроль карты • 0:50-1:15: Выбивание Коннектора • 1:15-End: Штурм А",
+                    counter: "Если КТ пушат Монстр в начале раунда — принять их на выходе и сразу пойти ставить на пустой B.",
+                    roles: {
+                        awp: "Контролирует Туалеты со спавна Т, снайпит неосторожно выглянувших КТ.",
+                        entry: "Первым штурмует Коннектор с Воды, зачищает лестницу наверх.",
+                        refragger: "Идет за энтри через Коннектор, зачищает площадку у Туалетов и выходит на А.",
+                        anchor: "Фейкует шагами и гранатами на Монстре, отвлекая двух игроков КТ на B.",
+                        igl: "Координирует финальный сбор, дымит спавн КТ, ставит бомбу за 35 секунд до конца."
+                    }
+                }
+            ],
+            ct: [
+                {
+                    id: "overpass_ct_1",
+                    title: "Агрессивный контроль Фонтана и Туалетов (Party & Bathrooms Dominance)",
+                    type: "Агрессивный поджим",
+                    diff: "Средняя",
+                    concept: "Ранний захват территории перед сайтом А, лишающий террористов удобных позиций для атаки.",
+                    utility: "1 Дым (Fountain), 1 Молотов (Party), 2 Флешки",
+                    timings: "0:00-0:18: Рывок в Туалеты • 0:18-0:35: Зачистка Фонтана • 0:35-End: Закрепление",
+                    counter: "При встрече мощного раша Т — отступить на сайт А и принять перекрестный бой с Банка.",
+                    roles: {
+                        awp: "Держит Лонг А со стороны Банка или Ванн.",
+                        entry: "Пушит Туалеты под моменталку напарника, делает первый фраг у Фонтана.",
+                        refragger: "Идет вторым в Туалетах, накидывает молотов в Party и разменивает дуэль.",
+                        anchor: "Одиночно держит Монстр на B из пассивной позиции.",
+                        igl: "Играет в Коннекторе, контролирует проход с Воды и готовит перетяжки."
+                    }
+                },
+                {
+                    id: "overpass_ct_2",
+                    title: "Капкан на Воде и Монстре (Short B & Monster Water Trap)",
+                    type: "Перекрестный огонь",
+                    diff: "Базовая",
+                    concept: "Оборонительный замок на нижнем пленте B с одновременным перекрестным расстрелом выхода из Монстра.",
+                    utility: "1 Дым (Monster), 1 Молотов (Water Ramp), 2 Хаешки",
+                    timings: "0:00-0:25: Пассивный холд • 0:25-0:55: Встреча выхода • 0:55-End: Зачистка",
+                    counter: "Если дым в Монстре потушили — одновременно забросить две осколочные в трубу.",
+                    roles: {
+                        awp: "Контролирует Шорт B с позиции Graffiti или Toxic.",
+                        entry: "Играет на бочках у Монстра, принимает выходящих в упор.",
+                        refragger: "Занимает позицию за колонной на Воде, создает перекрестный огонь с бочками.",
+                        anchor: "Страхует сайт B с дальнего угла за цементом.",
+                        igl: "Играет на сайте А, контролирует Туалеты и радар."
+                    }
+                },
+                {
+                    id: "overpass_ct_3",
+                    title: "Снайперский замок на сайте А с поддержкой Банка (Bank & Site A Lock)",
+                    type: "Контроль карты",
+                    diff: "Экспертная",
+                    concept: "Глубокая оборона сайта А с упором на дальние дистанции и перекрестный огонь по выходящим с Лонга и Туалетов.",
+                    utility: "1 Дым (Bathrooms Exit), 1 Молотов (Long A), 2 Флешки",
+                    timings: "0:00-0:30: Пассивный холд • 0:30-1:00: Встреча выхода на А • 1:00-End: Перетяжка",
+                    counter: "Если Банк задымили — снайпер смещается в Хелпу или на спавн КТ и продолжает отстрел.",
+                    roles: {
+                        awp: "Занимает Банк, держит дальний угол Лонга А.",
+                        entry: "Играет на сайте А за мусоркой, встречает выход из Туалетов.",
+                        refragger: "Играет на Хелпе, страхует снайпера и накидывает флешки.",
+                        anchor: "Держит B-Сайт в пассивной стойке за Pillar.",
+                        igl: "Контролирует Коннектор, готовый срезать выходящих террористов во фланг."
+                    }
+                }
+            ]
+        }
+    };
+
+    // State
+    let selectedSteamIds = [];
+    let currentAssignedRoster = null; // { awp: {player, affinity}, entry: ..., refragger: ..., anchor: ..., igl: ... }
+    let activeMap = "mirage";
+    let activeSide = "t"; // "t" or "ct"
+    let radarChartInstance = null;
+    let expandedTacticIds = new Set(); // Stores expanded accordion rows
+
+    // Tactical Roles Metadata
+    const ROLE_SPECS = {
+        awp: {
+            title: "Основной снайпер",
+            code: "Main AWP",
+            icon: "🔭",
+            color: "amber",
+            badgeClass: "bg-amber-950/70 text-amber-300 border-amber-500/50",
+            bgClass: "bg-amber-500/10 border-amber-500/30",
+            desc: "Дистанционный контроль, опенинг с AWP, фиксация ключевых линий (Long, Mid, Outside)."
+        },
+        entry: {
+            title: "Первый энтри",
+            code: "First Entry",
+            icon: "⚡",
+            color: "rose",
+            badgeClass: "bg-rose-950/70 text-rose-300 border-rose-500/50",
+            bgClass: "bg-rose-500/10 border-rose-500/30",
+            desc: "Создание пространства, проверка углов на скорости, первый фраг или размен на пленте."
+        },
+        refragger: {
+            title: "Второй энтри / Трейдер",
+            code: "Refragger",
+            icon: "🤝",
+            color: "orange",
+            badgeClass: "bg-orange-950/70 text-orange-300 border-orange-500/50",
+            bgClass: "bg-orange-500/10 border-orange-500/30",
+            desc: "Мгновенный размен первого номера (макс 1.5 сек сплит), добивание раненых, чистка кросс-огней."
+        },
+        anchor: {
+            title: "Опорник / Люркер",
+            code: "Site Anchor",
+            icon: "🛡️",
+            color: "sky",
+            badgeClass: "bg-sky-950/70 text-sky-300 border-sky-500/50",
+            bgClass: "bg-sky-500/10 border-sky-500/30",
+            desc: "Одиночное удержание опорного сайта, выживание до стяга, отрезание ротаций и клатчи 1vX."
+        },
+        igl: {
+            title: "Капитан / Саппорт",
+            code: "IGL & Support",
+            icon: "🧠",
+            color: "emerald",
+            badgeClass: "bg-emerald-950/70 text-emerald-300 border-emerald-500/50",
+            bgClass: "bg-emerald-500/10 border-emerald-500/30",
+            desc: "Командная координация, тайминг ключевых дымов и флешек, закладка бомбы и чтение игры."
+        }
+    };
+
+    // Calculate Role Affinity (0 - 100%)
+    function calcPlayerRoleAffinity(player, roleKey) {
+        const r = player.ratings || {};
+        const aim = Number(r.Aim || 5.0);
+        const pos = Number(r.Positioning || 5.0);
+        const util = Number(r.Utility || 5.0);
+        const gs = Number(r['Game Sense'] || 5.0);
+        const entry = Number(r.Entry || 5.0);
+        const trade = Number(r.Trading || 5.0);
+        const clutch = Number(r.Clutch || 5.0);
+        const disc = Number(r.Discipline || 5.0);
+        const eco = Number(r.Economy || 5.0);
+        const impact = Number(r['Overall Impact'] || 5.0);
+
+        const roles = player.roles || [];
+        const isAwpTag = roles.some(x => x.toLowerCase().includes('awp') || x.toLowerCase().includes('снайпер'));
+        const isEntryTag = roles.some(x => x.toLowerCase().includes('entry') || x.toLowerCase().includes('энтри'));
+        const isTradeTag = roles.some(x => x.toLowerCase().includes('трейдер') || x.toLowerCase().includes('размен'));
+        const isAnchorTag = roles.some(x => x.toLowerCase().includes('опор') || x.toLowerCase().includes('anchor') || x.toLowerCase().includes('люрк'));
+        const isIglTag = roles.some(x => x.toLowerCase().includes('капитан') || x.toLowerCase().includes('igl') || x.toLowerCase().includes('саппорт'));
+
+        let score = 50;
+        if (roleKey === 'awp') {
+            score = Math.round((aim * 4.0) + (pos * 3.0) + (eco * 2.0) + (impact * 1.0));
+            if (isAwpTag) score += 12;
+        } else if (roleKey === 'entry') {
+            score = Math.round((entry * 4.5) + (aim * 3.5) + (impact * 2.0));
+            if (isEntryTag) score += 12;
+        } else if (roleKey === 'refragger') {
+            score = Math.round((trade * 4.5) + (aim * 2.5) + (impact * 2.0) + (gs * 1.0));
+            if (isTradeTag) score += 12;
+        } else if (roleKey === 'anchor') {
+            score = Math.round((pos * 4.0) + (clutch * 3.0) + (disc * 2.0) + (gs * 1.0));
+            if (isAnchorTag) score += 12;
+        } else if (roleKey === 'igl') {
+            score = Math.round((gs * 4.0) + (util * 3.0) + (disc * 2.0) + (eco * 1.0));
+            if (isIglTag) score += 12;
+        }
+        return Math.max(35, Math.min(99, score));
+    }
+
+    // Permutations helper (120 permutations for 5 players)
+    function getPermutations(arr) {
+        const result = [];
+        function permute(curr, remaining) {
+            if (remaining.length === 0) {
+                result.push(curr);
+                return;
+            }
+            for (let i = 0; i < remaining.length; i++) {
+                permute([...curr, remaining[i]], [...remaining.slice(0, i), ...remaining.slice(i + 1)]);
+            }
+        }
+        permute([], arr);
+        return result;
+    }
+
+    // Globally optimal 5v5 role assignment
+    function optimizeRosterRoles(chosenPlayers) {
+        const roleKeys = ['awp', 'entry', 'refragger', 'anchor', 'igl'];
+        const perms = getPermutations([0, 1, 2, 3, 4]);
+        let bestPerm = null;
+        let maxScore = -1;
+
+        for (const p of perms) {
+            let total = 0;
+            for (let i = 0; i < 5; i++) {
+                total += calcPlayerRoleAffinity(chosenPlayers[p[i]], roleKeys[i]);
+            }
+            if (total > maxScore) {
+                maxScore = total;
+                bestPerm = p;
+            }
+        }
+
+        const assignment = {};
+        for (let i = 0; i < 5; i++) {
+            const player = chosenPlayers[bestPerm[i]];
+            const roleKey = roleKeys[i];
+            const aff = calcPlayerRoleAffinity(player, roleKey);
+            assignment[roleKey] = {
+                player: player,
+                affinity: aff
+            };
+        }
+        return assignment;
+    }
+
+    // AI Explanation Generator
+    function generateRoleExplanation(player, roleKey, aff) {
+        const r = player.ratings || {};
+        const pName = player.name || "Игрок";
+        if (roleKey === 'awp') {
+            return `Высокий Aim (${(r.Aim || 7.0).toFixed(1)}) и дисциплина позиции (${(r.Positioning || 7.0).toFixed(1)}) гарантируют стабильный первый фраговый пик со снайперской винтовкой без риска немедленного размена.`;
+        } else if (roleKey === 'entry') {
+            return `Лидерский показатель Entry (${(r.Entry || 7.0).toFixed(1)}) и взрывная реакция позволяют ${pName} агрессивно вскрывать закрытые пленты и открывать пространство для команды.`;
+        } else if (roleKey === 'refragger') {
+            return `Точность разменов Trading (${(r.Trading || 7.0).toFixed(1)}) и высокий импакт (${(r['Overall Impact'] || 7.0).toFixed(1)}) обеспечивают моментальную ликвидацию соперника во 2-м темпе атаки.`;
+        } else if (roleKey === 'anchor') {
+            return `Позиционирование (${(r.Positioning || 7.0).toFixed(1)}) и хладнокровие в клатчах (${(r.Clutch || 7.0).toFixed(1)}) делают ${pName} идеальным замком для удержания плента до подхода тиммейтов.`;
+        } else if (roleKey === 'igl') {
+            return `Глубокое понимание игры Game Sense (${(r['Game Sense'] || 7.0).toFixed(1)}) и навык гранат (${(r.Utility || 7.0).toFixed(1)}) позволяют грамотно координировать раунды и тайминги закупа.`;
+        }
+        return `Сбалансированные соревновательные навыки делают ${pName} надежным исполнителем роли.`;
+    }
+
+    // Dynamic Roster-Adaptive Tactics Formatter
+    function adaptTacticForRoster(baseTactic, roster, side) {
+        if (!roster) return baseTactic;
+
+        const awpP = roster.awp.player;
+        const entryP = roster.entry.player;
+        const refragP = roster.refragger.player;
+        const anchorP = roster.anchor.player;
+        const iglP = roster.igl.player;
+
+        const awpRatings = awpP.ratings || {};
+        const entryRatings = entryP.ratings || {};
+        const refragRatings = refragP.ratings || {};
+        const anchorRatings = anchorP.ratings || {};
+        const iglRatings = iglP.ratings || {};
+
+        const awpAim = Number(awpRatings.Aim || 7.0);
+        const awpPos = Number(awpRatings.Positioning || 7.0);
+        const entryEntry = Number(entryRatings.Entry || 7.0);
+        const entryAim = Number(entryRatings.Aim || 7.0);
+        const refragTrade = Number(refragRatings.Trading || 7.0);
+        const refragAdr = Number(refragP.adr || (refragP.stats && refragP.stats.adr) || 75.0);
+        const anchorClutch = Number(anchorRatings.Clutch || 7.0);
+        const anchorPos = Number(anchorRatings.Positioning || 7.0);
+        const iglUtil = Number(iglRatings.Utility || 7.0);
+        const iglGs = Number(iglRatings['Game Sense'] || 7.0);
+
+        const teamFirepower = (awpAim + entryAim) / 2;
+        const teamTactics = (iglUtil + iglGs) / 2;
+
+        let adaptationSummary = "";
+        let detailedNote = "";
+
+        if (teamFirepower >= 7.8) {
+            adaptationSummary = `Огневой накат: упор на дуэли ${entryP.name} & ${awpP.name}`;
+            detailedNote = `Высокая стрельба (Aim ${awpAim.toFixed(1)}, Entry ${entryEntry.toFixed(1)}): темп выхода форсирован, ставка на победу в первом огневом контакте.`;
+        } else if (teamTactics >= 7.4) {
+            adaptationSummary = `Тактический контроль от гранат ${iglP.name}`;
+            detailedNote = `Высокий тактический индекс капитана ${iglP.name} (Util ${iglUtil.toFixed(1)}, Game Sense ${iglGs.toFixed(1)}): раунд строится на методичном выдавливании врага утилитой без лишнего риска.`;
+        } else if (refragTrade >= 7.2) {
+            adaptationSummary = `Плотная разменная связка: ${entryP.name} + ${refragP.name}`;
+            detailedNote = `Высокий трейдинг ${refragP.name} (Trading ${refragTrade.toFixed(1)}): связка с энтри работает в шаге 1–1.5м для мгновенного ответа на контакт.`;
+        } else {
+            adaptationSummary = `Сбалансированная позиционная синхронизация`;
+            detailedNote = `Состав обладает высокой универсальностью: тактика сбалансирована под надежный пошаговый контроль зон.`;
+        }
+
+        const roles = {
+            awp: `[${awpP.name} · Aim ${awpAim.toFixed(1)}]: ${baseTactic.roles.awp} ${awpAim >= 7.6 ? `Используя высокую точность (Aim ${awpAim.toFixed(1)}), берет агрессивный пик по узкому углу.` : `Действует от сейвовой позиции (Позиционка ${awpPos.toFixed(1)}), отсекая перетяжки.`}`,
+            entry: `[${entryP.name} · Entry ${entryEntry.toFixed(1)}]: ${baseTactic.roles.entry} ${entryEntry >= 7.4 ? `Реализует взрывной опенинг (${entryEntry.toFixed(1)}), агрессивно вскрывая угол на первой секунде.` : `Выходит под моменталку широким стрейфом, собирая инфу и байтя огонь на себя.`}`,
+            refragger: `[${refragP.name} · Trade ${refragTrade.toFixed(1)}]: ${baseTactic.roles.refragger} ${refragTrade >= 7.2 ? `Дистанция 1.2м за ${entryP.name}: мгновенный размен (Trading ${refragTrade.toFixed(1)}) за доли секунды.` : `Движется во 2-м темпе, заливает зону подавляющим спреем (ADR ${refragAdr.toFixed(0)}).`}`,
+            anchor: `[${anchorP.name} · Clutch ${anchorClutch.toFixed(1)}]: ${baseTactic.roles.anchor} ${anchorClutch >= 7.0 ? `Клатч-хладнокровие (${anchorClutch.toFixed(1)}): сохраняет позицию для изоляции дуэлей и выигрыша времени.` : `Глубокая позиционка (${anchorPos.toFixed(1)}): играет сейвово до прихода тиммейтов.`}`,
+            igl: `[${iglP.name} · Util ${iglUtil.toFixed(1)}]: ${baseTactic.roles.igl} ${iglUtil >= 7.0 ? `Точная раскидка (${iglUtil.toFixed(1)}): закладывает ключевой дым и дает глубокую световую над сайтом.` : `Контролирует радар (Game Sense ${iglGs.toFixed(1)}), координирует тайминг установки бомбы.`}`
+        };
+
+        const counter = `${baseTactic.counter} (При раннем выбывании ${entryP.name} — разменную инициативу немедленно перехватывает ${refragP.name}, а ${awpP.name} отсекает перетяжку).`;
+
+        return {
+            ...baseTactic,
+            adaptationSummary,
+            detailedNote,
+            roles,
+            counter
+        };
+    }
+
+    // Render Slots Bar (Crucial: ONLY removes the clicked player, never wipes other 4!)
+    function renderRosterSlots() {
+        const container = document.getElementById('roster-slots-container');
+        if (!container) return;
+
+        container.innerHTML = '';
+        const roleOrder = ['awp', 'entry', 'refragger', 'anchor', 'igl'];
+
+        for (let i = 0; i < 5; i++) {
+            if (i < selectedSteamIds.length) {
+                // Active Player Slot
+                const sid = selectedSteamIds[i];
+                const p = ALL_PLAYERS.find(x => String(x.steam_id) === String(sid));
+
+                if (p) {
+                    // Role badge: if 5 players selected, show optimal role; else show natural style
+                    let roleTitle = p.roles ? p.roles[0] : "Игрок";
+                    let roleIcon = "🎖️";
+                    let badgeClass = "bg-slate-800 text-slate-300 border-slate-700";
+
+                    if (selectedSteamIds.length === 5 && currentAssignedRoster) {
+                        for (const rk of roleOrder) {
+                            if (currentAssignedRoster[rk] && String(currentAssignedRoster[rk].player.steam_id) === String(p.steam_id)) {
+                                const spec = ROLE_SPECS[rk];
+                                roleTitle = spec.title;
+                                roleIcon = spec.icon;
+                                badgeClass = spec.badgeClass;
+                                break;
+                            }
+                        }
+                    }
+
+                    const slotEl = document.createElement('div');
+                    slotEl.className = 'p-3 rounded-xl border border-slate-800 bg-slate-900/90 shadow-md flex items-center justify-between gap-2.5 transition hover:border-slate-700';
+                    slotEl.innerHTML = `
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-8 h-8 rounded-lg ${p.rank_tier ? p.rank_tier.avatar_classes : 'bg-slate-800 text-white'} border flex items-center justify-center font-black text-xs shrink-0">
+                                ${(p.name || 'P').substring(0, 2).toUpperCase()}
+                            </div>
+                            <div class="min-w-0">
+                                <div class="font-bold text-white text-xs truncate">
+                                    ${p.name}
+                                </div>
+                                <div class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold ${badgeClass} mt-0.5">
+                                    <span>${roleIcon}</span> <span>${roleTitle}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-remove-slot w-6 h-6 rounded-lg bg-slate-800 hover:bg-rose-950/80 hover:text-rose-400 text-slate-400 flex items-center justify-center text-xs transition cursor-pointer shrink-0" data-steamid="${p.steam_id}" title="Убрать ${p.name}">
+                            ✕
+                        </button>
+                    `;
+                    container.appendChild(slotEl);
+                }
+            } else {
+                // Empty Placeholder Slot
+                const emptyEl = document.createElement('div');
+                emptyEl.className = 'p-3 rounded-xl border border-dashed border-slate-800 bg-slate-950/40 hover:border-amber-500/50 hover:bg-slate-900/40 flex items-center justify-center gap-2 text-slate-500 hover:text-amber-300 text-xs font-mono transition cursor-pointer select-none';
+                emptyEl.innerHTML = `
+                    <span class="text-amber-400 font-bold text-sm">+</span>
+                    <span>Слот ${i + 1} (Выбрать)</span>
+                `;
+                emptyEl.addEventListener('click', () => {
+                    const search = document.getElementById('player-search-input');
+                    if (search) search.focus();
+                });
+                container.appendChild(emptyEl);
+            }
+        }
+
+        // Attach single-player remove handlers
+        container.querySelectorAll('.btn-remove-slot').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sid = e.currentTarget.getAttribute('data-steamid');
+                // Remove ONLY this specific player!
+                togglePlayer(sid, false);
+            });
+        });
+
+        // Update counter badge
+        const countBadge = document.getElementById('roster-count');
+        if (countBadge) countBadge.textContent = selectedSteamIds.length;
+
+        // Incomplete Banner logic
+        const incompleteBanner = document.getElementById('squad-incomplete-banner');
+        const incompleteText = document.getElementById('squad-incomplete-text');
+        if (incompleteBanner && incompleteText) {
+            if (selectedSteamIds.length < 5) {
+                incompleteBanner.classList.remove('hidden');
+                incompleteText.textContent = `В составе ${selectedSteamIds.length} из 5 игроков. Выберите еще ${5 - selectedSteamIds.length} для генерации тактик и ролей.`;
+            } else {
+                incompleteBanner.classList.add('hidden');
+            }
+        }
+    }
+
+    // Render AI Roles & Synergy Block
+    function renderAiSection() {
+        const aiSec = document.getElementById('tournament-ai-section');
+
+        if (selectedSteamIds.length < 5) {
+            if (aiSec) aiSec.classList.add('hidden');
+            currentAssignedRoster = null;
+            return;
+        }
+
+        if (aiSec) aiSec.classList.remove('hidden');
+
+        const chosen = ALL_PLAYERS.filter(p => selectedSteamIds.includes(String(p.steam_id)));
+        currentAssignedRoster = optimizeRosterRoles(chosen);
+
+        // Synergy Metrics Calculations
+        let sumMmr = 0;
+        let sumHltv = 0;
+        let sumRating = 0;
+        let sumAim = 0, sumPos = 0, sumUtil = 0, sumGs = 0, sumEntry = 0, sumTrade = 0, sumClutch = 0, sumDisc = 0, sumEco = 0, sumImpact = 0;
+        let sumAffinity = 0;
+        let sumAdr = 0;
+
+        const roleKeys = ['awp', 'entry', 'refragger', 'anchor', 'igl'];
+        roleKeys.forEach(rk => {
+            const item = currentAssignedRoster[rk];
+            const p = item.player;
+            sumMmr += Number(p.current_mmr || 1000);
+            sumHltv += Number(p.hltv_rating || 1.0);
+            sumRating += Number(p.rating || 5.0);
+            sumAffinity += item.affinity;
+
+            const r = p.ratings || {};
+            sumAim += Number(r.Aim || 5.0);
+            sumPos += Number(r.Positioning || 5.0);
+            sumUtil += Number(r.Utility || 5.0);
+            sumGs += Number(r['Game Sense'] || 5.0);
+            sumEntry += Number(r.Entry || 5.0);
+            sumTrade += Number(r.Trading || 5.0);
+            sumClutch += Number(r.Clutch || 5.0);
+            sumDisc += Number(r.Discipline || 5.0);
+            sumEco += Number(r.Economy || 5.0);
+            sumImpact += Number(r['Overall Impact'] || 5.0);
+
+            const st = p.stats || {};
+            sumAdr += Number(st.adr || p.adr || 70.0);
+        });
+
+        const avgMmr = Math.round(sumMmr / 5);
+        const avgHltv = (sumHltv / 5).toFixed(2);
+        const avgAffinity = Math.round(sumAffinity / 5);
+        const synergyScore = Math.min(99, Math.round(avgAffinity * 0.96 + 3));
+
+        // Update Header Stats
+        document.getElementById('stat-synergy-pct').textContent = `${synergyScore}%`;
+        document.getElementById('stat-avg-mmr').textContent = avgMmr;
+        document.getElementById('stat-avg-hltv').textContent = avgHltv;
+
+        // Synergy Verdict Text
+        let verdictText = `Сыгранность: ${synergyScore}% • `;
+        if (synergyScore >= 85) {
+            verdictText += "Идеальный баланс ролей: каждый игрок закрывает свою сильнейшую специализацию.";
+        } else if (synergyScore >= 70) {
+            verdictText += "Хорошая синергия: сбалансированная огневая мощь и надежное закрытие ключевых зон.";
+        } else {
+            verdictText += "Экспериментальный ростер: высокая универсальность, но требуется сыгранность на раскидках.";
+        }
+        document.getElementById('synergy-verdict-text').textContent = verdictText;
+
+        // Sub-metrics
+        document.getElementById('metric-firepower').textContent = ((sumAim + sumEntry) / 10).toFixed(1);
+        document.getElementById('metric-tactics').textContent = ((sumUtil + sumGs) / 10).toFixed(1);
+        document.getElementById('metric-discipline').textContent = ((sumDisc + sumEco) / 10).toFixed(1);
+        document.getElementById('metric-tradesync').textContent = (sumTrade / 5).toFixed(1);
+        document.getElementById('metric-clutch').textContent = (sumClutch / 5).toFixed(1);
+        document.getElementById('metric-team-adr').textContent = (sumAdr / 5).toFixed(1);
+
+        // Render Assigned Role Cards
+        const rolesContainer = document.getElementById('assigned-roles-container');
+        if (rolesContainer) {
+            rolesContainer.innerHTML = '';
+            roleKeys.forEach(rk => {
+                const item = currentAssignedRoster[rk];
+                const spec = ROLE_SPECS[rk];
+                const p = item.player;
+                const aff = item.affinity;
+                const expl = generateRoleExplanation(p, rk, aff);
+
+                const cardEl = document.createElement('div');
+                cardEl.className = 'p-4 rounded-xl border border-slate-800 bg-slate-950/80 flex flex-col justify-between shadow-lg relative overflow-hidden group hover:border-slate-700 transition';
+                cardEl.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800/80">
+                            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${spec.badgeClass}">
+                                <span>${spec.icon}</span> <span>${spec.title}</span>
+                            </span>
+                            <span class="font-mono font-black text-xs text-amber-400">${aff}%</span>
+                        </div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-xl ${p.rank_tier ? p.rank_tier.avatar_classes : 'bg-slate-800 text-white'} border flex items-center justify-center font-black text-sm shrink-0">
+                                ${(p.name || 'P').substring(0, 2).toUpperCase()}
+                            </div>
+                            <div class="min-w-0">
+                                <a href="players/${p.steam_id}.html" target="_blank" class="font-extrabold text-sm text-white hover:text-amber-300 transition truncate block">
+                                    ${p.name}
+                                </a>
+                                <span class="text-[10px] font-mono text-slate-400">MMR ${p.current_mmr || 1000}</span>
+                            </div>
+                        </div>
+
+                        <!-- Affinity bar -->
+                        <div class="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden mb-3">
+                            <div class="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full" style="width: ${aff}%"></div>
+                        </div>
+
+                        <!-- AI Reasoning -->
+                        <p class="text-[11px] text-slate-300 leading-relaxed mb-3">
+                            ${expl}
+                        </p>
+                    </div>
+
+                    <div class="pt-2.5 border-t border-slate-800/80 text-[10px] text-slate-400 font-mono">
+                        ${spec.desc}
+                    </div>
+                `;
+                rolesContainer.appendChild(cardEl);
+            });
+        }
+
+        // Render Radar Chart
+        renderRadarChart([
+            sumAim / 5, sumPos / 5, sumUtil / 5, sumGs / 5, sumEntry / 5,
+            sumTrade / 5, sumClutch / 5, sumDisc / 5, sumEco / 5, sumImpact / 5
+        ]);
+
+        // Render Tactics for active map & side
+        renderTactics();
+    }
+
+    // Render Radar Chart with Chart.js
+    function renderRadarChart(teamSkills) {
+        const ctx = document.getElementById('team-synergy-radar');
+        if (!ctx) return;
+
+        if (radarChartInstance) {
+            radarChartInstance.destroy();
+        }
+
+        const labels = ['Aim', 'Positioning', 'Utility', 'Game Sense', 'Entry', 'Trading', 'Clutch', 'Discipline', 'Economy', 'Overall Impact'];
+
+        radarChartInstance = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Состав 5v5',
+                        data: teamSkills.map(v => Number(v.toFixed(1))),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.25)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: '#fff',
+                        pointRadius: 3
+                    },
+                    {
+                        label: 'Базис (6.0)',
+                        data: [6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0],
+                        borderColor: 'rgba(148, 163, 184, 0.4)',
+                        backgroundColor: 'transparent',
+                        borderWidth: 1,
+                        borderDash: [4, 4],
+                        pointRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
+                        grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                        pointLabels: {
+                            color: '#94a3b8',
+                            font: { size: 10, family: 'Inter, sans-serif', weight: 'bold' }
+                        },
+                        ticks: {
+                            display: false,
+                            min: 0,
+                            max: 10,
+                            stepSize: 2
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#cbd5e1',
+                            font: { size: 11, family: 'Inter, sans-serif' },
+                            boxWidth: 12
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Render Collapsible Tactics Accordion by Rows with Dynamic Roster Adaptation
+    function renderTactics() {
+        const container = document.getElementById('tactics-list-container');
+        if (!container || !currentAssignedRoster) return;
+
+        const mapData = TACTICS_DATA[activeMap];
+        if (!mapData) return;
+
+        const baseTactics = mapData[activeSide] || [];
+        container.innerHTML = '';
+
+        // By default on map/side change, expand first tactic if set is empty
+        if (expandedTacticIds.size === 0 && baseTactics.length > 0) {
+            expandedTacticIds.add(baseTactics[0].id);
+        }
+
+        baseTactics.forEach((rawTactic, idx) => {
+            // Adapt tactic dynamically to the 5 assigned players
+            const tactic = adaptTacticForRoster(rawTactic, currentAssignedRoster, activeSide, activeMap);
+            const isExpanded = expandedTacticIds.has(tactic.id);
+
+            const rowCard = document.createElement('div');
+            rowCard.className = 'glassmorphism rounded-2xl border border-slate-800 bg-slate-950/80 shadow-lg overflow-hidden transition-all duration-200';
+            rowCard.id = `tactic-row-${tactic.id}`;
+
+            rowCard.innerHTML = `
+                <!-- Collapsible Header Row -->
+                <div class="tactic-accordion-header p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-3 cursor-pointer hover:bg-slate-900/60 transition select-none" data-tactic-id="${tactic.id}">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="px-2.5 py-1 rounded-lg font-mono text-xs font-black uppercase shrink-0 ${activeSide === 't' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-sky-500/20 text-sky-300 border border-sky-500/40'}">
+                            ${activeSide === 't' ? '💣 T' : '🛡️ CT'} · Тактика #${idx + 1}
+                        </span>
+                        <div class="min-w-0">
+                            <h3 class="text-base md:text-lg font-black text-white truncate flex items-center gap-2">
+                                ${tactic.title}
+                            </h3>
+                            <div class="flex flex-wrap items-center gap-2 mt-1">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-900 text-slate-300 border border-slate-700">
+                                    ${tactic.type}
+                                </span>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950/80 text-emerald-300 border border-emerald-500/40">
+                                    Сложность: ${tactic.diff}
+                                </span>
+                                <span class="text-[11px] text-amber-300 font-mono hidden sm:inline-block">
+                                    ⚡ ${tactic.adaptationSummary}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 shrink-0 self-end md:self-auto">
+                        <span class="text-xs font-mono text-slate-400 accordion-toggle-label">
+                            ${isExpanded ? 'Свернуть' : 'Развернуть детали'}
+                        </span>
+                        <div class="w-7 h-7 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-xs text-slate-400 transition-transform duration-200 accordion-arrow" style="transform: ${isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'}">
+                            ▼
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Collapsible Body -->
+                <div class="tactic-accordion-body ${isExpanded ? '' : 'hidden'} p-5 md:p-6 border-t border-slate-800/80 bg-slate-950/50">
+                    <!-- Roster Dynamic Adaptation Note -->
+                    <div class="p-3.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-transparent border border-amber-500/30 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div class="flex items-start sm:items-center gap-2.5 text-xs text-slate-200">
+                            <span class="text-base shrink-0">🧬</span>
+                            <div>
+                                <span class="text-amber-400 font-bold block sm:inline">Адаптация под текущий состав: </span>
+                                <span>${tactic.detailedNote}</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-copy-discord px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-500/40 text-xs font-bold text-amber-300 transition flex items-center gap-1.5 cursor-pointer shrink-0 self-start sm:self-auto" data-tactic-id="${tactic.id}">
+                            <span>📋</span> <span>Скопировать для Discord</span>
+                        </button>
+                    </div>
+
+                    <!-- Concept & Utility -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-5 text-xs">
+                        <div class="md:col-span-7 p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                            <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1">🎯 Тактическая концепция</span>
+                            <p class="text-slate-200 leading-relaxed">${tactic.concept}</p>
+                        </div>
+                        <div class="md:col-span-5 p-3.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider block mb-1">💣 Необходимый инвентарь</span>
+                            <p class="font-mono text-slate-200">${tactic.utility}</p>
+                        </div>
+                    </div>
+
+                    <!-- 5 Step-by-Step Roles Execution -->
+                    <div class="space-y-2.5 mb-5">
+                        <span class="text-[11px] font-black text-white uppercase tracking-wider block mb-2">
+                            👥 Пошаговые действия игроков (кто и что делает):
+                        </span>
+
+                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.awp.badgeClass}">
+                                <span>${ROLE_SPECS.awp.icon}</span> <span>AWP</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.awp}</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.entry.badgeClass}">
+                                <span>${ROLE_SPECS.entry.icon}</span> <span>Entry</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.entry}</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.refragger.badgeClass}">
+                                <span>${ROLE_SPECS.refragger.icon}</span> <span>Trader</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.refragger}</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.anchor.badgeClass}">
+                                <span>${ROLE_SPECS.anchor.icon}</span> <span>Anchor</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.anchor}</p>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800 flex flex-col sm:flex-row sm:items-start gap-2.5">
+                            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-black uppercase shrink-0 ${ROLE_SPECS.igl.badgeClass}">
+                                <span>${ROLE_SPECS.igl.icon}</span> <span>IGL</span>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed mt-0.5">${tactic.roles.igl}</p>
+                        </div>
+                    </div>
+
+                    <!-- Timings & Plan B -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-slate-800/80 text-xs">
+                        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/60 font-mono text-slate-300">
+                            <span class="text-[10px] text-slate-500 uppercase block">⏱️ Тайминги раунда</span>
+                            ${tactic.timings}
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800/60 font-mono text-slate-300">
+                            <span class="text-[10px] text-rose-400 uppercase block">🔄 План Б (Корректировка под состав)</span>
+                            ${tactic.counter}
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.appendChild(rowCard);
+        });
+
+        // Accordion Toggle Handlers
+        container.querySelectorAll('.tactic-accordion-header').forEach(header => {
+            header.addEventListener('click', (e) => {
+                const tacticId = header.getAttribute('data-tactic-id');
+                const row = document.getElementById(`tactic-row-${tacticId}`);
+                if (!row) return;
+
+                const body = row.querySelector('.tactic-accordion-body');
+                const arrow = row.querySelector('.accordion-arrow');
+                const label = row.querySelector('.accordion-toggle-label');
+
+                if (expandedTacticIds.has(tacticId)) {
+                    expandedTacticIds.delete(tacticId);
+                    body.classList.add('hidden');
+                    arrow.style.transform = 'rotate(0deg)';
+                    label.textContent = 'Развернуть детали';
+                } else {
+                    expandedTacticIds.add(tacticId);
+                    body.classList.remove('hidden');
+                    arrow.style.transform = 'rotate(180deg)';
+                    label.textContent = 'Свернуть';
+                }
+            });
+        });
+
+        // Copy Discord Event Listeners
+        container.querySelectorAll('.btn-copy-discord').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tacticId = e.currentTarget.getAttribute('data-tactic-id');
+                copyTacticToClipboard(tacticId);
+            });
+        });
+    }
+
+    // Copy to Discord Clipboard Formatter
+    function copyTacticToClipboard(tacticId) {
+        if (!currentAssignedRoster) return;
+        const mapData = TACTICS_DATA[activeMap];
+        const allTactics = [...(mapData.t || []), ...(mapData.ct || [])];
+        const rawTactic = allTactics.find(t => t.id === tacticId);
+        if (!rawTactic) return;
+
+        const tactic = adaptTacticForRoster(rawTactic, currentAssignedRoster, activeSide, activeMap);
+
+        const text = 
+`🏆 **ТАКТИЧЕСКИЙ ПЛАН CS2:** ${mapData.name} — ${tactic.title}
+Сторона: ${activeSide.toUpperCase()} | Тип: ${tactic.type} | Сложность: ${tactic.diff}
+⚡ Адаптация: ${tactic.adaptationSummary}
+
+🎯 **Концепция:**
+${tactic.concept}
+
+💣 **Утилити:**
+${tactic.utility}
+
+👥 **РАСПРЕДЕЛЕНИЕ РОЛЕЙ И ЗАДАЧИ:**
+🔭 ${tactic.roles.awp}
+⚡ ${tactic.roles.entry}
+🤝 ${tactic.roles.refragger}
+🛡️ ${tactic.roles.anchor}
+🧠 ${tactic.roles.igl}
+
+⏱️ **Тайминги:** ${tactic.timings}
+🔄 **План Б:** ${tactic.counter}`;
+
+        navigator.clipboard.writeText(text).then(() => {
+            showToast("Тактика скопирована для Discord / TeamSpeak!");
+        }).catch(() => {
+            showToast("Ошибка копирования в буфер");
+        });
+    }
+
+    // Toast notification
+    function showToast(msg) {
+        const toast = document.getElementById('tournament-toast');
+        const toastMsg = document.getElementById('toast-message');
+        if (!toast || !toastMsg) return;
+
+        toastMsg.textContent = msg;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3000);
+    }
+
+    // Toggle player selection (Crucial: ONLY adds or removes the target player!)
+    function togglePlayer(steamId, forceState = null) {
+        const strId = String(steamId);
+        const idx = selectedSteamIds.indexOf(strId);
+
+        if (forceState === true && idx === -1) {
+            if (selectedSteamIds.length >= 5) {
+                showToast("В составе уже 5 игроков! Нажмите крестик на слоте игрока для замены.");
+                return;
+            }
+            selectedSteamIds.push(strId);
+        } else if (forceState === false && idx !== -1) {
+            // Remove ONLY this player!
+            selectedSteamIds.splice(idx, 1);
+        } else if (forceState === null) {
+            if (idx !== -1) {
+                selectedSteamIds.splice(idx, 1);
+            } else {
+                if (selectedSteamIds.length >= 5) {
+                    showToast("В составе уже 5 игроков! Нажмите крестик на слоте игрока для замены.");
+                    return;
+                }
+                selectedSteamIds.push(strId);
+            }
+        }
+
+        saveRosterToStorage();
+        updateUiState();
+    }
+
+    // Update UI states
+    function updateUiState() {
+        // Sync checkboxes and cards in inline grid
+        document.querySelectorAll('.player-select-card').forEach(card => {
+            const sid = card.getAttribute('data-steamid');
+            const cb = card.querySelector('.tournament-player-cb');
+            const isSel = selectedSteamIds.includes(String(sid));
+
+            if (cb) cb.checked = isSel;
+            if (isSel) {
+                card.classList.add('border-amber-500/80', 'bg-amber-950/30');
+                card.classList.remove('border-slate-800/80', 'bg-slate-900/60');
+            } else {
+                card.classList.remove('border-amber-500/80', 'bg-amber-950/30');
+                card.classList.add('border-slate-800/80', 'bg-slate-900/60');
+            }
+        });
+
+        renderAiSection();
+        renderRosterSlots();
+    }
+
+    // Filter cards in inline picker
+    function applyPlayerFilters() {
+        const searchVal = (document.getElementById('player-search-input')?.value || '').toLowerCase().trim();
+        const activeChip = document.querySelector('#picker-filter-chips .filter-chip.bg-amber-500\\/20');
+        const filterType = activeChip ? activeChip.getAttribute('data-filter') : 'all';
+
+        document.querySelectorAll('.player-select-card').forEach(card => {
+            const name = (card.querySelector('.truncate')?.textContent || '').toLowerCase();
+            const rolesStr = (card.getAttribute('data-roles') || '').toLowerCase();
+            const mmr = parseInt(card.getAttribute('data-mmr') || '0', 10);
+
+            let matchesSearch = !searchVal || name.includes(searchVal);
+            let matchesFilter = true;
+
+            if (filterType === 'top') {
+                matchesFilter = mmr >= 1050;
+            } else if (filterType === 'awp') {
+                matchesFilter = rolesStr.includes('awp') || rolesStr.includes('снайпер');
+            } else if (filterType === 'entry') {
+                matchesFilter = rolesStr.includes('entry') || rolesStr.includes('энтри');
+            } else if (filterType === 'anchor') {
+                matchesFilter = rolesStr.includes('опор') || rolesStr.includes('anchor') || rolesStr.includes('люрк');
+            }
+
+            card.style.display = (matchesSearch && matchesFilter) ? 'flex' : 'none';
+        });
+    }
+
+    // Storage persistence
+    function saveRosterToStorage() {
+        try {
+            localStorage.setItem('kase_tournament_roster', JSON.stringify(selectedSteamIds));
+        } catch (e) {}
+    }
+
+    function loadRosterFromStorage() {
+        try {
+            const saved = localStorage.getItem('kase_tournament_roster');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    selectedSteamIds = parsed.slice(0, 5).map(String);
+                    return;
+                }
+            }
+        } catch (e) {}
+
+        // Default: Top-5 highest MMR players
+        const top5 = [...ALL_PLAYERS].filter(p => !p.is_inactive).slice(0, 5);
+        selectedSteamIds = top5.map(p => String(p.steam_id));
+    }
+
+    // DOM Ready
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRosterFromStorage();
+
+        // Player Grid Cards Click
+        document.querySelectorAll('.player-select-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const sid = card.getAttribute('data-steamid');
+                togglePlayer(sid);
+            });
+        });
+
+        // Search Input Filter
+        const searchInput = document.getElementById('player-search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', applyPlayerFilters);
+        }
+
+        // Filter chips
+        document.querySelectorAll('#picker-filter-chips .filter-chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                document.querySelectorAll('#picker-filter-chips .filter-chip').forEach(c => {
+                    c.className = 'filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-900 text-slate-400 hover:text-white border border-slate-800 cursor-pointer';
+                });
+                chip.className = 'filter-chip px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer';
+                applyPlayerFilters();
+            });
+        });
+
+        // Top 5 MMR Button
+        document.getElementById('btn-select-top5')?.addEventListener('click', () => {
+            const sorted = [...ALL_PLAYERS].filter(p => !p.is_inactive).slice(0, 5);
+            selectedSteamIds = sorted.map(p => String(p.steam_id));
+            saveRosterToStorage();
+            updateUiState();
+            showToast("Выбран состав Топ-5 по MMR!");
+        });
+
+        // Balanced Roster Button
+        document.getElementById('btn-select-balanced')?.addEventListener('click', () => {
+            const pool = [...ALL_PLAYERS].filter(p => !p.is_inactive);
+            const chosen = [];
+
+            const pickBest = (roleQuery, fallbackAttr) => {
+                const candidate = pool.find(p => !chosen.includes(String(p.steam_id)) && (p.roles || []).some(r => r.toLowerCase().includes(roleQuery)))
+                    || pool.slice().sort((a,b) => (b.ratings?.[fallbackAttr] || 0) - (a.ratings?.[fallbackAttr] || 0)).find(p => !chosen.includes(String(p.steam_id)));
+                if (candidate) chosen.push(String(candidate.steam_id));
+            };
+
+            pickBest('awp', 'Aim');
+            pickBest('entry', 'Entry');
+            pickBest('anchor', 'Positioning');
+            pickBest('капитан', 'Game Sense');
+            pickBest('трейдер', 'Trading');
+
+            while (chosen.length < 5 && chosen.length < pool.length) {
+                const nextP = pool.find(p => !chosen.includes(String(p.steam_id)));
+                if (nextP) chosen.push(String(nextP.steam_id));
+                else break;
+            }
+
+            selectedSteamIds = chosen.slice(0, 5);
+            saveRosterToStorage();
+            updateUiState();
+            showToast("Выбран тактически сбалансированный состав!");
+        });
+
+        // Reset Button
+        document.getElementById('btn-reset-roster')?.addEventListener('click', () => {
+            selectedSteamIds = [];
+            saveRosterToStorage();
+            updateUiState();
+            showToast("Состав сброшен.");
+        });
+
+        // Map Tab Switchers
+        document.querySelectorAll('.map-tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.map-tab-btn').forEach(b => {
+                    b.classList.remove('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/50', 'shadow');
+                    b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+                });
+                const clicked = e.currentTarget;
+                clicked.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+                clicked.classList.add('bg-emerald-500/20', 'text-emerald-300', 'border-emerald-500/50', 'shadow');
+
+                activeMap = clicked.getAttribute('data-map');
+                expandedTacticIds.clear(); // Reset accordion state to open 1st tactic on new map
+                renderTactics();
+            });
+        });
+
+        // Side Toggle Buttons
+        const sideBtnT = document.getElementById('side-btn-t');
+        const sideBtnCt = document.getElementById('side-btn-ct');
+
+        if (sideBtnT && sideBtnCt) {
+            sideBtnT.addEventListener('click', () => {
+                activeSide = "t";
+                sideBtnT.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition flex items-center gap-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow cursor-pointer";
+                sideBtnCt.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-slate-400 hover:text-white transition flex items-center gap-2 cursor-pointer";
+                expandedTacticIds.clear();
+                renderTactics();
+            });
+
+            sideBtnCt.addEventListener('click', () => {
+                activeSide = "ct";
+                sideBtnCt.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition flex items-center gap-2 bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow cursor-pointer";
+                sideBtnT.className = "px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider text-slate-400 hover:text-white transition flex items-center gap-2 cursor-pointer";
+                expandedTacticIds.clear();
+                renderTactics();
+            });
+        }
+
+        // Initial UI Render
+        updateUiState();
+    });
+</script>
+{% endblock %}

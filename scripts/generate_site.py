@@ -2408,6 +2408,8 @@ def generate_site(output_dir=None):
         logging.warning(f"Ошибка загрузки session_highlight для главной: {e}")
         session_highlight = None
 
+    latest_session = formatted_sessions[0] if formatted_sessions else None
+
     # 1. Генерация index.html
     index_template = env.get_template("index.html")
     safe_dump(
@@ -2427,6 +2429,7 @@ def generate_site(output_dir=None):
             secondary_players_count=len(calibrating_players) + len(inactive_players),
             faceit_levels_info=faceit_levels_info,
             sessions=formatted_sessions,
+            latest_session=latest_session,
             recent_matches=recent_matches_display,
             session_awards=session_awards,
             session_highlight=session_highlight,
@@ -2831,6 +2834,22 @@ def generate_site(output_dir=None):
         out_dir / "matchmaker.html"
     )
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
+
+    # 8.1. Генерация страницы турнирного состава и тактик site/tournament.html
+    tournament_template = env.get_template("tournament.html")
+    safe_dump(
+        tournament_template.stream(
+            active_page="tournament",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            players=leaderboard_players,
+            h2h_data=h2h_data,
+            generated_at=generated_at
+        ),
+        out_dir / "tournament.html"
+    )
+    logging.info("Сгенерирована страница турнирного состава и тактик: site/tournament.html")
 
     # 9. Генерация страницы тактических ролей site/roles.html
     roles_data = []

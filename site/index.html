@@ -6250,7 +6250,355 @@
 
     <!-- 2. TAB: Latest Session Summary (Hall of Fame & Momentum) -->
     <div id="tab-session-summary" class="tab-pane index-tab-pane">
-<!-- 5 Hall of Fame Session Nominations -->
+    
+    <!-- Session Banner & Header Link -->
+    <div class="glassmorphism p-5 md:p-6 rounded-2xl border border-emerald-500/30 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-emerald-950/30 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div>
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="text-xs uppercase font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                    Крайний игровой день
+                </span>
+                <span class="text-xs text-slate-400 font-mono">Пятничный микс</span>
+            </div>
+            <h2 class="text-2xl md:text-3xl font-black text-white flex items-center gap-2">
+                <span>📅 18 сентября 2026</span>
+            </h2>
+            <div class="flex items-center gap-3 text-xs text-slate-400 font-mono mt-1">
+                <span>🎮 Сыграно матчей: <strong class="text-white">9</strong></span>
+                <span>•</span>
+                <span>⏱️ Раундов: <strong class="text-white">168</strong></span>
+            </div>
+        </div>
+
+        <a href="sessions/18092026.html" 
+           class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-sm font-bold shadow-lg transition duration-200 group">
+            <span>Полный отчет дня и таблица игроков</span>
+            <span class="group-hover:translate-x-1 transition font-mono">➔</span>
+        </a>
+    </div>
+
+    <!-- 📊 Рекорды сессии (Лидеры дня) -->
+    
+    <section class="section session-records-section mb-8">
+        <div class="flex items-center justify-between gap-2 mb-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span>📊</span> <span>Рекорды сессии</span>
+            </h3>
+            <span class="text-xs font-mono text-slate-400">Пиковые показатели за день</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3">
+                <span class="text-3xl">🔫</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Больше всего убийств</span>
+                    <span class="text-sm font-bold text-white">matadorra <strong class="text-amber-300 font-mono">(82)</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3">
+                <span class="text-3xl">🔥</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Мастер клатчей</span>
+                    <span class="text-sm font-bold text-white">Oceanmengo <strong class="text-amber-400 font-mono">(5)</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3">
+                <span class="text-3xl">🎯</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Лучший Entry</span>
+                    <span class="text-sm font-bold text-white">Qurtpen <strong class="text-emerald-400 font-mono">(21)</strong></span>
+                </div>
+            </div>
+            <div class="stat-card glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3">
+                <span class="text-3xl">💣</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Урон от гранат</span>
+                    <span class="text-sm font-bold text-white">berdimwws <strong class="text-rose-400 font-mono">(576)</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- 🎮 Сыгранные матчи дня (Карточки со счетом) -->
+    
+    <section class="section session-matches-summary mb-8">
+        <div class="flex items-center justify-between gap-2 mb-4">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span>🎮</span> <span>Сыгранные матчи дня</span>
+            </h3>
+            <span class="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2.5 py-0.5 rounded-full">
+                9 карты
+            </span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            
+            <a href="matches/18092026_ancient_27224127_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Ancient</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Ancient
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (Rayi)">Команда 1 (Rayi)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-emerald-400">13</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-slate-300">10</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (ALISHKA18SM)">Команда 2 (ALISHKA18SM)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 23 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_anubis_27223582_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Anubis</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Anubis
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (k--9)">Команда 1 (k--9)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-slate-300">6</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-emerald-400">13</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (ALIBONYA)">Команда 2 (ALIBONYA)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 19 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_dust2_27224707_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Dust2</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Dust2
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (Hijsenberg)">Команда 1 (Hijsenberg)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-emerald-400">13</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-slate-300">4</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (k--9)">Команда 2 (k--9)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 17 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_inferno_27223607_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Inferno</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Inferno
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (Hijsenberg)">Команда 1 (Hijsenberg)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-slate-300">4</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-emerald-400">13</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (Anarch1k)">Команда 2 (Anarch1k)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 17 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_inferno_27224699_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Inferno</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Inferno
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (c kaifom)">Команда 1 (c kaifom)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-emerald-400">13</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-slate-300">1</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (SGEM_7)">Команда 2 (SGEM_7)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 14 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_mirage_27224134_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Mirage</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Mirage
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (matadorra)">Команда 1 (matadorra)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-slate-300">1</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-emerald-400">13</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (7skyi)">Команда 2 (7skyi)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 14 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_mirage_27225364_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Mirage</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Mirage
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (Oceanmengo)">Команда 1 (Oceanmengo)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-slate-300">6</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-emerald-400">13</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (natsad)">Команда 2 (natsad)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 19 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_mirage_27225508_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Mirage</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Mirage
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (SGEM_7)">Команда 1 (SGEM_7)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-slate-300">9</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-emerald-400">13</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (matadorra)">Команда 2 (matadorra)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 22 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+            <a href="matches/18092026_overpass_27226528_245.html" 
+               class="glassmorphism rounded-xl p-4 border border-slate-800 hover:border-emerald-500/50 bg-slate-900/50 hover:bg-slate-900 transition duration-200 group block shadow-md">
+                
+                <div class="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-lg">🗺️</span>
+                        <h4 class="text-base font-bold text-white group-hover:text-emerald-300 transition">Overpass</h4>
+                    </div>
+                    <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded font-semibold uppercase">
+                        DE_Overpass
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between bg-slate-950/80 p-2.5 rounded-lg border border-slate-800 mb-2.5">
+                    <span class="text-xs font-bold text-blue-400 truncate max-w-[38%]" title="Команда 1 (Oceanmengo)">Команда 1 (Oceanmengo)</span>
+                    <div class="text-xl font-black font-mono flex items-center gap-1.5 shrink-0 px-2">
+                        <span class="text-emerald-400">13</span>
+                        <span class="text-slate-600">:</span>
+                        <span class="text-slate-300">10</span>
+                    </div>
+                    <span class="text-xs font-bold text-amber-400 truncate max-w-[38%] text-right" title="Команда 2 (matadorra)">Команда 2 (matadorra)</span>
+                </div>
+
+                <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono">
+                    <span>⏱️ 23 раундов</span>
+                    <span class="text-emerald-400 font-bold group-hover:translate-x-1 transition">Разбор матча ➔</span>
+                </div>
+            </a>
+            
+        </div>
+    </section>
+    
+    
+
+    <!-- 5 Hall of Fame Session Nominations -->
     
     <section class="section hall-of-fame-section glassmorphism p-6 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-b from-amber-950/15 via-slate-900/80 to-slate-900/90">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
@@ -6258,9 +6606,11 @@
                 <h2 class="section-title text-2xl font-bold text-white flex items-center gap-2">
                     👑 Зал Славы крайней сессии
                     
-                    <span class="text-xs font-mono text-amber-300 bg-amber-950/70 border border-amber-500/40 px-2.5 py-0.5 rounded-full">
-                        18.09.2026
-                    </span>
+                    <a href="sessions/18092026.html" 
+                       class="text-xs font-mono text-amber-300 bg-amber-950/70 border border-amber-500/40 px-2.5 py-0.5 rounded-full hover:bg-amber-900/60 transition" 
+                       title="Перейти к отчету сессии">
+                        18.09.2026 ➔
+                    </a>
                     
                 </h2>
                 <p class="text-xs text-slate-400 mt-1">Топ-перформансы прошедшего игрового дня по 5 ключевым соревновательным номинациям</p>
@@ -6510,6 +6860,18 @@
     </section>
     
 
+    <!-- Session Footer Link -->
+    
+    <div class="p-4 rounded-xl border border-slate-800 bg-slate-900/40 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left mb-6">
+        <div>
+            <div class="text-xs font-bold text-white">Индивидуальные рейтинги и статистика всех игроков</div>
+            <div class="text-[11px] text-slate-400">Сводная таблица с ADR, KAST, K/D и оценками 1-10 за день 18 сентября 2026</div>
+        </div>
+        <a href="sessions/18092026.html" 
+           class="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white border border-slate-700 text-xs font-bold transition whitespace-nowrap">
+            Открыть полную таблицу сессии ➔
+        </a>
+    </div>
     
     </div>
 
@@ -7467,7 +7829,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 02.10.2026 18:05</p>
+                <p class="footer-timestamp">Данные обновлены: 05.10.2026 16:07</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

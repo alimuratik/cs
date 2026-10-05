@@ -53,7 +53,7 @@
                 <a href="{{ root_path }}roles.html" class="nav-item {% if active_page == 'roles' %}active{% endif %}">
                     <span class="nav-icon">🎭</span> Роли
                 </a>
-                <a href="{{ root_path }}compare.html" class="nav-item {% if active_page in ['compare', 'matchmaker'] %}active{% endif %}">
+                <a href="{{ root_path }}compare.html" class="nav-item {% if active_page in ['compare', 'matchmaker', 'tournament'] %}active{% endif %}">
                     <span class="nav-icon">⚔️</span> Дуэли & Составы
                 </a>
                 <a href="{{ root_path }}achievements.html" class="nav-item {% if active_page == 'achievements' %}active{% endif %}">
@@ -111,7 +111,7 @@
             <a href="{{ root_path }}roles.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm {% if active_page == 'roles' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-sm{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60{% endif %}">
                 <span class="text-xl">🎭</span> <span>Тактические роли</span>
             </a>
-            <a href="{{ root_path }}compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm {% if active_page in ['compare', 'matchmaker'] %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-sm{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60{% endif %}">
+            <a href="{{ root_path }}compare.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm {% if active_page in ['compare', 'matchmaker', 'tournament'] %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-sm{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60{% endif %}">
                 <span class="text-xl">⚔️</span> <span>Личные дуэли & Составы</span>
             </a>
             <a href="{{ root_path }}achievements.html" class="mobile-nav-link flex items-center gap-3 p-3.5 rounded-xl font-bold text-sm {% if active_page == 'achievements' %}bg-emerald-50 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-sm{% else %}text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60{% endif %}">

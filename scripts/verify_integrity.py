@@ -110,7 +110,7 @@ def test_site(target_dir=None):
         print(f'Папка {s_dir.name} не найдена!')
         return False
         
-    core_pages = ['index.html', 'skills.html', 'demos.html', 'compare.html', 'matchmaker.html']
+    core_pages = ['index.html', 'skills.html', 'demos.html', 'compare.html', 'matchmaker.html', 'tournament.html']
     missing_pages = [p for p in core_pages if not (s_dir / p).exists()]
     
     if missing_pages:
