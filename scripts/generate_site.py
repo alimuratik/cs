@@ -103,17 +103,17 @@ def extract_youtube_id(url_or_id: str) -> str:
 def build_highlight_embed_url(url_or_id: str, start_sec: int = 0) -> tuple[str, str]:
     """
     Формирует (embed_url, watch_url) для YouTube с точным таймкодом:
-    - embed_url: https://www.youtube-nocookie.com/embed/{id}?start={start_sec}&rel=0
+    - embed_url: https://www.youtube.com/embed/{id}?start={start_sec}&autoplay=1&enablejsapi=1&rel=0&playsinline=1
     - watch_url: https://www.youtube.com/watch?v={id}&t={start_sec}s
     """
     vid = extract_youtube_id(url_or_id)
     if not vid:
         return "", ""
     if start_sec > 0:
-        embed = f"https://www.youtube-nocookie.com/embed/{vid}?start={start_sec}&rel=0"
+        embed = f"https://www.youtube.com/embed/{vid}?start={start_sec}&autoplay=1&enablejsapi=1&rel=0&playsinline=1"
         watch = f"https://www.youtube.com/watch?v={vid}&t={start_sec}s"
     else:
-        embed = f"https://www.youtube-nocookie.com/embed/{vid}?rel=0"
+        embed = f"https://www.youtube.com/embed/{vid}?autoplay=1&enablejsapi=1&rel=0&playsinline=1"
         watch = f"https://www.youtube.com/watch?v={vid}"
     return embed, watch
 
@@ -1610,6 +1610,8 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
             item["badge_color"] = b_color
             item["has_video"] = bool(embed_url)
             item["video_url"] = v_url
+            item["video_id"] = extract_youtube_id(v_url) if v_url else ""
+            item["start_sec"] = start_sec
             item["embed_url"] = embed_url
             item["watch_url"] = watch_url
             item["embed_start_sec"] = start_sec
@@ -1625,6 +1627,13 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
             key=lambda x: (parse_date_key(x.get("date", "")), x.get("round_num", 0)),
             reverse=True
         )
+        v_idx = 0
+        for h in player_highlights[sid]:
+            if h.get("has_video"):
+                h["video_index"] = v_idx
+                v_idx += 1
+            else:
+                h["video_index"] = -1
 
     return player_highlights
 

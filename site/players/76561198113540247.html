@@ -652,13 +652,13 @@
 
             <!-- Carousel & View Controls -->
             <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
-                <!-- Showreel Button (Continuous Video Player) -->
+                <!-- Video Highlights Player Button -->
                 
-                <button type="button" id="hl-showreel-btn" onclick="startHighlightsShowreel()"
+                <button type="button" id="hl-showreel-btn" onclick="openHighlightClipByIndex(0)"
                         class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-amber-500/20 active:scale-95"
-                        title="Запустить непрерывный просмотр всех видео-хайлайтов подряд (2)">
+                        title="Смотреть все видео-хайлайты игрока (2)">
                     <span>🎬</span>
-                    <span>Шоурил (Все подряд)</span>
+                    <span>Смотреть видео (2)</span>
                 </button>
                 
 
@@ -762,7 +762,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/Z4ghbiQiwCk?start=1853&rel=0', 'https://www.youtube.com/watch?v=Z4ghbiQiwCk&t=1853s', '💣 Прострел сквозь смок', 'Anubis • Раунд 17 (5:11)', 'Раунд 17 (счёт 5:11). ALISHKA18SM оформляет 💣 Прострел сквозь смок с M4A4.', '../matches/18092026_anubis_27223582_245.html#round-17')"
+                            onclick="openHighlightClipByIndex(0)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (30:53)
                     </button>
@@ -821,7 +821,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/Z4ghbiQiwCk?start=1384&rel=0', 'https://www.youtube.com/watch?v=Z4ghbiQiwCk&t=1384s', '⚡ Квадро-килл (4K)', 'Anubis • Раунд 12 (5:6)', 'Раунд 12 (счёт 5:6). ALISHKA18SM оформляет ⚡ Квадро-килл (4K) с M4A1-S.', '../matches/18092026_anubis_27223582_245.html#round-12')"
+                            onclick="openHighlightClipByIndex(1)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (23:04)
                     </button>
@@ -837,64 +837,64 @@
             
         </div>
 
-        <!-- Highlight Video Modal (Lightbox & Continuous Showreel Cinema) -->
+        <!-- Highlight Video Modal (Lightbox with Manual Playlist Controls) -->
         <div id="hl-video-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md p-3 sm:p-4 flex items-center justify-center transition-opacity duration-200" onclick="closeHighlightVideoModalOnBackdrop(event)">
             <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col max-h-[94vh] overflow-hidden" onclick="event.stopPropagation()">
                 <!-- Modal Header -->
-                <div class="p-3.5 sm:p-4 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/70">
+                <div class="p-3 sm:p-3.5 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/70">
                     <div class="min-w-0 pr-2">
                         <div class="flex items-center gap-2 flex-wrap">
                             <span class="text-base sm:text-lg shrink-0">🎬</span>
                             <h3 id="hl-modal-title" class="text-sm sm:text-base font-bold text-white truncate max-w-[200px] sm:max-w-md">Хайлайт</h3>
-                            <span id="hl-modal-counter" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">1 / 1</span>
+                            <span id="hl-modal-counter" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">1 / 1</span>
                         </div>
                         <p id="hl-modal-subtitle" class="text-xs text-slate-400 font-mono mt-0.5 truncate">Карта • Раунд</p>
                     </div>
                     <button type="button" onclick="closeHighlightVideoModal()"
                             class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition cursor-pointer shrink-0"
-                            aria-label="Закрыть">
+                            aria-label="Закрыть (Esc)">
                         ✕
                     </button>
                 </div>
-
-                <!-- Showreel Auto-Advance Progress Bar (Visible in Showreel mode) -->
-                <div id="hl-showreel-progress-wrap" class="w-full bg-slate-950 h-1.5 relative overflow-hidden hidden">
-                    <div id="hl-showreel-progress-bar" class="bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 h-full w-0 transition-all duration-100 ease-linear"></div>
-                </div>
                 
-                <!-- Video Iframe -->
-                <div class="relative w-full aspect-video bg-black">
+                <!-- Video Iframe Container -->
+                <div class="relative w-full aspect-video bg-black" id="hl-player-wrapper">
                     <iframe id="hl-modal-iframe" class="w-full h-full" src="" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen></iframe>
                 </div>
 
-                <!-- Showreel Playback Control Bar (Visible in Showreel mode) -->
-                <div id="hl-showreel-control-bar" class="px-3 py-2 bg-slate-950 border-t border-b border-slate-800/80 flex items-center justify-between gap-2 hidden">
+                <!-- Navigation Controls (Manual Switching Bar) -->
+                <div class="p-2 sm:p-2.5 bg-slate-950 border-t border-b border-slate-800/80 flex items-center justify-between gap-2">
+                    <!-- Prev button -->
                     <button type="button" onclick="showreelPrev()"
-                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
-                        <span>⏮</span> <span class="hidden sm:inline">Назад</span>
+                            class="px-3 sm:px-3.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs sm:text-sm font-bold cursor-pointer transition active:scale-95 shadow-sm"
+                            title="Предыдущий хайлайт (стрелка влево)">
+                        <span>⏮</span> <span>Назад</span>
                     </button>
 
-                    <div class="flex items-center gap-2">
-                        <button type="button" id="hl-showreel-pause-btn" onclick="toggleShowreelPause()"
-                                class="px-3 sm:px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 text-xs cursor-pointer transition shadow-sm active:scale-95">
-                            <span id="hl-showreel-pause-icon">⏸</span>
-                            <span id="hl-showreel-pause-text">Пауза</span>
-                        </button>
-                        <span id="hl-showreel-timer-label" class="text-[11px] font-mono text-slate-300 bg-slate-900/90 px-2 py-1 rounded border border-slate-800">
-                            След. через 18с
+                    <!-- Center moment info badge -->
+                    <div class="flex items-center gap-1.5 text-center min-w-0 px-1">
+                        <span id="hl-modal-active-badge" class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-block truncate border bg-amber-500/20 text-amber-300 border-amber-500/40">
+                            Хайлайт
                         </span>
                     </div>
 
+                    <!-- Next button: High-contrast gold gradient -->
                     <button type="button" onclick="showreelNext()"
-                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
-                        <span class="hidden sm:inline">Вперёд</span> <span>⏭</span>
+                            class="px-4 sm:px-5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-1.5 cursor-pointer transition active:scale-95 shadow-md shadow-amber-500/25"
+                            title="Следующий хайлайт (стрелка вправо)">
+                        <span>Следующий</span> <span>⏭</span>
                     </button>
                 </div>
 
+                <!-- Interactive Playlist Chips Bar -->
+                <div class="px-3 py-1.5 bg-slate-950/90 border-b border-slate-800/60 flex items-center gap-1.5 overflow-x-auto scrollbar-none" id="hl-playlist-chips-bar">
+                    <!-- Chips generated via JS -->
+                </div>
+
                 <!-- Caption & Footer -->
-                <div class="p-3.5 sm:p-4 bg-slate-950/80 border-t border-slate-800/80 flex flex-col gap-2.5 overflow-y-auto">
+                <div class="p-3.5 sm:p-4 bg-slate-950/80 flex flex-col gap-2.5 overflow-y-auto">
                     <div class="text-xs text-slate-300 leading-relaxed bg-emerald-950/30 border border-emerald-800/40 rounded-xl p-3 flex items-start gap-2">
                         <span class="text-base shrink-0 mt-0.5">🎙️</span>
                         <div>
@@ -914,10 +914,9 @@
                             </a>
                         </div>
                         <div class="flex items-center gap-2 ml-auto">
-                            <button type="button" id="hl-modal-start-showreel-btn" onclick="startHighlightsShowreel()"
-                                    class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 text-[11px] font-bold cursor-pointer transition hidden">
-                                🎬 Все подряд
-                            </button>
+                            <span class="text-[11px] text-slate-400 hidden sm:inline">
+                                ⌨️ Стрелки [←] [→] для переключения
+                            </span>
                             <button type="button" onclick="closeHighlightVideoModal()"
                                     class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer">
                                 Закрыть
@@ -929,40 +928,41 @@
         </div>
     </section>
 
-    <!-- Highlights Interactive Script & Continuous Showreel Engine -->
+    <!-- Highlights Interactive Script & Manual Playlist Engine -->
     <script>
         var playerVideoHighlights = [
             
             
             {
-                embedUrl: "https://www.youtube-nocookie.com/embed/Z4ghbiQiwCk?start=1853\u0026rel=0",
+                videoId: "Z4ghbiQiwCk",
+                startSec: 1853,
+                embedUrl: "https://www.youtube.com/embed/Z4ghbiQiwCk?start=1853\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
                 watchUrl: "https://www.youtube.com/watch?v=Z4ghbiQiwCk\u0026t=1853s",
                 title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a",
                 subtitle: "Anubis \u2022 \u0420\u0430\u0443\u043d\u0434 17 (5:11)",
                 caption: "\u0420\u0430\u0443\u043d\u0434 17 (\u0441\u0447\u0451\u0442 5:11). ALISHKA18SM \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a \u0441 M4A4.",
-                matchUrl: "../matches/18092026_anubis_27223582_245.html#round-17"
+                matchUrl: "../matches/18092026_anubis_27223582_245.html#round-17",
+                badgeColor: "indigo"
             },
             
             
             
             {
-                embedUrl: "https://www.youtube-nocookie.com/embed/Z4ghbiQiwCk?start=1384\u0026rel=0",
+                videoId: "Z4ghbiQiwCk",
+                startSec: 1384,
+                embedUrl: "https://www.youtube.com/embed/Z4ghbiQiwCk?start=1384\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
                 watchUrl: "https://www.youtube.com/watch?v=Z4ghbiQiwCk\u0026t=1384s",
                 title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
                 subtitle: "Anubis \u2022 \u0420\u0430\u0443\u043d\u0434 12 (5:6)",
                 caption: "\u0420\u0430\u0443\u043d\u0434 12 (\u0441\u0447\u0451\u0442 5:6). ALISHKA18SM \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 M4A1-S.",
-                matchUrl: "../matches/18092026_anubis_27223582_245.html#round-12"
+                matchUrl: "../matches/18092026_anubis_27223582_245.html#round-12",
+                badgeColor: "indigo"
             }
             
             
         ];
 
         var showreelIndex = 0;
-        var isShowreelActive = false;
-        var isShowreelPaused = false;
-        var showreelDurationMs = 18000;
-        var showreelElapsedMs = 0;
-        var showreelTimerInterval = null;
 
         function scrollHighlightsCarousel(dir) {
             var track = document.getElementById('hl-cards-track');
@@ -1013,36 +1013,13 @@
             }
         }
 
-        function startHighlightsShowreel(startIndex) {
+        function openHighlightClipByIndex(idx) {
             if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
-            showreelIndex = (typeof startIndex === 'number' && !isNaN(startIndex)) ? startIndex : 0;
-            if (showreelIndex < 0 || showreelIndex >= playerVideoHighlights.length) showreelIndex = 0;
-            
-            isShowreelActive = true;
-            isShowreelPaused = false;
-
-            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
-            var controlBar = document.getElementById('hl-showreel-control-bar');
-            var counterBadge = document.getElementById('hl-modal-counter');
-            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
-            
-            if (progressWrap) progressWrap.classList.remove('hidden');
-            if (controlBar) controlBar.classList.remove('hidden');
-            if (counterBadge) counterBadge.classList.remove('hidden');
-            if (startShowreelBtn) startShowreelBtn.classList.add('hidden');
-
-            updateShowreelPauseButtonUI();
-            loadShowreelClip(showreelIndex);
-        }
-
-        function loadShowreelClip(idx) {
-            if (idx < 0 || idx >= playerVideoHighlights.length) return;
+            if (typeof idx !== 'number' || isNaN(idx) || idx < 0) idx = 0;
+            if (idx >= playerVideoHighlights.length) idx = playerVideoHighlights.length - 1;
             showreelIndex = idx;
+
             var item = playerVideoHighlights[showreelIndex];
-
-            showreelElapsedMs = 0;
-            updateShowreelProgressUI(0, showreelDurationMs);
-
             var modal = document.getElementById('hl-video-modal');
             var iframe = document.getElementById('hl-modal-iframe');
             var mTitle = document.getElementById('hl-modal-title');
@@ -1051,6 +1028,7 @@
             var ytLink = document.getElementById('hl-modal-yt-link');
             var matchLink = document.getElementById('hl-modal-match-link');
             var counterBadge = document.getElementById('hl-modal-counter');
+            var activeBadge = document.getElementById('hl-modal-active-badge');
 
             if (mTitle) mTitle.textContent = item.title || 'Хайлайт матча';
             if (mSubtitle) mSubtitle.textContent = item.subtitle || '';
@@ -1058,135 +1036,64 @@
             if (ytLink) ytLink.href = item.watchUrl || '#';
             if (matchLink) matchLink.href = item.matchUrl || '#';
             if (counterBadge) counterBadge.textContent = (showreelIndex + 1) + ' / ' + playerVideoHighlights.length;
+            if (activeBadge) activeBadge.textContent = item.title || 'Хайлайт';
 
-            var playUrl = item.embedUrl + (item.embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
-            if (iframe) iframe.src = playUrl;
+            // High-compatibility YouTube embed URL with autoplay
+            var vid = item.videoId;
+            var sSec = item.startSec || 0;
+            var playUrl;
+            if (vid) {
+                playUrl = 'https://www.youtube.com/embed/' + vid + '?start=' + sSec + '&autoplay=1&enablejsapi=1&rel=0&playsinline=1';
+            } else {
+                playUrl = item.embedUrl + (item.embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1&enablejsapi=1&playsinline=1';
+            }
+
+            if (iframe) {
+                iframe.src = playUrl;
+            }
+
+            renderPlaylistChips();
 
             if (modal) modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-
-            startShowreelTimer();
         }
 
-        function startShowreelTimer() {
-            clearInterval(showreelTimerInterval);
-            if (!isShowreelActive || isShowreelPaused) return;
-
-            var tickMs = 100;
-            showreelTimerInterval = setInterval(function() {
-                if (isShowreelPaused) return;
-                showreelElapsedMs += tickMs;
-                updateShowreelProgressUI(showreelElapsedMs, showreelDurationMs);
-
-                if (showreelElapsedMs >= showreelDurationMs) {
-                    clearInterval(showreelTimerInterval);
-                    showreelNext();
-                }
-            }, tickMs);
-        }
-
-        function updateShowreelProgressUI(elapsed, total) {
-            var progressBar = document.getElementById('hl-showreel-progress-bar');
-            var timerLabel = document.getElementById('hl-showreel-timer-label');
-            var pct = Math.min(100, (elapsed / total) * 100);
-            if (progressBar) progressBar.style.width = pct + '%';
-
-            var secLeft = Math.max(0, Math.ceil((total - elapsed) / 1000));
-            if (timerLabel) {
-                if (isShowreelPaused) {
-                    timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
-                } else {
-                    timerLabel.textContent = 'След. через ' + secLeft + 'с';
-                }
+        function renderPlaylistChips() {
+            var container = document.getElementById('hl-playlist-chips-bar');
+            if (!container || !playerVideoHighlights || playerVideoHighlights.length <= 1) {
+                if (container) container.classList.add('hidden');
+                return;
             }
+            container.classList.remove('hidden');
+            container.innerHTML = '';
+            playerVideoHighlights.forEach(function(item, idx) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'hl-playlist-chip px-2.5 py-1 rounded-lg text-[11px] font-mono shrink-0 transition cursor-pointer border ' + 
+                    (idx === showreelIndex 
+                        ? 'bg-amber-500 text-slate-950 font-bold border-amber-400 shadow-sm' 
+                        : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white');
+                btn.textContent = '#' + (idx + 1) + ' ' + (item.title || 'Момент');
+                btn.onclick = function() {
+                    openHighlightClipByIndex(idx);
+                };
+                container.appendChild(btn);
+            });
         }
 
         function showreelNext() {
             if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
             var nextIdx = (showreelIndex + 1) % playerVideoHighlights.length;
-            loadShowreelClip(nextIdx);
+            openHighlightClipByIndex(nextIdx);
         }
 
         function showreelPrev() {
             if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
             var prevIdx = (showreelIndex - 1 + playerVideoHighlights.length) % playerVideoHighlights.length;
-            loadShowreelClip(prevIdx);
-        }
-
-        function toggleShowreelPause() {
-            isShowreelPaused = !isShowreelPaused;
-            updateShowreelPauseButtonUI();
-            if (isShowreelPaused) {
-                clearInterval(showreelTimerInterval);
-                var secLeft = Math.max(0, Math.ceil((showreelDurationMs - showreelElapsedMs) / 1000));
-                var timerLabel = document.getElementById('hl-showreel-timer-label');
-                if (timerLabel) timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
-            } else {
-                startShowreelTimer();
-            }
-        }
-
-        function updateShowreelPauseButtonUI() {
-            var icon = document.getElementById('hl-showreel-pause-icon');
-            var text = document.getElementById('hl-showreel-pause-text');
-            var btn = document.getElementById('hl-showreel-pause-btn');
-            if (isShowreelPaused) {
-                if (icon) icon.textContent = '▶';
-                if (text) text.textContent = 'Продолжить';
-                if (btn) {
-                    btn.classList.remove('bg-amber-500', 'hover:bg-amber-400');
-                    btn.classList.add('bg-emerald-500', 'hover:bg-emerald-400');
-                }
-            } else {
-                if (icon) icon.textContent = '⏸';
-                if (text) text.textContent = 'Пауза';
-                if (btn) {
-                    btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400');
-                    btn.classList.add('bg-amber-500', 'hover:bg-amber-400');
-                }
-            }
-        }
-
-        function openHighlightVideoModal(embedUrl, watchUrl, title, subtitle, caption, matchUrl) {
-            isShowreelActive = false;
-            clearInterval(showreelTimerInterval);
-
-            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
-            var controlBar = document.getElementById('hl-showreel-control-bar');
-            var counterBadge = document.getElementById('hl-modal-counter');
-            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
-
-            if (progressWrap) progressWrap.classList.add('hidden');
-            if (controlBar) controlBar.classList.add('hidden');
-            if (counterBadge) counterBadge.classList.add('hidden');
-            if (startShowreelBtn && playerVideoHighlights && playerVideoHighlights.length > 0) {
-                startShowreelBtn.classList.remove('hidden');
-            }
-
-            var modal = document.getElementById('hl-video-modal');
-            var iframe = document.getElementById('hl-modal-iframe');
-            var mTitle = document.getElementById('hl-modal-title');
-            var mSubtitle = document.getElementById('hl-modal-subtitle');
-            var mCaption = document.getElementById('hl-modal-caption');
-            var ytLink = document.getElementById('hl-modal-yt-link');
-            var matchLink = document.getElementById('hl-modal-match-link');
-            if (!modal || !iframe) return;
-
-            var playUrl = embedUrl + (embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
-            iframe.src = playUrl;
-            if (mTitle) mTitle.textContent = title || 'Хайлайт матча';
-            if (mSubtitle) mSubtitle.textContent = subtitle || '';
-            if (mCaption) mCaption.textContent = caption || '';
-            if (ytLink) ytLink.href = watchUrl || '#';
-            if (matchLink) matchLink.href = matchUrl || '#';
-
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            openHighlightClipByIndex(prevIdx);
         }
 
         function closeHighlightVideoModal() {
-            isShowreelActive = false;
-            clearInterval(showreelTimerInterval);
             var modal = document.getElementById('hl-video-modal');
             var iframe = document.getElementById('hl-modal-iframe');
             if (!modal) return;
@@ -1202,8 +1109,15 @@
         }
 
         document.addEventListener('keydown', function(e) {
+            var modal = document.getElementById('hl-video-modal');
+            if (!modal || modal.classList.contains('hidden')) return;
+
             if (e.key === 'Escape') {
                 closeHighlightVideoModal();
+            } else if (e.key === 'ArrowRight' || e.key === 'n' || e.key === 'N') {
+                showreelNext();
+            } else if (e.key === 'ArrowLeft' || e.key === 'p' || e.key === 'P') {
+                showreelPrev();
             }
         });
     </script>
@@ -4625,7 +4539,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 06.10.2026 15:40</p>
+                <p class="footer-timestamp">Данные обновлены: 06.10.2026 15:59</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
