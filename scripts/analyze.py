@@ -2973,6 +2973,16 @@ def generate_highlight_ai_caption(hl: dict) -> str:
         return f"Раунд {r_num}. Максимальный уровень дерзости от {player}! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником."
     elif m_type == "zeus":
         return f"Раунд {r_num}. Обескураживающий и дерзкий выпад от {player}! Чёткий подлов оппонента на ошибке в тайминге и сокрушительный заряд из Zeus x27 в упор!"
+    elif m_type == "ninja_defuse":
+        return f"Раунд {r_num} (счёт {score}). Гениальный ниндзя-дефьюз от {player}! Бесшумное проникновение на точку, разминирование бомбы под носом у живых соперников и триумфальный раунд на стальных нервах!"
+    elif m_type == "collateral":
+        return f"Раунд {r_num} (счёт {score}). Легендарный выстрел от {player}! Один патрон из снайперской винтовки AWP прошивает сразу двоих соперников насквозь — готовый клип для хайлайтов года!"
+    elif m_type == "grenade_multikill":
+        return f"Раунд {r_num} (счёт {score}). Артиллерийский шедевр от {player}! Идеальный тайминг броска осколочной гранаты и сокрушительный мульти-подрыв оппонентов на ключевой позиции."
+    elif m_type == "wallbang":
+        return f"Раунд {r_num}. Ювелирное чтение карты от {player}! Безупречный тайминг и сокрушительный прострел сквозь дым с {w_name}, заставший соперника врасплох."
+    elif m_type == "blind_kill":
+        return f"Раунд {r_num}. Феноменальная реакция от {player}! Минус оппонента в глубоком ослеплении по шагам и информации — потрясающая мышечная память с {w_name}."
     else:
         return f"Раунд {r_num} (счёт {score}). Индивидуальный класс от {player}: скоростная серия из {kills} ключевых фрагов с {w_name} ({hs} в голову), переломившая ход борьбы на карте {m_map}."
 
@@ -3147,6 +3157,91 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
                     "weapon": fav_w, "weapon_display": WEAPON_DISPLAY_NAMES.get(fav_w, fav_w.upper()),
                     "tick": f_tick, "score": score,
                     "moment_type": "triple_kill", "moment_badge": "🎯 Тройной килл (3K)", "badge_color": "emerald"
+                })
+
+        # 3. Ниндзя-дефьюз (разминирование бомбы при живых террористах)
+        if r_evt.get("reason") == "bomb_defused":
+            t_deaths = sum(1 for k in rk if str(k.get("victim_side", "")).lower() == "t")
+            t_alive_cnt = max(0, 5 - t_deaths)
+            if t_alive_cnt >= 1:
+                ct_survivors = [sid for sid, tm in p_teams.items() if tm == wteam and sid not in {resolve_p_sid(k.get("victim_steamid"), k.get("victim_name")) for k in rk}]
+                if ct_survivors:
+                    defuser_sid = ct_survivors[0]
+                    score = 93 + (t_alive_cnt * 2)
+                    badge = f"💥 Ниндзя-дефьюз ({t_alive_cnt} живых T)" if t_alive_cnt > 1 else "💥 Ниндзя-дефьюз"
+                    candidates.append({
+                        "player_steamid": defuser_sid, "player_name": p_names.get(defuser_sid, "Unknown"), "round_num": r_n,
+                        "score_at_moment": score_at_moment, "kills_count": att_counts.get(defuser_sid, 0), "headshots": att_hs.get(defuser_sid, 0),
+                        "weapon": "defuse_kit", "weapon_display": "Defuse Kit",
+                        "tick": rk[-1].get("tick", start_tick) if rk else start_tick, "score": score,
+                        "moment_type": "ninja_defuse", "moment_badge": badge, "badge_color": "purple"
+                    })
+
+        # 4. Коллатерал с AWP (два фрага одним выстрелом)
+        awp_rk = [k for k in rk if (k.get("weapon") or "").lower() == "awp"]
+        for i in range(len(awp_rk)):
+            for j in range(i + 1, len(awp_rk)):
+                k1, k2 = awp_rk[i], awp_rk[j]
+                a1 = resolve_p_sid(k1.get("attacker_steamid"), k1.get("attacker_name"))
+                a2 = resolve_p_sid(k2.get("attacker_steamid"), k2.get("attacker_name"))
+                if a1 and a1 == a2 and abs((k1.get("tick") or 0) - (k2.get("tick") or 0)) <= 32:
+                    score = 96
+                    candidates.append({
+                        "player_steamid": a1, "player_name": p_names.get(a1, "Unknown"), "round_num": r_n,
+                        "score_at_moment": score_at_moment, "kills_count": att_counts.get(a1, 2), "headshots": att_hs.get(a1, 0),
+                        "weapon": "awp", "weapon_display": "AWP",
+                        "tick": k1.get("tick") or start_tick, "score": score,
+                        "moment_type": "collateral", "moment_badge": "🎯 Коллатерал (AWP 2-в-1)", "badge_color": "amber"
+                    })
+
+        # 5. Мульти-килл гранатой (2+ фрага осколочной HE)
+        he_kills = [k for k in rk if (k.get("weapon") or "").lower() == "hegrenade"]
+        he_by_att = Counter([resolve_p_sid(k.get("attacker_steamid"), k.get("attacker_name")) for k in he_kills])
+        for a_sid, he_cnt in he_by_att.items():
+            if a_sid and he_cnt >= 2:
+                score = 88 + (he_cnt * 5)
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": p_names.get(a_sid, "Unknown"), "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": att_counts.get(a_sid, he_cnt), "headshots": 0,
+                    "weapon": "hegrenade", "weapon_display": "HE Grenade",
+                    "tick": he_kills[0].get("tick") or start_tick, "score": score,
+                    "moment_type": "grenade_multikill", "moment_badge": f"🧨 Мульти-килл гранатой ({he_cnt}K)", "badge_color": "rose"
+                })
+
+        # 6. Прострелы сквозь смок / Wallbang
+        smk_kills = [k for k in rk if k.get("thrusmoke")]
+        smk_by_att = defaultdict(list)
+        for k in smk_kills:
+            a = resolve_p_sid(k.get("attacker_steamid"), k.get("attacker_name"))
+            if a:
+                smk_by_att[a].append(k)
+        for a_sid, s_list in smk_by_att.items():
+            if len(s_list) >= 2 or any(k.get("weapon") == "awp" or k.get("headshot") for k in s_list):
+                top_k = s_list[0]
+                w_slug = (top_k.get("weapon") or "ak47").lower()
+                score = 75 + (len(s_list) * 4)
+                badge = f"💣 Прострел сквозь смок ({len(s_list)}K)" if len(s_list) >= 2 else "💣 Прострел сквозь смок"
+                candidates.append({
+                    "player_steamid": a_sid, "player_name": p_names.get(a_sid, "Unknown"), "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": att_counts.get(a_sid, len(s_list)), "headshots": att_hs.get(a_sid, 0),
+                    "weapon": w_slug, "weapon_display": WEAPON_DISPLAY_NAMES.get(w_slug, w_slug.upper()),
+                    "tick": top_k.get("tick") or start_tick, "score": score,
+                    "moment_type": "wallbang", "moment_badge": badge, "badge_color": "indigo"
+                })
+
+        # 7. Фраг вслепую (Assisted Flash)
+        flash_kills = [k for k in rk if k.get("assistedflash")]
+        for k in flash_kills:
+            a = resolve_p_sid(k.get("attacker_steamid"), k.get("attacker_name"))
+            if a:
+                w_slug = (k.get("weapon") or "ak47").lower()
+                score = 68 + (4 if k.get("headshot") else 0)
+                candidates.append({
+                    "player_steamid": a, "player_name": p_names.get(a, "Unknown"), "round_num": r_n,
+                    "score_at_moment": score_at_moment, "kills_count": att_counts.get(a, 1), "headshots": att_hs.get(a, 0),
+                    "weapon": w_slug, "weapon_display": WEAPON_DISPLAY_NAMES.get(w_slug, w_slug.upper()),
+                    "tick": k.get("tick") or start_tick, "score": score,
+                    "moment_type": "blind_kill", "moment_badge": "🕶️ Фраг вслепую (Assisted Flash)", "badge_color": "sky"
                 })
 
     if not candidates:

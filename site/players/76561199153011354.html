@@ -684,7 +684,1939 @@
     </section>
     
 
-    <!-- Radar & Skill Bars Grid -->
+    <!-- Player Match Highlights Showcase Section -->
+    
+    <section class="section player-highlights-section glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800 mb-8 relative" id="player-highlights-block">
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3 mb-3.5">
+            <div class="flex items-center gap-2.5">
+                <span class="text-xl sm:text-2xl">🎬</span>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                            Хайлайты в матчах
+                        </h2>
+                        <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-sm">
+                            22 моментов
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Яркие моменты и клатчи, отобранные в официальную хронику матчей
+                    </p>
+                </div>
+            </div>
+
+            <!-- Carousel & View Controls -->
+            <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
+                <!-- Showreel Button (Continuous Video Player) -->
+                
+                <button type="button" id="hl-showreel-btn" onclick="startHighlightsShowreel()"
+                        class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-amber-500/20 active:scale-95"
+                        title="Запустить непрерывный просмотр всех видео-хайлайтов подряд (17)">
+                    <span>🎬</span>
+                    <span>Шоурил (Все подряд)</span>
+                </button>
+                
+
+                <!-- Toggle View Mode Button (Carousel <-> Grid) -->
+                <button type="button" id="hl-view-toggle-btn" onclick="toggleHighlightsViewMode()"
+                        class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 hover:border-amber-400 text-slate-200 hover:text-white text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                        title="Раскрыть все хайлайты вниз списком или вернуть горизонтальную карусель">
+                    <span id="hl-view-toggle-icon" class="text-amber-400 font-bold">▾</span>
+                    <span id="hl-view-toggle-text">Показать все списком</span>
+                </button>
+
+                <!-- Carousel Navigation Arrows (visible in carousel mode) -->
+                <div id="hl-carousel-arrows" class="flex items-center gap-1">
+                    <button type="button" onclick="scrollHighlightsCarousel(-1)"
+                            class="w-8 h-8 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 hover:text-amber-400 transition flex items-center justify-center text-xs font-bold cursor-pointer"
+                            aria-label="Назад">
+                        ◀
+                    </button>
+                    <button type="button" onclick="scrollHighlightsCarousel(1)"
+                            class="w-8 h-8 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 hover:text-amber-400 transition flex items-center justify-center text-xs font-bold cursor-pointer"
+                            aria-label="Вперед">
+                        ▶
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filter Tabs (Scrollable on mobile) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs scrollbar-none -mx-1 px-1" id="hl-filter-bar">
+            <button type="button" onclick="filterHighlights('all', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold border border-amber-400 transition shrink-0 cursor-pointer shadow-sm">
+                Все (22)
+            </button>
+            
+            <button type="button" onclick="filterHighlights('ace', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-rose-300 border border-rose-500/30 hover:border-rose-400/60 transition shrink-0 cursor-pointer">
+                🔥 Эйсы (1)
+            </button>
+            
+            
+            <button type="button" onclick="filterHighlights('quad', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-amber-300 border border-amber-500/30 hover:border-amber-400/60 transition shrink-0 cursor-pointer">
+                ⚡ 4K (13)
+            </button>
+            
+            
+            
+            
+            
+            
+            <button type="button" onclick="filterHighlights('wallbang', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-indigo-300 border border-indigo-500/30 hover:border-indigo-400/60 transition shrink-0 cursor-pointer">
+                💣 Прострелы (6)
+            </button>
+            
+            
+            
+            
+            <button type="button" onclick="filterHighlights('multi', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-emerald-300 border border-emerald-500/30 hover:border-emerald-400/60 transition shrink-0 cursor-pointer">
+                🎯 3K (2)
+            </button>
+            
+        </div>
+
+        <!-- Cards Container: Horizontal Snap Carousel (Default) or Expanded Grid -->
+        <div id="hl-cards-track" class="hl-cards-carousel overflow-x-auto snap-x snap-mandatory flex items-stretch gap-3 pb-3 pt-1 scrollbar-thin scrollbar-thumb-emerald-600/40 custom-scrollbar -mx-1 px-1">
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 22 (9:12)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">18 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AWP</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 34:42</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 22 (счёт 9:12). matadorra оформляет 💣 Прострел сквозь смок с AWP.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 22 (счёт 9:12). matadorra оформляет 💣 Прострел сквозь смок с AWP."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/M1u2TJYnHNY?start=2082&rel=0', 'https://www.youtube.com/watch?v=M1u2TJYnHNY&t=2082s', '💣 Прострел сквозь смок', 'Mirage • Раунд 22 (9:12)', 'Раунд 22 (счёт 9:12). matadorra оформляет 💣 Прострел сквозь смок с AWP.', '../matches/18092026_mirage_27225508_245.html#round-22')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (34:42)
+                    </button>
+                    
+
+                    <a href="../matches/18092026_mirage_27225508_245.html#round-22"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Overpass
+                        </span>
+                        <span>Рд. 19 (11:7)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">18 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 29:48</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 19 (счёт 11:7). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 19 (счёт 11:7). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/5ZjMjmDFUXE?start=1788&rel=0', 'https://www.youtube.com/watch?v=5ZjMjmDFUXE&t=1788s', '⚡ Квадро-килл (4K)', 'Overpass • Раунд 19 (11:7)', 'Раунд 19 (счёт 11:7). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/18092026_overpass_27226528_245.html#round-19')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (29:48)
+                    </button>
+                    
+
+                    <a href="../matches/18092026_overpass_27226528_245.html#round-19"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 9 (4:4)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">18 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (3 HS)</span>
+                            <span class="text-slate-500">⏱ 11:50</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/M1u2TJYnHNY?start=710&rel=0', 'https://www.youtube.com/watch?v=M1u2TJYnHNY&t=710s', '⚡ Квадро-килл (4K)', 'Mirage • Раунд 9 (4:4)', 'Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/18092026_mirage_27225508_245.html#round-9')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (11:50)
+                    </button>
+                    
+
+                    <a href="../matches/18092026_mirage_27225508_245.html#round-9"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="multi"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 14 (3:10)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">11 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">MAC-10</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 24:54</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 14 (счёт 3:10). matadorra оформляет 🎯 Тройной килл (3K) с MAC-10.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 14 (счёт 3:10). matadorra оформляет 🎯 Тройной килл (3K) с MAC-10."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/Tks-fB9WqDI?start=1494&rel=0', 'https://www.youtube.com/watch?v=Tks-fB9WqDI&t=1494s', '🎯 Тройной килл (3K)', 'Inferno • Раунд 14 (3:10)', 'Раунд 14 (счёт 3:10). matadorra оформляет 🎯 Тройной килл (3K) с MAC-10.', '../matches/11092026_inferno_27152509_244.html#round-14')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (24:54)
+                    </button>
+                    
+
+                    <a href="../matches/11092026_inferno_27152509_244.html#round-14"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 10 (4:5)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">11 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 15:26</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Десятый раунд, счет в упор, и matadorra просто стирает оппонентов с лица земли на «Мираже»! Идеальный спрей-контроль с калаша, два хедшота на чистом тайминге — и этот невероятный квадро-килл врывается в хайлайты турнира!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Десятый раунд, счет в упор, и matadorra просто стирает оппонентов с лица земли на «Мираже»! Идеальный спрей-контроль с калаша, два хедшота на чистом тайминге — и этот невероятный квадро-килл врывается в хайлайты турнира!"
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/HF1K95vTk-k?start=926&rel=0', 'https://www.youtube.com/watch?v=HF1K95vTk-k&t=926s', '⚡ Квадро-килл (4K)', 'Mirage • Раунд 10 (4:5)', 'Десятый раунд, счет в упор, и matadorra просто стирает оппонентов с лица земли на «Мираже»! Идеальный спрей-контроль с калаша, два хедшота на чистом тайминге — и этот невероятный квадро-килл врывается в хайлайты турнира!', '../matches/11092026_mirage_27151512_244.html#round-10')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (15:26)
+                    </button>
+                    
+
+                    <a href="../matches/11092026_mirage_27151512_244.html#round-10"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 9 (8:0)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">11 сентября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>2 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 14:05</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 9 (счёт 8:0). matadorra оформляет 💣 Прострел сквозь смок с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 9 (счёт 8:0). matadorra оформляет 💣 Прострел сквозь смок с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/yz66In7cQpg?start=845&rel=0', 'https://www.youtube.com/watch?v=yz66In7cQpg&t=845s', '💣 Прострел сквозь смок', 'Dust2 • Раунд 9 (8:0)', 'Раунд 9 (счёт 8:0). matadorra оформляет 💣 Прострел сквозь смок с AK-47.', '../matches/11092026_dust2_27151972_244.html#round-9')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (14:05)
+                    </button>
+                    
+
+                    <a href="../matches/11092026_dust2_27151972_244.html#round-9"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Anubis
+                        </span>
+                        <span>Рд. 20 (10:9)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок (2K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AWP</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>2 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 28:43</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 20 (счёт 10:9). matadorra оформляет 💣 Прострел сквозь смок (2K) с AWP.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 20 (счёт 10:9). matadorra оформляет 💣 Прострел сквозь смок (2K) с AWP."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=1723&rel=0', 'https://www.youtube.com/watch?v=WkZw4LutPns&t=1723s', '💣 Прострел сквозь смок (2K)', 'Anubis • Раунд 20 (10:9)', 'Раунд 20 (счёт 10:9). matadorra оформляет 💣 Прострел сквозь смок (2K) с AWP.', '../matches/28082026_anubis_26631716_243.html#round-20')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (28:43)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_anubis_26631716_243.html#round-20"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="ace"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 18 (11:6)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-rose-500/20 text-rose-300 border-rose-500/40
+                            ">
+                            🔥 Эйс (5K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>5 фрага (3 HS)</span>
+                            <span class="text-slate-500">⏱ 28:51</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 18 при счёте 11:6. matadorra устраивает феноменальный сольный бенефис с AK-47: безупречный тайминг выхода, филигранный спрей (3 в голову) и хладнокровный эйс (5K), сокрушивший соперника!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 18 при счёте 11:6. matadorra устраивает феноменальный сольный бенефис с AK-47: безупречный тайминг выхода, филигранный спрей (3 в голову) и хладнокровный эйс (5K), сокрушивший соперника!"
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=1731&rel=0', 'https://www.youtube.com/watch?v=1VTLhHVMkEU&t=1731s', '🔥 Эйс (5K)', 'Dust2 • Раунд 18 (11:6)', 'Раунд 18 при счёте 11:6. matadorra устраивает феноменальный сольный бенефис с AK-47: безупречный тайминг выхода, филигранный спрей (3 в голову) и хладнокровный эйс (5K), сокрушивший соперника!', '../matches/28082026_dust2_26631058_242.html#round-18')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (28:51)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_dust2_26631058_242.html#round-18"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Anubis
+                        </span>
+                        <span>Рд. 12 (5:6)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 17:26</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 12 (счёт 5:6). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 12 (счёт 5:6). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=1046&rel=0', 'https://www.youtube.com/watch?v=WkZw4LutPns&t=1046s', '⚡ Квадро-килл (4K)', 'Anubis • Раунд 12 (5:6)', 'Раунд 12 (счёт 5:6). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/28082026_anubis_26631716_243.html#round-12')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (17:26)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_anubis_26631716_243.html#round-12"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Anubis
+                        </span>
+                        <span>Рд. 11 (5:5)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 15:45</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 11 (счёт 5:5). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 11 (счёт 5:5). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=945&rel=0', 'https://www.youtube.com/watch?v=WkZw4LutPns&t=945s', '⚡ Квадро-килл (4K)', 'Anubis • Раунд 11 (5:5)', 'Раунд 11 (счёт 5:5). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/28082026_anubis_26631716_243.html#round-11')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (15:45)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_anubis_26631716_243.html#round-11"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 9 (4:4)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 14:07</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=847&rel=0', 'https://www.youtube.com/watch?v=1VTLhHVMkEU&t=847s', '⚡ Квадро-килл (4K)', 'Dust2 • Раунд 9 (4:4)', 'Раунд 9 (счёт 4:4). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/28082026_dust2_26631058_242.html#round-9')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (14:07)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_dust2_26631058_242.html#round-9"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 4 (2:1)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 6:08</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 4 (счёт 2:1). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 4 (счёт 2:1). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/LY2poApBx6U?start=368&rel=0', 'https://www.youtube.com/watch?v=LY2poApBx6U&t=368s', '⚡ Квадро-килл (4K)', 'Inferno • Раунд 4 (2:1)', 'Раунд 4 (счёт 2:1). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/28082026_inferno_26630509_242.html#round-4')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (6:08)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_inferno_26630509_242.html#round-4"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 3 (2:0)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">28 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 3:17</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=197&rel=0', 'https://www.youtube.com/watch?v=1VTLhHVMkEU&t=197s', '⚡ Квадро-килл (4K)', 'Dust2 • Раунд 3 (2:0)', 'Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/28082026_dust2_26631058_242.html#round-3')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (3:17)
+                    </button>
+                    
+
+                    <a href="../matches/28082026_dust2_26631058_242.html#round-3"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="multi"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 7 (2:4)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">07 августа 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (3 HS)</span>
+                            <span class="text-slate-500">⏱ 12:17</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 7 (счёт 2:4). matadorra оформляет 🎯 Тройной килл (3K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 7 (счёт 2:4). matadorra оформляет 🎯 Тройной килл (3K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/vx4SMsHtRGs?start=737&rel=0', 'https://www.youtube.com/watch?v=vx4SMsHtRGs&t=737s', '🎯 Тройной килл (3K)', 'Mirage • Раунд 7 (2:4)', 'Раунд 7 (счёт 2:4). matadorra оформляет 🎯 Тройной килл (3K) с AK-47.', '../matches/07082026_mirage_26410597_240.html#round-7')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (12:17)
+                    </button>
+                    
+
+                    <a href="../matches/07082026_mirage_26410597_240.html#round-7"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 8 (3:4)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок (3K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">24 июля 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 13:45</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 8 (счёт 3:4). matadorra оформляет 💣 Прострел сквозь смок (3K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 8 (счёт 3:4). matadorra оформляет 💣 Прострел сквозь смок (3K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/rBiNuxNO9wI?start=825&rel=0', 'https://www.youtube.com/watch?v=rBiNuxNO9wI&t=825s', '💣 Прострел сквозь смок (3K)', 'Inferno • Раунд 8 (3:4)', 'Раунд 8 (счёт 3:4). matadorra оформляет 💣 Прострел сквозь смок (3K) с AK-47.', '../matches/24072026_inferno_25877570_237.html#round-8')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (13:45)
+                    </button>
+                    
+
+                    <a href="../matches/24072026_inferno_25877570_237.html#round-8"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 5 (1:3)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">24 июля 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (3 HS)</span>
+                            <span class="text-slate-500">⏱ 8:20</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 5 (счёт 1:3). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 5 (счёт 1:3). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/rBiNuxNO9wI?start=500&rel=0', 'https://www.youtube.com/watch?v=rBiNuxNO9wI&t=500s', '⚡ Квадро-килл (4K)', 'Inferno • Раунд 5 (1:3)', 'Раунд 5 (счёт 1:3). matadorra оформляет ⚡ Квадро-килл (4K) с AK-47.', '../matches/24072026_inferno_25877570_237.html#round-5')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (8:20)
+                    </button>
+                    
+
+                    <a href="../matches/24072026_inferno_25877570_237.html#round-5"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 3 (2:0)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">24 июля 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">M4A1-S</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 4:19</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с M4A1-S.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с M4A1-S."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightVideoModal('https://www.youtube-nocookie.com/embed/aqsRMVV75KU?start=259&rel=0', 'https://www.youtube.com/watch?v=aqsRMVV75KU&t=259s', '⚡ Квадро-килл (4K)', 'Mirage • Раунд 3 (2:0)', 'Раунд 3 (счёт 2:0). matadorra оформляет ⚡ Квадро-килл (4K) с M4A1-S.', '../matches/24072026_mirage_25876830_237.html#round-3')"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (4:19)
+                    </button>
+                    
+
+                    <a href="../matches/24072026_mirage_25876830_237.html#round-3"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 19 (7:11)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">22 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">M4A1-S</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 33:58</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 19 (счёт 7:11). matadorra оформляет ⚡ Квадро-килл (4K) с M4A1-S.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 19 (счёт 7:11). matadorra оформляет ⚡ Квадро-килл (4K) с M4A1-S."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 34:04
+                    </span>
+                    
+
+                    <a href="../matches/22052026_dust2_24371608_228.html#round-19"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Nuke
+                        </span>
+                        <span>Рд. 17 (11:5)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">22 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">Galil AR</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 27:21</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 17 (счёт 11:5). matadorra оформляет ⚡ Квадро-килл (4K) с Galil AR.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 17 (счёт 11:5). matadorra оформляет ⚡ Квадро-килл (4K) с Galil AR."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 27:27
+                    </span>
+                    
+
+                    <a href="../matches/22052026_nuke_24373500_229.html#round-17"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 5 (1:3)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">22 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AWP</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 8:22</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 5 (счёт 1:3). matadorra оформляет 💣 Прострел сквозь смок с AWP.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 5 (счёт 1:3). matadorra оформляет 💣 Прострел сквозь смок с AWP."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 8:28
+                    </span>
+                    
+
+                    <a href="../matches/22052026_dust2_24371608_228.html#round-5"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 4 (2:1)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">22 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>1 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 5:47</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 4 (счёт 2:1). matadorra оформляет 💣 Прострел сквозь смок с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 4 (счёт 2:1). matadorra оформляет 💣 Прострел сквозь смок с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 5:53
+                    </span>
+                    
+
+                    <a href="../matches/22052026_inferno_24372368_229.html#round-4"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="quad"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 2 (1:0)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            ⚡ Квадро-килл (4K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">22 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">M4A4</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 2:23</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 2 (счёт 1:0). matadorra оформляет ⚡ Квадро-килл (4K) с M4A4.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 2 (счёт 1:0). matadorra оформляет ⚡ Квадро-килл (4K) с M4A4."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 2:29
+                    </span>
+                    
+
+                    <a href="../matches/22052026_inferno_24372368_229.html#round-2"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Highlight Video Modal (Lightbox & Continuous Showreel Cinema) -->
+        <div id="hl-video-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md p-3 sm:p-4 flex items-center justify-center transition-opacity duration-200" onclick="closeHighlightVideoModalOnBackdrop(event)">
+            <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col max-h-[94vh] overflow-hidden" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="p-3.5 sm:p-4 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/70">
+                    <div class="min-w-0 pr-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-base sm:text-lg shrink-0">🎬</span>
+                            <h3 id="hl-modal-title" class="text-sm sm:text-base font-bold text-white truncate max-w-[200px] sm:max-w-md">Хайлайт</h3>
+                            <span id="hl-modal-counter" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">1 / 1</span>
+                        </div>
+                        <p id="hl-modal-subtitle" class="text-xs text-slate-400 font-mono mt-0.5 truncate">Карта • Раунд</p>
+                    </div>
+                    <button type="button" onclick="closeHighlightVideoModal()"
+                            class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition cursor-pointer shrink-0"
+                            aria-label="Закрыть">
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Showreel Auto-Advance Progress Bar (Visible in Showreel mode) -->
+                <div id="hl-showreel-progress-wrap" class="w-full bg-slate-950 h-1.5 relative overflow-hidden hidden">
+                    <div id="hl-showreel-progress-bar" class="bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 h-full w-0 transition-all duration-100 ease-linear"></div>
+                </div>
+                
+                <!-- Video Iframe -->
+                <div class="relative w-full aspect-video bg-black">
+                    <iframe id="hl-modal-iframe" class="w-full h-full" src="" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                </div>
+
+                <!-- Showreel Playback Control Bar (Visible in Showreel mode) -->
+                <div id="hl-showreel-control-bar" class="px-3 py-2 bg-slate-950 border-t border-b border-slate-800/80 flex items-center justify-between gap-2 hidden">
+                    <button type="button" onclick="showreelPrev()"
+                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
+                        <span>⏮</span> <span class="hidden sm:inline">Назад</span>
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="hl-showreel-pause-btn" onclick="toggleShowreelPause()"
+                                class="px-3 sm:px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 text-xs cursor-pointer transition shadow-sm active:scale-95">
+                            <span id="hl-showreel-pause-icon">⏸</span>
+                            <span id="hl-showreel-pause-text">Пауза</span>
+                        </button>
+                        <span id="hl-showreel-timer-label" class="text-[11px] font-mono text-slate-300 bg-slate-900/90 px-2 py-1 rounded border border-slate-800">
+                            След. через 18с
+                        </span>
+                    </div>
+
+                    <button type="button" onclick="showreelNext()"
+                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
+                        <span class="hidden sm:inline">Вперёд</span> <span>⏭</span>
+                    </button>
+                </div>
+
+                <!-- Caption & Footer -->
+                <div class="p-3.5 sm:p-4 bg-slate-950/80 border-t border-slate-800/80 flex flex-col gap-2.5 overflow-y-auto">
+                    <div class="text-xs text-slate-300 leading-relaxed bg-emerald-950/30 border border-emerald-800/40 rounded-xl p-3 flex items-start gap-2">
+                        <span class="text-base shrink-0 mt-0.5">🎙️</span>
+                        <div>
+                            <strong class="text-emerald-400 font-semibold mr-1">Вердикт комментатора:</strong>
+                            <span id="hl-modal-caption"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-mono pt-1 flex-wrap gap-2">
+                        <div class="flex items-center gap-3">
+                            <a id="hl-modal-match-link" href="#"
+                               class="text-emerald-400 hover:underline flex items-center gap-1 font-bold">
+                                К раунду в матче ↗
+                            </a>
+                            <a id="hl-modal-yt-link" href="#" target="_blank" rel="noopener noreferrer"
+                               class="text-amber-400 hover:underline flex items-center gap-1 font-bold">
+                                На YouTube ↗
+                            </a>
+                        </div>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <button type="button" id="hl-modal-start-showreel-btn" onclick="startHighlightsShowreel()"
+                                    class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 text-[11px] font-bold cursor-pointer transition hidden">
+                                🎬 Все подряд
+                            </button>
+                            <button type="button" onclick="closeHighlightVideoModal()"
+                                    class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights Interactive Script & Continuous Showreel Engine -->
+    <script>
+        var playerVideoHighlights = [
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/M1u2TJYnHNY?start=2082\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=M1u2TJYnHNY\u0026t=2082s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 22 (9:12)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 22 (\u0441\u0447\u0451\u0442 9:12). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a \u0441 AWP.",
+                matchUrl: "../matches/18092026_mirage_27225508_245.html#round-22"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/5ZjMjmDFUXE?start=1788\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=5ZjMjmDFUXE\u0026t=1788s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Overpass \u2022 \u0420\u0430\u0443\u043d\u0434 19 (11:7)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 19 (\u0441\u0447\u0451\u0442 11:7). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/18092026_overpass_27226528_245.html#round-19"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/M1u2TJYnHNY?start=710\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=M1u2TJYnHNY\u0026t=710s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 9 (4:4)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 9 (\u0441\u0447\u0451\u0442 4:4). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/18092026_mirage_27225508_245.html#round-9"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/Tks-fB9WqDI?start=1494\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=Tks-fB9WqDI\u0026t=1494s",
+                title: "\ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K)",
+                subtitle: "Inferno \u2022 \u0420\u0430\u0443\u043d\u0434 14 (3:10)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 14 (\u0441\u0447\u0451\u0442 3:10). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K) \u0441 MAC-10.",
+                matchUrl: "../matches/11092026_inferno_27152509_244.html#round-14"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/HF1K95vTk-k?start=926\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=HF1K95vTk-k\u0026t=926s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 10 (4:5)",
+                caption: "\u0414\u0435\u0441\u044f\u0442\u044b\u0439 \u0440\u0430\u0443\u043d\u0434, \u0441\u0447\u0435\u0442 \u0432 \u0443\u043f\u043e\u0440, \u0438 matadorra \u043f\u0440\u043e\u0441\u0442\u043e \u0441\u0442\u0438\u0440\u0430\u0435\u0442 \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u043e\u0432 \u0441 \u043b\u0438\u0446\u0430 \u0437\u0435\u043c\u043b\u0438 \u043d\u0430 \u00ab\u041c\u0438\u0440\u0430\u0436\u0435\u00bb! \u0418\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u043f\u0440\u0435\u0439-\u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u0441 \u043a\u0430\u043b\u0430\u0448\u0430, \u0434\u0432\u0430 \u0445\u0435\u0434\u0448\u043e\u0442\u0430 \u043d\u0430 \u0447\u0438\u0441\u0442\u043e\u043c \u0442\u0430\u0439\u043c\u0438\u043d\u0433\u0435 \u2014 \u0438 \u044d\u0442\u043e\u0442 \u043d\u0435\u0432\u0435\u0440\u043e\u044f\u0442\u043d\u044b\u0439 \u043a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b \u0432\u0440\u044b\u0432\u0430\u0435\u0442\u0441\u044f \u0432 \u0445\u0430\u0439\u043b\u0430\u0439\u0442\u044b \u0442\u0443\u0440\u043d\u0438\u0440\u0430!",
+                matchUrl: "../matches/11092026_mirage_27151512_244.html#round-10"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/yz66In7cQpg?start=845\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=yz66In7cQpg\u0026t=845s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a",
+                subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 9 (8:0)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 9 (\u0441\u0447\u0451\u0442 8:0). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a \u0441 AK-47.",
+                matchUrl: "../matches/11092026_dust2_27151972_244.html#round-9"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=1723\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=WkZw4LutPns\u0026t=1723s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (2K)",
+                subtitle: "Anubis \u2022 \u0420\u0430\u0443\u043d\u0434 20 (10:9)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 20 (\u0441\u0447\u0451\u0442 10:9). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (2K) \u0441 AWP.",
+                matchUrl: "../matches/28082026_anubis_26631716_243.html#round-20"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=1731\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=1VTLhHVMkEU\u0026t=1731s",
+                title: "\ud83d\udd25 \u042d\u0439\u0441 (5K)",
+                subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 18 (11:6)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 18 \u043f\u0440\u0438 \u0441\u0447\u0451\u0442\u0435 11:6. matadorra \u0443\u0441\u0442\u0440\u0430\u0438\u0432\u0430\u0435\u0442 \u0444\u0435\u043d\u043e\u043c\u0435\u043d\u0430\u043b\u044c\u043d\u044b\u0439 \u0441\u043e\u043b\u044c\u043d\u044b\u0439 \u0431\u0435\u043d\u0435\u0444\u0438\u0441 \u0441 AK-47: \u0431\u0435\u0437\u0443\u043f\u0440\u0435\u0447\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433 \u0432\u044b\u0445\u043e\u0434\u0430, \u0444\u0438\u043b\u0438\u0433\u0440\u0430\u043d\u043d\u044b\u0439 \u0441\u043f\u0440\u0435\u0439 (3 \u0432 \u0433\u043e\u043b\u043e\u0432\u0443) \u0438 \u0445\u043b\u0430\u0434\u043d\u043e\u043a\u0440\u043e\u0432\u043d\u044b\u0439 \u044d\u0439\u0441 (5K), \u0441\u043e\u043a\u0440\u0443\u0448\u0438\u0432\u0448\u0438\u0439 \u0441\u043e\u043f\u0435\u0440\u043d\u0438\u043a\u0430!",
+                matchUrl: "../matches/28082026_dust2_26631058_242.html#round-18"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=1046\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=WkZw4LutPns\u0026t=1046s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Anubis \u2022 \u0420\u0430\u0443\u043d\u0434 12 (5:6)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 12 (\u0441\u0447\u0451\u0442 5:6). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/28082026_anubis_26631716_243.html#round-12"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/WkZw4LutPns?start=945\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=WkZw4LutPns\u0026t=945s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Anubis \u2022 \u0420\u0430\u0443\u043d\u0434 11 (5:5)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 11 (\u0441\u0447\u0451\u0442 5:5). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/28082026_anubis_26631716_243.html#round-11"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=847\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=1VTLhHVMkEU\u0026t=847s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 9 (4:4)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 9 (\u0441\u0447\u0451\u0442 4:4). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/28082026_dust2_26631058_242.html#round-9"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/LY2poApBx6U?start=368\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=LY2poApBx6U\u0026t=368s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Inferno \u2022 \u0420\u0430\u0443\u043d\u0434 4 (2:1)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 4 (\u0441\u0447\u0451\u0442 2:1). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/28082026_inferno_26630509_242.html#round-4"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/1VTLhHVMkEU?start=197\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=1VTLhHVMkEU\u0026t=197s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 3 (2:0)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 3 (\u0441\u0447\u0451\u0442 2:0). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/28082026_dust2_26631058_242.html#round-3"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/vx4SMsHtRGs?start=737\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=vx4SMsHtRGs\u0026t=737s",
+                title: "\ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 7 (2:4)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 7 (\u0441\u0447\u0451\u0442 2:4). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K) \u0441 AK-47.",
+                matchUrl: "../matches/07082026_mirage_26410597_240.html#round-7"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/rBiNuxNO9wI?start=825\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=rBiNuxNO9wI\u0026t=825s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (3K)",
+                subtitle: "Inferno \u2022 \u0420\u0430\u0443\u043d\u0434 8 (3:4)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 8 (\u0441\u0447\u0451\u0442 3:4). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (3K) \u0441 AK-47.",
+                matchUrl: "../matches/24072026_inferno_25877570_237.html#round-8"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/rBiNuxNO9wI?start=500\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=rBiNuxNO9wI\u0026t=500s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Inferno \u2022 \u0420\u0430\u0443\u043d\u0434 5 (1:3)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 5 (\u0441\u0447\u0451\u0442 1:3). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 AK-47.",
+                matchUrl: "../matches/24072026_inferno_25877570_237.html#round-5"
+            },
+            
+            
+            
+            {
+                embedUrl: "https://www.youtube-nocookie.com/embed/aqsRMVV75KU?start=259\u0026rel=0",
+                watchUrl: "https://www.youtube.com/watch?v=aqsRMVV75KU\u0026t=259s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 3 (2:0)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 3 (\u0441\u0447\u0451\u0442 2:0). matadorra \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K) \u0441 M4A1-S.",
+                matchUrl: "../matches/24072026_mirage_25876830_237.html#round-3"
+            },
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        ];
+
+        var showreelIndex = 0;
+        var isShowreelActive = false;
+        var isShowreelPaused = false;
+        var showreelDurationMs = 18000;
+        var showreelElapsedMs = 0;
+        var showreelTimerInterval = null;
+
+        function scrollHighlightsCarousel(dir) {
+            var track = document.getElementById('hl-cards-track');
+            if (!track) return;
+            var scrollAmount = Math.max(280, track.clientWidth * 0.75);
+            track.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+        }
+
+        function filterHighlights(cat, btn) {
+            var filterBtns = document.querySelectorAll('.hl-filter-btn');
+            filterBtns.forEach(function(b) {
+                b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold', 'border-amber-400');
+                b.classList.add('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+            });
+            if (btn) {
+                btn.classList.remove('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+                btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold', 'border-amber-400');
+            }
+
+            var cards = document.querySelectorAll('.hl-card');
+            cards.forEach(function(card) {
+                var cCat = card.getAttribute('data-category');
+                if (cat === 'all' || cCat === cat) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleHighlightsViewMode() {
+            var track = document.getElementById('hl-cards-track');
+            var btnText = document.getElementById('hl-view-toggle-text');
+            var btnIcon = document.getElementById('hl-view-toggle-icon');
+            var arrows = document.getElementById('hl-carousel-arrows');
+            if (!track) return;
+            var isGrid = track.classList.toggle('is-grid-mode');
+            if (isGrid) {
+                track.classList.remove('overflow-x-auto', 'snap-x', 'snap-mandatory', 'flex', 'items-stretch');
+                if (btnText) btnText.textContent = 'Свернуть в карусель';
+                if (btnIcon) btnIcon.textContent = '▴';
+                if (arrows) arrows.classList.add('hidden');
+            } else {
+                track.classList.add('overflow-x-auto', 'snap-x', 'snap-mandatory', 'flex', 'items-stretch');
+                if (btnText) btnText.textContent = 'Показать все списком';
+                if (btnIcon) btnIcon.textContent = '▾';
+                if (arrows) arrows.classList.remove('hidden');
+            }
+        }
+
+        function startHighlightsShowreel(startIndex) {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            showreelIndex = (typeof startIndex === 'number' && !isNaN(startIndex)) ? startIndex : 0;
+            if (showreelIndex < 0 || showreelIndex >= playerVideoHighlights.length) showreelIndex = 0;
+            
+            isShowreelActive = true;
+            isShowreelPaused = false;
+
+            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
+            var controlBar = document.getElementById('hl-showreel-control-bar');
+            var counterBadge = document.getElementById('hl-modal-counter');
+            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
+            
+            if (progressWrap) progressWrap.classList.remove('hidden');
+            if (controlBar) controlBar.classList.remove('hidden');
+            if (counterBadge) counterBadge.classList.remove('hidden');
+            if (startShowreelBtn) startShowreelBtn.classList.add('hidden');
+
+            updateShowreelPauseButtonUI();
+            loadShowreelClip(showreelIndex);
+        }
+
+        function loadShowreelClip(idx) {
+            if (idx < 0 || idx >= playerVideoHighlights.length) return;
+            showreelIndex = idx;
+            var item = playerVideoHighlights[showreelIndex];
+
+            showreelElapsedMs = 0;
+            updateShowreelProgressUI(0, showreelDurationMs);
+
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            var mTitle = document.getElementById('hl-modal-title');
+            var mSubtitle = document.getElementById('hl-modal-subtitle');
+            var mCaption = document.getElementById('hl-modal-caption');
+            var ytLink = document.getElementById('hl-modal-yt-link');
+            var matchLink = document.getElementById('hl-modal-match-link');
+            var counterBadge = document.getElementById('hl-modal-counter');
+
+            if (mTitle) mTitle.textContent = item.title || 'Хайлайт матча';
+            if (mSubtitle) mSubtitle.textContent = item.subtitle || '';
+            if (mCaption) mCaption.textContent = item.caption || '';
+            if (ytLink) ytLink.href = item.watchUrl || '#';
+            if (matchLink) matchLink.href = item.matchUrl || '#';
+            if (counterBadge) counterBadge.textContent = (showreelIndex + 1) + ' / ' + playerVideoHighlights.length;
+
+            var playUrl = item.embedUrl + (item.embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            if (iframe) iframe.src = playUrl;
+
+            if (modal) modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            startShowreelTimer();
+        }
+
+        function startShowreelTimer() {
+            clearInterval(showreelTimerInterval);
+            if (!isShowreelActive || isShowreelPaused) return;
+
+            var tickMs = 100;
+            showreelTimerInterval = setInterval(function() {
+                if (isShowreelPaused) return;
+                showreelElapsedMs += tickMs;
+                updateShowreelProgressUI(showreelElapsedMs, showreelDurationMs);
+
+                if (showreelElapsedMs >= showreelDurationMs) {
+                    clearInterval(showreelTimerInterval);
+                    showreelNext();
+                }
+            }, tickMs);
+        }
+
+        function updateShowreelProgressUI(elapsed, total) {
+            var progressBar = document.getElementById('hl-showreel-progress-bar');
+            var timerLabel = document.getElementById('hl-showreel-timer-label');
+            var pct = Math.min(100, (elapsed / total) * 100);
+            if (progressBar) progressBar.style.width = pct + '%';
+
+            var secLeft = Math.max(0, Math.ceil((total - elapsed) / 1000));
+            if (timerLabel) {
+                if (isShowreelPaused) {
+                    timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
+                } else {
+                    timerLabel.textContent = 'След. через ' + secLeft + 'с';
+                }
+            }
+        }
+
+        function showreelNext() {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            var nextIdx = (showreelIndex + 1) % playerVideoHighlights.length;
+            loadShowreelClip(nextIdx);
+        }
+
+        function showreelPrev() {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            var prevIdx = (showreelIndex - 1 + playerVideoHighlights.length) % playerVideoHighlights.length;
+            loadShowreelClip(prevIdx);
+        }
+
+        function toggleShowreelPause() {
+            isShowreelPaused = !isShowreelPaused;
+            updateShowreelPauseButtonUI();
+            if (isShowreelPaused) {
+                clearInterval(showreelTimerInterval);
+                var secLeft = Math.max(0, Math.ceil((showreelDurationMs - showreelElapsedMs) / 1000));
+                var timerLabel = document.getElementById('hl-showreel-timer-label');
+                if (timerLabel) timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
+            } else {
+                startShowreelTimer();
+            }
+        }
+
+        function updateShowreelPauseButtonUI() {
+            var icon = document.getElementById('hl-showreel-pause-icon');
+            var text = document.getElementById('hl-showreel-pause-text');
+            var btn = document.getElementById('hl-showreel-pause-btn');
+            if (isShowreelPaused) {
+                if (icon) icon.textContent = '▶';
+                if (text) text.textContent = 'Продолжить';
+                if (btn) {
+                    btn.classList.remove('bg-amber-500', 'hover:bg-amber-400');
+                    btn.classList.add('bg-emerald-500', 'hover:bg-emerald-400');
+                }
+            } else {
+                if (icon) icon.textContent = '⏸';
+                if (text) text.textContent = 'Пауза';
+                if (btn) {
+                    btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400');
+                    btn.classList.add('bg-amber-500', 'hover:bg-amber-400');
+                }
+            }
+        }
+
+        function openHighlightVideoModal(embedUrl, watchUrl, title, subtitle, caption, matchUrl) {
+            isShowreelActive = false;
+            clearInterval(showreelTimerInterval);
+
+            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
+            var controlBar = document.getElementById('hl-showreel-control-bar');
+            var counterBadge = document.getElementById('hl-modal-counter');
+            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
+
+            if (progressWrap) progressWrap.classList.add('hidden');
+            if (controlBar) controlBar.classList.add('hidden');
+            if (counterBadge) counterBadge.classList.add('hidden');
+            if (startShowreelBtn && playerVideoHighlights && playerVideoHighlights.length > 0) {
+                startShowreelBtn.classList.remove('hidden');
+            }
+
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            var mTitle = document.getElementById('hl-modal-title');
+            var mSubtitle = document.getElementById('hl-modal-subtitle');
+            var mCaption = document.getElementById('hl-modal-caption');
+            var ytLink = document.getElementById('hl-modal-yt-link');
+            var matchLink = document.getElementById('hl-modal-match-link');
+            if (!modal || !iframe) return;
+
+            var playUrl = embedUrl + (embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            iframe.src = playUrl;
+            if (mTitle) mTitle.textContent = title || 'Хайлайт матча';
+            if (mSubtitle) mSubtitle.textContent = subtitle || '';
+            if (mCaption) mCaption.textContent = caption || '';
+            if (ytLink) ytLink.href = watchUrl || '#';
+            if (matchLink) matchLink.href = matchUrl || '#';
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHighlightVideoModal() {
+            isShowreelActive = false;
+            clearInterval(showreelTimerInterval);
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            if (!modal) return;
+            if (iframe) iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeHighlightVideoModalOnBackdrop(e) {
+            if (e.target && e.target.id === 'hl-video-modal') {
+                closeHighlightVideoModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeHighlightVideoModal();
+            }
+        });
+    </script>
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Radar Chart Section -->
         <section class="section radar-section glassmorphism p-5 rounded-2xl border border-slate-800">
@@ -5141,7 +7073,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 05.10.2026 17:37</p>
+                <p class="footer-timestamp">Данные обновлены: 06.10.2026 15:40</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

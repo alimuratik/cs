@@ -1489,8 +1489,165 @@ def calc_affinity_score(ratings: dict, weights: dict) -> float:
         total += ratings.get(skill, 5.0) * w
     return round(total * 10.0, 1)  # Нормализация: рейтинг 10.0 = 100%
 
-def format_player_data(p: dict) -> dict:
+def build_all_player_highlights() -> dict[str, list[dict]]:
+    """
+    Индексирует все лучшие моменты из data/highlights.json по игрокам.
+    Обогащает ссылками на видео с точным таймкодом из data/match_videos.json,
+    категориями (эйс, 4K, клатч, спец-фраги), ссылками на матчи и ИИ-комментариями.
+    """
+    hl_file = DATA_DIR / "highlights.json"
+    if not hl_file.exists():
+        return {}
+
+    try:
+        with open(hl_file, "r", encoding="utf-8") as f:
+            hl_all = json.load(f)
+    except Exception as e:
+        logging.warning(f"Не удалось прочитать {hl_file}: {e}")
+        return {}
+
+    videos_file = DATA_DIR / "match_videos.json"
+    videos = {}
+    if videos_file.exists():
+        try:
+            with open(videos_file, "r", encoding="utf-8") as f:
+                videos = json.load(f)
+        except Exception as e:
+            logging.warning(f"Не удалось прочитать {videos_file}: {e}")
+            videos = {}
+
+    lead_in = 6
+    player_highlights: dict[str, list[dict]] = {}
+
+    for mid, mhl in hl_all.get("match_highlights", {}).items():
+        v_info = videos.get(mid, {})
+        v_url = (v_info.get("url", "") or "").strip()
+        v_offset = int(v_info.get("offset_sec", 0) or 0)
+
+        top = mhl.get("top_highlights", [mhl])
+        for th in top:
+            sid = clean_steamid(th.get("player_steamid"))
+            p_name = (th.get("player_name") or "").lower().strip()
+            if sid in PLAYER_ALIASES:
+                sid, _ = PLAYER_ALIASES[sid]
+            elif p_name in PLAYER_ALIASES:
+                sid, _ = PLAYER_ALIASES[p_name]
+            if p_name in CANONICAL_PLAYERS:
+                sid = CANONICAL_PLAYERS[p_name]
+
+            if not sid:
+                continue
+
+            g_sec = th.get("game_sec", 0)
+            start_sec = max(0, v_offset + g_sec - lead_in)
+            tc_disp = f"{start_sec // 60}:{start_sec % 60:02d}"
+            embed_url, watch_url = build_highlight_embed_url(v_url, start_sec) if v_url else ("", "")
+
+            m_type = str(th.get("moment_type", "")).lower()
+            badge_text = str(th.get("moment_badge", "")).lower()
+            if "ace" in m_type or "эйс" in badge_text or "5k" in badge_text:
+                cat = "ace"
+                cat_label = "Эйс"
+                cat_icon = "🔥"
+            elif "quad" in m_type or "4k" in badge_text or "квадро" in badge_text:
+                cat = "quad"
+                cat_label = "4K"
+                cat_icon = "⚡"
+            elif "clutch" in m_type or "клатч" in badge_text:
+                cat = "clutch"
+                cat_label = "Клатч"
+                cat_icon = "🧠"
+            elif "ninja" in m_type or "ниндзя" in badge_text:
+                cat = "ninja"
+                cat_label = "Ниндзя"
+                cat_icon = "💥"
+            elif "collateral" in m_type or "коллатерал" in badge_text:
+                cat = "collateral"
+                cat_label = "Коллатерал"
+                cat_icon = "🎯"
+            elif "grenade" in m_type or "гранат" in badge_text:
+                cat = "grenade"
+                cat_label = "Граната"
+                cat_icon = "🧨"
+            elif "wallbang" in m_type or "прострел" in badge_text:
+                cat = "wallbang"
+                cat_label = "Прострел"
+                cat_icon = "💣"
+            elif "blind" in m_type or "вслепую" in badge_text:
+                cat = "blind"
+                cat_label = "Вслепую"
+                cat_icon = "🕶️"
+            elif "knife" in m_type or "нож" in badge_text or "zeus" in m_type or "zeus" in badge_text:
+                cat = "special"
+                cat_label = "Спец-фраг"
+                cat_icon = "🔪"
+            else:
+                cat = "multi"
+                cat_label = "3K"
+                cat_icon = "🎯"
+
+            b_color = th.get("badge_color")
+            if not b_color:
+                if cat == "ace" or cat == "grenade":
+                    b_color = "rose"
+                elif cat == "clutch" or cat == "collateral":
+                    b_color = "amber"
+                elif cat == "quad":
+                    b_color = "emerald"
+                elif cat == "ninja" or cat == "special":
+                    b_color = "purple"
+                elif cat == "wallbang":
+                    b_color = "indigo"
+                elif cat == "blind":
+                    b_color = "sky"
+                else:
+                    b_color = "emerald"
+
+            item = dict(th)
+            item["category"] = cat
+            item["category_label"] = cat_label
+            item["category_icon"] = cat_icon
+            item["badge_color"] = b_color
+            item["has_video"] = bool(embed_url)
+            item["video_url"] = v_url
+            item["embed_url"] = embed_url
+            item["watch_url"] = watch_url
+            item["embed_start_sec"] = start_sec
+            item["timecode_display"] = tc_disp
+            item["date_display"] = format_date_display(th.get("date", ""))
+            r_num = th.get("round_num", 1)
+            item["match_url"] = f"../matches/{mid}.html#round-{r_num}"
+
+            player_highlights.setdefault(sid, []).append(item)
+
+    for sid in player_highlights:
+        player_highlights[sid].sort(
+            key=lambda x: (parse_date_key(x.get("date", "")), x.get("round_num", 0)),
+            reverse=True
+        )
+
+    return player_highlights
+
+def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
     """Форматирование данных игрока для шаблона player.html."""
+    if player_highlights is None:
+        player_highlights = []
+
+    highlights_summary = {
+        "total": len(player_highlights),
+        "aces": sum(1 for h in player_highlights if h.get("category") == "ace"),
+        "quads": sum(1 for h in player_highlights if h.get("category") == "quad"),
+        "clutches": sum(1 for h in player_highlights if h.get("category") == "clutch"),
+        "ninjas": sum(1 for h in player_highlights if h.get("category") == "ninja"),
+        "collaterals": sum(1 for h in player_highlights if h.get("category") == "collateral"),
+        "grenades": sum(1 for h in player_highlights if h.get("category") == "grenade"),
+        "wallbangs": sum(1 for h in player_highlights if h.get("category") == "wallbang"),
+        "blinds": sum(1 for h in player_highlights if h.get("category") == "blind"),
+        "specials": sum(1 for h in player_highlights if h.get("category") == "special"),
+        "multis": sum(1 for h in player_highlights if h.get("category") == "multi"),
+        "has_video": sum(1 for h in player_highlights if h.get("has_video")),
+    }
+
     ratings = p.get("ratings", {})
     ov_stats = p.get("overall_stats", {})
     st = p.get("stability", {})
@@ -2034,6 +2191,8 @@ def format_player_data(p: dict) -> dict:
             "points_pct": round(sum(a.get("points", 0) for a in p.get("achievements", [])) / max(1, len(p.get("achievements", [])) * 500) * 100, 1)
         },
         "ai_analysis": p.get("ai_analysis", ""),
+        "highlights": player_highlights,
+        "highlights_summary": highlights_summary,
         "overall_stats": ov_stats,
         "faceit": p.get("faceit")
     }
@@ -2465,12 +2624,14 @@ def generate_site(output_dir=None):
     logging.info(f"Сгенерированы страницы для {len(matches)} матчей")
 
     # 3. Генерация страниц игроков players/{steam_id}.html
+    player_highlights_map = build_all_player_highlights()
     player_template = env.get_template("player.html")
     for p in players:
         sid = clean_steamid(p.get("steam_id"))
         if not sid:
             continue
-        formatted_p = format_player_data(p)
+        p_hls = player_highlights_map.get(sid, [])
+        formatted_p = format_player_data(p, player_highlights=p_hls)
         safe_dump(
             player_template.stream(
                 active_page="player",

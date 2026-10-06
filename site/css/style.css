@@ -5131,5 +5131,33 @@ body:not(.light-theme) .mobile-glory-body {
   }
 }
 
+/* Player Highlights Showcase */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
+.hl-cards-carousel.is-grid-mode {
+  display: grid !important;
+  overflow-x: visible !important;
+  gap: 0.875rem !important;
+}
 
+@media (min-width: 640px) {
+  .hl-cards-carousel.is-grid-mode {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hl-cards-carousel.is-grid-mode {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.hl-cards-carousel.is-grid-mode .hl-card {
+  width: 100% !important;
+  flex-shrink: 1 !important;
+}

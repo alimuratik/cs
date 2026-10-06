@@ -653,7 +653,675 @@
     </section>
     
 
-    <!-- Radar & Skill Bars Grid -->
+    <!-- Player Match Highlights Showcase Section -->
+    
+    <section class="section player-highlights-section glassmorphism p-4 sm:p-5 rounded-2xl border border-slate-800 mb-8 relative" id="player-highlights-block">
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3 mb-3.5">
+            <div class="flex items-center gap-2.5">
+                <span class="text-xl sm:text-2xl">🎬</span>
+                <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                            Хайлайты в матчах
+                        </h2>
+                        <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-sm">
+                            4 момента
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">
+                        Яркие моменты и клатчи, отобранные в официальную хронику матчей
+                    </p>
+                </div>
+            </div>
+
+            <!-- Carousel & View Controls -->
+            <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
+                <!-- Showreel Button (Continuous Video Player) -->
+                
+
+                <!-- Toggle View Mode Button (Carousel <-> Grid) -->
+                <button type="button" id="hl-view-toggle-btn" onclick="toggleHighlightsViewMode()"
+                        class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-700/80 hover:border-amber-400 text-slate-200 hover:text-white text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer shadow-sm"
+                        title="Раскрыть все хайлайты вниз списком или вернуть горизонтальную карусель">
+                    <span id="hl-view-toggle-icon" class="text-amber-400 font-bold">▾</span>
+                    <span id="hl-view-toggle-text">Показать все списком</span>
+                </button>
+
+                <!-- Carousel Navigation Arrows (visible in carousel mode) -->
+                <div id="hl-carousel-arrows" class="flex items-center gap-1">
+                    <button type="button" onclick="scrollHighlightsCarousel(-1)"
+                            class="w-8 h-8 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 hover:text-amber-400 transition flex items-center justify-center text-xs font-bold cursor-pointer"
+                            aria-label="Назад">
+                        ◀
+                    </button>
+                    <button type="button" onclick="scrollHighlightsCarousel(1)"
+                            class="w-8 h-8 rounded-lg bg-slate-900/90 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-800 text-slate-300 hover:text-amber-400 transition flex items-center justify-center text-xs font-bold cursor-pointer"
+                            aria-label="Вперед">
+                        ▶
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Filter Tabs (Scrollable on mobile) -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs scrollbar-none -mx-1 px-1" id="hl-filter-bar">
+            <button type="button" onclick="filterHighlights('all', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold border border-amber-400 transition shrink-0 cursor-pointer shadow-sm">
+                Все (4)
+            </button>
+            
+            
+            
+            <button type="button" onclick="filterHighlights('clutch', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-emerald-300 border border-emerald-500/30 hover:border-emerald-400/60 transition shrink-0 cursor-pointer">
+                🧠 Клатчи (2)
+            </button>
+            
+            
+            
+            
+            
+            <button type="button" onclick="filterHighlights('wallbang', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-indigo-300 border border-indigo-500/30 hover:border-indigo-400/60 transition shrink-0 cursor-pointer">
+                💣 Прострелы (2)
+            </button>
+            
+            
+            
+            
+        </div>
+
+        <!-- Cards Container: Horizontal Snap Carousel (Default) or Expanded Grid -->
+        <div id="hl-cards-track" class="hl-cards-carousel overflow-x-auto snap-x snap-mandatory flex items-stretch gap-3 pb-3 pt-1 scrollbar-thin scrollbar-thumb-emerald-600/40 custom-scrollbar -mx-1 px-1">
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 17 (7:9)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">29 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AWP</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 26:17</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 17 (счёт 7:9). qumashasyl оформляет 💣 Прострел сквозь смок с AWP.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 17 (счёт 7:9). qumashasyl оформляет 💣 Прострел сквозь смок с AWP."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 26:23
+                    </span>
+                    
+
+                    <a href="../matches/29052026_dust2_24480320_230.html#round-17"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="wallbang"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 16 (7:8)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            ">
+                            💣 Прострел сквозь смок (2K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">29 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>2 фрага (2 HS)</span>
+                            <span class="text-slate-500">⏱ 24:32</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 16 (счёт 7:8). qumashasyl оформляет 💣 Прострел сквозь смок (2K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 16 (счёт 7:8). qumashasyl оформляет 💣 Прострел сквозь смок (2K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 24:38
+                    </span>
+                    
+
+                    <a href="../matches/29052026_dust2_24480320_230.html#round-16"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="clutch"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 15 (7:7)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-amber-500/20 text-amber-300 border-amber-500/40
+                            ">
+                            🧠 Клатч 1v5
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">29 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>1 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 23:15</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 15 (счёт 7:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v5, qumashasyl сохраняет ледяное спокойствие. Мастерское разделение дуэлей с AK-47 и триумфальная победа в раунде!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 15 (счёт 7:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v5, qumashasyl сохраняет ледяное спокойствие. Мастерское разделение дуэлей с AK-47 и триумфальная победа в раунде!"
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 23:21
+                    </span>
+                    
+
+                    <a href="../matches/29052026_dust2_24480320_230.html#round-15"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="clutch"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Inferno
+                        </span>
+                        <span>Рд. 11 (3:7)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-amber-500/20 text-amber-300 border-amber-500/40
+                            ">
+                            🧠 Клатч 1v3
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">29 мая 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>4 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 19:44</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 11 (счёт 3:7). qumashasyl оформляет 🧠 Клатч 1v3 с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 11 (счёт 3:7). qumashasyl оформляет 🧠 Клатч 1v3 с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 19:50
+                    </span>
+                    
+
+                    <a href="../matches/29052026_inferno_24481198_230.html#round-11"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Highlight Video Modal (Lightbox & Continuous Showreel Cinema) -->
+        <div id="hl-video-modal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md p-3 sm:p-4 flex items-center justify-center transition-opacity duration-200" onclick="closeHighlightVideoModalOnBackdrop(event)">
+            <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col max-h-[94vh] overflow-hidden" onclick="event.stopPropagation()">
+                <!-- Modal Header -->
+                <div class="p-3.5 sm:p-4 border-b border-slate-800 flex items-center justify-between gap-2 bg-slate-950/70">
+                    <div class="min-w-0 pr-2">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="text-base sm:text-lg shrink-0">🎬</span>
+                            <h3 id="hl-modal-title" class="text-sm sm:text-base font-bold text-white truncate max-w-[200px] sm:max-w-md">Хайлайт</h3>
+                            <span id="hl-modal-counter" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 hidden">1 / 1</span>
+                        </div>
+                        <p id="hl-modal-subtitle" class="text-xs text-slate-400 font-mono mt-0.5 truncate">Карта • Раунд</p>
+                    </div>
+                    <button type="button" onclick="closeHighlightVideoModal()"
+                            class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition cursor-pointer shrink-0"
+                            aria-label="Закрыть">
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Showreel Auto-Advance Progress Bar (Visible in Showreel mode) -->
+                <div id="hl-showreel-progress-wrap" class="w-full bg-slate-950 h-1.5 relative overflow-hidden hidden">
+                    <div id="hl-showreel-progress-bar" class="bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 h-full w-0 transition-all duration-100 ease-linear"></div>
+                </div>
+                
+                <!-- Video Iframe -->
+                <div class="relative w-full aspect-video bg-black">
+                    <iframe id="hl-modal-iframe" class="w-full h-full" src="" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen></iframe>
+                </div>
+
+                <!-- Showreel Playback Control Bar (Visible in Showreel mode) -->
+                <div id="hl-showreel-control-bar" class="px-3 py-2 bg-slate-950 border-t border-b border-slate-800/80 flex items-center justify-between gap-2 hidden">
+                    <button type="button" onclick="showreelPrev()"
+                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
+                        <span>⏮</span> <span class="hidden sm:inline">Назад</span>
+                    </button>
+
+                    <div class="flex items-center gap-2">
+                        <button type="button" id="hl-showreel-pause-btn" onclick="toggleShowreelPause()"
+                                class="px-3 sm:px-4 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold flex items-center gap-1.5 text-xs cursor-pointer transition shadow-sm active:scale-95">
+                            <span id="hl-showreel-pause-icon">⏸</span>
+                            <span id="hl-showreel-pause-text">Пауза</span>
+                        </button>
+                        <span id="hl-showreel-timer-label" class="text-[11px] font-mono text-slate-300 bg-slate-900/90 px-2 py-1 rounded border border-slate-800">
+                            След. через 18с
+                        </span>
+                    </div>
+
+                    <button type="button" onclick="showreelNext()"
+                            class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white flex items-center gap-1.5 text-xs font-mono cursor-pointer transition active:scale-95">
+                        <span class="hidden sm:inline">Вперёд</span> <span>⏭</span>
+                    </button>
+                </div>
+
+                <!-- Caption & Footer -->
+                <div class="p-3.5 sm:p-4 bg-slate-950/80 border-t border-slate-800/80 flex flex-col gap-2.5 overflow-y-auto">
+                    <div class="text-xs text-slate-300 leading-relaxed bg-emerald-950/30 border border-emerald-800/40 rounded-xl p-3 flex items-start gap-2">
+                        <span class="text-base shrink-0 mt-0.5">🎙️</span>
+                        <div>
+                            <strong class="text-emerald-400 font-semibold mr-1">Вердикт комментатора:</strong>
+                            <span id="hl-modal-caption"></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-mono pt-1 flex-wrap gap-2">
+                        <div class="flex items-center gap-3">
+                            <a id="hl-modal-match-link" href="#"
+                               class="text-emerald-400 hover:underline flex items-center gap-1 font-bold">
+                                К раунду в матче ↗
+                            </a>
+                            <a id="hl-modal-yt-link" href="#" target="_blank" rel="noopener noreferrer"
+                               class="text-amber-400 hover:underline flex items-center gap-1 font-bold">
+                                На YouTube ↗
+                            </a>
+                        </div>
+                        <div class="flex items-center gap-2 ml-auto">
+                            <button type="button" id="hl-modal-start-showreel-btn" onclick="startHighlightsShowreel()"
+                                    class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 text-[11px] font-bold cursor-pointer transition hidden">
+                                🎬 Все подряд
+                            </button>
+                            <button type="button" onclick="closeHighlightVideoModal()"
+                                    class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs cursor-pointer">
+                                Закрыть
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Highlights Interactive Script & Continuous Showreel Engine -->
+    <script>
+        var playerVideoHighlights = [
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        ];
+
+        var showreelIndex = 0;
+        var isShowreelActive = false;
+        var isShowreelPaused = false;
+        var showreelDurationMs = 18000;
+        var showreelElapsedMs = 0;
+        var showreelTimerInterval = null;
+
+        function scrollHighlightsCarousel(dir) {
+            var track = document.getElementById('hl-cards-track');
+            if (!track) return;
+            var scrollAmount = Math.max(280, track.clientWidth * 0.75);
+            track.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+        }
+
+        function filterHighlights(cat, btn) {
+            var filterBtns = document.querySelectorAll('.hl-filter-btn');
+            filterBtns.forEach(function(b) {
+                b.classList.remove('bg-amber-500', 'text-slate-950', 'font-bold', 'border-amber-400');
+                b.classList.add('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+            });
+            if (btn) {
+                btn.classList.remove('bg-slate-900/80', 'text-slate-300', 'border-slate-800');
+                btn.classList.add('bg-amber-500', 'text-slate-950', 'font-bold', 'border-amber-400');
+            }
+
+            var cards = document.querySelectorAll('.hl-card');
+            cards.forEach(function(card) {
+                var cCat = card.getAttribute('data-category');
+                if (cat === 'all' || cCat === cat) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleHighlightsViewMode() {
+            var track = document.getElementById('hl-cards-track');
+            var btnText = document.getElementById('hl-view-toggle-text');
+            var btnIcon = document.getElementById('hl-view-toggle-icon');
+            var arrows = document.getElementById('hl-carousel-arrows');
+            if (!track) return;
+            var isGrid = track.classList.toggle('is-grid-mode');
+            if (isGrid) {
+                track.classList.remove('overflow-x-auto', 'snap-x', 'snap-mandatory', 'flex', 'items-stretch');
+                if (btnText) btnText.textContent = 'Свернуть в карусель';
+                if (btnIcon) btnIcon.textContent = '▴';
+                if (arrows) arrows.classList.add('hidden');
+            } else {
+                track.classList.add('overflow-x-auto', 'snap-x', 'snap-mandatory', 'flex', 'items-stretch');
+                if (btnText) btnText.textContent = 'Показать все списком';
+                if (btnIcon) btnIcon.textContent = '▾';
+                if (arrows) arrows.classList.remove('hidden');
+            }
+        }
+
+        function startHighlightsShowreel(startIndex) {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            showreelIndex = (typeof startIndex === 'number' && !isNaN(startIndex)) ? startIndex : 0;
+            if (showreelIndex < 0 || showreelIndex >= playerVideoHighlights.length) showreelIndex = 0;
+            
+            isShowreelActive = true;
+            isShowreelPaused = false;
+
+            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
+            var controlBar = document.getElementById('hl-showreel-control-bar');
+            var counterBadge = document.getElementById('hl-modal-counter');
+            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
+            
+            if (progressWrap) progressWrap.classList.remove('hidden');
+            if (controlBar) controlBar.classList.remove('hidden');
+            if (counterBadge) counterBadge.classList.remove('hidden');
+            if (startShowreelBtn) startShowreelBtn.classList.add('hidden');
+
+            updateShowreelPauseButtonUI();
+            loadShowreelClip(showreelIndex);
+        }
+
+        function loadShowreelClip(idx) {
+            if (idx < 0 || idx >= playerVideoHighlights.length) return;
+            showreelIndex = idx;
+            var item = playerVideoHighlights[showreelIndex];
+
+            showreelElapsedMs = 0;
+            updateShowreelProgressUI(0, showreelDurationMs);
+
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            var mTitle = document.getElementById('hl-modal-title');
+            var mSubtitle = document.getElementById('hl-modal-subtitle');
+            var mCaption = document.getElementById('hl-modal-caption');
+            var ytLink = document.getElementById('hl-modal-yt-link');
+            var matchLink = document.getElementById('hl-modal-match-link');
+            var counterBadge = document.getElementById('hl-modal-counter');
+
+            if (mTitle) mTitle.textContent = item.title || 'Хайлайт матча';
+            if (mSubtitle) mSubtitle.textContent = item.subtitle || '';
+            if (mCaption) mCaption.textContent = item.caption || '';
+            if (ytLink) ytLink.href = item.watchUrl || '#';
+            if (matchLink) matchLink.href = item.matchUrl || '#';
+            if (counterBadge) counterBadge.textContent = (showreelIndex + 1) + ' / ' + playerVideoHighlights.length;
+
+            var playUrl = item.embedUrl + (item.embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            if (iframe) iframe.src = playUrl;
+
+            if (modal) modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+
+            startShowreelTimer();
+        }
+
+        function startShowreelTimer() {
+            clearInterval(showreelTimerInterval);
+            if (!isShowreelActive || isShowreelPaused) return;
+
+            var tickMs = 100;
+            showreelTimerInterval = setInterval(function() {
+                if (isShowreelPaused) return;
+                showreelElapsedMs += tickMs;
+                updateShowreelProgressUI(showreelElapsedMs, showreelDurationMs);
+
+                if (showreelElapsedMs >= showreelDurationMs) {
+                    clearInterval(showreelTimerInterval);
+                    showreelNext();
+                }
+            }, tickMs);
+        }
+
+        function updateShowreelProgressUI(elapsed, total) {
+            var progressBar = document.getElementById('hl-showreel-progress-bar');
+            var timerLabel = document.getElementById('hl-showreel-timer-label');
+            var pct = Math.min(100, (elapsed / total) * 100);
+            if (progressBar) progressBar.style.width = pct + '%';
+
+            var secLeft = Math.max(0, Math.ceil((total - elapsed) / 1000));
+            if (timerLabel) {
+                if (isShowreelPaused) {
+                    timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
+                } else {
+                    timerLabel.textContent = 'След. через ' + secLeft + 'с';
+                }
+            }
+        }
+
+        function showreelNext() {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            var nextIdx = (showreelIndex + 1) % playerVideoHighlights.length;
+            loadShowreelClip(nextIdx);
+        }
+
+        function showreelPrev() {
+            if (!playerVideoHighlights || playerVideoHighlights.length === 0) return;
+            var prevIdx = (showreelIndex - 1 + playerVideoHighlights.length) % playerVideoHighlights.length;
+            loadShowreelClip(prevIdx);
+        }
+
+        function toggleShowreelPause() {
+            isShowreelPaused = !isShowreelPaused;
+            updateShowreelPauseButtonUI();
+            if (isShowreelPaused) {
+                clearInterval(showreelTimerInterval);
+                var secLeft = Math.max(0, Math.ceil((showreelDurationMs - showreelElapsedMs) / 1000));
+                var timerLabel = document.getElementById('hl-showreel-timer-label');
+                if (timerLabel) timerLabel.textContent = 'Пауза (' + secLeft + 'с)';
+            } else {
+                startShowreelTimer();
+            }
+        }
+
+        function updateShowreelPauseButtonUI() {
+            var icon = document.getElementById('hl-showreel-pause-icon');
+            var text = document.getElementById('hl-showreel-pause-text');
+            var btn = document.getElementById('hl-showreel-pause-btn');
+            if (isShowreelPaused) {
+                if (icon) icon.textContent = '▶';
+                if (text) text.textContent = 'Продолжить';
+                if (btn) {
+                    btn.classList.remove('bg-amber-500', 'hover:bg-amber-400');
+                    btn.classList.add('bg-emerald-500', 'hover:bg-emerald-400');
+                }
+            } else {
+                if (icon) icon.textContent = '⏸';
+                if (text) text.textContent = 'Пауза';
+                if (btn) {
+                    btn.classList.remove('bg-emerald-500', 'hover:bg-emerald-400');
+                    btn.classList.add('bg-amber-500', 'hover:bg-amber-400');
+                }
+            }
+        }
+
+        function openHighlightVideoModal(embedUrl, watchUrl, title, subtitle, caption, matchUrl) {
+            isShowreelActive = false;
+            clearInterval(showreelTimerInterval);
+
+            var progressWrap = document.getElementById('hl-showreel-progress-wrap');
+            var controlBar = document.getElementById('hl-showreel-control-bar');
+            var counterBadge = document.getElementById('hl-modal-counter');
+            var startShowreelBtn = document.getElementById('hl-modal-start-showreel-btn');
+
+            if (progressWrap) progressWrap.classList.add('hidden');
+            if (controlBar) controlBar.classList.add('hidden');
+            if (counterBadge) counterBadge.classList.add('hidden');
+            if (startShowreelBtn && playerVideoHighlights && playerVideoHighlights.length > 0) {
+                startShowreelBtn.classList.remove('hidden');
+            }
+
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            var mTitle = document.getElementById('hl-modal-title');
+            var mSubtitle = document.getElementById('hl-modal-subtitle');
+            var mCaption = document.getElementById('hl-modal-caption');
+            var ytLink = document.getElementById('hl-modal-yt-link');
+            var matchLink = document.getElementById('hl-modal-match-link');
+            if (!modal || !iframe) return;
+
+            var playUrl = embedUrl + (embedUrl.indexOf('?') > -1 ? '&' : '?') + 'autoplay=1';
+            iframe.src = playUrl;
+            if (mTitle) mTitle.textContent = title || 'Хайлайт матча';
+            if (mSubtitle) mSubtitle.textContent = subtitle || '';
+            if (mCaption) mCaption.textContent = caption || '';
+            if (ytLink) ytLink.href = watchUrl || '#';
+            if (matchLink) matchLink.href = matchUrl || '#';
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHighlightVideoModal() {
+            isShowreelActive = false;
+            clearInterval(showreelTimerInterval);
+            var modal = document.getElementById('hl-video-modal');
+            var iframe = document.getElementById('hl-modal-iframe');
+            if (!modal) return;
+            if (iframe) iframe.src = '';
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeHighlightVideoModalOnBackdrop(e) {
+            if (e.target && e.target.id === 'hl-video-modal') {
+                closeHighlightVideoModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeHighlightVideoModal();
+            }
+        });
+    </script>
+    
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <!-- Radar Chart Section -->
         <section class="section radar-section glassmorphism p-5 rounded-2xl border border-slate-800">
@@ -4136,7 +4804,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 05.10.2026 17:37</p>
+                <p class="footer-timestamp">Данные обновлены: 06.10.2026 15:40</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
