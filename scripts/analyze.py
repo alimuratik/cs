@@ -3244,6 +3244,15 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
                     "moment_type": "blind_kill", "moment_badge": "🕶️ Фраг вслепую (Assisted Flash)", "badge_color": "sky"
                 })
 
+    # Фильтрация хайлайтов: в турнирных матчах включаем ТОЛЬКО игроков Team KASE
+    is_tourn = bool(m_data.get("tournament")) or "kase" in mid.lower() or m_date in ("30092026", "01102026")
+    if is_tourn:
+        def is_kase_cand(c_item):
+            psid = clean_steamid(c_item.get("player_steamid", ""))
+            pname = str(c_item.get("player_name") or "").lower().strip()
+            return psid in CANONICAL_PLAYERS.values() or pname in CANONICAL_PLAYERS or psid in PLAYER_ALIASES or pname in PLAYER_ALIASES
+        candidates = [c for c in candidates if is_kase_cand(c)]
+
     if not candidates:
         return {}
 
@@ -3630,6 +3639,38 @@ def run_analysis(force_ai: bool = False):
             p_stat["steam_id"] = clean_sid
             p_stat["name"] = p_name
 
+            # Проверяем турнирный контекст (QEBL S7) и канонический состав Team KASE
+            is_match_tourn = bool(m_data.get("tournament")) or "kase" in m_id.lower() or m_date in ("30092026", "01102026")
+            is_known_kase = (
+                clean_sid in CANONICAL_PLAYERS.values()
+                or name_lower in CANONICAL_PLAYERS
+                or clean_sid in PLAYER_ALIASES
+                or name_lower in PLAYER_ALIASES
+            )
+
+            # Честный расчет HLTV 2.0 и приведенного балла 1.0 - 10.0 для всех участников матча
+            k = p_stat.get("kills", 0)
+            d = p_stat.get("deaths", 0)
+            a = p_stat.get("assists", 0)
+            adr_val = p_stat.get("adr", 0.0)
+            kast_val = p_stat.get("kast", 0.0)
+            fk = p_stat.get("first_kills", 0)
+            fd = p_stat.get("first_deaths", 0)
+            clutches = p_stat.get("clutch_wins", 0)
+
+            hltv, score_10 = compute_hltv_rating(k, d, a, adr_val, kast_val, fk, fd, rounds_cnt)
+            p_stat["hltv_rating"] = hltv
+            p_stat["score_10"] = score_10
+
+            # В турнирных матчах в общий рейтинг игроков и профили добавляем ТОЛЬКО игроков Team KASE
+            if is_match_tourn and not is_known_kase:
+                p_stat["mmr_delta"] = 0
+                p_stat["mmr_before"] = STARTING_MMR
+                p_stat["mmr_after"] = STARTING_MMR
+                p_stat["mmr_breakdown"] = "Матч соперника турнира"
+                p_stat["is_calibrating"] = False
+                continue
+
             if clean_sid not in players_mmr:
                 players_mmr[clean_sid] = {
                     "steam_id": clean_sid,
@@ -3675,18 +3716,6 @@ def run_analysis(force_ai: bool = False):
                     base_delta = -BASE_LOSS_BLOWOUT
             else:
                 base_delta = 0
-
-            # Честный расчет HLTV 2.0 и приведенного балла 1.0 - 10.0
-            k = p_stat.get("kills", 0)
-            d = p_stat.get("deaths", 0)
-            a = p_stat.get("assists", 0)
-            adr_val = p_stat.get("adr", 0.0)
-            kast_val = p_stat.get("kast", 0.0)
-            fk = p_stat.get("first_kills", 0)
-            fd = p_stat.get("first_deaths", 0)
-            clutches = p_stat.get("clutch_wins", 0)
-
-            hltv, score_10 = compute_hltv_rating(k, d, a, adr_val, kast_val, fk, fd, rounds_cnt)
 
             # Модификатор импакта (от -7.0 до +7.0) на основе HLTV 2.0
             raw_mod = (hltv - 1.00) * 12.0
@@ -3799,6 +3828,14 @@ def run_analysis(force_ai: bool = False):
             if nl in CANONICAL_PLAYERS:
                 cs = CANONICAL_PLAYERS[nl]
             if cs:
+                is_known_cs = (
+                    cs in CANONICAL_PLAYERS.values()
+                    or nl in CANONICAL_PLAYERS
+                    or cs in PLAYER_ALIASES
+                    or nl in PLAYER_ALIASES
+                )
+                if is_match_tourn and not is_known_cs:
+                    continue
                 p_disp_name = p_st.get("name") or canonical_names.get(cs) or f"Player_{cs[-4:]}"
                 m_curr_pls[cs] = {
                     "team": p_st.get("team", "team1"),

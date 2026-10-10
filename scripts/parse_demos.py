@@ -585,6 +585,42 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
         cap1 = max(t1_pls, key=lambda x: (x.get("kills", 0) * 1.0 + x.get("adr", 0.0) * 0.1))["name"] if t1_pls else "Команда 1"
         cap2 = max(t2_pls, key=lambda x: (x.get("kills", 0) * 1.0 + x.get("adr", 0.0) * 0.1))["name"] if t2_pls else "Команда 2"
 
+        # Определение турнирного контекста (QEBL S7) и точных названий команд
+        demo_name_lower = demo_name.lower()
+        is_qebl = "kase" in demo_name_lower or date_str in ("30092026", "01102026")
+        tournament = "QEBL S7" if is_qebl else None
+
+        team1_name = f"Команда 1 ({cap1})"
+        team2_name = f"Команда 2 ({cap2})"
+
+        if is_qebl:
+            opp_name = "Соперник"
+            if "vtb" in demo_name_lower:
+                opp_name = "ВТБ Банк"
+            elif "mechta" in demo_name_lower:
+                opp_name = "Mechta.kz"
+            elif "krisha" in demo_name_lower:
+                opp_name = "Krisha"
+            elif "innoforce" in demo_name_lower:
+                opp_name = "Innoforce"
+            elif "grand" in demo_name_lower or "games" in demo_name_lower:
+                opp_name = "Grand Games"
+
+            def is_kase_player_check(sid_v, name_v):
+                cs = clean_steamid(sid_v)
+                nl = str(name_v or "").lower().strip()
+                return cs in CANONICAL_PLAYERS.values() or nl in CANONICAL_PLAYERS or cs in PLAYER_ALIASES or nl in PLAYER_ALIASES
+
+            t1_kase_count = sum(1 for p in t1_pls if is_kase_player_check(p.get("steam_id"), p.get("name")))
+            t2_kase_count = sum(1 for p in t2_pls if is_kase_player_check(p.get("steam_id"), p.get("name")))
+
+            if t1_kase_count >= t2_kase_count:
+                team1_name = "Team KASE"
+                team2_name = opp_name
+            else:
+                team1_name = opp_name
+                team2_name = "Team KASE"
+
         match_data = {
             "match_id": match_id,
             "date": date_str,
@@ -594,8 +630,9 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
             "score_team2": score_team2,
             "team1_captain": cap1,
             "team2_captain": cap2,
-            "team1_name": f"Команда 1 ({cap1})",
-            "team2_name": f"Команда 2 ({cap2})",
+            "team1_name": team1_name,
+            "team2_name": team2_name,
+            "tournament": tournament,
             "players": players,
             "rounds": light_rounds,
             "kills": light_kills,
@@ -615,10 +652,26 @@ def update_players_db(match_data: dict, players_db: dict) -> dict:
     match_id = match_data.get("match_id")
     match_date = match_data.get("date")
     map_display = match_data.get("map_display")
+    is_tourn = bool(match_data.get("tournament"))
     
     for steam_id, player_stats in match_data.get("players", {}).items():
         if not steam_id:
             continue
+        clean_sid = clean_steamid(steam_id)
+        p_name = player_stats.get("name", "")
+        n_lower = str(p_name).lower().strip()
+
+        # В турнирных матчах в базу игроков вносим ТОЛЬКО известных игроков Team KASE
+        is_known = (
+            clean_sid in CANONICAL_PLAYERS.values()
+            or n_lower in CANONICAL_PLAYERS
+            or clean_sid in PLAYER_ALIASES
+            or n_lower in PLAYER_ALIASES
+            or clean_sid in players_db
+        )
+        if is_tourn and not is_known:
+            continue
+
         if steam_id not in players_db:
             players_db[steam_id] = {
                 "steam_id": steam_id,

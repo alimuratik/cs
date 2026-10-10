@@ -2228,12 +2228,27 @@ def format_session_data(s: dict) -> dict:
         })
         tot_rounds += len(formatted_m.get("rounds", []))
 
+        is_tourn = bool(m.get("tournament")) or "kase" in str(m.get("match_id", "")).lower() or str(m.get("date", "")) in ("30092026", "01102026")
+
         # Агрегация показателей игроков за сессию
         for p in m.get("players", {}).values():
             sid = clean_steamid(p.get("steam_id"))
             if not sid:
                 continue
             p_name = clean_name(p.get("name"))
+            n_lower = str(p_name).lower().strip()
+
+            # В турнирных матчах в сводную таблицу сессии и награды дня включаем ТОЛЬКО состав Team KASE
+            if is_tourn:
+                is_kase = (
+                    sid in CANONICAL_PLAYERS.values()
+                    or n_lower in CANONICAL_PLAYERS
+                    or sid in PLAYER_ALIASES
+                    or n_lower in PLAYER_ALIASES
+                )
+                if not is_kase:
+                    continue
+
             if sid not in player_stats_acc:
                 player_stats_acc[sid] = {
                     "steam_id": sid,
