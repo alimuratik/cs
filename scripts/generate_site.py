@@ -2438,29 +2438,59 @@ def generate_site(output_dir=None):
             "faceit": p.get("faceit")
         })
 
-    # Разделение таблицы лидеров:
-    # 1. Активные квалифицированные игроки (прошли калибровку и активны) -> получают официальные ранги #1, #2, #3...
-    active_ranked_players = [p for p in leaderboard_players if not p["is_calibrating"] and not p["is_inactive"]]
-    active_ranked_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
-    for rank_idx, lp in enumerate(active_ranked_players, start=1):
+    # ─── Разделение на рейтинг сотрудников KASE и рейтинг приглашенных игроков ───
+    for lp in leaderboard_players:
+        lp["is_kase"] = is_kase_team_member(lp.get("steam_id"), lp.get("name"))
+
+    kase_all = [p for p in leaderboard_players if p["is_kase"]]
+    guest_all = [p for p in leaderboard_players if not p["is_kase"]]
+
+    # 1. Сотрудники KASE (Основной рейтинг)
+    kase_ranked_players = [p for p in kase_all if not p["is_calibrating"] and not p["is_inactive"]]
+    kase_ranked_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for rank_idx, lp in enumerate(kase_ranked_players, start=1):
         lp["rank"] = rank_idx
         lp["is_ranked"] = True
 
-    # 2. Игроки на калибровке (<5 матчей) - без официального ранга в основном зачете
-    calibrating_players = [p for p in leaderboard_players if p["is_calibrating"]]
-    calibrating_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
-    for lp in calibrating_players:
+    kase_calibrating_players = [p for p in kase_all if p["is_calibrating"]]
+    kase_calibrating_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for lp in kase_calibrating_players:
         lp["rank"] = None
         lp["is_ranked"] = False
 
-    # 3. Неактивные игроки (>30 дней без игр на платформе) - свернуты вместе с калибровочными
-    inactive_players = [p for p in leaderboard_players if not p["is_calibrating"] and p["is_inactive"]]
-    inactive_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
-    for lp in inactive_players:
+    kase_inactive_players = [p for p in kase_all if not p["is_calibrating"] and p["is_inactive"]]
+    kase_inactive_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for lp in kase_inactive_players:
         lp["rank"] = None
         lp["is_ranked"] = False
 
-    leaderboard_players = active_ranked_players + calibrating_players + inactive_players
+    # 2. Приглашенные игроки (Гостевой рейтинг)
+    guest_ranked_players = [p for p in guest_all if not p["is_calibrating"] and not p["is_inactive"]]
+    guest_ranked_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for rank_idx, lp in enumerate(guest_ranked_players, start=1):
+        lp["rank"] = rank_idx
+        lp["is_ranked"] = True
+
+    guest_calibrating_players = [p for p in guest_all if p["is_calibrating"]]
+    guest_calibrating_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for lp in guest_calibrating_players:
+        lp["rank"] = None
+        lp["is_ranked"] = False
+
+    guest_inactive_players = [p for p in guest_all if not p["is_calibrating"] and p["is_inactive"]]
+    guest_inactive_players.sort(key=lambda x: (x["current_mmr"], x["rating"]), reverse=True)
+    for lp in guest_inactive_players:
+        lp["rank"] = None
+        lp["is_ranked"] = False
+
+    leaderboard_players = (
+        kase_ranked_players + kase_calibrating_players + kase_inactive_players +
+        guest_ranked_players + guest_calibrating_players + guest_inactive_players
+    )
+
+    active_ranked_players = kase_ranked_players
+    calibrating_players = kase_calibrating_players
+    inactive_players = kase_inactive_players
 
     recent_matches = sorted(matches, key=lambda m: parse_date_key(m.get("date", "")), reverse=True)
     recent_matches_display = []
@@ -2600,14 +2630,25 @@ def generate_site(output_dir=None):
             js_path="js/app.js",
             root_path="",
             stats=stats_summary,
-            players=active_ranked_players,
-            active_players=active_ranked_players,
-            calibrating_players=calibrating_players,
-            inactive_players=inactive_players,
+            players=kase_ranked_players,
+            active_players=kase_ranked_players,
+            calibrating_players=kase_calibrating_players,
+            inactive_players=kase_inactive_players,
+            kase_players=kase_ranked_players,
+            kase_calibrating_players=kase_calibrating_players,
+            kase_inactive_players=kase_inactive_players,
+            kase_players_count=len(kase_ranked_players),
+            kase_secondary_count=len(kase_calibrating_players) + len(kase_inactive_players),
+            guest_players=guest_ranked_players,
+            guest_calibrating_players=guest_calibrating_players,
+            guest_inactive_players=guest_inactive_players,
+            guest_players_count=len(guest_ranked_players),
+            guest_secondary_count=len(guest_calibrating_players) + len(guest_inactive_players),
+            guest_total_count=len(guest_all),
             all_players=leaderboard_players,
             total_players_count=len(leaderboard_players),
-            active_players_count=len(active_ranked_players),
-            secondary_players_count=len(calibrating_players) + len(inactive_players),
+            active_players_count=len(kase_ranked_players),
+            secondary_players_count=len(kase_calibrating_players) + len(kase_inactive_players),
             faceit_levels_info=faceit_levels_info,
             sessions=formatted_sessions,
             latest_session=latest_session,
@@ -3192,7 +3233,40 @@ def generate_site(output_dir=None):
         ),
         out_dir / "tournament.html"
     )
-    logging.info(f"Сгенерирована страница турнирного состава и сетки: site/tournament.html (в штате KASE: {len(kase_tournament_players)} игроков, матчей: {len(formatted_tournament_matches)})")
+    logging.info(f"Сгенерирована страница турнирного состава и хаба: site/tournament.html (в штате KASE: {len(kase_tournament_players)} игроков)")
+
+    # 8.2. Генерация отдельной страницы турнира QEBL Season 7 (site/tournaments/qebl_s7.html и site/qebl_s7.html)
+    tournaments_dir = out_dir / "tournaments"
+    tournaments_dir.mkdir(parents=True, exist_ok=True)
+    qebl_template = env.get_template("tournament_qebl_s7.html")
+    safe_dump(
+        qebl_template.stream(
+            active_page="tournament",
+            css_path="../css/style.css",
+            js_path="../js/app.js",
+            root_path="../",
+            kase_roster_count=len(kase_tournament_players),
+            tournament_matches=formatted_tournament_matches,
+            tournament_info=tournament_info,
+            generated_at=generated_at
+        ),
+        tournaments_dir / "qebl_s7.html"
+    )
+    # Зеркало в корне site/qebl_s7.html для прямых ссылок
+    safe_dump(
+        qebl_template.stream(
+            active_page="tournament",
+            css_path="css/style.css",
+            js_path="js/app.js",
+            root_path="",
+            kase_roster_count=len(kase_tournament_players),
+            tournament_matches=formatted_tournament_matches,
+            tournament_info=tournament_info,
+            generated_at=generated_at
+        ),
+        out_dir / "qebl_s7.html"
+    )
+    logging.info(f"Сгенерирована отдельная страница турнира QEBL S7: site/tournaments/qebl_s7.html и site/qebl_s7.html (матчей: {len(formatted_tournament_matches)})")
 
     # 9. Генерация страницы тактических ролей site/roles.html
     roles_data = []

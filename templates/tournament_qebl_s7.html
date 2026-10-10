@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+{% set active_page = 'tournament' %}
+
+{% block title %}QEBL Season 7 | Team KASE CS2 Турнир{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs-bar bg-slate-900/80 border-b border-slate-800 py-2.5 text-xs text-slate-400">
+    <div class="container mx-auto px-4 flex items-center gap-2">
+        <a href="{{ root_path }}index.html" class="hover:text-emerald-400 transition">Главная</a>
+        <span>/</span>
+        <a href="{{ root_path }}compare.html" class="hover:text-emerald-400 transition">⚔️ Дуэли & Составы</a>
+        <span>/</span>
+        <a href="{{ root_path }}tournament.html" class="hover:text-emerald-400 transition">🏆 Турнирный штаб</a>
+        <span>/</span>
+        <span class="text-white font-medium">QEBL Season 7</span>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+    <!-- Hub Navigation: Duels 1v1 vs Team Generator 5v5 vs Tournaments -->
+    <div class="mb-6 flex justify-center">
+        <div class="segmented-nav-track">
+            <a href="{{ root_path }}compare.html" class="segmented-nav-btn">
+                <span>⚔️</span> <span>Личные дуэли 1v1</span>
+            </a>
+            <a href="{{ root_path }}matchmaker.html" class="segmented-nav-btn">
+                <span>⚖️</span> <span>Генератор составов 5v5</span>
+            </a>
+            <a href="{{ root_path }}tournament.html" class="segmented-nav-btn active">
+                <span>🏆</span> <span>Турнирный штаб & Ростер</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="glassmorphism p-6 md:p-8 rounded-2xl border border-amber-500/30 mb-8 bg-gradient-to-r from-slate-900/90 via-slate-900/80 to-amber-950/20 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">
+                    🛡️ КОРПОРАТИВНАЯ ЛИГА CS2
+                </div>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+                    Турнирный состав & Выступление в QEBL S7
+                </h1>
+                <p class="text-slate-300 text-xs md:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Официальное выступление Team KASE в корпоративной лиге QEBL Season 7: интерактивная турнирная сетка, статистика встреч и аналитика группового этапа.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+                <a href="{{ root_path }}tournament.html" 
+                   class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-bold text-slate-300 hover:text-white transition flex items-center gap-1.5 shadow">
+                    <span>←</span>
+                    <span>В Турнирный штаб</span>
+                </a>
+                <a href="{{ tournament_info.pinger_url }}" target="_blank" rel="noopener noreferrer" 
+                   class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-500/30 hover:from-amber-500/30 hover:to-amber-500/40 border border-amber-500/40 text-xs font-black text-amber-300 transition flex items-center gap-2 shadow-lg">
+                    <span>🌐</span>
+                    <span>Pinger.pro (QEBL S7)</span>
+                    <span class="text-[10px] font-mono">↗</span>
+                </a>
+                <a href="{{ tournament_info.challonge_url }}" target="_blank" rel="noopener noreferrer" 
+                   class="px-4 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-xs font-black text-emerald-300 transition flex items-center gap-2 shadow-lg">
+                    <span>📊</span>
+                    <span>Сетка Challonge</span>
+                    <span class="text-[10px] font-mono">↗</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- 🏆 БЛОК ТУРНИРА QEBL SEASON 7: СЕТКА И МАТЧИ                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <section class="section mb-12">
+        <!-- Tournament Summary Info Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div class="glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3.5">
+                <span class="text-3xl">🏆</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Турнир</span>
+                    <span class="text-sm font-black text-white">{{ tournament_info.name }}</span>
+                    <span class="text-[10px] text-amber-400 block font-mono">{{ tournament_info.discipline }}</span>
+                </div>
+            </div>
+            <div class="glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3.5">
+                <span class="text-3xl">🛡️</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Наша команда</span>
+                    <span class="text-sm font-black text-white">Team KASE</span>
+                    <span class="text-[10px] text-emerald-400 block font-mono">Штат: {{ kase_roster_count }} игроков</span>
+                </div>
+            </div>
+            <div class="glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3.5">
+                <span class="text-3xl">🎮</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Матчи в группе</span>
+                    <span class="text-sm font-black text-white">{{ tournament_matches|length }} матчей</span>
+                    <span class="text-[10px] text-slate-400 block font-mono">{{ tournament_info.total_rounds }} раундов</span>
+                </div>
+            </div>
+            <div class="glassmorphism p-4 rounded-xl border border-slate-800 bg-slate-900/60 flex items-center gap-3.5">
+                <span class="text-3xl">🗺️</span>
+                <div>
+                    <span class="block text-[10px] uppercase text-slate-400 font-semibold tracking-wider">Пул карт турнира</span>
+                    <span class="text-sm font-black text-white">Mirage • Inferno • Dust 2</span>
+                    <span class="text-[10px] text-emerald-400 block font-mono">Active Duty</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 1. Встроенный интерактивный виджет Challonge -->
+        <div class="glassmorphism p-5 md:p-6 rounded-2xl border border-emerald-500/30 bg-slate-900/80 shadow-2xl mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">📊</span>
+                    <div>
+                        <h3 class="text-lg md:text-xl font-bold text-white flex items-center gap-2">
+                            <span>Турнирная сетка и таблица группы (Challonge)</span>
+                            <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">Live Bracket</span>
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Интерактивный турнирный модуль с турнирной таблицей и сеткой QEBL S7</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="{{ tournament_info.challonge_url }}" target="_blank" rel="noopener noreferrer" 
+                       class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold transition">
+                        <span>Открыть на Challonge</span> ↗
+                    </a>
+                </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-800 bg-[#0f111a] shadow-inner">
+                <iframe src="{{ tournament_info.challonge_iframe }}" width="100%" height="520" frameborder="0" scrolling="auto" allowtransparency="true" class="w-full"></iframe>
+            </div>
+        </div>
+
+        <!-- 2. Матчи группового этапа Team KASE -->
+        <div class="glassmorphism p-5 md:p-6 rounded-2xl border border-slate-800 bg-slate-950/70 shadow-2xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-black text-white flex items-center gap-2.5">
+                        <span>⚔️</span> Матчи группового этапа: Team KASE
+                    </h3>
+                    <p class="text-slate-400 text-xs mt-1">
+                        Все 5 соревновательных встреч против корпоративных соперников с индивидуальной статистикой и тренерским разбором
+                    </p>
+                </div>
+
+                <!-- Match Day Filter Pills -->
+                <div class="inline-flex p-1 rounded-xl bg-slate-900 border border-slate-800 text-xs self-start sm:self-auto" id="tourn-day-filters">
+                    <button type="button" class="tourn-day-btn active px-3.5 py-1.5 rounded-lg font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer transition" data-day="all">
+                        Все игры ({{ tournament_matches|length }})
+                    </button>
+                    <button type="button" class="tourn-day-btn px-3.5 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white cursor-pointer transition" data-day="1">
+                        День 1 • 30 сен (2)
+                    </button>
+                    <button type="button" class="tourn-day-btn px-3.5 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white cursor-pointer transition" data-day="2">
+                        День 2 • 01 окт (3)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Matches List Grid -->
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="tourn-matches-container">
+                {% for m in tournament_matches %}
+                <div class="tourn-match-card glassmorphism p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/40 bg-slate-900/60 transition duration-200 flex flex-col justify-between shadow-xl" data-day="{{ m.day_num }}">
+                    <!-- Card Header: Map & Stage -->
+                    <div>
+                        <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-800/80">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">{{ m.map_icon }}</span>
+                                <span class="font-black text-white text-sm">{{ m.map_display }}</span>
+                                <span class="text-[10px] text-slate-400 font-mono px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700/50">
+                                    {{ m.rounds_count }} раундов
+                                </span>
+                            </div>
+                            <span class="text-[10px] font-mono text-amber-400 bg-amber-950/60 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                                {{ m.stage }}
+                            </span>
+                        </div>
+
+                        <!-- Score Matchup Banner -->
+                        <div class="bg-slate-950/80 rounded-xl p-3 border border-slate-800/80 mb-4">
+                            <div class="flex items-center justify-between gap-2">
+                                <!-- Team KASE -->
+                                <div class="flex items-center gap-2 min-w-0">
+                                    <div class="w-7 h-7 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-xs font-black text-emerald-400 shrink-0">
+                                        🛡️
+                                    </div>
+                                    <span class="text-xs font-bold text-white truncate">Team KASE</span>
+                                </div>
+
+                                <!-- Score -->
+                                <div class="text-center px-2 shrink-0">
+                                    <div class="text-lg font-black font-mono text-white tracking-wider">
+                                        <span class="{% if m.is_win %}text-emerald-400{% else %}text-slate-300{% endif %}">{{ m.score_kase }}</span>
+                                        <span class="text-slate-500">:</span>
+                                        <span class="{% if not m.is_win %}text-amber-400{% else %}text-slate-300{% endif %}">{{ m.score_opp }}</span>
+                                    </div>
+                                    <span class="text-[9px] font-mono uppercase {% if m.is_win %}text-emerald-400{% else %}text-rose-400{% endif %}">
+                                        {% if m.is_win %}Победа{% else %}Поражение{% endif %}
+                                    </span>
+                                </div>
+
+                                <!-- Opponent -->
+                                <div class="flex items-center gap-2 justify-end min-w-0 text-right">
+                                    <span class="text-xs font-bold text-slate-300 truncate">{{ m.opponent_name }}</span>
+                                    <div class="w-7 h-7 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-black text-slate-300 shrink-0">
+                                        ⚔️
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- KASE Lineup Stats Mini Table -->
+                        <div class="mb-4">
+                            <span class="text-[10px] uppercase font-mono text-slate-400 block mb-2 font-semibold tracking-wider">
+                                Показатели игроков Team KASE:
+                            </span>
+                            <div class="space-y-1.5">
+                                {% for kp in m.kase_players %}
+                                <div class="flex items-center justify-between text-xs px-2.5 py-1 rounded-lg bg-slate-900/80 border border-slate-800/60">
+                                    <span class="font-bold text-slate-200 truncate max-w-[130px]">{{ kp.name }}</span>
+                                    <div class="flex items-center gap-2.5 font-mono text-[11px]">
+                                        <span class="text-slate-300">{{ kp.kills }}-{{ kp.deaths }}</span>
+                                        <span class="text-slate-400">{{ kp.adr }} <span class="text-[9px] text-slate-500">ADR</span></span>
+                                        <span class="{% if kp.hltv >= 1.0 %}text-emerald-400 font-bold{% else %}text-slate-400{% endif %}">
+                                            {{ kp.hltv }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Coaching Takeaway Snippet -->
+                        {% if m.summary_snippet %}
+                        <div class="p-2.5 rounded-xl bg-emerald-950/20 border border-emerald-500/20 mb-4 text-[11px] text-slate-300 leading-snug line-clamp-2">
+                            <span class="text-emerald-400 font-bold">🧠 Итог матча:</span> {{ m.summary_snippet }}...
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Card Actions -->
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2 mt-2">
+                        <span class="text-[10px] font-mono text-slate-400">📅 {{ m.date_display }}</span>
+                        <div class="flex items-center gap-2">
+                            {% if m.video_url %}
+                            <a href="{{ m.video_url }}" target="_blank" rel="noopener noreferrer" 
+                                class="px-2.5 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-bold transition flex items-center gap-1" title="Смотреть VOD">
+                                <span>▶</span> <span>VOD</span>
+                            </a>
+                            {% endif %}
+                            <a href="{{ root_path }}matches/{{ m.match_id }}.html" 
+                               class="px-3.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-bold transition flex items-center gap-1 group">
+                                <span>Разбор</span>
+                                <span class="group-hover:translate-x-0.5 transition font-mono">➔</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tournament Match Day Filter Buttons
+        document.querySelectorAll('#tourn-day-filters .tourn-day-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const day = btn.getAttribute('data-day');
+                document.querySelectorAll('#tourn-day-filters .tourn-day-btn').forEach(b => {
+                    b.className = 'tourn-day-btn px-3.5 py-1.5 rounded-lg font-bold text-slate-400 hover:text-white cursor-pointer transition';
+                });
+                btn.className = 'tourn-day-btn active px-3.5 py-1.5 rounded-lg font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 cursor-pointer transition';
+
+                document.querySelectorAll('#tourn-matches-container .tourn-match-card').forEach(card => {
+                    const cardDay = card.getAttribute('data-day');
+                    if (day === 'all' || cardDay === day) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

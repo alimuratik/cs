@@ -660,9 +660,11 @@ def update_players_db(match_data: dict, players_db: dict) -> dict:
         n_lower = str(p_name).lower().strip()
 
         # В турнирных матчах в базу игроков вносим ТОЛЬКО игроков Team KASE
-        is_known = is_kase_team_member(clean_sid, n_lower) or clean_sid in players_db
-        if is_tourn and not is_known:
+        if is_tourn and not is_kase_team_member(clean_sid, n_lower):
             continue
+
+        if not is_tourn:
+            add_player_to_kase_roster(clean_sid, p_name or player_stats.get("name", ""), is_active=False)
 
         if steam_id not in players_db:
             players_db[steam_id] = {

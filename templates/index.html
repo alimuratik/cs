@@ -73,9 +73,9 @@
         <div class="section-header flex flex-col md:flex-row md:items-end justify-between mb-6 pb-4 border-b border-slate-800">
             <div>
                 <h2 class="section-title text-2xl md:text-3xl font-bold text-white flex items-center gap-3">
-                    🏆 Рейтинг игроков <span class="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full font-semibold">HLTV Impact Rate</span>
+                    🏆 Рейтинг сотрудников KASE <span class="text-xs bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 px-2.5 py-1 rounded-full font-semibold">Штат Team KASE</span>
                 </h2>
-                <p class="section-subtitle text-slate-400 text-sm mt-1">Агрегированный рейтинг по всем сыгранным матчам в вертикальном формате</p>
+                <p class="section-subtitle text-slate-400 text-sm mt-1">Официальная соревновательная таблица лидеров штатных игроков KASE</p>
             </div>
             <div class="text-xs text-slate-400 mt-2 md:mt-0">
                 10 параметров • Линейная нормировка
@@ -103,7 +103,7 @@
 
             <!-- Counter -->
             <div class="text-xs text-slate-400 font-mono shrink-0 hidden lg:block">
-                Показано: <span id="players-visible-count" class="text-emerald-400 font-bold">{{ active_players_count }}</span> из {{ active_players_count }}
+                Показано: <span id="players-visible-count" class="text-emerald-400 font-bold">{{ kase_players_count }}</span> из {{ kase_players_count }} сотрудников
             </div>
         </div>
 

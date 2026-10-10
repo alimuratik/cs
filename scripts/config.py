@@ -849,15 +849,25 @@ def compute_hltv_rating(k: int, d: int, a: int, adr: float, kast: float, fk: int
 # ─── Управление официальным штатом команды Team KASE ─────────────────────────────
 KASE_ROSTER_FILE = BASE_DIR / "kase_roster.json"
 
-def load_kase_roster() -> list[dict]:
+def parse_is_active(val) -> bool:
+    """Безопасный парсинг is_active (поддерживает bool, строки 'falce', 'false', 'true' и т.д.)."""
+    if isinstance(val, bool):
+        return val
+    if isinstance(val, (int, float)):
+        return bool(val)
+    if isinstance(val, str):
+        v = val.strip().lower()
+        if v in ("true", "1", "yes", "да", "y", "t"):
+            return True
+        if v in ("false", "falce", "0", "no", "нет", "n", "f"):
+            return False
+    return False
+
+def load_kase_roster(active_only: bool = True) -> list[dict]:
     """
-    Загружает список игроков штата команды Team KASE из kase_roster.json (или data/kase_roster.json).
-    Возвращает список словарей игроков с нормализованными полями:
-    [{'name': str, 'steam_id': str, 'role': str, 'is_active': bool, 'notes': str}, ...]
-    Поддерживает различные форматы заполнения пользователем:
-    - Dict с ключом 'roster' или 'players'
-    - Список словарей [{'name': '...', 'steam_id': '...'}, ...]
-    - Простой список строк (никнеймов или Steam ID)
+    Загружает список игроков штата команды Team KASE из kase_roster.json.
+    Если active_only=True: возвращает только игроков с is_active=True (штат KASE).
+    Если active_only=False: возвращает всех игроков реестра (включая приглашенных с is_active=False).
     """
     roster_path = KASE_ROSTER_FILE
     if not roster_path.exists():
@@ -884,7 +894,7 @@ def load_kase_roster() -> list[dict]:
         if isinstance(item, dict):
             name = str(item.get("name", "")).strip()
             sid = clean_steamid(item.get("steam_id", ""))
-            is_active = item.get("is_active", item.get("active", True))
+            is_active = parse_is_active(item.get("is_active", item.get("active", True)))
             role = str(item.get("role", "")).strip()
             notes = str(item.get("notes", "")).strip()
 
@@ -895,14 +905,14 @@ def load_kase_roster() -> list[dict]:
                 elif nl in PLAYER_ALIASES:
                     sid = PLAYER_ALIASES[nl][0]
 
-            if not is_active:
+            if active_only and not is_active:
                 continue
 
             result.append({
                 "name": name,
                 "steam_id": sid,
                 "role": role,
-                "is_active": True,
+                "is_active": is_active,
                 "notes": notes
             })
         elif isinstance(item, str):
@@ -915,6 +925,7 @@ def load_kase_roster() -> list[dict]:
             else:
                 name = val
                 sid = CANONICAL_PLAYERS.get(val.lower(), "")
+            
             result.append({
                 "name": name,
                 "steam_id": sid,
@@ -925,9 +936,9 @@ def load_kase_roster() -> list[dict]:
 
     return result
 
-def get_kase_roster_steamids() -> set[str]:
-    """Возвращает множество 64-битных Steam ID активных игроков штата Team KASE."""
-    roster = load_kase_roster()
+def get_kase_roster_steamids(active_only: bool = True) -> set[str]:
+    """Возвращает множество 64-битных Steam ID игроков штата Team KASE."""
+    roster = load_kase_roster(active_only=active_only)
     sids = set()
     for p in roster:
         sid = clean_steamid(p.get("steam_id"))
@@ -940,10 +951,11 @@ def get_kase_roster_steamids() -> set[str]:
 
 def is_kase_team_member(steam_id=None, name=None) -> bool:
     """
-    Проверяет, входит ли игрок в официальный штат команды Team KASE по Steam ID или никнейму.
+    Проверяет, входит ли игрок в официальный штат команды Team KASE (is_active == True)
+    по Steam ID или никнейму.
     """
-    roster = load_kase_roster()
-    if not roster:
+    active_roster = load_kase_roster(active_only=True)
+    if not active_roster:
         return False
 
     sid = clean_steamid(steam_id) if steam_id else ""
@@ -958,7 +970,7 @@ def is_kase_team_member(steam_id=None, name=None) -> bool:
     elif sid in PLAYER_ALIASES:
         canon_input_sid = PLAYER_ALIASES[sid][0]
 
-    for p in roster:
+    for p in active_roster:
         p_sid = clean_steamid(p.get("steam_id"))
         p_name = str(p.get("name") or "").lower().strip()
 
@@ -985,4 +997,54 @@ def is_kase_team_member(steam_id=None, name=None) -> bool:
                 return True
 
     return False
+
+def add_player_to_kase_roster(steam_id: str, name: str, is_active: bool = False, role: str = "", notes: str = "") -> bool:
+    """
+    Добавляет нового игрока в kase_roster.json, если его там еще нет.
+    Не перезаписывает существующие записи, сохраняя выбор пользователя.
+    """
+    clean_sid = clean_steamid(steam_id)
+    p_name = str(name or "").strip()
+    if not clean_sid and not p_name:
+        return False
+
+    roster_path = KASE_ROSTER_FILE
+    data = {}
+    if roster_path.exists():
+        try:
+            with open(roster_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            data = {}
+
+    if not isinstance(data, dict):
+        data = {"team_name": "Team KASE", "roster": []}
+    if "roster" not in data or not isinstance(data["roster"], list):
+        data["roster"] = []
+
+    # Проверяем, есть ли уже этот игрок в ростере
+    for entry in data["roster"]:
+        if isinstance(entry, dict):
+            e_sid = clean_steamid(entry.get("steam_id", ""))
+            e_name = str(entry.get("name", "")).strip().lower()
+            if clean_sid and e_sid and clean_sid == e_sid:
+                return False
+            if p_name and e_name and p_name.lower() == e_name:
+                return False
+
+    new_entry = {
+        "name": p_name or f"Player_{clean_sid[-4:]}",
+        "steam_id": clean_sid,
+        "role": role or "Приглашенный игрок",
+        "is_active": is_active,
+        "notes": notes or "Приглашенный игрок (установите is_active: true, если сотрудник KASE)"
+    }
+    data["roster"].append(new_entry)
+
+    try:
+        with open(roster_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        return True
+    except Exception as e:
+        return False
 
