@@ -1,4 +1,5 @@
 import os
+import json
 from pathlib import Path
 
 # Основные директории проекта (динамический корень проекта для Windows и Linux)
@@ -841,4 +842,144 @@ def compute_hltv_rating(k: int, d: int, a: int, adr: float, kast: float, fk: int
     hltv = round(max(0.20, min(3.00, hltv)), 2)
     score_10 = round(max(1.0, min(10.0, 5.0 + (hltv - 1.00) * 5.0)), 1)
     return hltv, score_10
+
+# ─── Управление официальным штатом команды Team KASE ─────────────────────────────
+KASE_ROSTER_FILE = BASE_DIR / "kase_roster.json"
+
+def load_kase_roster() -> list[dict]:
+    """
+    Загружает список игроков штата команды Team KASE из kase_roster.json (или data/kase_roster.json).
+    Возвращает список словарей игроков с нормализованными полями:
+    [{'name': str, 'steam_id': str, 'role': str, 'is_active': bool, 'notes': str}, ...]
+    Поддерживает различные форматы заполнения пользователем:
+    - Dict с ключом 'roster' или 'players'
+    - Список словарей [{'name': '...', 'steam_id': '...'}, ...]
+    - Простой список строк (никнеймов или Steam ID)
+    """
+    roster_path = KASE_ROSTER_FILE
+    if not roster_path.exists():
+        fallback_path = DATA_DIR / "kase_roster.json"
+        if fallback_path.exists():
+            roster_path = fallback_path
+        else:
+            return []
+
+    try:
+        with open(roster_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        return []
+
+    raw_items = []
+    if isinstance(data, dict):
+        raw_items = data.get("roster") or data.get("players") or []
+    elif isinstance(data, list):
+        raw_items = data
+
+    result = []
+    for item in raw_items:
+        if isinstance(item, dict):
+            name = str(item.get("name", "")).strip()
+            sid = clean_steamid(item.get("steam_id", ""))
+            is_active = item.get("is_active", item.get("active", True))
+            role = str(item.get("role", "")).strip()
+            notes = str(item.get("notes", "")).strip()
+
+            if not sid and name:
+                nl = name.lower()
+                if nl in CANONICAL_PLAYERS:
+                    sid = CANONICAL_PLAYERS[nl]
+                elif nl in PLAYER_ALIASES:
+                    sid = PLAYER_ALIASES[nl][0]
+
+            if not is_active:
+                continue
+
+            result.append({
+                "name": name,
+                "steam_id": sid,
+                "role": role,
+                "is_active": True,
+                "notes": notes
+            })
+        elif isinstance(item, str):
+            val = item.strip()
+            if not val:
+                continue
+            if val.isdigit() and len(val) >= 16:
+                sid = clean_steamid(val)
+                name = PLAYER_ALIASES.get(sid, ("", ""))[1]
+            else:
+                name = val
+                sid = CANONICAL_PLAYERS.get(val.lower(), "")
+            result.append({
+                "name": name,
+                "steam_id": sid,
+                "role": "",
+                "is_active": True,
+                "notes": ""
+            })
+
+    return result
+
+def get_kase_roster_steamids() -> set[str]:
+    """Возвращает множество 64-битных Steam ID активных игроков штата Team KASE."""
+    roster = load_kase_roster()
+    sids = set()
+    for p in roster:
+        sid = clean_steamid(p.get("steam_id"))
+        if sid:
+            sids.add(sid)
+            for a_key, a_val in PLAYER_ALIASES.items():
+                if a_val[0] == sid and a_key.isdigit():
+                    sids.add(a_key)
+    return sids
+
+def is_kase_team_member(steam_id=None, name=None) -> bool:
+    """
+    Проверяет, входит ли игрок в официальный штат команды Team KASE по Steam ID или никнейму.
+    """
+    roster = load_kase_roster()
+    if not roster:
+        return False
+
+    sid = clean_steamid(steam_id) if steam_id else ""
+    nl = str(name or "").lower().strip()
+
+    canon_input_sid = sid
+    if not canon_input_sid and nl:
+        if nl in CANONICAL_PLAYERS:
+            canon_input_sid = CANONICAL_PLAYERS[nl]
+        elif nl in PLAYER_ALIASES:
+            canon_input_sid = PLAYER_ALIASES[nl][0]
+    elif sid in PLAYER_ALIASES:
+        canon_input_sid = PLAYER_ALIASES[sid][0]
+
+    for p in roster:
+        p_sid = clean_steamid(p.get("steam_id"))
+        p_name = str(p.get("name") or "").lower().strip()
+
+        canon_p_sid = p_sid
+        if not canon_p_sid and p_name:
+            if p_name in CANONICAL_PLAYERS:
+                canon_p_sid = CANONICAL_PLAYERS[p_name]
+            elif p_name in PLAYER_ALIASES:
+                canon_p_sid = PLAYER_ALIASES[p_name][0]
+        elif p_sid in PLAYER_ALIASES:
+            canon_p_sid = PLAYER_ALIASES[p_sid][0]
+
+        if canon_input_sid and canon_p_sid and canon_input_sid == canon_p_sid:
+            return True
+        if sid and p_sid and sid == p_sid:
+            return True
+
+        if nl and p_name:
+            if nl == p_name:
+                return True
+            if nl.replace(" ", "") == p_name.replace(" ", ""):
+                return True
+            if p_name in CANONICAL_PLAYERS and CANONICAL_PLAYERS[p_name] == canon_input_sid:
+                return True
+
+    return False
 

@@ -2239,15 +2239,8 @@ def format_session_data(s: dict) -> dict:
             n_lower = str(p_name).lower().strip()
 
             # В турнирных матчах в сводную таблицу сессии и награды дня включаем ТОЛЬКО состав Team KASE
-            if is_tourn:
-                is_kase = (
-                    sid in CANONICAL_PLAYERS.values()
-                    or n_lower in CANONICAL_PLAYERS
-                    or sid in PLAYER_ALIASES
-                    or n_lower in PLAYER_ALIASES
-                )
-                if not is_kase:
-                    continue
+            if is_tourn and not is_kase_team_member(sid, n_lower):
+                continue
 
             if sid not in player_stats_acc:
                 player_stats_acc[sid] = {
@@ -3023,6 +3016,58 @@ def generate_site(output_dir=None):
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
 
     # 8.1. Генерация страницы турнирного состава и тактик site/tournament.html
+    # Турнирный состав формируется ИСКЛЮЧИТЕЛЬНО из игроков официального штата Team KASE (kase_roster.json)
+    kase_roster_entries = load_kase_roster()
+    kase_tournament_players = [
+        p for p in leaderboard_players
+        if is_kase_team_member(p.get("steam_id"), p.get("name"))
+    ]
+    # Добавляем игроков из kase_roster.json, которых пока нет в демках/лидерборде
+    existing_kase_sids = {clean_steamid(p.get("steam_id")) for p in kase_tournament_players}
+    for r_entry in kase_roster_entries:
+        r_sid = clean_steamid(r_entry.get("steam_id"))
+        r_name = clean_name(r_entry.get("name", "Игрок KASE"))
+        if r_sid and r_sid not in existing_kase_sids:
+            kase_tournament_players.append({
+                "steam_id": r_sid,
+                "name": r_name,
+                "avatar_initials": r_name[:2].upper(),
+                "rank_tier": {"tier": "Unranked", "badge": "icons/faceit/level_0.svg", "name": "Штат KASE"},
+                "current_mmr": STARTING_MMR,
+                "peak_mmr": STARTING_MMR,
+                "last_delta": 0,
+                "last_delta_text": "0",
+                "session_delta": 0,
+                "session_delta_text": "0",
+                "session_matches_count": 0,
+                "session_date_display": "",
+                "rating": 5.0,
+                "hltv_rating": 1.0,
+                "kd_ratio": 1.0,
+                "adr": 75.0,
+                "kast": 70.0,
+                "total_matches": 0,
+                "wins": 0,
+                "losses": 0,
+                "ties": 0,
+                "win_rate": 0.0,
+                "roles": [r_entry.get("role") or "Рифлер"],
+                "current_role": r_entry.get("role") or "Рифлер",
+                "best_role": r_entry.get("role") or "Рифлер",
+                "ratings": {"Aim": 5.0, "Positioning": 5.0, "Utility": 5.0, "Game Sense": 5.0, "Entry": 5.0, "Trading": 5.0, "Clutch": 5.0, "Discipline": 5.0, "Economy": 5.0, "Overall Impact": 5.0},
+                "recommendations": {},
+                "is_calibrating": True,
+                "is_inactive": False,
+                "form_dots": [],
+                "momentum": {},
+                "archetype": {},
+                "metrics": {}
+            })
+            existing_kase_sids.add(r_sid)
+
+    # Если список kase_tournament_players не пуст, используем ТОЛЬКО игроков KASE
+    tournament_players_pool = kase_tournament_players if kase_tournament_players else leaderboard_players
+
     tournament_template = env.get_template("tournament.html")
     safe_dump(
         tournament_template.stream(
@@ -3030,13 +3075,15 @@ def generate_site(output_dir=None):
             css_path="css/style.css",
             js_path="js/app.js",
             root_path="",
-            players=leaderboard_players,
+            players=tournament_players_pool,
             h2h_data=h2h_data,
-            generated_at=generated_at
+            generated_at=generated_at,
+            kase_roster_count=len(kase_tournament_players),
+            is_kase_restricted=bool(kase_tournament_players)
         ),
         out_dir / "tournament.html"
     )
-    logging.info("Сгенерирована страница турнирного состава и тактик: site/tournament.html")
+    logging.info(f"Сгенерирована страница турнирного состава и тактик: site/tournament.html (в штате KASE: {len(kase_tournament_players)} игроков)")
 
     # 9. Генерация страницы тактических ролей site/roles.html
     roles_data = []

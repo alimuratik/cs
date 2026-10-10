@@ -97,8 +97,11 @@
         <div class="pt-4 border-t border-slate-800/80">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3">
                 <div class="flex items-center gap-2 flex-wrap">
-                    <span class="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-                        <span>👥</span> Каталог игроков сообщества:
+                    <span class="text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                        <span>🛡️</span> Официальный штат Team KASE ({{ players|length }} игроков):
+                    </span>
+                    <span class="text-[10px] text-slate-400 font-mono bg-slate-900/80 px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
+                        <span>📋</span> Реестр: <span class="text-amber-300">kase_roster.json</span>
                     </span>
                     <!-- Role filter pills -->
                     <div class="inline-flex items-center gap-1 flex-wrap" id="picker-filter-chips">
@@ -3685,13 +3688,28 @@ ${rolesBlock}
             if (saved) {
                 const parsed = JSON.parse(saved);
                 if (Array.isArray(parsed) && parsed.length > 0) {
-                    selectedSteamIds = parsed.slice(0, 5).map(String);
-                    return;
+                    // Валидация: оставляем только игроков, входящих в официальный штат Team KASE (ALL_PLAYERS)
+                    const validSids = parsed.map(String).filter(sid => ALL_PLAYERS.some(p => String(p.steam_id) === sid));
+                    if (validSids.length === 5) {
+                        selectedSteamIds = validSids;
+                        return;
+                    }
+                    if (validSids.length > 0) {
+                        for (const p of ALL_PLAYERS) {
+                            if (validSids.length >= 5) break;
+                            const sid = String(p.steam_id);
+                            if (!validSids.includes(sid) && !p.is_inactive) {
+                                validSids.push(sid);
+                            }
+                        }
+                        selectedSteamIds = validSids.slice(0, 5);
+                        return;
+                    }
                 }
             }
         } catch (e) {}
 
-        // Default: Top-5 highest MMR players
+        // Default: Top-5 highest MMR players from official KASE roster
         const top5 = [...ALL_PLAYERS].filter(p => !p.is_inactive).slice(0, 5);
         selectedSteamIds = top5.map(p => String(p.steam_id));
     }

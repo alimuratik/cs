@@ -19,7 +19,7 @@ from scripts.config import (
     BASE_LOSS_CLOSE, BASE_LOSS_NORMAL, BASE_LOSS_BLOWOUT,
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
-    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR
+    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR, is_kase_team_member
 )
 
 
@@ -3250,7 +3250,7 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         def is_kase_cand(c_item):
             psid = clean_steamid(c_item.get("player_steamid", ""))
             pname = str(c_item.get("player_name") or "").lower().strip()
-            return psid in CANONICAL_PLAYERS.values() or pname in CANONICAL_PLAYERS or psid in PLAYER_ALIASES or pname in PLAYER_ALIASES
+            return is_kase_team_member(psid, pname)
         candidates = [c for c in candidates if is_kase_cand(c)]
 
     if not candidates:
@@ -3641,12 +3641,7 @@ def run_analysis(force_ai: bool = False):
 
             # Проверяем турнирный контекст (QEBL S7) и канонический состав Team KASE
             is_match_tourn = bool(m_data.get("tournament")) or "kase" in m_id.lower() or m_date in ("30092026", "01102026")
-            is_known_kase = (
-                clean_sid in CANONICAL_PLAYERS.values()
-                or name_lower in CANONICAL_PLAYERS
-                or clean_sid in PLAYER_ALIASES
-                or name_lower in PLAYER_ALIASES
-            )
+            is_known_kase = is_kase_team_member(clean_sid, name_lower)
 
             # Честный расчет HLTV 2.0 и приведенного балла 1.0 - 10.0 для всех участников матча
             k = p_stat.get("kills", 0)
