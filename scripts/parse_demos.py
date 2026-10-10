@@ -607,9 +607,7 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
                 opp_name = "Grand Games"
 
             def is_kase_player_check(sid_v, name_v):
-                cs = clean_steamid(sid_v)
-                nl = str(name_v or "").lower().strip()
-                return cs in CANONICAL_PLAYERS.values() or nl in CANONICAL_PLAYERS or cs in PLAYER_ALIASES or nl in PLAYER_ALIASES
+                return is_kase_team_member(sid_v, name_v)
 
             t1_kase_count = sum(1 for p in t1_pls if is_kase_player_check(p.get("steam_id"), p.get("name")))
             t2_kase_count = sum(1 for p in t2_pls if is_kase_player_check(p.get("steam_id"), p.get("name")))
@@ -661,14 +659,8 @@ def update_players_db(match_data: dict, players_db: dict) -> dict:
         p_name = player_stats.get("name", "")
         n_lower = str(p_name).lower().strip()
 
-        # В турнирных матчах в базу игроков вносим ТОЛЬКО известных игроков Team KASE
-        is_known = (
-            clean_sid in CANONICAL_PLAYERS.values()
-            or n_lower in CANONICAL_PLAYERS
-            or clean_sid in PLAYER_ALIASES
-            or n_lower in PLAYER_ALIASES
-            or clean_sid in players_db
-        )
+        # В турнирных матчах в базу игроков вносим ТОЛЬКО игроков Team KASE
+        is_known = is_kase_team_member(clean_sid, n_lower) or clean_sid in players_db
         if is_tourn and not is_known:
             continue
 

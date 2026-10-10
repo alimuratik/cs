@@ -957,9 +957,12 @@ def load_data():
                 except Exception as e:
                     logging.error(f"Ошибка чтения игрока {filename}: {e}")
 
-    # Группировка матчей по сессиям (датам)
+    # Группировка матчей по регулярным сессиям (датам), исключая турниры
     for m in matches:
-        d = m.get("date", "unknown")
+        d = str(m.get("date", "unknown"))
+        is_t = bool(m.get("tournament")) or d in TOURNAMENT_DATES
+        if is_t:
+            continue
         if d not in sessions_dict:
             sessions_dict[d] = {
                 "date": d,
@@ -3015,7 +3018,7 @@ def generate_site(output_dir=None):
     )
     logging.info("Сгенерирована страница матчмейкера: site/matchmaker.html")
 
-    # 8.1. Генерация страницы турнирного состава и тактик site/tournament.html
+    # 8.1. Генерация страницы турнирного состава и сетки site/tournament.html
     # Турнирный состав формируется ИСКЛЮЧИТЕЛЬНО из игроков официального штата Team KASE (kase_roster.json)
     kase_roster_entries = load_kase_roster()
     kase_tournament_players = [
@@ -3068,6 +3071,110 @@ def generate_site(output_dir=None):
     # Если список kase_tournament_players не пуст, используем ТОЛЬКО игроков KASE
     tournament_players_pool = kase_tournament_players if kase_tournament_players else leaderboard_players
 
+    # Загружаем видеозаписи матчей
+    mv_dict = {}
+    vf_path = DATA_DIR / "match_videos.json"
+    if vf_path.exists():
+        try:
+            with open(vf_path, "r", encoding="utf-8") as vfp:
+                mv_dict = json.load(vfp)
+        except Exception:
+            pass
+
+    # Форматирование матчей турнира QEBL S7 для страницы site/tournament.html
+    raw_tourn_matches = [
+        m for m in matches
+        if bool(m.get("tournament")) or str(m.get("date", "")) in TOURNAMENT_DATES
+    ]
+    raw_tourn_matches.sort(key=lambda m: (parse_date_key(m.get("date", "")), m.get("match_id", "")))
+
+    formatted_tournament_matches = []
+    for idx, tm in enumerate(raw_tourn_matches, start=1):
+        mid = tm.get("match_id", "")
+        d_str = str(tm.get("date", ""))
+        d_disp = format_date_display(d_str)
+        raw_map = str(tm.get("map", "")).lower().replace("de_", "").capitalize()
+        map_disp = tm.get("map_display", raw_map)
+
+        t1 = tm.get("team1_name", "Команда 1")
+        t2 = tm.get("team2_name", "Команда 2")
+        s1 = tm.get("score_team1", 0)
+        s2 = tm.get("score_team2", 0)
+
+        is_kase_t1 = "kase" in t1.lower()
+        score_kase = s1 if is_kase_t1 else s2
+        score_opp = s2 if is_kase_t1 else s1
+        opp_name = t2 if is_kase_t1 else t1
+        is_win = score_kase > score_opp
+
+        kase_team_key = "team1" if is_kase_t1 else "team2"
+        kase_pls = []
+        for p in tm.get("players", {}).values():
+            sid_clean = clean_steamid(p.get("steam_id"))
+            p_n = clean_name(p.get("name", "Игрок"))
+            if p.get("team") == kase_team_key or is_kase_team_member(sid_clean, p_n):
+                kase_pls.append({
+                    "steam_id": sid_clean,
+                    "name": p_n,
+                    "kills": p.get("kills", 0),
+                    "deaths": p.get("deaths", 0),
+                    "assists": p.get("assists", 0),
+                    "adr": round(float(p.get("adr", 0.0) or 0.0), 1),
+                    "hltv": round(float(p.get("hltv_rating", 1.0) or 1.0), 2),
+                    "score_10": round(float(p.get("score_10", 5.0) or 5.0), 1)
+                })
+        kase_pls.sort(key=lambda x: (x["hltv"], x["kills"]), reverse=True)
+        top_fragger = kase_pls[0] if kase_pls else None
+
+        map_icons = {"Mirage": "🏛️", "Inferno": "🏰", "Dust2": "🏜️", "Ancient": "🗿", "Anubis": "🌊", "Nuke": "☢️"}
+        map_icon = map_icons.get(map_disp, "🗺️")
+
+        raw_summary = str(tm.get("summary_analysis") or "")
+        summary_clean = ""
+        if raw_summary:
+            lines = [l.strip().lstrip("#-•* ") for l in raw_summary.split("\n") if l.strip() and not l.strip().startswith("#")]
+            summary_clean = " ".join(lines[:2])[:220]
+
+        video_entry = mv_dict.get(mid, {}) if isinstance(mv_dict, dict) else {}
+        video_url = video_entry.get("url", "") if isinstance(video_entry, dict) else ""
+
+        day_num = 1 if d_str == "30092026" else 2
+
+        formatted_tournament_matches.append({
+            "match_id": mid,
+            "match_num": idx,
+            "day_num": day_num,
+            "date": d_str,
+            "date_display": d_disp,
+            "stage": f"Тур {idx} • Групповой этап",
+            "map_display": map_disp,
+            "map_icon": map_icon,
+            "team1_name": t1,
+            "team2_name": t2,
+            "score_team1": s1,
+            "score_team2": s2,
+            "score_kase": score_kase,
+            "score_opp": score_opp,
+            "opponent_name": opp_name,
+            "is_win": is_win,
+            "rounds_count": s1 + s2,
+            "top_fragger": top_fragger,
+            "kase_players": kase_pls,
+            "summary_snippet": summary_clean,
+            "video_url": video_url
+        })
+
+    tournament_info = {
+        "name": "QEBL Season 7",
+        "discipline": "Counter-Strike 2",
+        "stage": "Групповой этап (Group Stage)",
+        "pinger_url": "https://pinger.pro/tournaments/cs2/qebl-s7-cs2",
+        "challonge_url": "https://challonge.com/ru/5qib93i5",
+        "challonge_iframe": "https://challonge.com/ru/5qib93i5/module",
+        "total_matches": len(formatted_tournament_matches),
+        "total_rounds": sum(m["rounds_count"] for m in formatted_tournament_matches)
+    }
+
     tournament_template = env.get_template("tournament.html")
     safe_dump(
         tournament_template.stream(
@@ -3079,11 +3186,13 @@ def generate_site(output_dir=None):
             h2h_data=h2h_data,
             generated_at=generated_at,
             kase_roster_count=len(kase_tournament_players),
-            is_kase_restricted=bool(kase_tournament_players)
+            is_kase_restricted=bool(kase_tournament_players),
+            tournament_matches=formatted_tournament_matches,
+            tournament_info=tournament_info
         ),
         out_dir / "tournament.html"
     )
-    logging.info(f"Сгенерирована страница турнирного состава и тактик: site/tournament.html (в штате KASE: {len(kase_tournament_players)} игроков)")
+    logging.info(f"Сгенерирована страница турнирного состава и сетки: site/tournament.html (в штате KASE: {len(kase_tournament_players)} игроков, матчей: {len(formatted_tournament_matches)})")
 
     # 9. Генерация страницы тактических ролей site/roles.html
     roles_data = []

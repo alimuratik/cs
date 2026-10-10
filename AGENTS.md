@@ -53,6 +53,7 @@ C:\agent\csdemo\
 │   └── verify_integrity.py   # Проверка целостности данных и артефактов
 ├── templates/                # Jinja2 шаблоны (base, index, match, player, session, compare, matchmaker)
 ├── site/                     # Сгенерированный автономный веб-сайт (Jamstack)
+├── kase_roster.json          # Официальный реестр штата игроков Team KASE (для турниров)
 ├── GEMINI.md                 # Путеводитель для модели Gemini
 └── run.py                    # Единый CLI запуск (python run.py [--stage ...] [--force])
 ```

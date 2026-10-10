@@ -19,7 +19,8 @@ from scripts.config import (
     BASE_LOSS_CLOSE, BASE_LOSS_NORMAL, BASE_LOSS_BLOWOUT,
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
-    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR, is_kase_team_member
+    AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR, is_kase_team_member,
+    TOURNAMENT_DATES
 )
 
 
@@ -2256,6 +2257,9 @@ def compute_session_progress(player_matches: list[dict]) -> dict | None:
     session_groups = {}
     for m in player_matches:
         d = str(m.get("date", ""))[:8]
+        is_t = bool(m.get("tournament")) or d in TOURNAMENT_DATES
+        if is_t:
+            continue
         if not d:
             continue
         session_groups.setdefault(d, []).append(m)
@@ -4302,6 +4306,9 @@ def run_analysis(force_ai: bool = False):
     all_session_dates = set()
     for _, _, m_dict in match_items:
         d = str(m_dict.get("date", ""))[:8]
+        is_t = bool(m_dict.get("tournament")) or d in TOURNAMENT_DATES
+        if is_t:
+            continue
         if d:
             all_session_dates.add(d)
     
