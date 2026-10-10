@@ -3127,7 +3127,28 @@ def generate_site(output_dir=None):
         m for m in matches
         if bool(m.get("tournament")) or str(m.get("date", "")) in TOURNAMENT_DATES
     ]
-    raw_tourn_matches.sort(key=lambda m: (parse_date_key(m.get("date", "")), m.get("match_id", "")))
+
+    # Официальный порядок туров группового этапа QEBL S7:
+    # Тур 1: Mirage vs ВТБ Банк
+    # Тур 2: Inferno vs Krisha
+    # Тур 3: Mirage vs Mechta.kz
+    # Тур 4: Inferno vs Innoforce
+    # Тур 5: Dust2 vs Grand Games
+    def tourn_sort_key(m):
+        mid = str(m.get("match_id", "")).lower()
+        if "vtb" in mid:
+            return 1
+        elif "krisha" in mid:
+            return 2
+        elif "mec" in mid:
+            return 3
+        elif "inno" in mid:
+            return 4
+        elif "gra" in mid:
+            return 5
+        return 99
+
+    raw_tourn_matches.sort(key=tourn_sort_key)
 
     formatted_tournament_matches = []
     for idx, tm in enumerate(raw_tourn_matches, start=1):
