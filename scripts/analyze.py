@@ -3823,13 +3823,7 @@ def run_analysis(force_ai: bool = False):
             if nl in CANONICAL_PLAYERS:
                 cs = CANONICAL_PLAYERS[nl]
             if cs:
-                is_known_cs = (
-                    cs in CANONICAL_PLAYERS.values()
-                    or nl in CANONICAL_PLAYERS
-                    or cs in PLAYER_ALIASES
-                    or nl in PLAYER_ALIASES
-                )
-                if is_match_tourn and not is_known_cs:
+                if is_match_tourn and not is_kase_team_member(cs, nl):
                     continue
                 p_disp_name = p_st.get("name") or canonical_names.get(cs) or f"Player_{cs[-4:]}"
                 m_curr_pls[cs] = {

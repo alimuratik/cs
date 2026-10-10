@@ -794,9 +794,7 @@ def generate_match_summary_analysis_fallback(match_data: dict) -> str:
 
     if is_tourn:
         def is_kase_p(p):
-            cs = clean_steamid(p.get("steam_id"))
-            nl = str(p.get("name") or "").lower().strip()
-            return cs in CANONICAL_PLAYERS.values() or nl in CANONICAL_PLAYERS or cs in PLAYER_ALIASES or nl in PLAYER_ALIASES
+            return is_kase_team_member(p.get("steam_id"), p.get("name"))
 
         kase_is_t1 = (t1_name == "Team KASE") or sum(1 for p in t1_players if is_kase_p(p)) >= sum(1 for p in t2_players if is_kase_p(p))
         kase_team_name = t1_name if kase_is_t1 else t2_name
@@ -877,9 +875,7 @@ def generate_match_summary_analysis(match_data: dict) -> str:
             is_tourn = bool(match_data.get('tournament')) or "kase" in match_data.get('match_id', '').lower() or str(match_data.get('date', '')) in ("30092026", "01102026")
 
             def is_kase_p(p):
-                cs = clean_steamid(p.get("steam_id"))
-                nl = str(p.get("name") or "").lower().strip()
-                return cs in CANONICAL_PLAYERS.values() or nl in CANONICAL_PLAYERS or cs in PLAYER_ALIASES or nl in PLAYER_ALIASES
+                return is_kase_team_member(p.get("steam_id"), p.get("name"))
 
             kase_is_t1 = (t1_name == "Team KASE") or sum(1 for p in t1_players if is_kase_p(p)) >= sum(1 for p in t2_players if is_kase_p(p))
             kase_team_name = t1_name if kase_is_t1 else t2_name
