@@ -702,7 +702,7 @@
                             Хайлайты в матчах
                         </h2>
                         <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-sm">
-                            22 моментов
+                            23 моментов
                         </span>
                     </div>
                     <p class="text-xs text-slate-400 mt-0.5">
@@ -717,9 +717,9 @@
                 
                 <button type="button" id="hl-showreel-btn" onclick="openHighlightClipByIndex(0)"
                         class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-amber-500/20 active:scale-95"
-                        title="Смотреть все видео-хайлайты игрока (13)">
+                        title="Смотреть все видео-хайлайты игрока (16)">
                     <span>🎬</span>
-                    <span>Смотреть видео (13)</span>
+                    <span>Смотреть видео (16)</span>
                 </button>
                 
 
@@ -751,7 +751,7 @@
         <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs scrollbar-none -mx-1 px-1" id="hl-filter-bar">
             <button type="button" onclick="filterHighlights('all', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold border border-amber-400 transition shrink-0 cursor-pointer shadow-sm">
-                Все (22)
+                Все (23)
             </button>
             
             <button type="button" onclick="filterHighlights('ace', this)"
@@ -772,12 +772,17 @@
             </button>
             
             
+            <button type="button" onclick="filterHighlights('ninja', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-purple-300 border border-purple-500/30 hover:border-purple-400/60 transition shrink-0 cursor-pointer">
+                💥 Ниндзя (1)
+            </button>
+            
             
             
             
             <button type="button" onclick="filterHighlights('wallbang', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-indigo-300 border border-indigo-500/30 hover:border-indigo-400/60 transition shrink-0 cursor-pointer">
-                💣 Прострелы (7)
+                💣 Прострелы (6)
             </button>
             
             
@@ -789,7 +794,7 @@
             
             <button type="button" onclick="filterHighlights('special', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-purple-300 border border-purple-500/30 hover:border-purple-400/60 transition shrink-0 cursor-pointer">
-                🔪 Нож/Zeus (2)
+                🔪 Нож/Zeus (3)
             </button>
             
             
@@ -800,7 +805,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="wallbang"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -834,17 +839,19 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 1. Максимальный уровень дерзости от OCEANMENGO! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 1. Максимальный уровень дерзости от OCEANMENGO! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником."
+                         title="Мбалиев выжидает идеальный тайминг, прошивает этот злосчастный дым на «плэйсе» и ставит жесточайший ваншот в голову с калаша! Одиннадцать-один на табло, и этот невероятный контроль позиции просто деморализует соперника!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Мбалиев выжидает идеальный тайминг, прошивает этот злосчастный дым на «плэйсе» и ставит жесточайший ваншот в голову с калаша! Одиннадцать-один на табло, и этот невероятный контроль позиции просто деморализует соперника!"
                     </div>
                 </div>
 
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 17:42
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(0)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (19:32)
+                    </button>
                     
 
                     <a href="../matches/01102026_mirage_124_kase_mec.html#round-13"
@@ -857,7 +864,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="blind"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -899,9 +906,11 @@
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 24:04
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(1)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (24:58)
+                    </button>
                     
 
                     <a href="../matches/30092026_mirage_110_kase_vtb.html#round-15"
@@ -957,7 +966,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(0)"
+                            onclick="openHighlightClipByIndex(2)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (18:36)
                     </button>
@@ -1016,7 +1025,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(1)"
+                            onclick="openHighlightClipByIndex(3)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (1:38)
                     </button>
@@ -1075,7 +1084,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(2)"
+                            onclick="openHighlightClipByIndex(4)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (27:29)
                     </button>
@@ -1134,7 +1143,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(3)"
+                            onclick="openHighlightClipByIndex(5)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (23:58)
                     </button>
@@ -1184,8 +1193,8 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Десять-ноль, абсолютное доминатион на Дасте, и mbaliyev просто стирает оппонентов с карты филигранейшей работой с авиком! Три в голову, идеальный тайминг, жестчайший эйс под крики трибун — этот мув прямо в хайлайты года, легендарно!">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Десять-ноль, абсолютное доминатион на Дасте, и mbaliyev просто стирает оппонентов с карты филигранейшей работой с авиком! Три в голову, идеальный тайминг, жестчайший эйс под крики трибун — этот мув прямо в хайлайты года, легендарно!"
+                         title="Десять-ноль, абсолютное доминирование, но mbaliyev решает добить соперника в этом раунде окончательно! Пять фрагов из штурмовой пушки, три сочных хедшота через идеальный тайминг — это просто мастер-класс по игре с AWP на Dust2!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Десять-ноль, абсолютное доминирование, но mbaliyev решает добить соперника в этом раунде окончательно! Пять фрагов из штурмовой пушки, три сочных хедшота через идеальный тайминг — это просто мастер-класс по игре с AWP на Dust2!"
                     </div>
                 </div>
 
@@ -1193,7 +1202,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(4)"
+                            onclick="openHighlightClipByIndex(6)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (17:40)
                     </button>
@@ -1252,7 +1261,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(5)"
+                            onclick="openHighlightClipByIndex(7)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (24:46)
                     </button>
@@ -1311,7 +1320,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(6)"
+                            onclick="openHighlightClipByIndex(8)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (31:08)
                     </button>
@@ -1370,7 +1379,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(7)"
+                            onclick="openHighlightClipByIndex(9)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (19:59)
                     </button>
@@ -1429,7 +1438,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(8)"
+                            onclick="openHighlightClipByIndex(10)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (9:19)
                     </button>
@@ -1488,7 +1497,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(9)"
+                            onclick="openHighlightClipByIndex(11)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (26:13)
                     </button>
@@ -1547,7 +1556,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(10)"
+                            onclick="openHighlightClipByIndex(12)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (23:56)
                     </button>
@@ -1606,7 +1615,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(11)"
+                            onclick="openHighlightClipByIndex(13)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (18:06)
                     </button>
@@ -1621,7 +1630,66 @@
             </div>
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
-                 data-category="wallbang"
+                 data-category="special"
+                 data-has-video="true">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Nuke
+                        </span>
+                        <span>Рд. 7 (5:1)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-purple-500/20 text-purple-300 border-purple-500/40
+                            ">
+                            🔪 Ножевой фраг
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">10 июля 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">Нож</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>1 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 11:22</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 7 (счёт 5:1). mbaliyev оформляет 🔪 Ножевой фраг с Нож.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 7 (счёт 5:1). mbaliyev оформляет 🔪 Ножевой фраг с Нож."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(14)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (11:22)
+                    </button>
+                    
+
+                    <a href="../matches/10072026_nuke_nuke.html#round-7"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="ninja"
                  data-has-video="true">
                 
                 <div>
@@ -1636,9 +1704,9 @@
                     <!-- Moment Badge & Date -->
                     <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
                         <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
-                            bg-indigo-500/20 text-indigo-300 border-indigo-500/40
+                            bg-purple-500/20 text-purple-300 border-purple-500/40
                             ">
-                            💣 Прострел сквозь смок (2K)
+                            💥 Ниндзя-дефьюз
                         </span>
                         <span class="text-[10px] text-slate-500 font-mono">10 июля 2026</span>
                     </div>
@@ -1646,18 +1714,18 @@
                     <!-- Weapon & Kill Stats -->
                     <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
                         <div class="flex items-center gap-1.5">
-                            <span class="text-amber-300 font-bold font-mono">M4A4</span>
+                            <span class="text-amber-300 font-bold font-mono">Defuse Kit</span>
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
                             <span>2 фрага (0 HS)</span>
-                            <span class="text-slate-500">⏱ 4:24</span>
+                            <span class="text-slate-500">⏱ 5:05</span>
                         </div>
                     </div>
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 4 (счёт 3:0). mbaliyev оформляет 💣 Прострел сквозь смок (2K) с M4A4.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 4 (счёт 3:0). mbaliyev оформляет 💣 Прострел сквозь смок (2K) с M4A4."
+                         title="Что творит mbaliyev на этом Nuke, вы просто посмотрите на этот гениальный тайминг и чтение позиции! Ошибаются оппоненты в размене, а наш герой в дыму оформляет два дежурных фрага, умудряясь под носом у оставшегося врага провернуть безумный ниндзя-дефьюз на четыре-ноль!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Что творит mbaliyev на этом Nuke, вы просто посмотрите на этот гениальный тайминг и чтение позиции! Ошибаются оппоненты в размене, а наш герой в дыму оформляет два дежурных фрага, умудряясь под носом у оставшегося врага провернуть безумный ниндзя-дефьюз на четыре-ноль!"
                     </div>
                 </div>
 
@@ -1665,9 +1733,9 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(12)"
+                            onclick="openHighlightClipByIndex(15)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
-                        <span>▶</span> VOD (4:24)
+                        <span>▶</span> VOD (5:05)
                     </button>
                     
 
@@ -2176,7 +2244,31 @@
         var playerVideoHighlights = [
             
             
+            {
+                videoId: "3RaW-1X5XPU",
+                startSec: 1172,
+                embedUrl: "https://www.youtube.com/embed/3RaW-1X5XPU?start=1172\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=3RaW-1X5XPU\u0026t=1172s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 13 (11:1)",
+                caption: "\u041c\u0431\u0430\u043b\u0438\u0435\u0432 \u0432\u044b\u0436\u0438\u0434\u0430\u0435\u0442 \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433, \u043f\u0440\u043e\u0448\u0438\u0432\u0430\u0435\u0442 \u044d\u0442\u043e\u0442 \u0437\u043b\u043e\u0441\u0447\u0430\u0441\u0442\u043d\u044b\u0439 \u0434\u044b\u043c \u043d\u0430 \u00ab\u043f\u043b\u044d\u0439\u0441\u0435\u00bb \u0438 \u0441\u0442\u0430\u0432\u0438\u0442 \u0436\u0435\u0441\u0442\u043e\u0447\u0430\u0439\u0448\u0438\u0439 \u0432\u0430\u043d\u0448\u043e\u0442 \u0432 \u0433\u043e\u043b\u043e\u0432\u0443 \u0441 \u043a\u0430\u043b\u0430\u0448\u0430! \u041e\u0434\u0438\u043d\u043d\u0430\u0434\u0446\u0430\u0442\u044c-\u043e\u0434\u0438\u043d \u043d\u0430 \u0442\u0430\u0431\u043b\u043e, \u0438 \u044d\u0442\u043e\u0442 \u043d\u0435\u0432\u0435\u0440\u043e\u044f\u0442\u043d\u044b\u0439 \u043a\u043e\u043d\u0442\u0440\u043e\u043b\u044c \u043f\u043e\u0437\u0438\u0446\u0438\u0438 \u043f\u0440\u043e\u0441\u0442\u043e \u0434\u0435\u043c\u043e\u0440\u0430\u043b\u0438\u0437\u0443\u0435\u0442 \u0441\u043e\u043f\u0435\u0440\u043d\u0438\u043a\u0430!",
+                matchUrl: "../matches/01102026_mirage_124_kase_mec.html#round-13",
+                badgeColor: "indigo"
+            },
             
+            
+            
+            {
+                videoId: "Oju0gNxmyc8",
+                startSec: 1498,
+                embedUrl: "https://www.youtube.com/embed/Oju0gNxmyc8?start=1498\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=Oju0gNxmyc8\u0026t=1498s",
+                title: "\ud83d\udd76\ufe0f \u0424\u0440\u0430\u0433 \u0432\u0441\u043b\u0435\u043f\u0443\u044e (Assisted Flash)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 15 (4:10)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 15 (\u0441\u0447\u0451\u0442 4:10). mbaliyev \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udd76\ufe0f \u0424\u0440\u0430\u0433 \u0432\u0441\u043b\u0435\u043f\u0443\u044e (Assisted Flash) \u0441 MAC-10.",
+                matchUrl: "../matches/30092026_mirage_110_kase_vtb.html#round-15",
+                badgeColor: "sky"
+            },
             
             
             
@@ -2243,7 +2335,7 @@
                 watchUrl: "https://www.youtube.com/watch?v=yz66In7cQpg\u0026t=1060s",
                 title: "\ud83d\udd25 \u042d\u0439\u0441 (5K)",
                 subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 11 (10:0)",
-                caption: "\u0414\u0435\u0441\u044f\u0442\u044c-\u043d\u043e\u043b\u044c, \u0430\u0431\u0441\u043e\u043b\u044e\u0442\u043d\u043e\u0435 \u0434\u043e\u043c\u0438\u043d\u0430\u0442\u0438\u043e\u043d \u043d\u0430 \u0414\u0430\u0441\u0442\u0435, \u0438 mbaliyev \u043f\u0440\u043e\u0441\u0442\u043e \u0441\u0442\u0438\u0440\u0430\u0435\u0442 \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u043e\u0432 \u0441 \u043a\u0430\u0440\u0442\u044b \u0444\u0438\u043b\u0438\u0433\u0440\u0430\u043d\u0435\u0439\u0448\u0435\u0439 \u0440\u0430\u0431\u043e\u0442\u043e\u0439 \u0441 \u0430\u0432\u0438\u043a\u043e\u043c! \u0422\u0440\u0438 \u0432 \u0433\u043e\u043b\u043e\u0432\u0443, \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433, \u0436\u0435\u0441\u0442\u0447\u0430\u0439\u0448\u0438\u0439 \u044d\u0439\u0441 \u043f\u043e\u0434 \u043a\u0440\u0438\u043a\u0438 \u0442\u0440\u0438\u0431\u0443\u043d \u2014 \u044d\u0442\u043e\u0442 \u043c\u0443\u0432 \u043f\u0440\u044f\u043c\u043e \u0432 \u0445\u0430\u0439\u043b\u0430\u0439\u0442\u044b \u0433\u043e\u0434\u0430, \u043b\u0435\u0433\u0435\u043d\u0434\u0430\u0440\u043d\u043e!",
+                caption: "\u0414\u0435\u0441\u044f\u0442\u044c-\u043d\u043e\u043b\u044c, \u0430\u0431\u0441\u043e\u043b\u044e\u0442\u043d\u043e\u0435 \u0434\u043e\u043c\u0438\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435, \u043d\u043e mbaliyev \u0440\u0435\u0448\u0430\u0435\u0442 \u0434\u043e\u0431\u0438\u0442\u044c \u0441\u043e\u043f\u0435\u0440\u043d\u0438\u043a\u0430 \u0432 \u044d\u0442\u043e\u043c \u0440\u0430\u0443\u043d\u0434\u0435 \u043e\u043a\u043e\u043d\u0447\u0430\u0442\u0435\u043b\u044c\u043d\u043e! \u041f\u044f\u0442\u044c \u0444\u0440\u0430\u0433\u043e\u0432 \u0438\u0437 \u0448\u0442\u0443\u0440\u043c\u043e\u0432\u043e\u0439 \u043f\u0443\u0448\u043a\u0438, \u0442\u0440\u0438 \u0441\u043e\u0447\u043d\u044b\u0445 \u0445\u0435\u0434\u0448\u043e\u0442\u0430 \u0447\u0435\u0440\u0435\u0437 \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433 \u2014 \u044d\u0442\u043e \u043f\u0440\u043e\u0441\u0442\u043e \u043c\u0430\u0441\u0442\u0435\u0440-\u043a\u043b\u0430\u0441\u0441 \u043f\u043e \u0438\u0433\u0440\u0435 \u0441 AWP \u043d\u0430 Dust2!",
                 matchUrl: "../matches/11092026_dust2_27151972_244.html#round-11",
                 badgeColor: "rose"
             },
@@ -2350,14 +2442,28 @@
             
             {
                 videoId: "6Omyb_1m4KI",
-                startSec: 264,
-                embedUrl: "https://www.youtube.com/embed/6Omyb_1m4KI?start=264\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
-                watchUrl: "https://www.youtube.com/watch?v=6Omyb_1m4KI\u0026t=264s",
-                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (2K)",
+                startSec: 682,
+                embedUrl: "https://www.youtube.com/embed/6Omyb_1m4KI?start=682\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=6Omyb_1m4KI\u0026t=682s",
+                title: "\ud83d\udd2a \u041d\u043e\u0436\u0435\u0432\u043e\u0439 \u0444\u0440\u0430\u0433",
+                subtitle: "Nuke \u2022 \u0420\u0430\u0443\u043d\u0434 7 (5:1)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 7 (\u0441\u0447\u0451\u0442 5:1). mbaliyev \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udd2a \u041d\u043e\u0436\u0435\u0432\u043e\u0439 \u0444\u0440\u0430\u0433 \u0441 \u041d\u043e\u0436.",
+                matchUrl: "../matches/10072026_nuke_nuke.html#round-7",
+                badgeColor: "purple"
+            },
+            
+            
+            
+            {
+                videoId: "6Omyb_1m4KI",
+                startSec: 305,
+                embedUrl: "https://www.youtube.com/embed/6Omyb_1m4KI?start=305\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=6Omyb_1m4KI\u0026t=305s",
+                title: "\ud83d\udca5 \u041d\u0438\u043d\u0434\u0437\u044f-\u0434\u0435\u0444\u044c\u044e\u0437",
                 subtitle: "Nuke \u2022 \u0420\u0430\u0443\u043d\u0434 4 (3:0)",
-                caption: "\u0420\u0430\u0443\u043d\u0434 4 (\u0441\u0447\u0451\u0442 3:0). mbaliyev \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (2K) \u0441 M4A4.",
+                caption: "\u0427\u0442\u043e \u0442\u0432\u043e\u0440\u0438\u0442 mbaliyev \u043d\u0430 \u044d\u0442\u043e\u043c Nuke, \u0432\u044b \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u043d\u0430 \u044d\u0442\u043e\u0442 \u0433\u0435\u043d\u0438\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433 \u0438 \u0447\u0442\u0435\u043d\u0438\u0435 \u043f\u043e\u0437\u0438\u0446\u0438\u0438! \u041e\u0448\u0438\u0431\u0430\u044e\u0442\u0441\u044f \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u044b \u0432 \u0440\u0430\u0437\u043c\u0435\u043d\u0435, \u0430 \u043d\u0430\u0448 \u0433\u0435\u0440\u043e\u0439 \u0432 \u0434\u044b\u043c\u0443 \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \u0434\u0432\u0430 \u0434\u0435\u0436\u0443\u0440\u043d\u044b\u0445 \u0444\u0440\u0430\u0433\u0430, \u0443\u043c\u0443\u0434\u0440\u044f\u044f\u0441\u044c \u043f\u043e\u0434 \u043d\u043e\u0441\u043e\u043c \u0443 \u043e\u0441\u0442\u0430\u0432\u0448\u0435\u0433\u043e\u0441\u044f \u0432\u0440\u0430\u0433\u0430 \u043f\u0440\u043e\u0432\u0435\u0440\u043d\u0443\u0442\u044c \u0431\u0435\u0437\u0443\u043c\u043d\u044b\u0439 \u043d\u0438\u043d\u0434\u0437\u044f-\u0434\u0435\u0444\u044c\u044e\u0437 \u043d\u0430 \u0447\u0435\u0442\u044b\u0440\u0435-\u043d\u043e\u043b\u044c!",
                 matchUrl: "../matches/10072026_nuke_nuke.html#round-4",
-                badgeColor: "indigo"
+                badgeColor: "purple"
             },
             
             
@@ -7701,11 +7807,11 @@
                     
                     <a href="76561199413542223.html" class="block group">
                         <h4 class="text-lg font-black text-white group-hover:text-sky-400 transition flex items-center justify-between">
-                            Jackalll
+                            zikayevg
                             <span class="text-xs text-slate-500 group-hover:text-sky-400">➔</span>
                         </h4>
                         <div class="text-xs text-slate-300 mt-2 font-mono">
-                            Совершено разменов: <strong class="text-sky-400">17</strong>
+                            Совершено разменов: <strong class="text-sky-400">13</strong>
                         </div>
                         <div class="text-[11px] text-slate-400 mt-1">
                             Мгновенная реакция при падении
@@ -7808,7 +7914,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 19:19</p>
+                <p class="footer-timestamp">Данные обновлены: 10.10.2026 19:34</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

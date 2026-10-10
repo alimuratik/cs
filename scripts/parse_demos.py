@@ -204,6 +204,7 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
         kills = df_to_list(demo.kills)
         damages = df_to_list(demo.damages)
         grenades = df_to_list(demo.grenades)
+        bomb_events = df_to_list(demo.bomb) if hasattr(demo, 'bomb') and demo.bomb is not None else []
         
         adr_dict = {}
         kast_dict = {}
@@ -527,11 +528,30 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
             elif winning_team == "team2" and clutcher_t2 and clutcher_t2 in players:
                 players[clutcher_t2]["clutch_wins"] += 1
 
+            # Точный дефьюзер для раундов с разминированием
+            defuser_sid = None
+            defuser_name = None
+            if r.get("reason") == "bomb_defused":
+                for be in bomb_events:
+                    if be.get("round_num") == r_num and str(be.get("event", "")).lower() == "defuse":
+                        raw_bsid = clean_steamid(be.get("steamid"))
+                        raw_bname = be.get("name")
+                        target_p = get_player(raw_bsid, raw_bname)
+                        if target_p:
+                            defuser_sid = target_p.get("steam_id")
+                            defuser_name = target_p.get("name")
+                        else:
+                            defuser_sid = raw_bsid
+                            defuser_name = raw_bname
+                        break
+
             light_rounds.append({
                 "round_num": r_num,
                 "winner": w,
                 "winning_team": winning_team,
                 "reason": r.get("reason"),
+                "defuser_steamid": defuser_sid,
+                "defuser_name": defuser_name,
                 "bomb_plant": r.get("bomb_plant"),
                 "bomb_site": r.get("bomb_site"),
                 "t1_side": t1_side,
@@ -635,6 +655,7 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
             "rounds": light_rounds,
             "kills": light_kills,
             "damages": light_damages,
+            "bomb_events": bomb_events,
             "economy": []
         }
         

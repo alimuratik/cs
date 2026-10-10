@@ -1556,12 +1556,14 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
         for th in top:
             sid = clean_steamid(th.get("player_steamid"))
             p_name = (th.get("player_name") or "").lower().strip()
-            if sid in PLAYER_ALIASES:
-                sid, _ = PLAYER_ALIASES[sid]
-            elif p_name in PLAYER_ALIASES:
-                sid, _ = PLAYER_ALIASES[p_name]
+            # Каноническое имя игрока имеет высший приоритет над Steam ID
+            # (предотвращает попадание хайлайтов гостя на аккаунт владельца ПК)
             if p_name in CANONICAL_PLAYERS:
                 sid = CANONICAL_PLAYERS[p_name]
+            elif p_name in PLAYER_ALIASES:
+                sid, _ = PLAYER_ALIASES[p_name]
+            elif sid in PLAYER_ALIASES:
+                sid, _ = PLAYER_ALIASES[sid]
 
             if not sid:
                 continue

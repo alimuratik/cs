@@ -3176,13 +3176,34 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
             t_deaths = sum(1 for k in rk if str(k.get("victim_side", "")).lower() == "t")
             t_alive_cnt = max(0, 5 - t_deaths)
             if t_alive_cnt >= 1:
-                ct_survivors = [sid for sid, tm in p_teams.items() if tm == wteam and sid not in {resolve_p_sid(k.get("victim_steamid"), k.get("victim_name")) for k in rk}]
-                if ct_survivors:
-                    defuser_sid = ct_survivors[0]
+                # 1. Извлекаем точного дефьюзера из данных раунда
+                defuser_sid = None
+                raw_dsid = r_evt.get("defuser_steamid")
+                raw_dname = r_evt.get("defuser_name")
+                if raw_dsid or raw_dname:
+                    defuser_sid = resolve_p_sid(raw_dsid, raw_dname)
+
+                # 2. Если в r_evt не сохранен, ищем в bomb_events матча
+                if not defuser_sid:
+                    for be in m_data.get("bomb_events", []):
+                        if be.get("round_num") == r_n and str(be.get("event", "")).lower() == "defuse":
+                            defuser_sid = resolve_p_sid(be.get("steamid"), be.get("name"))
+                            if not raw_dname:
+                                raw_dname = be.get("name")
+                            break
+
+                # 3. Fallback: выживший CT
+                if not defuser_sid:
+                    ct_survivors = [sid for sid, tm in p_teams.items() if tm == wteam and sid not in {resolve_p_sid(k.get("victim_steamid"), k.get("victim_name")) for k in rk}]
+                    if ct_survivors:
+                        defuser_sid = ct_survivors[0]
+
+                if defuser_sid:
+                    def_name = p_names.get(defuser_sid) or raw_dname or "Unknown"
                     score = 93 + (t_alive_cnt * 2)
                     badge = f"💥 Ниндзя-дефьюз ({t_alive_cnt} живых T)" if t_alive_cnt > 1 else "💥 Ниндзя-дефьюз"
                     candidates.append({
-                        "player_steamid": defuser_sid, "player_name": p_names.get(defuser_sid, "Unknown"), "round_num": r_n,
+                        "player_steamid": defuser_sid, "player_name": def_name, "round_num": r_n,
                         "score_at_moment": score_at_moment, "kills_count": att_counts.get(defuser_sid, 0), "headshots": att_hs.get(defuser_sid, 0),
                         "weapon": "defuse_kit", "weapon_display": "Defuse Kit",
                         "tick": rk[-1].get("tick", start_tick) if rk else start_tick, "score": score,
@@ -3332,9 +3353,19 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         c_item["order"] = idx + 1
 
         if idx == 0:
-            if existing_caption:
-                c_item["ai_caption"] = existing_caption
-            else:
+            reuse_cap = False
+            if isinstance(existing_caption, dict):
+                if (existing_caption.get("round_num") == c_item.get("round_num") and
+                    str(existing_caption.get("player_steamid")) == str(c_item.get("player_steamid"))):
+                    c_item["ai_caption"] = existing_caption.get("caption")
+                    reuse_cap = True
+            elif isinstance(existing_caption, str) and existing_caption:
+                p_short = str(c_item.get("player_name", "")).split()[0]
+                if p_short and p_short.lower() in existing_caption.lower():
+                    c_item["ai_caption"] = existing_caption
+                    reuse_cap = True
+
+            if not reuse_cap:
                 c_item["ai_caption"] = generate_highlight_ai_caption(c_item)
         else:
             w_disp = c_item.get("weapon_display", "оружия")
@@ -3363,7 +3394,11 @@ def compute_all_highlights(match_items: list, match_videos: dict = None, force_a
                 old_data = json.load(hf)
                 for mk, mv in old_data.get("match_highlights", {}).items():
                     if mv.get("ai_caption"):
-                        existing_captions[mk] = mv["ai_caption"]
+                        existing_captions[mk] = {
+                            "round_num": mv.get("round_num"),
+                            "player_steamid": mv.get("player_steamid"),
+                            "caption": mv["ai_caption"]
+                        }
         except Exception:
             pass
 

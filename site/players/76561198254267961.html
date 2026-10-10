@@ -682,7 +682,7 @@
                             Хайлайты в матчах
                         </h2>
                         <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-sm">
-                            23 моментов
+                            22 моментов
                         </span>
                     </div>
                     <p class="text-xs text-slate-400 mt-0.5">
@@ -697,9 +697,9 @@
                 
                 <button type="button" id="hl-showreel-btn" onclick="openHighlightClipByIndex(0)"
                         class="px-3 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 text-xs font-black transition flex items-center gap-1.5 cursor-pointer shadow-md shadow-amber-500/20 active:scale-95"
-                        title="Смотреть все видео-хайлайты игрока (12)">
+                        title="Смотреть все видео-хайлайты игрока (16)">
                     <span>🎬</span>
-                    <span>Смотреть видео (12)</span>
+                    <span>Смотреть видео (16)</span>
                 </button>
                 
 
@@ -731,7 +731,7 @@
         <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs scrollbar-none -mx-1 px-1" id="hl-filter-bar">
             <button type="button" onclick="filterHighlights('all', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold border border-amber-400 transition shrink-0 cursor-pointer shadow-sm">
-                Все (23)
+                Все (22)
             </button>
             
             
@@ -769,7 +769,7 @@
             
             <button type="button" onclick="filterHighlights('special', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-purple-300 border border-purple-500/30 hover:border-purple-400/60 transition shrink-0 cursor-pointer">
-                🔪 Нож/Zeus (2)
+                🔪 Нож/Zeus (1)
             </button>
             
             
@@ -785,7 +785,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="multi"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -826,9 +826,11 @@
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 17:46
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(0)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (19:36)
+                    </button>
                     
 
                     <a href="../matches/01102026_mirage_124_kase_mec.html#round-13"
@@ -841,7 +843,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="special"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -875,17 +877,19 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 5. Максимальный уровень дерзости от OCEANMENGO! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 5. Максимальный уровень дерзости от OCEANMENGO! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником."
+                         title="Да вы посмотрите на этот идеальный тайминг и безупречную позиционку от OCEANMENGO! Пятый раунд, счет 4:0, а он просто унижает соперников с ножа, оформляя дерзчайший килл в голову прямо под свист трибун! Это абсолютный тильт для оппонентов и вечный хайлайт для хайлайтов!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Да вы посмотрите на этот идеальный тайминг и безупречную позиционку от OCEANMENGO! Пятый раунд, счет 4:0, а он просто унижает соперников с ножа, оформляя дерзчайший килл в голову прямо под свист трибун! Это абсолютный тильт для оппонентов и вечный хайлайт для хайлайтов!"
                     </div>
                 </div>
 
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 5:27
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(1)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (5:21)
+                    </button>
                     
 
                     <a href="../matches/01102026_dust2_129_kase_gra.html#round-5"
@@ -898,7 +902,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="quad"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -932,17 +936,19 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 1. Максимальный уровень дерзости от mbaliyev! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 1. Максимальный уровень дерзости от mbaliyev! Идеальный подкрад в спину, безжалостный ножевой фраг и тотальная моральная доминация над соперником."
+                         title="Раунд 12 (счёт 8:3). Взрывной квадро-килл от OCEANMENGO! Четыре сокрушительных фрага с AK-47 (1 в голову) на важнейшей стадии раунда, перечеркнувшие все планы оппонента.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 12 (счёт 8:3). Взрывной квадро-килл от OCEANMENGO! Четыре сокрушительных фрага с AK-47 (1 в голову) на важнейшей стадии раунда, перечеркнувшие все планы оппонента."
                     </div>
                 </div>
 
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 17:47
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(2)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (17:41)
+                    </button>
                     
 
                     <a href="../matches/30092026_inferno_116_krisha_t.html#round-12"
@@ -955,7 +961,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="wallbang"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -997,9 +1003,11 @@
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 4:29
-                    </span>
+                    <button type="button"
+                            onclick="openHighlightClipByIndex(3)"
+                            class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
+                        <span>▶</span> VOD (4:23)
+                    </button>
                     
 
                     <a href="../matches/30092026_mirage_110_kase_vtb.html#round-3"
@@ -1012,7 +1020,7 @@
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="clutch"
-                 data-has-video="false">
+                 data-has-video="true">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
@@ -1054,71 +1062,14 @@
                 <!-- Footer Action Buttons -->
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 3:20
-                    </span>
-                    
-
-                    <a href="../matches/30092026_mirage_110_kase_vtb.html#round-2"
-                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
-                       title="Перейти к детальному разбору раунда в матче">
-                        К матчу ↗
-                    </a>
-                </div>
-            </div>
-            
-            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
-                 data-category="special"
-                 data-has-video="true">
-                
-                <div>
-                    <!-- Card Top: Map & Round / Score -->
-                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
-                        <span class="flex items-center gap-1 font-semibold text-slate-300">
-                            🗺️ Overpass
-                        </span>
-                        <span>Рд. 20 (11:8)</span>
-                    </div>
-
-                    <!-- Moment Badge & Date -->
-                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
-                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
-                            bg-purple-500/20 text-purple-300 border-purple-500/40
-                            ">
-                            🔪 Ножевой фраг
-                        </span>
-                        <span class="text-[10px] text-slate-500 font-mono">18 сентября 2026</span>
-                    </div>
-
-                    <!-- Weapon & Kill Stats -->
-                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-300 font-bold font-mono">Нож</span>
-                        </div>
-                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
-                            <span>2 фрага (1 HS)</span>
-                            <span class="text-slate-500">⏱ 31:53</span>
-                        </div>
-                    </div>
-
-                    <!-- AI Commentary Quote (Line clamped) -->
-                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 20 (счёт 11:8). Oceanmengo оформляет 🔪 Ножевой фраг с Нож.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 20 (счёт 11:8). Oceanmengo оформляет 🔪 Ножевой фраг с Нож."
-                    </div>
-                </div>
-
-                <!-- Footer Action Buttons -->
-                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
-                    
                     <button type="button"
-                            onclick="openHighlightClipByIndex(0)"
+                            onclick="openHighlightClipByIndex(4)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
-                        <span>▶</span> VOD (31:53)
+                        <span>▶</span> VOD (3:14)
                     </button>
                     
 
-                    <a href="../matches/18092026_overpass_27226528_245.html#round-20"
+                    <a href="../matches/30092026_mirage_110_kase_vtb.html#round-2"
                        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
                        title="Перейти к детальному разбору раунда в матче">
                         К матчу ↗
@@ -1171,7 +1122,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(1)"
+                            onclick="openHighlightClipByIndex(5)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (6:46)
                     </button>
@@ -1230,7 +1181,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(2)"
+                            onclick="openHighlightClipByIndex(6)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (4:03)
                     </button>
@@ -1289,7 +1240,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(3)"
+                            onclick="openHighlightClipByIndex(7)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (8:44)
                     </button>
@@ -1348,7 +1299,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(4)"
+                            onclick="openHighlightClipByIndex(8)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (25:16)
                     </button>
@@ -1407,7 +1358,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(5)"
+                            onclick="openHighlightClipByIndex(9)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (5:02)
                     </button>
@@ -1457,8 +1408,8 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 4 (счёт 3:0). Взрывной квадро-килл от Resone West! Четыре сокрушительных фрага с M4A4 (2 в голову) на важнейшей стадии раунда, перечеркнувшие все планы оппонента.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 4 (счёт 3:0). Взрывной квадро-килл от Resone West! Четыре сокрушительных фрага с M4A4 (2 в голову) на важнейшей стадии раунда, перечеркнувшие все планы оппонента."
+                         title="Раунд 21. Ювелирное чтение карты от Oceanmengo! Безупречный тайминг и сокрушительный прострел сквозь дым с AWP, заставший соперника врасплох.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 21. Ювелирное чтение карты от Oceanmengo! Безупречный тайминг и сокрушительный прострел сквозь дым с AWP, заставший соперника врасплох."
                     </div>
                 </div>
 
@@ -1466,7 +1417,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(6)"
+                            onclick="openHighlightClipByIndex(10)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (37:43)
                     </button>
@@ -1525,7 +1476,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(7)"
+                            onclick="openHighlightClipByIndex(11)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (29:20)
                     </button>
@@ -1584,7 +1535,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(8)"
+                            onclick="openHighlightClipByIndex(12)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (26:38)
                     </button>
@@ -1643,7 +1594,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(9)"
+                            onclick="openHighlightClipByIndex(13)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (16:15)
                     </button>
@@ -1702,7 +1653,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(10)"
+                            onclick="openHighlightClipByIndex(14)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (29:22)
                     </button>
@@ -1761,7 +1712,7 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <button type="button"
-                            onclick="openHighlightClipByIndex(11)"
+                            onclick="openHighlightClipByIndex(15)"
                             class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 border border-amber-500/40 font-bold transition flex items-center gap-1 text-[11px] cursor-pointer shadow-sm">
                         <span>▶</span> VOD (11:29)
                     </button>
@@ -1925,8 +1876,8 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 11 (счёт 3:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v3, qumashasyl сохраняет ледяное спокойствие. Мастерское разделение дуэлей с AK-47 и триумфальная победа в раунде!">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 11 (счёт 3:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v3, qumashasyl сохраняет ледяное спокойствие. Мастерское разделение дуэлей с AK-47 и триумфальная победа в раунде!"
+                         title="Раунд 17 (счёт 6:10). Легендарный выстрел от Oceanmengo! Один патрон из снайперской винтовки AWP прошивает сразу двоих соперников насквозь — готовый клип для хайлайтов года!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 17 (счёт 6:10). Легендарный выстрел от Oceanmengo! Один патрон из снайперской винтовки AWP прошивает сразу двоих соперников насквозь — готовый клип для хайлайтов года!"
                     </div>
                 </div>
 
@@ -2039,8 +1990,8 @@
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Это просто невероятно на Dust2! Oceanmengo на невероятном тайминге и безупречной позиционке вгрызается в этот раунд, оформляет четыре фрага с Tec-9, из которых три — чистейшие хедшоты под дичайшим давлением! Экономический раунд превращается в шедевр киберспорта, счет становится 6:7, и трибуны взрываются от этого гениального клатча!">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Это просто невероятно на Dust2! Oceanmengo на невероятном тайминге и безупречной позиционке вгрызается в этот раунд, оформляет четыре фрага с Tec-9, из которых три — чистейшие хедшоты под дичайшим давлением! Экономический раунд превращается в шедевр киберспорта, счет становится 6:7, и трибуны взрываются от этого гениального клатча!"
+                         title="Раунд 13 (счёт 5:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v3, Oceanmengo сохраняет ледяное спокойствие. Мастерское разделение дуэлей с Tec-9 и триумфальная победа в раунде!">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 13 (счёт 5:7). Оказавшись в тяжелейшей ситуации 🧠 клатч 1v3, Oceanmengo сохраняет ледяное спокойствие. Мастерское разделение дуэлей с Tec-9 и триумфальная победа в раунде!"
                     </div>
                 </div>
 
@@ -2215,26 +2166,72 @@
         var playerVideoHighlights = [
             
             
-            
-            
-            
-            
-            
-            
-            
+            {
+                videoId: "3RaW-1X5XPU",
+                startSec: 1176,
+                embedUrl: "https://www.youtube.com/embed/3RaW-1X5XPU?start=1176\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=3RaW-1X5XPU\u0026t=1176s",
+                title: "\ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K)",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 13 (11:1)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 13 (\u0441\u0447\u0451\u0442 11:1). OCEANMENGO \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83c\udfaf \u0422\u0440\u043e\u0439\u043d\u043e\u0439 \u043a\u0438\u043b\u043b (3K) \u0441 AK-47.",
+                matchUrl: "../matches/01102026_mirage_124_kase_mec.html#round-13",
+                badgeColor: "emerald"
+            },
             
             
             
             {
-                videoId: "5ZjMjmDFUXE",
-                startSec: 1913,
-                embedUrl: "https://www.youtube.com/embed/5ZjMjmDFUXE?start=1913\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
-                watchUrl: "https://www.youtube.com/watch?v=5ZjMjmDFUXE\u0026t=1913s",
+                videoId: "OdmfGp0izlg",
+                startSec: 321,
+                embedUrl: "https://www.youtube.com/embed/OdmfGp0izlg?start=321\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=OdmfGp0izlg\u0026t=321s",
                 title: "\ud83d\udd2a \u041d\u043e\u0436\u0435\u0432\u043e\u0439 \u0444\u0440\u0430\u0433",
-                subtitle: "Overpass \u2022 \u0420\u0430\u0443\u043d\u0434 20 (11:8)",
-                caption: "\u0420\u0430\u0443\u043d\u0434 20 (\u0441\u0447\u0451\u0442 11:8). Oceanmengo \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udd2a \u041d\u043e\u0436\u0435\u0432\u043e\u0439 \u0444\u0440\u0430\u0433 \u0441 \u041d\u043e\u0436.",
-                matchUrl: "../matches/18092026_overpass_27226528_245.html#round-20",
+                subtitle: "Dust2 \u2022 \u0420\u0430\u0443\u043d\u0434 5 (4:0)",
+                caption: "\u0414\u0430 \u0432\u044b \u043f\u043e\u0441\u043c\u043e\u0442\u0440\u0438\u0442\u0435 \u043d\u0430 \u044d\u0442\u043e\u0442 \u0438\u0434\u0435\u0430\u043b\u044c\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433 \u0438 \u0431\u0435\u0437\u0443\u043f\u0440\u0435\u0447\u043d\u0443\u044e \u043f\u043e\u0437\u0438\u0446\u0438\u043e\u043d\u043a\u0443 \u043e\u0442 OCEANMENGO! \u041f\u044f\u0442\u044b\u0439 \u0440\u0430\u0443\u043d\u0434, \u0441\u0447\u0435\u0442 4:0, \u0430 \u043e\u043d \u043f\u0440\u043e\u0441\u0442\u043e \u0443\u043d\u0438\u0436\u0430\u0435\u0442 \u0441\u043e\u043f\u0435\u0440\u043d\u0438\u043a\u043e\u0432 \u0441 \u043d\u043e\u0436\u0430, \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u044f \u0434\u0435\u0440\u0437\u0447\u0430\u0439\u0448\u0438\u0439 \u043a\u0438\u043b\u043b \u0432 \u0433\u043e\u043b\u043e\u0432\u0443 \u043f\u0440\u044f\u043c\u043e \u043f\u043e\u0434 \u0441\u0432\u0438\u0441\u0442 \u0442\u0440\u0438\u0431\u0443\u043d! \u042d\u0442\u043e \u0430\u0431\u0441\u043e\u043b\u044e\u0442\u043d\u044b\u0439 \u0442\u0438\u043b\u044c\u0442 \u0434\u043b\u044f \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u043e\u0432 \u0438 \u0432\u0435\u0447\u043d\u044b\u0439 \u0445\u0430\u0439\u043b\u0430\u0439\u0442 \u0434\u043b\u044f \u0445\u0430\u0439\u043b\u0430\u0439\u0442\u043e\u0432!",
+                matchUrl: "../matches/01102026_dust2_129_kase_gra.html#round-5",
                 badgeColor: "purple"
+            },
+            
+            
+            
+            {
+                videoId: "-992L-GovEg",
+                startSec: 1061,
+                embedUrl: "https://www.youtube.com/embed/-992L-GovEg?start=1061\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=-992L-GovEg\u0026t=1061s",
+                title: "\u26a1 \u041a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b (4K)",
+                subtitle: "Inferno \u2022 \u0420\u0430\u0443\u043d\u0434 12 (8:3)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 12 (\u0441\u0447\u0451\u0442 8:3). \u0412\u0437\u0440\u044b\u0432\u043d\u043e\u0439 \u043a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b \u043e\u0442 OCEANMENGO! \u0427\u0435\u0442\u044b\u0440\u0435 \u0441\u043e\u043a\u0440\u0443\u0448\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u0444\u0440\u0430\u0433\u0430 \u0441 AK-47 (1 \u0432 \u0433\u043e\u043b\u043e\u0432\u0443) \u043d\u0430 \u0432\u0430\u0436\u043d\u0435\u0439\u0448\u0435\u0439 \u0441\u0442\u0430\u0434\u0438\u0438 \u0440\u0430\u0443\u043d\u0434\u0430, \u043f\u0435\u0440\u0435\u0447\u0435\u0440\u043a\u043d\u0443\u0432\u0448\u0438\u0435 \u0432\u0441\u0435 \u043f\u043b\u0430\u043d\u044b \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u0430.",
+                matchUrl: "../matches/30092026_inferno_116_krisha_t.html#round-12",
+                badgeColor: "indigo"
+            },
+            
+            
+            
+            {
+                videoId: "Oju0gNxmyc8",
+                startSec: 263,
+                embedUrl: "https://www.youtube.com/embed/Oju0gNxmyc8?start=263\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=Oju0gNxmyc8\u0026t=263s",
+                title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 3 (2:0)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 3 (\u0441\u0447\u0451\u0442 2:0). OCEANMENGO \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a \u0441 M4A4.",
+                matchUrl: "../matches/30092026_mirage_110_kase_vtb.html#round-3",
+                badgeColor: "indigo"
+            },
+            
+            
+            
+            {
+                videoId: "Oju0gNxmyc8",
+                startSec: 194,
+                embedUrl: "https://www.youtube.com/embed/Oju0gNxmyc8?start=194\u0026autoplay=1\u0026enablejsapi=1\u0026rel=0\u0026playsinline=1",
+                watchUrl: "https://www.youtube.com/watch?v=Oju0gNxmyc8\u0026t=194s",
+                title: "\ud83e\udde0 \u041a\u043b\u0430\u0442\u0447 1v2",
+                subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 2 (1:0)",
+                caption: "\u0420\u0430\u0443\u043d\u0434 2 (\u0441\u0447\u0451\u0442 1:0). OCEANMENGO \u043e\u0444\u043e\u0440\u043c\u043b\u044f\u0435\u0442 \ud83e\udde0 \u041a\u043b\u0430\u0442\u0447 1v2 \u0441 Glock-18.",
+                matchUrl: "../matches/30092026_mirage_110_kase_vtb.html#round-2",
+                badgeColor: "sky"
             },
             
             
@@ -2316,7 +2313,7 @@
                 watchUrl: "https://www.youtube.com/watch?v=aqsRMVV75KU\u0026t=2263s",
                 title: "\ud83d\udca3 \u041f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0441\u043c\u043e\u043a (2K)",
                 subtitle: "Mirage \u2022 \u0420\u0430\u0443\u043d\u0434 21 (12:8)",
-                caption: "\u0420\u0430\u0443\u043d\u0434 4 (\u0441\u0447\u0451\u0442 3:0). \u0412\u0437\u0440\u044b\u0432\u043d\u043e\u0439 \u043a\u0432\u0430\u0434\u0440\u043e-\u043a\u0438\u043b\u043b \u043e\u0442 Resone West! \u0427\u0435\u0442\u044b\u0440\u0435 \u0441\u043e\u043a\u0440\u0443\u0448\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u0444\u0440\u0430\u0433\u0430 \u0441 M4A4 (2 \u0432 \u0433\u043e\u043b\u043e\u0432\u0443) \u043d\u0430 \u0432\u0430\u0436\u043d\u0435\u0439\u0448\u0435\u0439 \u0441\u0442\u0430\u0434\u0438\u0438 \u0440\u0430\u0443\u043d\u0434\u0430, \u043f\u0435\u0440\u0435\u0447\u0435\u0440\u043a\u043d\u0443\u0432\u0448\u0438\u0435 \u0432\u0441\u0435 \u043f\u043b\u0430\u043d\u044b \u043e\u043f\u043f\u043e\u043d\u0435\u043d\u0442\u0430.",
+                caption: "\u0420\u0430\u0443\u043d\u0434 21. \u042e\u0432\u0435\u043b\u0438\u0440\u043d\u043e\u0435 \u0447\u0442\u0435\u043d\u0438\u0435 \u043a\u0430\u0440\u0442\u044b \u043e\u0442 Oceanmengo! \u0411\u0435\u0437\u0443\u043f\u0440\u0435\u0447\u043d\u044b\u0439 \u0442\u0430\u0439\u043c\u0438\u043d\u0433 \u0438 \u0441\u043e\u043a\u0440\u0443\u0448\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0439 \u043f\u0440\u043e\u0441\u0442\u0440\u0435\u043b \u0441\u043a\u0432\u043e\u0437\u044c \u0434\u044b\u043c \u0441 AWP, \u0437\u0430\u0441\u0442\u0430\u0432\u0448\u0438\u0439 \u0441\u043e\u043f\u0435\u0440\u043d\u0438\u043a\u0430 \u0432\u0440\u0430\u0441\u043f\u043b\u043e\u0445.",
                 matchUrl: "../matches/24072026_mirage_25876830_237.html#round-21",
                 badgeColor: "indigo"
             },
@@ -7735,7 +7732,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 19:19</p>
+                <p class="footer-timestamp">Данные обновлены: 10.10.2026 19:34</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
