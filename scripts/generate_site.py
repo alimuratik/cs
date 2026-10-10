@@ -573,13 +573,14 @@ def format_coach_summary(text: str) -> str:
                 l = l.strip()
                 if not l:
                     continue
-                # Парсим • **Player** [Role]: Strength *Зона роста:* Growth
-                m = re.search(r'[•\*\-]?\s*\*\*([^*]+)\*\*\s*(?:\[([^\]]+)\])?:\s*(.*?)(?:\*?Зона роста:\*?)\s*(.*)', l, re.I)
+                # Парсим • **Player** [Role]: Strength *Зона роста:* Growth ИЛИ *Что мы не смогли законтрить:*
+                m = re.search(r'[•\*\-]?\s*\*\*([^*]+)\*\*\s*(?:\[([^\]]+)\])?:\s*(.*?)(?:\*?(?:Зона роста|Что мы не смогли законтрить):\*?)\s*(.*)', l, re.I)
                 if m:
                     p_name = m.group(1).strip()
                     p_role = m.group(2).strip() if m.group(2) else ""
                     p_strength = m.group(3).strip()
                     p_growth = m.group(4).strip()
+                    growth_label = "Что мы не смогли законтрить:" if ("не смогли законтрить" in l.lower() or not is_team1) else "Зона роста:"
 
                     role_badge = f'<span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">{escape(p_role)}</span>' if p_role else ""
 
@@ -595,7 +596,7 @@ def format_coach_summary(text: str) -> str:
                             </div>
                             <div class="text-xs text-amber-200/90 leading-relaxed flex items-start gap-2 pt-1.5 border-t border-slate-800/60">
                                 <span class="text-amber-400 text-xs shrink-0 mt-0.5">🎯</span>
-                                <span><strong class="text-amber-300 font-semibold">Зона роста:</strong> {_inline_md(p_growth)}</span>
+                                <span><strong class="text-amber-300 font-semibold">{growth_label}</strong> {_inline_md(p_growth)}</span>
                             </div>
                         </div>
                     """)

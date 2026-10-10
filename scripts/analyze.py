@@ -3914,8 +3914,36 @@ def run_analysis(force_ai: bool = False):
         cap2 = max(t2_pls, key=lambda x: (x.get("hltv_rating", 0.0), x.get("kills", 0)))["name"] if t2_pls else "Команда 2"
         m_data["team1_captain"] = cap1
         m_data["team2_captain"] = cap2
-        m_data["team1_name"] = f"Команда 1 ({cap1})"
-        m_data["team2_name"] = f"Команда 2 ({cap2})"
+
+        # В турнирных матчах сохраняем официальные названия команд (Team KASE и соперник)
+        is_m_tourn = bool(m_data.get("tournament")) or "kase" in m_id.lower() or m_date in ("30092026", "01102026")
+        if is_m_tourn:
+            from scripts.config import TOURNAMENT_MATCH_OPPONENTS
+            opp_name = TOURNAMENT_MATCH_OPPONENTS.get(m_id)
+            if not opp_name:
+                for k_opp, val_opp in TOURNAMENT_MATCH_OPPONENTS.items():
+                    if k_opp in m_id or m_id in k_opp:
+                        opp_name = val_opp
+                        break
+            if not opp_name:
+                if "vtb" in m_id.lower(): opp_name = "ВТБ Банк"
+                elif "krisha" in m_id.lower(): opp_name = "Krisha"
+                elif "mec" in m_id.lower(): opp_name = "Mechta.kz"
+                elif "inno" in m_id.lower(): opp_name = "Innoforce"
+                elif "gra" in m_id.lower(): opp_name = "Grand Games"
+                else: opp_name = "Соперник"
+
+            t1_kase_c = sum(1 for p in t1_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
+            t2_kase_c = sum(1 for p in t2_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
+            if t1_kase_c >= t2_kase_c:
+                m_data["team1_name"] = "Team KASE"
+                m_data["team2_name"] = opp_name
+            else:
+                m_data["team1_name"] = opp_name
+                m_data["team2_name"] = "Team KASE"
+        else:
+            m_data["team1_name"] = f"Команда 1 ({cap1})"
+            m_data["team2_name"] = f"Команда 2 ({cap2})"
         
         # Обновляем вводный аналитический комментарий с актуальным счетом и именами команд
         m_data["ai_analysis"] = generate_match_intro_commentary(m_data)

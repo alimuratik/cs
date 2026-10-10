@@ -745,7 +745,7 @@ def generate_match_summary_analysis_fallback(match_data: dict) -> str:
     t1_players.sort(key=lambda x: (x.get('hltv_rating', 0.0), x.get('adr', 0.0)), reverse=True)
     t2_players.sort(key=lambda x: (x.get('hltv_rating', 0.0), x.get('adr', 0.0)), reverse=True)
 
-    def describe_player_coaching(p: dict) -> str:
+    def describe_player_coaching(p: dict, is_opp: bool = False) -> str:
         name = p.get('name', 'Player')
         k = p.get('kills', 0)
         d = p.get('deaths', 0)
@@ -757,6 +757,26 @@ def generate_match_summary_analysis_fallback(match_data: dict) -> str:
         dmg_share = p.get('damage_share', 0.0)
         k_share = p.get('kill_share', 0.0)
         status = p.get('team_share_status', 'normal')
+
+        if is_opp:
+            # Аудит действий соперника: что он сделал против нас и что мы не смогли законтрить
+            if status == "titan" or dmg_share >= 28.0 or adr >= 90.0:
+                role = "Главная угроза / Соло-керри"
+                strength = f"Создал огромные проблемы для защиты KASE: нанес {dmg_share}% урона ({adr} ADR) и продавливал ключевые зоны карты."
+                growth = f"Что мы не смогли законтрить: не изолировали его очные дуэли кросс-огнем и дали настрелять {k} фрагов без своевременного размена."
+            elif fk >= 3:
+                role = "Агрессивный энтри / Опен-фрагер"
+                strength = f"Вскрывал позиции KASE в дебютах раундов ({fk} опенинг-фрагов), навязывая удобный сопернику темп."
+                growth = f"Что мы не смогли законтрить: позволили забирать первый контакт без флеш-контрвыпадов и глубоких позиционных ловушек."
+            elif kast >= 75:
+                role = "Системный саппорт / Дисциплина"
+                strength = f"Стабильно цементировал раунды соперника ({kast}% KAST) и поддерживал структуру атак/холда."
+                growth = f"Что мы не смогли законтрить: медленно наказывали за пассивную позиционку и не отрезали смоками от остального состава."
+            else:
+                role = "Второй темп / Размен"
+                strength = f"Поддерживал темп команды ({k} фрагов, {adr} ADR), создавая численное преимущество."
+                growth = f"Что мы не смогли законтрить: подставлялись под его второй темп после первичных перестрелок."
+            return f"• **{name}** [{role}]: {strength} *Что мы не смогли законтрить:* {growth}"
 
         if status == "titan" or dmg_share >= 30.0:
             role = "Одинокий титан (Solo Carry)"
@@ -800,15 +820,17 @@ def generate_match_summary_analysis_fallback(match_data: dict) -> str:
         kase_team_name = t1_name if kase_is_t1 else t2_name
         opp_team_name = t2_name if kase_is_t1 else t1_name
         kase_pls = [p for p in (t1_players if kase_is_t1 else t2_players) if is_kase_p(p)]
+        opp_pls = [p for p in (t2_players if kase_is_t1 else t1_players) if not is_kase_p(p)]
 
-        kase_lines = "\n".join([describe_player_coaching(p) for p in kase_pls])
+        kase_lines = "\n".join([describe_player_coaching(p, is_opp=False) for p in kase_pls])
+        opp_lines = "\n".join([describe_player_coaching(p, is_opp=True) for p in opp_pls])
 
         summary_text = (
-            f"### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ (TEAM KASE)\n\n"
+            f"### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ (TEAM KASE VS {opp_team_name.upper()})\n\n"
             f"#### 🛡️ {kase_team_name}\n"
             f"{kase_lines}\n\n"
             f"#### ⚔️ {opp_team_name}\n"
-            f"• **Корпоративный соперник ({opp_team_name})**: Матч турнира QEBL S7. Тренерский аудит сфокусирован на составе Team KASE.\n\n"
+            f"{opp_lines}\n\n"
             f"---\n\n"
             f"{takeaways}"
         )
@@ -886,14 +908,21 @@ def generate_match_summary_analysis(match_data: dict) -> str:
             t2_desc = "\n".join([fmt_player(p) for p in t2_players])
             kase_desc = "\n".join([fmt_player(p) for p in kase_pls])
 
+            opp_pls = [p for p in (t2_players if kase_is_t1 else t1_players) if not is_kase_p(p)]
+            opp_desc = "\n".join([fmt_player(p) for p in opp_pls])
+
             if is_tourn:
                 tourn_prompt_focus = f"""ВНИМАНИЕ: Это официальный матч корпоративного турнира QEBL S7!
 Наша команда — {kase_team_name}. Соперник — {opp_team_name}.
-КРИТИЧЕСКИ ВАЖНО: Проведи детальный персональный разбор по ролям, сильным сторонам и зонам роста ИСКЛЮЧИТЕЛЬНО для 5 игроков нашей команды {kase_team_name}!
-Для соперника ({opp_team_name}) напиши только одну короткую строку: '• **{opp_team_name}**: Корпоративный соперник турнира QEBL S7.'
+ТРЕБОВАНИЕ: Проведи детальный персональный разбор по ролям для игроков ОБЕИХ команд:
+1. Для 5 игроков нашей команды {kase_team_name}: тактическая роль, индивидуальная сильная сторона и зона роста.
+2. Для игроков соперника {opp_team_name}: с точки зрения того, что они сделали против нас (их ключевые действия, агрессия, опен-фраги, контроль) и что наша команда KASE не смогла законтрить с их стороны!
 
 Игроки нашей команды {kase_team_name}:
-{kase_desc}"""
+{kase_desc}
+
+Игроки соперника {opp_team_name}:
+{opp_desc}"""
             else:
                 tourn_prompt_focus = f"""Игроки {t1_name}:
 {t1_desc}
@@ -920,14 +949,15 @@ def generate_match_summary_analysis(match_data: dict) -> str:
 ТРЕБОВАНИЯ К ФОРМАТУ (СТРОГО СОБЛЮДАЙ СТРУКТУРУ И РАЗМЕТКУ!):
 Разбор должен состоять ровно из 2 секций:
 
-### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ{' (TEAM KASE)' if is_tourn else ' ДЛЯ ВСЕХ 10 ИГРОКОВ'}
+### 🧠 1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ ДЛЯ ВСЕХ ИГРОКОВ
 
 #### 🛡️ {kase_team_name if is_tourn else t1_name}
 Для КАЖДОГО игрока {kase_team_name if is_tourn else t1_name} напиши ОДНУ строку строго в формате:
 • **Имя игрока** [Тактическая роль на русском]: Индивидуальная сильная сторона и вклад в матч на основе его цифр. *Зона роста:* Конкретная тактическая ошибка в этом матче и что исправить.
 
 #### ⚔️ {opp_team_name if is_tourn else t2_name}
-{'• **' + opp_team_name + '**: Корпоративный соперник турнира QEBL S7.' if is_tourn else 'Для КАЖДОГО игрока ' + t2_name + ' напиши ОДНУ строку строго в формате:\n• **Имя игрока** [Тактическая роль на русском]: Индивидуальная сильная сторона и вклад в матч на основе его цифр. *Зона роста:* Конкретная тактическая ошибка в этом матче и что исправить.'}
+Для КАЖДОГО игрока {opp_team_name if is_tourn else t2_name} напиши ОДНУ строку строго в формате:
+• **Имя игрока** [Тактическая роль на русском]: Что игрок сделал на сервере против KASE и чем доставил проблемы. *Что мы не смогли законтрить:* В чем недоработала Team KASE против этого игрока.
 
 ---
 

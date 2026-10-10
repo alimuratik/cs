@@ -142,6 +142,15 @@ CANONICAL_PLAYERS = {
 # Даты соревновательных турниров (исключаются из архива регулярных пятничных сессий сообщества)
 TOURNAMENT_DATES = {"30092026", "01102026"}
 
+# Официальные названия соперников корпоративного турнира QEBL Season 7
+TOURNAMENT_MATCH_OPPONENTS = {
+    "30092026_mirage_110_kase_vtb": "ВТБ Банк",
+    "30092026_inferno_116_krisha_t": "Krisha",
+    "01102026_mirage_124_kase_mec": "Mechta.kz",
+    "01102026_inferno_127_innoforc": "Innoforce",
+    "01102026_dust2_129_kase_gra": "Grand Games",
+}
+
 # Переводы названий позиций на русский сленг (Active Duty карты)
 MAP_CALLOUTS = {
     "de_mirage": {
