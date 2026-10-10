@@ -169,7 +169,25 @@ def parse_single_demo(demo_path: str, date_str: str, demo_name: str) -> dict:
     try:
         demo = Demo(demo_path)
         demo.parse()
-        
+
+        # Ножевой раунд за выбор стороны (round_num=1, все киллы ножами) не является игровым раундом:
+        # удаляем его из всех таблиц и сдвигаем нумерацию, чтобы раунд 1 = пистолетка, 13 = пистолетка 2-й половины.
+        # Тики (parquet) тоже обрезаются, поэтому min(tick) = старт первого живого раунда (= старт записи видео).
+        try:
+            kdf = demo.kills
+            if kdf is not None and not kdf.is_empty() and "round_num" in kdf.columns:
+                r1k = kdf.filter(pl.col("round_num") == 1)
+                if r1k.height >= 3 and r1k.filter(
+                    ~pl.col("weapon").cast(pl.Utf8).str.to_lowercase().str.contains("knife|bayonet")
+                ).height == 0:
+                    for attr in ("rounds", "kills", "damages", "grenades", "bomb", "ticks", "shots", "smokes", "infernos"):
+                        frame = getattr(demo, attr, None)
+                        if isinstance(frame, pl.DataFrame) and "round_num" in frame.columns:
+                            setattr(demo, attr, frame.filter(pl.col("round_num") > 1).with_columns(pl.col("round_num") - 1))
+                    logging.info("Ножевой раунд удалён из данных демки (нумерация раундов сдвинута на -1)")
+        except Exception as e:
+            logging.warning(f"Не удалось удалить ножевой раунд: {e}")
+
         map_name = demo.header.get("map_name", "unknown") if demo.header else "unknown"
         
         map_mapping = {

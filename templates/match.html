@@ -523,7 +523,7 @@
                                 </div>
                                 <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between">
                                     <span class="text-amber-300/90 font-medium">{{ m_hl.weapon_display }}</span>
-                                    <span>Рд. {{ m_hl.round_num }} ({{ m_hl.score_at_moment }})</span>
+                                    <span>Рд. {{ m_hl.display_round or m_hl.round_num }} ({{ m_hl.score_at_moment }})</span>
                                 </div>
                             </div>
 

@@ -1131,7 +1131,12 @@ def format_match_data(m: dict) -> dict:
         kills_by_round.setdefault(r_num, []).append(k)
 
     raw_rounds = m.get("rounds", [])
-    for idx, r in enumerate(raw_rounds, start=1):
+    # Ножевой раунд за сторону (round_num=1) не показываем: игровая нумерация начинается со следующего
+    knife_shift = 1 if is_knife_warmup_round(m) else 0
+    for raw_idx, r in enumerate(raw_rounds, start=1):
+        if knife_shift and raw_idx == 1:
+            continue
+        idx = raw_idx - knife_shift  # игровой номер раунда
         w = str(r.get("winner", "CT")).upper()
         reason = r.get("reason", "")
         
@@ -1147,7 +1152,7 @@ def format_match_data(m: dict) -> dict:
             icon = "⏱️"
             win_type = "Время вышло"
 
-        r_kills = kills_by_round.get(idx, [])
+        r_kills = kills_by_round.get(raw_idx, [])
         killfeed = []
         for k in r_kills:
             att = k.get("attacker_name") or "World"
@@ -1301,18 +1306,7 @@ def format_match_data(m: dict) -> dict:
                     curr_offset = video_offset_sec or match_highlight.get("video_offset_sec", 0)
                     g_sec = match_highlight.get("game_sec", 0)
                     lead_in = 6
-                    round_n = match_highlight.get("round_num", 1)
-
-                    # Проверяем калибровку паузы при смене сторон (QEBL S7)
-                    qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
-                    r13_vid_start = qebl_calib.get("r13_video_start_sec")
-                    r13_tick = qebl_calib.get("r13_start_tick")
-
-                    if round_n >= 13 and r13_vid_start is not None and r13_tick is not None:
-                        m_tick = match_highlight.get("moment_tick") or match_highlight.get("tick") or r13_tick
-                        sec_from_r13 = max(0, round((m_tick - r13_tick) / 64.0))
-                        start_sec = max(0, r13_vid_start + sec_from_r13 - lead_in)
-                    elif "embed_start_sec" in match_highlight and curr_offset == match_highlight.get("video_offset_sec", 0):
+                    if "embed_start_sec" in match_highlight and curr_offset == match_highlight.get("video_offset_sec", 0):
                         start_sec = match_highlight["embed_start_sec"]
                     else:
                         start_sec = max(0, curr_offset + g_sec - lead_in)
@@ -1347,12 +1341,7 @@ def format_match_data(m: dict) -> dict:
                     formatted_top = []
                     for idx, th_item in enumerate(raw_top):
                         th = dict(th_item)
-                        th_rn = th.get("round_num", 1)
-                        if th_rn >= 13 and r13_vid_start is not None and r13_tick is not None:
-                            th_m_tick = th.get("moment_tick") or th.get("tick") or r13_tick
-                            th_sec_from_r13 = max(0, round((th_m_tick - r13_tick) / 64.0))
-                            th_start = max(0, r13_vid_start + th_sec_from_r13 - lead_in)
-                        elif "embed_start_sec" in th and curr_offset == th.get("video_offset_sec", 0):
+                        if "embed_start_sec" in th and curr_offset == th.get("video_offset_sec", 0):
                             th_start = th["embed_start_sec"]
                         else:
                             th_g_sec = th.get("game_sec", 0)
@@ -1380,8 +1369,8 @@ def format_match_data(m: dict) -> dict:
     return {
         "match_id": m.get("match_id"),
         "map_name": m.get("map_display", m.get("map")),
-        "score1": m.get("score_team1", 0),
-        "score2": m.get("score_team2", 0),
+        "score1": m.get("score_team1", 0) - (1 if knife_shift and raw_rounds and raw_rounds[0].get("winning_team") == "team1" else 0),
+        "score2": m.get("score_team2", 0) - (1 if knife_shift and raw_rounds and raw_rounds[0].get("winning_team") == "team2" else 0),
         "half_scores": half_scores_str,
         "date_display": m.get("date_display", ""),
         "team1": calc_totals(t1_rows),
@@ -1569,18 +1558,7 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
                 continue
 
             g_sec = th.get("game_sec", 0)
-            th_rn = th.get("round_num", 1)
-
-            # Проверяем калибровку паузы при смене сторон (QEBL S7)
-            qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
-            r13_vid_start = qebl_calib.get("r13_video_start_sec")
-            r13_tick = qebl_calib.get("r13_start_tick")
-
-            if th_rn >= 13 and r13_vid_start is not None and r13_tick is not None:
-                th_m_tick = th.get("moment_tick") or th.get("tick") or r13_tick
-                th_sec_from_r13 = max(0, round((th_m_tick - r13_tick) / 64.0))
-                start_sec = max(0, r13_vid_start + th_sec_from_r13 - lead_in)
-            elif "embed_start_sec" in th and v_offset == th.get("video_offset_sec", 0):
+            if "embed_start_sec" in th and v_offset == th.get("video_offset_sec", 0):
                 start_sec = th["embed_start_sec"]
             else:
                 start_sec = max(0, v_offset + g_sec - lead_in)
@@ -1663,7 +1641,7 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
             item["timecode_display"] = tc_disp
             item["date_display"] = format_date_display(th.get("date", ""))
             r_num = th.get("round_num", 1)
-            item["match_url"] = f"../matches/{mid}.html#round-{r_num}"
+            item["match_url"] = f"../matches/{mid}.html#round-{th.get('display_round', r_num)}"
 
             player_highlights.setdefault(sid, []).append(item)
 

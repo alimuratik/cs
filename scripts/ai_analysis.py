@@ -1,4 +1,6 @@
 import os
+import re
+import sys
 import json
 import logging
 import random
@@ -6,20 +8,139 @@ import time
 from collections import Counter, defaultdict
 from scripts.config import *
 
+if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
+    try: sys.stdout.reconfigure(encoding='utf-8')
+    except Exception: pass
+if sys.stderr and hasattr(sys.stderr, 'reconfigure'):
+    try: sys.stderr.reconfigure(encoding='utf-8')
+    except Exception: pass
+
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
+# Заглушаем технический шум от SDK google-genai, httpx и urllib3
+logging.getLogger("google").setLevel(logging.ERROR)
+logging.getLogger("google.genai").setLevel(logging.ERROR)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+
+# Состояние глобального предохранителя Gemini API (Circuit Breaker)
+_gemini_quota_exhausted = False
+_last_gemini_call_time = 0.0
+_consecutive_429_count = 0
+_gemini_client_instance = None
+
+def is_gemini_quota_exhausted() -> bool:
+    """Проверка, сработал ли предохранитель квоты Gemini."""
+    return _gemini_quota_exhausted
+
+def trip_gemini_circuit_breaker(reason: str = "Квота исчерпана"):
+    """Принудительно включить предохранитель (отключить запросы к API)."""
+    global _gemini_quota_exhausted
+    if not _gemini_quota_exhausted:
+        _gemini_quota_exhausted = True
+        logging.warning(
+            f"⚠️ Предохранитель Gemini API активирован ({reason}). "
+            f"Все последующие анализы переключены на мгновенный локальный тактический движок."
+        )
+
 def get_gemini_client():
-    """Инициализация клиента Google Gemini (если ключ доступен)."""
+    """Инициализация клиента Google Gemini (синглтон)."""
+    global _gemini_client_instance, _gemini_quota_exhausted
+    if _gemini_quota_exhausted:
+        return None
+    if _gemini_client_instance is not None:
+        return _gemini_client_instance
+
     api_key = os.getenv("GEMINI_API_KEY", GEMINI_API_KEY)
     if not api_key:
         return None
     try:
         from google import genai
-        client = genai.Client(api_key=api_key)
-        return client
+        _gemini_client_instance = genai.Client(api_key=api_key)
+        return _gemini_client_instance
     except Exception as e:
         logging.warning(f"Не удалось инициализировать Gemini API: {e}")
         return None
+
+def safe_gemini_generate_content(prompt: str, model: str = AI_MODEL, max_retries: int = 2) -> str | None:
+    """
+    Безопасный вызов Gemini API с защитой от 429 (Too Many Requests),
+    rate-limiter (минимальный интервал 4.5 сек между запросами под 15 RPM)
+    и автоматическим предохранителем (Circuit Breaker).
+    """
+    global _gemini_quota_exhausted, _last_gemini_call_time, _consecutive_429_count
+    
+    if _gemini_quota_exhausted:
+        return None
+
+    client = get_gemini_client()
+    if not client:
+        return None
+
+    for attempt in range(max_retries):
+        if _gemini_quota_exhausted:
+            return None
+
+        # Соблюдаем лимит 15 RPM (минимум 4.5 сек между запросами)
+        elapsed = time.time() - _last_gemini_call_time
+        if elapsed < 4.5:
+            time.sleep(4.5 - elapsed)
+
+        try:
+            _last_gemini_call_time = time.time()
+            response = client.models.generate_content(
+                model=model,
+                contents=prompt,
+            )
+            if response and response.text:
+                _consecutive_429_count = 0
+                return response.text.strip()
+            return None
+
+        except Exception as e:
+            err_str = str(e)
+            err_lower = err_str.lower()
+
+            is_429 = (
+                "429" in err_lower
+                or "resource_exhausted" in err_lower
+                or "too many requests" in err_lower
+                or "quota" in err_lower
+            )
+
+            if is_429:
+                _consecutive_429_count += 1
+                
+                # Извлекаем рекомендуемый retryDelay от Google
+                retry_delay = None
+                m = re.search(r"retry\s*(?:after|in)?\s*[:\s]?\s*(\d+(?:\.\d+)?)s?", err_lower)
+                if m:
+                    try:
+                        retry_delay = float(m.group(1))
+                    except Exception:
+                        pass
+
+                is_daily = "perday" in err_lower or "day" in err_lower
+                if is_daily or _consecutive_429_count >= 2 or (retry_delay and retry_delay > 30):
+                    trip_gemini_circuit_breaker(
+                        f"429 Quota Exhausted" + (f", retryDelay={retry_delay}s" if retry_delay else "")
+                    )
+                    return None
+
+                sleep_sec = min(retry_delay if retry_delay else 10.0, 15.0)
+                logging.warning(
+                    f"Лимит запросов Gemini (429), пауза {int(sleep_sec)} сек... (попытка {attempt+1}/{max_retries})"
+                )
+                time.sleep(sleep_sec)
+                continue
+
+            else:
+                logging.warning(f"Ошибка Gemini API: {e}")
+                return None
+
+    if _consecutive_429_count >= 1:
+        trip_gemini_circuit_breaker("исчерпаны повторные попытки при 429")
+    return None
 
 def load_instruction_prompt() -> str:
     """Загрузка базовой инструкции по разбору раундов из instruction/rounds.txt."""
@@ -242,8 +363,7 @@ def analyze_round_with_ai(
     winner = str(round_data.get('winner', 'CT')).upper()
     win_type = round_data.get('win_type') or round_data.get('reason') or 'Уничтожение'
 
-    client = get_gemini_client()
-    if client:
+    if not is_gemini_quota_exhausted():
         instruction_base = load_instruction_prompt()
         prompt = f"""{instruction_base}
 
@@ -268,25 +388,9 @@ def analyze_round_with_ai(
 
         prompt += "\nСформируй подробный 9-пунктовый разбор без вводных слов и лишних шаблонных фраз."
 
-        for attempt in range(3):
-            try:
-                response = client.models.generate_content(
-                    model=AI_MODEL,
-                    contents=prompt,
-                )
-                text = response.text.strip()
-                if text and ("1. Исход и сценарий" in text or "1. Исход" in text):
-                    time.sleep(1.0)  # Безопасный интервал для соблюдения квоты RPM
-                    return text
-            except Exception as e:
-                err_str = str(e).lower()
-                if "429" in err_str or "resource_exhausted" in err_str or "quota" in err_str:
-                    logging.warning(f"Лимит запросов Gemini (429) на раунде {round_num}, пауза 8 сек... (попытка {attempt+1}/3)")
-                    time.sleep(8)
-                    continue
-                else:
-                    logging.warning(f"Ошибка вызова AI API для раунда {round_num}: {e}")
-                    break
+        text = safe_gemini_generate_content(prompt)
+        if text and ("1. Исход и сценарий" in text or "1. Исход" in text):
+            return text
 
     # Fallback локальный экспертный движок
     return generate_tactical_round_analysis(
@@ -319,8 +423,7 @@ def generate_match_intro_commentary(match_data: dict) -> str:
     elif match_data.get('stats', {}).get('adr_leader', {}).get('name'):
         mvp = match_data.get('stats', {}).get('adr_leader', {}).get('name')
 
-    client = get_gemini_client()
-    if client:
+    if not is_gemini_quota_exhausted():
         prompt = f"""Ты — главная аналитическая студия CS2 (в стиле HLTV / BLAST). Напиши яркий вводный обзор матча {t1_name} против {t2_name} на карте {map_name}.
 Итоговый счет: {t1_name} ({score1}) — {t2_name} ({score2}).
 Лидер матча (MVP): {mvp}.
@@ -329,16 +432,9 @@ def generate_match_intro_commentary(match_data: dict) -> str:
 1. Итоги битвы и ключевой переломный момент матча на карте {map_name}.
 2. Анализ игры победившей и проигравшей команды.
 """
-        try:
-            response = client.models.generate_content(
-                model=AI_MODEL,
-                contents=prompt,
-            )
-            text = response.text.strip()
-            if text and "0 : 0" not in text:
-                return text
-        except Exception as e:
-            logging.warning(f"Ошибка ИИ-обзора матча: {e}")
+        text = safe_gemini_generate_content(prompt)
+        if text and "0 : 0" not in text:
+            return text
 
     # Fallback динамический обзор матча с учётом счета и карты
     if score1 > score2:
@@ -371,8 +467,7 @@ def generate_match_intro_commentary(match_data: dict) -> str:
 
 def analyze_player_with_ai(player_name: str, ratings: dict, stats: dict, style: list) -> str:
     """Генерация AI-рекомендаций для игрока."""
-    client = get_gemini_client()
-    if not client:
+    if is_gemini_quota_exhausted():
         return ""
 
     prompt = f"""Ты — профессиональный киберспортивный тренер CS2.
@@ -398,15 +493,10 @@ def analyze_player_with_ai(player_name: str, ratings: dict, stats: dict, style: 
 3. Что конкретно тренировать (упражнения, карты, режим)
 4. Какую роль лучше всего выполнять
 """
-    try:
-        response = client.models.generate_content(
-            model=AI_MODEL,
-            contents=prompt,
-        )
-        return response.text.strip()
-    except Exception as e:
-        logging.warning(f"Ошибка вызова AI API для игрока {player_name}: {e}")
-        return ""
+    text = safe_gemini_generate_content(prompt)
+    if text:
+        return text
+    return ""
 
 def extract_tactical_match_context(match_data: dict) -> dict:
     """
@@ -972,13 +1062,9 @@ def generate_match_summary_analysis(match_data: dict) -> str:
 Никаких вводных фраз от себя — начни сразу с заголовка первой секции.
 """
 
-            for attempt in range(3):
-                try:
-                    response = client.models.generate_content(
-                        model=AI_MODEL,
-                        contents=prompt,
-                    )
-                    raw_text = response.text.strip()
+            if not is_gemini_quota_exhausted():
+                raw_text = safe_gemini_generate_content(prompt)
+                if raw_text:
                     if raw_text.startswith("```"):
                         lines = raw_text.split("\n")
                         if lines[0].startswith("```"): lines = lines[1:]
@@ -989,17 +1075,7 @@ def generate_match_summary_analysis(match_data: dict) -> str:
                     if ("1. ОБЩИЙ СВОДНЫЙ АНАЛИЗ" in raw_text or "СВОДНЫЙ АНАЛИЗ" in raw_text) and \
                        ("2. ГЛАВНЫЙ ВЫВОД" in raw_text or "ВЫВОД ДЛЯ РАБОТЫ" in raw_text) and \
                        ("1. **" in raw_text and "2. **" in raw_text):
-                        time.sleep(1.0)
                         return raw_text
-                except Exception as e:
-                    err_str = str(e).lower()
-                    if "429" in err_str or "resource_exhausted" in err_str or "quota" in err_str:
-                        logging.warning(f"Лимит Gemini API (429) при генерации анализа матча {match_data.get('match_id')}, пауза 8 сек... (попытка {attempt+1}/3)")
-                        time.sleep(8)
-                        continue
-                    else:
-                        logging.warning(f"Ошибка Gemini API при генерации анализа матча: {e}")
-                        break
         except Exception as e:
             logging.warning(f"Исключение при подготовке AI-анализа матча: {e}")
 
@@ -1135,16 +1211,14 @@ def generate_player_career_coach_verdict(
    - Командный баланс (как его игра соотносится с победами).
 4. Начни сразу с текста вердикта без вступительных фраз и кавычек.
 """
-            response = client.models.generate_content(
-                model=AI_MODEL,
-                contents=prompt
-            )
-            if response and response.text:
-                text = response.text.strip().strip('"\'')
-                if len(text) > 40:
-                    player_data["coach_verdict"] = text
-                    player_data["coach_verdict_matches_count"] = current_matches
-                    return text
+            if not is_gemini_quota_exhausted():
+                text = safe_gemini_generate_content(prompt)
+                if text:
+                    text = text.strip('"\'')
+                    if len(text) > 40:
+                        player_data["coach_verdict"] = text
+                        player_data["coach_verdict_matches_count"] = current_matches
+                        return text
         except Exception as e:
             logging.warning(f"Ошибка Gemini API для карьерного вердикта {player_data.get('name')}: {e}")
 

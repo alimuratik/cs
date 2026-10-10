@@ -155,36 +155,6 @@ TOURNAMENT_MATCH_OPPONENTS = {
     "01102026_dust2_129_kase_gra": "Grand Games",
 }
 
-# Ручные калибровки таймкодов турнира QEBL Season 7 (смена сторон и старт раунда 13)
-# смена сторон + 25 сек = видео-секунда старта 13-го раунда
-QEBL_MATCH_HALFTIME_CALIBRATION = {
-    "01102026_mirage_124_kase_mec": {
-        "halftime_switch_sec": 1112,  # 18:32
-        "r13_video_start_sec": 1137,  # 18:32 + 25s = 18:57
-        "r13_start_tick": 66775
-    },
-    "30092026_mirage_110_kase_vtb": {
-        "halftime_switch_sec": 1164,  # 19:24
-        "r13_video_start_sec": 1189,  # 19:24 + 25s = 19:49
-        "r13_start_tick": 72260
-    },
-    "30092026_inferno_116_krisha_t": {
-        "halftime_switch_sec": 1230,  # 20:30
-        "r13_video_start_sec": 1255,  # 20:30 + 25s = 20:55
-        "r13_start_tick": 73293
-    },
-    "01102026_inferno_127_innoforc": {
-        "halftime_switch_sec": 1525,  # 25:25
-        "r13_video_start_sec": 1550,  # 25:25 + 25s = 25:50
-        "r13_start_tick": 92164
-    },
-    "01102026_dust2_129_kase_gra": {
-        "halftime_switch_sec": 1147,  # 19:07
-        "r13_video_start_sec": 1172,  # 19:07 + 25s = 19:32
-        "r13_start_tick": 70307
-    }
-}
-
 # Переводы названий позиций на русский сленг (Active Duty карты)
 MAP_CALLOUTS = {
     "de_mirage": {
@@ -1091,3 +1061,12 @@ def add_player_to_kase_roster(steam_id: str, name: str, is_active: bool = False,
     except Exception as e:
         return False
 
+
+
+def is_knife_warmup_round(m_data: dict) -> bool:
+    """True, если round_num=1 в демке — ножевой раунд за выбор стороны (все киллы ножами)."""
+    r1 = [k for k in m_data.get("kills", []) if (k.get("round_num") or k.get("round")) == 1]
+    return len(r1) >= 3 and all(
+        "knife" in str(k.get("weapon", "")).lower() or "bayonet" in str(k.get("weapon", "")).lower()
+        for k in r1
+    )

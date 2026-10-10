@@ -12,7 +12,8 @@ from scripts.config import clean_steamid
 from scripts.ai_analysis import (
     analyze_round_with_ai, generate_match_intro_commentary,
     generate_match_summary_analysis, analyze_player_with_ai,
-    get_gemini_client
+    get_gemini_client, safe_gemini_generate_content,
+    is_gemini_quota_exhausted, trip_gemini_circuit_breaker
 )
 from scripts.config import (
     PLAYER_ALIASES, CANONICAL_PLAYERS, STARTING_MMR, BASE_WIN_DELTA,
@@ -20,7 +21,7 @@ from scripts.config import (
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
     AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR, is_kase_team_member,
-    TOURNAMENT_DATES, QEBL_MATCH_HALFTIME_CALIBRATION
+    TOURNAMENT_DATES, TOURNAMENT_MATCH_OPPONENTS
 )
 
 
@@ -2930,7 +2931,7 @@ def generate_highlight_ai_caption(hl: dict) -> str:
     global _gemini_highlight_quota_exceeded
     player = hl.get("player_name", "Игрок")
     m_map = hl.get("map_display", "Карта")
-    r_num = hl.get("round_num", 1)
+    r_num = hl.get("display_round", hl.get("round_num", 1))
     score = hl.get("score_at_moment", "0:0")
     m_badge = hl.get("moment_badge", "Хайлайт")
     w_name = hl.get("weapon_display", "Оружие")
@@ -2939,32 +2940,23 @@ def generate_highlight_ai_caption(hl: dict) -> str:
     m_type = hl.get("moment_type", "multi_kill")
 
     # 1. Попытка запроса через Gemini API (если квота не исчерпана)
-    if not _gemini_highlight_quota_exceeded:
-        client = get_gemini_client()
-        if client:
-            try:
-                prompt = (
-                    f"Ты — профессиональный киберспортивный русскоязычный комментатор CS2 в стиле лучших кастеров студии Maincast / StarLadder.\n"
-                    f"Составь краткий (строго 2-3 энергичных предложения), эмоциональный и профессиональный комментарий к главному хайлайту матча.\n"
-                    f"Данные момента:\n"
-                    f"- Карта: {m_map}\n"
-                    f"- Раунд: {r_num} (текущий счёт {score})\n"
-                    f"- Игрок: {player}\n"
-                    f"- Событие: {m_badge} ({kills} фрагов, {hs} в голову)\n"
-                    f"- Оружие: {w_name}\n"
-                    f"Требования: живой спортивный язык, точные CS2-термины (спрей-контроль, размен, позиционка, тайминг, клатч), без лишних предисловий и кавычек."
-                )
-                response = client.models.generate_content(
-                    model=AI_MODEL,
-                    contents=prompt
-                )
-                if response and response.text:
-                    text = response.text.strip().strip('"\'')
-                    if len(text) > 20:
-                        return text
-            except Exception as e:
-                _gemini_highlight_quota_exceeded = True
-                logging.warning(f"Переключение на локальный генератор хайлайтов (Gemini API: {e})")
+    if not is_gemini_quota_exhausted():
+        prompt = (
+            f"Ты — профессиональный киберспортивный русскоязычный комментатор CS2 в стиле лучших кастеров студии Maincast / StarLadder.\n"
+            f"Составь краткий (строго 2-3 энергичных предложения), эмоциональный и профессиональный комментарий к главному хайлайту матча.\n"
+            f"Данные момента:\n"
+            f"- Карта: {m_map}\n"
+            f"- Раунд: {r_num} (текущий счёт {score})\n"
+            f"- Игрок: {player}\n"
+            f"- Событие: {m_badge} ({kills} фрагов, {hs} в голову)\n"
+            f"- Оружие: {w_name}\n"
+            f"Требования: живой спортивный язык, точные CS2-термины (спрей-контроль, размен, позиционка, тайминг, клатч), без лишних предисловий и кавычек."
+        )
+        text = safe_gemini_generate_content(prompt)
+        if text:
+            text = text.strip('"\'')
+            if len(text) > 20:
+                return text
 
     # 2. Тактический генератор шаблонов с глубокой драматургией
     if m_type == "ace":
@@ -3032,6 +3024,15 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
     r1_k = round_kills.get(1, [])
     is_r1_knife_round = len(r1_k) >= 3 and all("knife" in str(k.get("weapon", "")).lower() or "bayonet" in str(k.get("weapon", "")).lower() for k in r1_k)
 
+    # Определяем команду Team KASE (для отображения счёта «KASE : соперник» в турнирах)
+    kase_team = None
+    if bool(m_data.get("tournament")) or "kase" in mid.lower() or m_date in ("30092026", "01102026"):
+        for _sid, _tm in p_teams.items():
+            if is_kase_team_member(_sid, str(p_names.get(_sid, "")).lower().strip()):
+                kase_team = _tm
+                break
+    knife_shift = 1 if is_r1_knife_round else 0
+
     candidates = []
 
     for r_evt in rounds:
@@ -3081,9 +3082,15 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
                     knife_zeus_tick[a_sid] = (w, k.get("tick"))
 
         # Расчет счета на начало текущего раунда
-        s1_at_mom = sum(1 for r in rounds if (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team1")
-        s2_at_mom = sum(1 for r in rounds if (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team2")
-        score_at_moment = f"{s1_at_mom}:{s2_at_mom}"
+        # Ножевой раунд (round_num=1) не считается соревновательным раундом
+        _first_live = 2 if is_r1_knife_round else 1
+        s1_at_mom = sum(1 for r in rounds if _first_live <= (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team1")
+        s2_at_mom = sum(1 for r in rounds if _first_live <= (r.get("round_num") or 0) < r_n and r.get("winning_team") == "team2")
+        # В турнирах счёт показываем с позиции Team KASE (KASE : соперник)
+        if kase_team == "team2":
+            score_at_moment = f"{s2_at_mom}:{s1_at_mom}"
+        else:
+            score_at_moment = f"{s1_at_mom}:{s2_at_mom}"
 
         # 1. Оценка клатча
         if clutch_info:
@@ -3313,12 +3320,6 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         v_url = (str(video_info) if video_info else "").strip()
         v_offset = 0
 
-    # Проверка наличия ручной калибровки паузы при смене сторон (QEBL S7)
-    qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
-    halftime_sw = qebl_calib.get("halftime_switch_sec")
-    r13_vid_start = qebl_calib.get("r13_video_start_sec")
-    r13_tick = qebl_calib.get("r13_start_tick")
-
     lead_in_sec = 6
     processed_top = []
     for idx, cand in enumerate(top_candidates):
@@ -3328,12 +3329,8 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
 
         game_sec = max(0, round((moment_t - start_tick) / 64.0))
 
-        # Если раунд во 2-й половине (>=13) и есть калибровка смены сторон:
-        if round_n >= 13 and r13_vid_start is not None and r13_tick is not None:
-            sec_from_r13 = max(0, round((moment_t - r13_tick) / 64.0))
-            embed_start_sec = max(0, r13_vid_start + sec_from_r13 - lead_in_sec)
-        else:
-            embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
+        # Видео записано от старта 1-го живого раунда (= min tick), смена сторон идёт без разрыва по тикам
+        embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
 
         timecode_display = f"{embed_start_sec // 60}:{embed_start_sec % 60:02d}"
         timecode_game = f"{game_sec // 60}:{game_sec % 60:02d}"
@@ -3351,6 +3348,8 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         c_item["timecode_display"] = timecode_display
         c_item["timecode_game"] = timecode_game
         c_item["order"] = idx + 1
+        # Игровой номер раунда без ножевого (round_num остаётся внутренним индексом демки)
+        c_item["display_round"] = max(1, round_n - knife_shift)
 
         if idx == 0:
             reuse_cap = False
@@ -3370,7 +3369,7 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         else:
             w_disp = c_item.get("weapon_display", "оружия")
             c_item["ai_caption"] = (
-                f"Раунд {c_item.get('round_num', 1)} (счёт {c_item.get('score_at_moment', '0:0')}). "
+                f"Раунд {c_item.get('display_round', c_item.get('round_num', 1))} (счёт {c_item.get('score_at_moment', '0:0')}). "
                 f"{c_item.get('player_name', 'Игрок')} оформляет {c_item.get('moment_badge', 'хайлайт')} с {w_disp}."
             )
         processed_top.append(c_item)
@@ -3411,7 +3410,7 @@ def compute_all_highlights(match_items: list, match_videos: dict = None, force_a
             continue
         v_info = match_videos.get(mid)
         start_tick = get_match_start_tick(mid, m_data.get("kills", []))
-        exist_cap = existing_captions.get(mid, "")
+        exist_cap = "" if mid in TOURNAMENT_MATCH_OPPONENTS else existing_captions.get(mid, "")
         hl = detect_match_highlight(m_data, start_tick, v_info, existing_caption=exist_cap)
         if hl:
             match_highlights[mid] = hl
@@ -4003,8 +4002,9 @@ def run_analysis(force_ai: bool = False):
             m_data["team1_name"] = f"Команда 1 ({cap1})"
             m_data["team2_name"] = f"Команда 2 ({cap2})"
         
-        # Обновляем вводный аналитический комментарий с актуальным счетом и именами команд
-        m_data["ai_analysis"] = generate_match_intro_commentary(m_data)
+        # Обновляем вводный аналитический комментарий с актуальным счетом и именами команд (только если отсутствует или устарел)
+        if not m_data.get("ai_analysis") or (is_m_tourn and opp_name not in m_data.get("ai_analysis", "")):
+            m_data["ai_analysis"] = generate_match_intro_commentary(m_data)
 
         # Перезаписываем обогащенный матч с актуальными MMR дельтами
         try:

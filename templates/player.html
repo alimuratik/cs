@@ -774,7 +774,7 @@
                         <span class="flex items-center gap-1 font-semibold text-slate-300">
                             🗺️ {{ h.map_display }}
                         </span>
-                        <span>Рд. {{ h.round_num }} ({{ h.score_at_moment }})</span>
+                        <span>Рд. {{ h.display_round or h.round_num }} ({{ h.score_at_moment }})</span>
                     </div>
 
                     <!-- Moment Badge & Date -->
@@ -935,7 +935,7 @@
                 embedUrl: {{ h.embed_url|tojson }},
                 watchUrl: {{ h.watch_url|tojson }},
                 title: {{ h.moment_badge|tojson }},
-                subtitle: {{ (h.map_display ~ ' • Раунд ' ~ h.round_num ~ ' (' ~ h.score_at_moment ~ ')')|tojson }},
+                subtitle: {{ (h.map_display ~ ' • Раунд ' ~ (h.display_round or h.round_num) ~ ' (' ~ h.score_at_moment ~ ')')|tojson }},
                 caption: {{ h.ai_caption|tojson }},
                 matchUrl: {{ h.match_url|tojson }},
                 badgeColor: {{ h.badge_color|tojson }}
