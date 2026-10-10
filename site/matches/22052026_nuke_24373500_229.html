@@ -16,18 +16,33 @@
     <script>
         (function() {
             try {
-                const t = localStorage.getItem('cs2_theme') || 'light';
+                const hours = new Date().getHours();
+                // День: с 7:00 до 20:00 — светлая тема, ночь: с 20:00 до 7:00 — темная тема
+                let t = (hours >= 7 && hours < 20) ? 'light' : 'dark';
+                const saved = localStorage.getItem('cs2_theme');
+                const manualStamp = localStorage.getItem('cs2_theme_manual_stamp');
+                // Если пользователь вручную переключил тему за последние 4 часа, учитываем выбор
+                if (manualStamp && (Date.now() - parseInt(manualStamp, 10) < 4 * 3600 * 1000)) {
+                    if (saved === 'dark' || saved === 'light') t = saved;
+                }
                 document.documentElement.setAttribute('data-theme', t);
                 if (t === 'dark') {
                     document.documentElement.classList.add('dark');
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
+                window.__initialTheme = t;
             } catch(e) {}
         })();
     </script>
 </head>
-<body class="light-theme">
+<body class="theme-transition">
+    <script>
+        (function() {
+            const t = window.__initialTheme || ((new Date().getHours() >= 7 && new Date().getHours() < 20) ? 'light' : 'dark');
+            document.body.classList.add(t === 'light' ? 'light-theme' : 'dark-theme');
+        })();
+    </script>
     <header class="header">
         <div class="container header-content">
             <div class="logo">
@@ -7246,7 +7261,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 22:06</p>
+                <p class="footer-timestamp">Данные обновлены: 10.10.2026 22:26</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -7258,13 +7273,24 @@
     <script>
         (function() {
             const THEME_KEY = 'cs2_theme';
+            const MANUAL_KEY = 'cs2_theme_manual_stamp';
             
+            function getThemeByTime() {
+                const hours = new Date().getHours();
+                // День: 7:00 - 20:00 -> светлая, Ночь: 20:00 - 7:00 -> темная
+                return (hours >= 7 && hours < 20) ? 'light' : 'dark';
+            }
+
             function getInitialTheme() {
                 try {
                     const saved = localStorage.getItem(THEME_KEY);
-                    if (saved === 'dark' || saved === 'light') return saved;
+                    const manualStamp = localStorage.getItem(MANUAL_KEY);
+                    // Учитываем ручной выбор, если пользователь переключал тему за последние 4 часа
+                    if (manualStamp && (Date.now() - parseInt(manualStamp, 10) < 4 * 3600 * 1000)) {
+                        if (saved === 'dark' || saved === 'light') return saved;
+                    }
                 } catch(e) {}
-                return 'light'; // Default is Light (KASE Financial Theme)
+                return getThemeByTime();
             }
 
             function updateChartDefaults(isLight) {
@@ -7301,19 +7327,28 @@
                 // Update UI Buttons
                 const iconStr = isLight ? '☀️' : '🌙';
                 const labelStr = isLight ? 'Светлая' : 'Темная';
+                const titleStr = isLight 
+                    ? 'Тема: Светлая (день 7:00–20:00). Нажмите для переключения' 
+                    : 'Тема: Темная (ночь 20:00–7:00). Нажмите для переключения';
 
                 const dIcon = document.getElementById('theme-icon');
                 const dText = document.getElementById('theme-text');
+                const dBtn = document.getElementById('theme-toggle-btn');
                 if (dIcon) dIcon.textContent = iconStr;
                 if (dText) dText.textContent = labelStr;
+                if (dBtn) dBtn.title = titleStr;
 
                 const mIcon = document.getElementById('mobile-theme-icon');
+                const mBtn = document.getElementById('mobile-theme-btn');
                 if (mIcon) mIcon.textContent = iconStr;
+                if (mBtn) mBtn.title = titleStr;
 
                 const drIcon = document.getElementById('drawer-theme-icon');
                 const drText = document.getElementById('drawer-theme-text');
+                const drBtn = document.getElementById('drawer-theme-btn');
                 if (drIcon) drIcon.textContent = iconStr;
                 if (drText) drText.textContent = labelStr;
+                if (drBtn) drBtn.title = titleStr;
 
                 // Update Chart.js Defaults
                 updateChartDefaults(isLight);
@@ -7336,15 +7371,15 @@
                         chart.update();
                     });
                 }
-
-                try {
-                    localStorage.setItem(THEME_KEY, theme);
-                } catch(e) {}
             }
 
             function toggleTheme() {
-                const current = localStorage.getItem(THEME_KEY) || 'light';
+                const current = document.documentElement.getAttribute('data-theme') || getInitialTheme();
                 const next = current === 'light' ? 'dark' : 'light';
+                try {
+                    localStorage.setItem(THEME_KEY, next);
+                    localStorage.setItem(MANUAL_KEY, Date.now().toString());
+                } catch(e) {}
                 applyTheme(next);
             }
 
@@ -7371,6 +7406,18 @@
                 if (mBtn) mBtn.addEventListener('click', toggleTheme);
                 if (drBtn) drBtn.addEventListener('click', toggleTheme);
             });
+
+            // Автоматическая проверка перехода день/ночь раз в 60 секунд
+            setInterval(function() {
+                const manualStamp = localStorage.getItem(MANUAL_KEY);
+                if (!manualStamp || (Date.now() - parseInt(manualStamp, 10) >= 4 * 3600 * 1000)) {
+                    const timeTheme = getThemeByTime();
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    if (timeTheme !== currentTheme) {
+                        applyTheme(timeTheme);
+                    }
+                }
+            }, 60000);
         })();
     </script>
     

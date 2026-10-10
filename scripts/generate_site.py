@@ -3243,9 +3243,49 @@ def generate_site(output_dir=None):
 
         raw_summary = str(tm.get("summary_analysis") or "")
         summary_clean = ""
-        if raw_summary:
-            lines = [l.strip().lstrip("#-•* ") for l in raw_summary.split("\n") if l.strip() and not l.strip().startswith("#")]
-            summary_clean = " ".join(lines[:2])[:220]
+        if raw_summary or tm.get("ai_analysis"):
+            # 1. Ищем начало Секции 2 (Главный вывод / работа над ошибками)
+            pos = raw_summary.find("2. ГЛАВНЫЙ ВЫВОД")
+            if pos == -1: pos = raw_summary.find("ГЛАВНЫЙ ВЫВОД")
+            if pos == -1: pos = raw_summary.find("ВЫВОД ДЛЯ РАБОТЫ НАД ОШИБКАМИ")
+            if pos != -1:
+                sub = raw_summary[pos:]
+                lines = [l.strip() for l in sub.split("\n") if l.strip() and not l.strip().startswith("#")]
+                lines = [l for l in lines if "ГЛАВНЫЙ ВЫВОД" not in l and "ВЫВОД ДЛЯ РАБОТЫ" not in l]
+                if lines:
+                    lead = lines[0]
+                    if "На основе тактического" in lead or len(lead) < 35:
+                        for l in lines[1:5]:
+                            if l.startswith("1.") or l.startswith("•") or l.startswith("-") or "**" in l:
+                                lead = l
+                                break
+                    lead = re.sub(r"^\d+\.\s*", "", lead)
+                    lead = re.sub(r"\*\*([^*]+)\*\*", r"\1", lead)
+                    lead = lead.replace("*", "").replace("•", "").strip()
+                    if len(lead) >= 30:
+                        if len(lead) > 230:
+                            trimmed = lead[:225]
+                            last_dot = trimmed.rfind(". ")
+                            if last_dot > 100:
+                                lead = trimmed[:last_dot + 1]
+                            else:
+                                last_space = trimmed.rfind(" ")
+                                if last_space > 100:
+                                    lead = trimmed[:last_space] + "..."
+                        summary_clean = lead
+
+            # 2. Fallback: вводный обзор матча (ai_analysis)
+            if not summary_clean and tm.get("ai_analysis"):
+                clean_ai = re.sub(r"\*\*([^*]+)\*\*", r"\1", str(tm.get("ai_analysis"))).replace("*", "").strip()
+                sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", clean_ai) if s.strip()]
+                if sentences:
+                    lead = sentences[0]
+                    if len(lead) < 90 and len(sentences) > 1:
+                        lead += " " + sentences[1]
+                    if len(lead) > 230:
+                        last_space = lead[:225].rfind(" ")
+                        lead = lead[:last_space] + "..." if last_space > 100 else lead[:225] + "..."
+                    summary_clean = lead
 
         video_entry = mv_dict.get(mid, {}) if isinstance(mv_dict, dict) else {}
         video_url = video_entry.get("url", "") if isinstance(video_entry, dict) else ""
