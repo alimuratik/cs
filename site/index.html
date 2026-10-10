@@ -2138,13 +2138,13 @@
                     </span>
                     <div>
                         <div class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                            <span>На калибровке и в резерве</span>
+                            <span>Сотрудники KASE на калибровке и в резерве</span>
                             <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
                                 1
                             </span>
                         </div>
                         <div class="text-xs text-slate-400">
-                            Игроки с менее чем 5 матчами или временно неактивные (вне официального зачета лидеров)
+                            Сотрудники KASE с менее чем 5 матчами или временно неактивные (после 5 матчей переходят в основной рейтинг KASE)
                         </div>
                     </div>
                 </div>
@@ -2290,6 +2290,2249 @@
         </details>
         
     </section>
+
+    <!-- ─── Секция: Приглашенные игроки (Гостевой соревновательный рейтинг) ─── -->
+    
+    <section id="guest-players-section" class="section mb-12">
+        <details id="guest-players-drawer" class="guest-drawer rounded-2xl border border-indigo-900/50 bg-slate-950/80 overflow-hidden backdrop-blur-md shadow-2xl group/guestdrawer" open>
+            <summary class="p-4 md:p-5 bg-gradient-to-r from-indigo-950/60 via-slate-900/90 to-purple-950/40 hover:from-indigo-950/80 hover:via-slate-900 cursor-pointer select-none flex items-center justify-between transition border-b border-indigo-900/50 list-none">
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-950/80 text-indigo-400 border border-indigo-500/40 text-lg shadow-inner shrink-0">
+                        👥
+                    </span>
+                    <div>
+                        <div class="text-base md:text-lg font-black text-white flex items-center gap-2.5 flex-wrap">
+                            <span>Приглашенные игроки</span>
+                            <span class="text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-2.5 py-0.5 rounded-full font-semibold">Гостевой рейтинг</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono font-bold">
+                                7 в рейтинге
+                            </span>
+                            
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800/80 text-slate-400 border border-slate-700 font-mono">
+                                +18 на калибровке / в резерве
+                            </span>
+                            
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Участники совместных игровых сессий, не входящие в официальный штат Team KASE. Имеют свой независимый соревновательный зачет и ранги.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-semibold text-indigo-400 shrink-0">
+                    <span class="guest-drawer-state-text group-open/guestdrawer:hidden">Показать гостевой рейтинг</span>
+                    <span class="guest-drawer-state-text hidden group-open/guestdrawer:inline">Свернуть список</span>
+                    <span class="text-indigo-400 transition-transform group-open/guestdrawer:rotate-180">▼</span>
+                </div>
+            </summary>
+
+            <div class="p-4 md:p-6 space-y-6">
+                <!-- Desktop Leaderboard Table (Guest) -->
+                
+                <div class="hidden md:block overflow-x-auto glassmorphism rounded-2xl border border-indigo-950/50 shadow-2xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-indigo-950">
+                                <th class="py-2.5 px-3 text-center w-12">
+                                    <span class="tooltip-trigger" tabindex="0">
+                                        Ранг
+                                        <span class="tooltip-box align-left">
+                                            <strong>Гостевой ранг</strong><br>
+                                            Позиция в рейтинге приглашенных игроков по очкам MMR.
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="py-2.5 px-3">
+                                    <span class="tooltip-trigger" tabindex="0">
+                                        Игрок
+                                        <span class="tooltip-box align-left">
+                                            <strong>Профиль и роли</strong><br>
+                                            Ранг мастерства, никнейм и тактические роли.
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="py-2.5 px-2.5 text-center">FACEIT</th>
+                                <th class="py-2.5 px-2.5 text-center">MMR</th>
+                                <th class="py-2.5 px-2.5 text-center">Сессия ±</th>
+                                <th class="py-2.5 px-2.5 text-center">HLTV 2.0</th>
+                                <th class="py-2.5 px-2.5 text-center">Оценка</th>
+                                <th class="py-2.5 px-2.5 text-center">K/D</th>
+                                <th class="py-2.5 px-2.5 text-center">ADR</th>
+                                <th class="py-2.5 px-2.5 text-center">Винрейт</th>
+                                <th class="py-2.5 px-3 text-center">Форма (5)</th>
+                                <th class="py-2.5 px-2.5 text-center">Пик</th>
+                                <th class="py-2.5 px-2 text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-xs">
+                            
+                            <tr data-steamid="76561199153011354" 
+                                data-player-name="matadorra" 
+                                data-rating="6.9" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 bg-amber-500/5">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/50 shadow-sm shadow-amber-500/20 text-sm">👑</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199153011354.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Эксперт">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>matadorra</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Энтри-фраггер / Саппорт</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-cooling">
+                                                    📉 Спад (-0.27)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    1084
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 5, 18 сентября 2026)">
+                                        -21
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-emerald-400">
+                                    1.42
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        6.9
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-emerald-400">
+                                    1.59
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    112.0
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">43.5%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(10W-13L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1113
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199153011354.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561198243149322" 
+                                data-player-name="rayi" 
+                                data-rating="6.9" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 bg-slate-400/5">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-400/20 text-slate-200 border border-slate-400/50 text-sm">🥈</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561198243149322.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Эксперт">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>Rayi</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Энтри-фраггер / Универсал</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-cooling">
+                                                    📉 Спад (-0.24)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    1079
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 5, 18 сентября 2026)">
+                                        +19
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-emerald-400">
+                                    1.34
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        6.9
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-emerald-400">
+                                    1.43
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    104.4
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">66.7%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(6W-3L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1090
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561198243149322.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561199808571117" 
+                                data-player-name="chpokers" 
+                                data-rating="5.6" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 bg-amber-700/5">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-700/20 text-amber-500 border border-amber-700/50 text-sm">🥉</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199808571117.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Ветеран">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>CHPOKERS</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Энтри-фраггер / Универсал</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-cooling">
+                                                    📉 Спад (-0.06)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    982
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 5, 11 сентября 2026)">
+                                        -9
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-slate-200">
+                                    1.07
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        5.6
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-rose-400">
+                                    0.98
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    83.3
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">38.5%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(5W-8L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1024
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199808571117.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561199438131194" 
+                                data-player-name="sgem_7" 
+                                data-rating="6.2" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 ">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="text-slate-500 text-xs">#4</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199438131194.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Ветеран">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>SGEM_7</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Энтри-фраггер / Опорник</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-stable">
+                                                    ⚖️ Стабильно (+0.03)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    980
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 4, 18 сентября 2026)">
+                                        -10
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-slate-200">
+                                    1.09
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        6.2
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-rose-400">
+                                    0.98
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    80.8
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">33.3%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(3W-6L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1006
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199438131194.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561199569491960" 
+                                data-player-name="k--9" 
+                                data-rating="5.9" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 ">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="text-slate-500 text-xs">#5</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199569491960.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Ветеран">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>k--9</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Второй номер / Опорник</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-stable">
+                                                    ⚖️ Стабильно (-0.04)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    979
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 5, 18 сентября 2026)">
+                                        -31
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-slate-200">
+                                    1.01
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        5.9
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-rose-400">
+                                    0.96
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    73.1
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">44.4%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(12W-15L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1038
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199569491960.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561199478211872" 
+                                data-player-name="iamresplendent" 
+                                data-rating="5.0" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-amber-950/20 border-l-amber-400 transition-all duration-150 group border-l-2 ">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="text-slate-500 text-xs">#6</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199478211872.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Ветеран">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>iamresplendent</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Универсал / Опорник</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-stable">
+                                                    ⚖️ Стабильно (+0.00)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-amber-300">
+                                    961
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 5, 18 сентября 2026)">
+                                        -50
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-rose-400">
+                                    0.87
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500/50">
+                                        5.0
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-rose-400">
+                                    0.75
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    71.3
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">37.5%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(3W-5L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1021
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199478211872.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                            <tr data-steamid="76561199413542223" 
+                                data-player-name="zikayevg" 
+                                data-rating="4.4" 
+                                data-has-faceit="0" 
+                                data-is-gainer="0"
+                                class="leaderboard-row hover:bg-slate-800/20 border-l-slate-500 transition-all duration-150 group border-l-2 ">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    
+                                    <span class="text-slate-500 text-xs">#7</span>
+                                    
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/76561199413542223.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="Рекрут">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#e2e8f0" stroke-width="2.6" stroke-dasharray="5.78 66.48" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#ffffff">1</text></svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>zikayevg</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>Универсал / Опорник</span>
+                                                
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border momentum-cooling">
+                                                    📉 Спад (-0.06)
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm text-slate-300">
+                                    819
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950/80 text-rose-400 border border-rose-500/40"
+                                          title="Суммарный MMR за сессию (матчей: 4, 18 сентября 2026)">
+                                        -34
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs text-rose-400">
+                                    0.65
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-500/50">
+                                        4.4
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold text-rose-400">
+                                    0.48
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    46.8
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">43.3%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">(13W-17L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                            
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            
+                                        
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    1000
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/76561199413542223.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Guest Mobile Cards (<768px) -->
+                <div class="block md:hidden space-y-3">
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group "
+                             data-steamid="76561199153011354"
+                             data-player-name="matadorra"
+                             data-rating="6.9"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-amber-500/20 text-amber-400 border border-amber-500/50">
+                                    1
+                                </div>
+                                <div class="shrink-0" title="Эксперт">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>matadorra</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Энтри-фраггер / Саппорт</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">1.42</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">1084</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -21
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">6.9</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">112.0</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">43.5%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">10W / 13L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1113</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">23</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199153011354.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group "
+                             data-steamid="76561198243149322"
+                             data-player-name="rayi"
+                             data-rating="6.9"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-slate-400/20 text-slate-200 border border-slate-400/50">
+                                    2
+                                </div>
+                                <div class="shrink-0" title="Эксперт">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="57.81 14.45" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">7</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>Rayi</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Энтри-фраггер / Универсал</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">1.34</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">1079</span>
+                                    <span class="text-[10px] font-mono font-bold text-emerald-400">
+                                        +19
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">6.9</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">104.4</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">66.7%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">6W / 3L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1090</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">9</span>
+                                </div>
+                            </div>
+                            <a href="players/76561198243149322.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group "
+                             data-steamid="76561199808571117"
+                             data-player-name="chpokers"
+                             data-rating="5.6"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-amber-700/20 text-amber-500 border border-amber-700/50">
+                                    3
+                                </div>
+                                <div class="shrink-0" title="Ветеран">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>CHPOKERS</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Энтри-фраггер / Универсал</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">1.07</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">982</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -9
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">5.6</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">83.3</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">38.5%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">5W / 8L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1024</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">13</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199808571117.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group "
+                             data-steamid="76561199438131194"
+                             data-player-name="sgem_7"
+                             data-rating="6.2"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-slate-800 text-slate-400 border border-slate-700">
+                                    4
+                                </div>
+                                <div class="shrink-0" title="Ветеран">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>SGEM_7</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Энтри-фраггер / Опорник</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">1.09</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">980</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -10
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">6.2</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">80.8</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">33.3%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">3W / 6L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1006</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">9</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199438131194.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group "
+                             data-steamid="76561199569491960"
+                             data-player-name="k--9"
+                             data-rating="5.9"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-slate-800 text-slate-400 border border-slate-700">
+                                    5
+                                </div>
+                                <div class="shrink-0" title="Ветеран">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>k--9</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Второй номер / Опорник</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">1.01</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">979</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -31
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">5.9</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">73.1</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">44.4%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">12W / 15L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1038</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">27</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199569491960.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group mobile-player-hidden"
+                             data-steamid="76561199478211872"
+                             data-player-name="iamresplendent"
+                             data-rating="5.0"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-slate-800 text-slate-400 border border-slate-700">
+                                    6
+                                </div>
+                                <div class="shrink-0" title="Ветеран">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#eab308" stroke-width="2.6" stroke-dasharray="36.13 36.13" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#eab308">5</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>iamresplendent</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Универсал / Опорник</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">0.87</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-amber-300 block">961</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -50
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-yellow-400">5.0</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">71.3</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">37.5%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">3W / 5L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1021</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">8</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199478211872.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group mobile-player-hidden"
+                             data-steamid="76561199413542223"
+                             data-player-name="zikayevg"
+                             data-rating="4.4"
+                             data-has-faceit="0"
+                             data-is-gainer="0">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 bg-slate-800 text-slate-400 border border-slate-700">
+                                    7
+                                </div>
+                                <div class="shrink-0" title="Рекрут">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="20" height="20" style="vertical-align:middle;display:inline-block;flex-shrink:0;"><circle cx="16" cy="16" r="15" fill="#141517" stroke="#2c2e33" stroke-width="1"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#25272c" stroke-width="2.6"/><circle cx="16" cy="16" r="11.5" fill="none" stroke="#e2e8f0" stroke-width="2.6" stroke-dasharray="5.78 66.48" stroke-linecap="round" transform="rotate(120 16 16)" /><text x="16" y="21" text-anchor="middle" font-family="'Rajdhani', 'Inter', sans-serif" font-weight="900" font-size="14" fill="#ffffff">1</text></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>zikayevg</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>Универсал / Опорник</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">0.65</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm text-slate-300 block">819</span>
+                                    <span class="text-[10px] font-mono font-bold text-rose-400">
+                                        -34
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold text-rose-400">4.4</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">46.8</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">43.3%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">13W / 17L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">1000</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">30</span>
+                                </div>
+                            </div>
+                            <a href="players/76561199413542223.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    
+                </div>
+                
+
+                <!-- Guest Calibrating / Inactive Drawer -->
+                
+                <details id="guest-calibrating-drawer" class="calibrating-inactive-drawer mt-4 rounded-xl border border-slate-800 bg-slate-900/60 overflow-hidden transition-all group/guestcal">
+                    <summary class="p-3.5 bg-slate-900/80 hover:bg-slate-900 cursor-pointer select-none flex items-center justify-between transition border-b border-slate-800/80 list-none">
+                        <div class="flex items-center gap-2.5">
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-sky-400 border border-slate-700 text-xs shrink-0">
+                                ⏳
+                            </span>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 flex items-center gap-2">
+                                    <span>Приглашенные игроки на калибровке и в резерве</span>
+                                    <span class="text-[10px] px-2 py-0.2 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+                                        18
+                                    </span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">
+                                    Менее 5 матчей или неактивные (после 5 матчей попадают в рейтинг приглашенных игроков)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 shrink-0">
+                            <span class="drawer-state-text group-open/guestcal:hidden">Показать игроков</span>
+                            <span class="drawer-state-text hidden group-open/guestcal:inline">Свернуть</span>
+                            <span class="text-slate-500 transition-transform group-open/guestcal:rotate-180">▼</span>
+                        </div>
+                    </summary>
+
+                    <div class="p-4 space-y-4">
+                        
+                        <div class="space-y-2.5">
+                            <div class="text-xs font-bold text-sky-400 flex items-center gap-2 pb-1.5 border-b border-slate-800">
+                                <span>🧪</span> <span>На калибровке (16)</span>
+                            </div>
+                            <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-900/90 text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                                            <th class="py-2 px-3 text-center w-12">Прогресс</th>
+                                            <th class="py-2 px-3">Игрок</th>
+                                            <th class="py-2 px-2.5 text-center">Калибр. MMR</th>
+                                            <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                            <th class="py-2 px-2.5 text-center">Оценка</th>
+                                            <th class="py-2 px-2.5 text-center">K/D</th>
+                                            <th class="py-2 px-2.5 text-center">ADR</th>
+                                            <th class="py-2 px-2.5 text-center">Винрейт</th>
+                                            <th class="py-2 px-2 text-right"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60">
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198927702089"
+                                            data-player-name="berdimwws"
+                                            data-rating="7.5"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198927702089.html" class="font-bold text-white hover:text-sky-300 transition">berdimwws</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1087</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.52</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">7.5</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.68</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">119.9</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">100.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198927702089.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198282749217"
+                                            data-player-name="anarch1k"
+                                            data-rating="7.4"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198282749217.html" class="font-bold text-white hover:text-sky-300 transition">Anarch1k</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Саппорт / Люркер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1083</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.41</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">7.4</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.9</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">89.7</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">100.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198282749217.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198268866325"
+                                            data-player-name="natsad"
+                                            data-rating="7.1"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198268866325.html" class="font-bold text-white hover:text-sky-300 transition">natsad</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1080</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.36</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">7.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.72</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">91.7</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">100.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198268866325.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198861080820"
+                                            data-player-name="7skyi"
+                                            data-rating="6.9"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198861080820.html" class="font-bold text-white hover:text-sky-300 transition">7skyi</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Клатчер / Саппорт</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1073</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.35</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.9</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.58</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">87.7</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">100.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198861080820.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561199043039622"
+                                            data-player-name="zanoza59"
+                                            data-rating="7.1"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561199043039622.html" class="font-bold text-white hover:text-sky-300 transition">Zanoza59</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1059</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.44</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">7.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.48</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">114.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">75.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561199043039622.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561199680080971"
+                                            data-player-name="qurtpen"
+                                            data-rating="6.1"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    5/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561199680080971.html" class="font-bold text-white hover:text-sky-300 transition">Qurtpen</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Саппорт</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1020</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.11</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.0</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">93.4</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">60.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561199680080971.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198410265116"
+                                            data-player-name="hijsenberg"
+                                            data-rating="5.7"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    5/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198410265116.html" class="font-bold text-white hover:text-sky-300 transition">Hijsenberg</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1020</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">5.7</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.04</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">79.3</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">60.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198410265116.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198125968237"
+                                            data-player-name="qumashasyl"
+                                            data-rating="6.6"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198125968237.html" class="font-bold text-white hover:text-sky-300 transition">qumashasyl</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Саппорт</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">1010</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.49</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.6</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.58</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">126.8</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">25.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198125968237.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198113540247"
+                                            data-player-name="alishka18sm"
+                                            data-rating="6.3"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    3/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198113540247.html" class="font-bold text-white hover:text-sky-300 transition">ALISHKA18SM</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Второй номер / Саппорт</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">998</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.23</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.3</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.23</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">105.9</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">33.3%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198113540247.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198010867827"
+                                            data-player-name="nakama_4"
+                                            data-rating="6.3"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    3/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198010867827.html" class="font-bold text-white hover:text-sky-300 transition">Nakama_4</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">996</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.2</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.3</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.18</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">100.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">33.3%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198010867827.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198357586856"
+                                            data-player-name="__9503"
+                                            data-rating="5.0"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198357586856.html" class="font-bold text-white hover:text-sky-300 transition">__9503</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Опорник / Универсал</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">991</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.92</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">5.0</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.87</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">66.0</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">50.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198357586856.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198253814768"
+                                            data-player-name="!attacker!"
+                                            data-rating="5.6"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    1/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198253814768.html" class="font-bold text-white hover:text-sky-300 transition">!ATTACKER!</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Второй номер / Клатчер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">986</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.92</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">5.6</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.94</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">59.8</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">0.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198253814768.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198068831005"
+                                            data-player-name="darkatom"
+                                            data-rating="5.3"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    3/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198068831005.html" class="font-bold text-white hover:text-sky-300 transition">DarkAtom</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Второй номер / Опорник</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">970</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.69</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">5.3</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.51</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">48.1</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">33.3%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198068831005.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198234120608"
+                                            data-player-name="azki_1"
+                                            data-rating="4.5"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    3/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198234120608.html" class="font-bold text-white hover:text-sky-300 transition">Azki_1</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Второй номер / Опорник</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">969</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.68</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">4.5</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.5</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">45.0</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">33.3%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198234120608.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198885191528"
+                                            data-player-name="taksist_3"
+                                            data-rating="4.4"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198885191528.html" class="font-bold text-white hover:text-sky-300 transition">taksist_3</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Универсал / Опорник</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">957</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.72</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">4.4</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.56</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">58.8</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">25.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198885191528.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561197990475042"
+                                            data-player-name="gigabyte_kz"
+                                            data-rating="4.3"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    4/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561197990475042.html" class="font-bold text-white hover:text-sky-300 transition">GIGABYTE_KZ</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Второй номер / Универсал</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">903</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.42</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">4.3</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.28</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">35.6</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">0.0%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561197990475042.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="block md:hidden space-y-2">
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198927702089"
+                                     data-player-name="berdimwws"
+                                     data-rating="7.5"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198927702089.html" class="text-xs font-bold text-white truncate">berdimwws</a>
+                                    </div>
+                                    <a href="players/76561198927702089.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198282749217"
+                                     data-player-name="anarch1k"
+                                     data-rating="7.4"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198282749217.html" class="text-xs font-bold text-white truncate">Anarch1k</a>
+                                    </div>
+                                    <a href="players/76561198282749217.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198268866325"
+                                     data-player-name="natsad"
+                                     data-rating="7.1"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198268866325.html" class="text-xs font-bold text-white truncate">natsad</a>
+                                    </div>
+                                    <a href="players/76561198268866325.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198861080820"
+                                     data-player-name="7skyi"
+                                     data-rating="6.9"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198861080820.html" class="text-xs font-bold text-white truncate">7skyi</a>
+                                    </div>
+                                    <a href="players/76561198861080820.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561199043039622"
+                                     data-player-name="zanoza59"
+                                     data-rating="7.1"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561199043039622.html" class="text-xs font-bold text-white truncate">Zanoza59</a>
+                                    </div>
+                                    <a href="players/76561199043039622.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561199680080971"
+                                     data-player-name="qurtpen"
+                                     data-rating="6.1"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            5/5
+                                        </span>
+                                        <a href="players/76561199680080971.html" class="text-xs font-bold text-white truncate">Qurtpen</a>
+                                    </div>
+                                    <a href="players/76561199680080971.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198410265116"
+                                     data-player-name="hijsenberg"
+                                     data-rating="5.7"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            5/5
+                                        </span>
+                                        <a href="players/76561198410265116.html" class="text-xs font-bold text-white truncate">Hijsenberg</a>
+                                    </div>
+                                    <a href="players/76561198410265116.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198125968237"
+                                     data-player-name="qumashasyl"
+                                     data-rating="6.6"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198125968237.html" class="text-xs font-bold text-white truncate">qumashasyl</a>
+                                    </div>
+                                    <a href="players/76561198125968237.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198113540247"
+                                     data-player-name="alishka18sm"
+                                     data-rating="6.3"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            3/5
+                                        </span>
+                                        <a href="players/76561198113540247.html" class="text-xs font-bold text-white truncate">ALISHKA18SM</a>
+                                    </div>
+                                    <a href="players/76561198113540247.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198010867827"
+                                     data-player-name="nakama_4"
+                                     data-rating="6.3"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            3/5
+                                        </span>
+                                        <a href="players/76561198010867827.html" class="text-xs font-bold text-white truncate">Nakama_4</a>
+                                    </div>
+                                    <a href="players/76561198010867827.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198357586856"
+                                     data-player-name="__9503"
+                                     data-rating="5.0"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198357586856.html" class="text-xs font-bold text-white truncate">__9503</a>
+                                    </div>
+                                    <a href="players/76561198357586856.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198253814768"
+                                     data-player-name="!attacker!"
+                                     data-rating="5.6"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            1/5
+                                        </span>
+                                        <a href="players/76561198253814768.html" class="text-xs font-bold text-white truncate">!ATTACKER!</a>
+                                    </div>
+                                    <a href="players/76561198253814768.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198068831005"
+                                     data-player-name="darkatom"
+                                     data-rating="5.3"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            3/5
+                                        </span>
+                                        <a href="players/76561198068831005.html" class="text-xs font-bold text-white truncate">DarkAtom</a>
+                                    </div>
+                                    <a href="players/76561198068831005.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198234120608"
+                                     data-player-name="azki_1"
+                                     data-rating="4.5"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            3/5
+                                        </span>
+                                        <a href="players/76561198234120608.html" class="text-xs font-bold text-white truncate">Azki_1</a>
+                                    </div>
+                                    <a href="players/76561198234120608.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561198885191528"
+                                     data-player-name="taksist_3"
+                                     data-rating="4.4"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561198885191528.html" class="text-xs font-bold text-white truncate">taksist_3</a>
+                                    </div>
+                                    <a href="players/76561198885191528.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="76561197990475042"
+                                     data-player-name="gigabyte_kz"
+                                     data-rating="4.3"
+                                     data-has-faceit="0"
+                                     data-is-gainer="0">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            4/5
+                                        </span>
+                                        <a href="players/76561197990475042.html" class="text-xs font-bold text-white truncate">GIGABYTE_KZ</a>
+                                    </div>
+                                    <a href="players/76561197990475042.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
+
+                        
+                        <div class="space-y-2.5 pt-3 border-t border-slate-800">
+                            <div class="text-xs font-bold text-slate-400 flex items-center gap-2 pb-1.5 border-b border-slate-800">
+                                <span>💤</span> <span>Неактивные гостевые игроки (2)</span>
+                            </div>
+                            <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-900/90 text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                                            <th class="py-2 px-3 text-center w-12">Статус</th>
+                                            <th class="py-2 px-3">Игрок</th>
+                                            <th class="py-2 px-2.5 text-center">MMR</th>
+                                            <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                            <th class="py-2 px-2.5 text-center">Оценка</th>
+                                            <th class="py-2 px-2.5 text-center">K/D</th>
+                                            <th class="py-2 px-2.5 text-center">ADR</th>
+                                            <th class="py-2 px-2.5 text-center">Всего игр</th>
+                                            <th class="py-2 px-2 text-right"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60">
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561199508661466"
+                                            data-player-name="resone west"
+                                            data-rating="6.7"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center text-slate-500">💤</td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561199508661466.html" class="font-bold text-white hover:text-amber-300 transition">Resone West</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Опорник</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-slate-300 text-xs">1066</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.21</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">6.7</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">1.22</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">92.4</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-slate-400">11</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561199508661466.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="76561198100478545"
+                                            data-player-name="folie_1"
+                                            data-rating="5.9"
+                                            data-has-faceit="0"
+                                            data-is-gainer="0">
+                                            <td class="py-2 px-3 text-center text-slate-500">💤</td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/76561198100478545.html" class="font-bold text-white hover:text-amber-300 transition">Folie_1</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">Энтри-фраггер / Второй номер</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-slate-300 text-xs">992</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.97</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">5.9</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">0.85</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">75.2</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-slate-400">17</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/76561198100478545.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </details>
+                
+            </div>
+        </details>
+    </section>
+    
     </div>
 
     <!-- 2. TAB: Latest Session Summary (Hall of Fame & Momentum) -->
@@ -3847,7 +6090,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 18:12</p>
+                <p class="footer-timestamp">Данные обновлены: 10.10.2026 18:20</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
@@ -4060,7 +6303,7 @@ function setupLeaderboardFilters() {
         });
         cards.forEach(c => checkItem(c));
 
-        // Filter and auto-open drawer if search matches secondary players
+        // Auto-open drawers if search matches players inside them
         const drawer = document.getElementById('calibrating-inactive-drawer');
         const drawerRows = document.querySelectorAll('.drawer-player-row');
         const drawerCards = document.querySelectorAll('.drawer-player-card');
@@ -4072,6 +6315,22 @@ function setupLeaderboardFilters() {
         drawerCards.forEach(c => {
             if (checkItem(c)) matchedInDrawer = true;
         });
+
+        if (drawer && query && matchedInDrawer) {
+            drawer.open = true;
+        }
+
+        const guestDrawer = document.getElementById('guest-players-drawer');
+        let matchedInGuest = false;
+        if (guestDrawer) {
+            const guestMatches = guestDrawer.querySelectorAll('.leaderboard-row:not(.filter-hidden), .mobile-player-card:not(.filter-hidden), .drawer-player-row:not(.filter-hidden), .drawer-player-card:not(.filter-hidden)');
+            if (guestMatches.length > 0) {
+                matchedInGuest = true;
+                if (query) {
+                    guestDrawer.open = true;
+                }
+            }
+        }
 
         const isFiltered = !!query || currentLeaderboardFilter !== 'all';
         const toggleBtn = document.getElementById('toggle-all-players-btn');
@@ -4088,7 +6347,7 @@ function setupLeaderboardFilters() {
 
         if (countSpan) countSpan.textContent = visibleCount;
         if (emptyState) {
-            emptyState.classList.toggle('hidden', (visibleCount > 0) || matchedInDrawer);
+            emptyState.classList.toggle('hidden', (visibleCount > 0) || matchedInDrawer || matchedInGuest);
         }
     }
 

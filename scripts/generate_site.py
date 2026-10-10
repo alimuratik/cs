@@ -3142,18 +3142,48 @@ def generate_site(output_dir=None):
         s1 = tm.get("score_team1", 0)
         s2 = tm.get("score_team2", 0)
 
-        is_kase_t1 = "kase" in t1.lower()
+        # Точно определяем сторону Team KASE по числу штатных игроков
+        t1_kase_count = sum(1 for p in tm.get("players", {}).values() if p.get("team") == "team1" and is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
+        t2_kase_count = sum(1 for p in tm.get("players", {}).values() if p.get("team") == "team2" and is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
+        is_kase_t1 = t1_kase_count >= t2_kase_count
+
         score_kase = s1 if is_kase_t1 else s2
         score_opp = s2 if is_kase_t1 else s1
-        opp_name = t2 if is_kase_t1 else t1
+        opp_raw = t2 if is_kase_t1 else t1
+
+        # Официальные названия соперников в турнире QEBL Season 7
+        opp_map = {
+            "30092026_inferno_116_krisha_t": "Krisha",
+            "30092026_mirage_110_kase_vtb": "ВТБ Банк",
+            "01102026_mirage_124_kase_mec": "Mechta.kz",
+            "01102026_inferno_127_innoforc": "Innoforce",
+            "01102026_dust2_129_kase_gra": "Grand Games",
+        }
+        if mid in opp_map:
+            opp_name = opp_map[mid]
+        elif "vtb" in mid.lower():
+            opp_name = "ВТБ Банк"
+        elif "mech" in mid.lower():
+            opp_name = "Mechta.kz"
+        elif "krisha" in mid.lower():
+            opp_name = "Krisha"
+        elif "inno" in mid.lower():
+            opp_name = "Innoforce"
+        elif "gra" in mid.lower():
+            opp_name = "Grand Games"
+        elif "команда" in opp_raw.lower():
+            opp_name = "Соперник"
+        else:
+            opp_name = opp_raw
+
         is_win = score_kase > score_opp
 
-        kase_team_key = "team1" if is_kase_t1 else "team2"
         kase_pls = []
         for p in tm.get("players", {}).values():
             sid_clean = clean_steamid(p.get("steam_id"))
             p_n = clean_name(p.get("name", "Игрок"))
-            if p.get("team") == kase_team_key or is_kase_team_member(sid_clean, p_n):
+            # В карточку Team KASE включаем ИСКЛЮЧИТЕЛЬНО игроков Team KASE
+            if is_kase_team_member(sid_clean, p_n):
                 kase_pls.append({
                     "steam_id": sid_clean,
                     "name": p_n,

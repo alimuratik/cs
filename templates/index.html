@@ -576,13 +576,13 @@
                     </span>
                     <div>
                         <div class="text-sm font-bold text-slate-200 flex items-center gap-2">
-                            <span>На калибровке и в резерве</span>
+                            <span>Сотрудники KASE на калибровке и в резерве</span>
                             <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
                                 {{ secondary_players_count }}
                             </span>
                         </div>
                         <div class="text-xs text-slate-400">
-                            Игроки с менее чем 5 матчами или временно неактивные (вне официального зачета лидеров)
+                            Сотрудники KASE с менее чем 5 матчами или временно неактивные (после 5 матчей переходят в основной рейтинг KASE)
                         </div>
                     </div>
                 </div>
@@ -600,7 +600,7 @@
                     <div class="flex items-center justify-between pb-2 border-b border-slate-800/60">
                         <div class="flex items-center gap-2 text-xs font-bold text-sky-400 uppercase tracking-wider">
                             <span>🧪</span>
-                            <span>На калибровке (до 5 матчей — без официального ранга в таблице лидеров)</span>
+                            <span>Сотрудники KASE на калибровке (до 5 матчей — после 5 матчей вход в основной рейтинг)</span>
                             <span class="text-slate-500 font-mono">({{ calibrating_players|length }})</span>
                         </div>
                         <span class="text-[11px] text-slate-400 hidden sm:inline">Требуется сыграть 5 матчей для входа в основной рейтинг</span>
@@ -881,6 +881,454 @@
         </details>
         {% endif %}
     </section>
+
+    <!-- ─── Секция: Приглашенные игроки (Гостевой соревновательный рейтинг) ─── -->
+    {% if guest_players or guest_calibrating_players or guest_inactive_players %}
+    <section id="guest-players-section" class="section mb-12">
+        <details id="guest-players-drawer" class="guest-drawer rounded-2xl border border-indigo-900/50 bg-slate-950/80 overflow-hidden backdrop-blur-md shadow-2xl group/guestdrawer" open>
+            <summary class="p-4 md:p-5 bg-gradient-to-r from-indigo-950/60 via-slate-900/90 to-purple-950/40 hover:from-indigo-950/80 hover:via-slate-900 cursor-pointer select-none flex items-center justify-between transition border-b border-indigo-900/50 list-none">
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-950/80 text-indigo-400 border border-indigo-500/40 text-lg shadow-inner shrink-0">
+                        👥
+                    </span>
+                    <div>
+                        <div class="text-base md:text-lg font-black text-white flex items-center gap-2.5 flex-wrap">
+                            <span>Приглашенные игроки</span>
+                            <span class="text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 px-2.5 py-0.5 rounded-full font-semibold">Гостевой рейтинг</span>
+                            <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono font-bold">
+                                {{ guest_players_count }} в рейтинге
+                            </span>
+                            {% if guest_secondary_count > 0 %}
+                            <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800/80 text-slate-400 border border-slate-700 font-mono">
+                                +{{ guest_secondary_count }} на калибровке / в резерве
+                            </span>
+                            {% endif %}
+                        </div>
+                        <p class="text-xs text-slate-400 mt-0.5">
+                            Участники совместных игровых сессий, не входящие в официальный штат Team KASE. Имеют свой независимый соревновательный зачет и ранги.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-semibold text-indigo-400 shrink-0">
+                    <span class="guest-drawer-state-text group-open/guestdrawer:hidden">Показать гостевой рейтинг</span>
+                    <span class="guest-drawer-state-text hidden group-open/guestdrawer:inline">Свернуть список</span>
+                    <span class="text-indigo-400 transition-transform group-open/guestdrawer:rotate-180">▼</span>
+                </div>
+            </summary>
+
+            <div class="p-4 md:p-6 space-y-6">
+                <!-- Desktop Leaderboard Table (Guest) -->
+                {% if guest_players %}
+                <div class="hidden md:block overflow-x-auto glassmorphism rounded-2xl border border-indigo-950/50 shadow-2xl">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/90 text-[11px] uppercase tracking-wider text-slate-400 border-b border-indigo-950">
+                                <th class="py-2.5 px-3 text-center w-12">
+                                    <span class="tooltip-trigger" tabindex="0">
+                                        Ранг
+                                        <span class="tooltip-box align-left">
+                                            <strong>Гостевой ранг</strong><br>
+                                            Позиция в рейтинге приглашенных игроков по очкам MMR.
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="py-2.5 px-3">
+                                    <span class="tooltip-trigger" tabindex="0">
+                                        Игрок
+                                        <span class="tooltip-box align-left">
+                                            <strong>Профиль и роли</strong><br>
+                                            Ранг мастерства, никнейм и тактические роли.
+                                        </span>
+                                    </span>
+                                </th>
+                                <th class="py-2.5 px-2.5 text-center">FACEIT</th>
+                                <th class="py-2.5 px-2.5 text-center">MMR</th>
+                                <th class="py-2.5 px-2.5 text-center">Сессия ±</th>
+                                <th class="py-2.5 px-2.5 text-center">HLTV 2.0</th>
+                                <th class="py-2.5 px-2.5 text-center">Оценка</th>
+                                <th class="py-2.5 px-2.5 text-center">K/D</th>
+                                <th class="py-2.5 px-2.5 text-center">ADR</th>
+                                <th class="py-2.5 px-2.5 text-center">Винрейт</th>
+                                <th class="py-2.5 px-3 text-center">Форма (5)</th>
+                                <th class="py-2.5 px-2.5 text-center">Пик</th>
+                                <th class="py-2.5 px-2 text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/60 text-xs">
+                            {% for player in guest_players %}
+                            <tr data-steamid="{{ player.steam_id }}" 
+                                data-player-name="{{ player.name|lower }}" 
+                                data-rating="{{ player.rating }}" 
+                                data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}" 
+                                data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}"
+                                class="leaderboard-row {{ player.rank_tier.row_classes }} transition-all duration-150 group border-l-2 {% if player.rank == 1 %}bg-amber-500/5{% elif player.rank == 2 %}bg-slate-400/5{% elif player.rank == 3 %}bg-amber-700/5{% endif %}">
+                                <!-- Rank -->
+                                <td class="py-2.5 px-3 text-center font-black font-mono">
+                                    {% if player.rank == 1 %}
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 border border-amber-500/50 shadow-sm shadow-amber-500/20 text-sm">👑</span>
+                                    {% elif player.rank == 2 %}
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-400/20 text-slate-200 border border-slate-400/50 text-sm">🥈</span>
+                                    {% elif player.rank == 3 %}
+                                    <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-700/20 text-amber-500 border border-amber-700/50 text-sm">🥉</span>
+                                    {% else %}
+                                    <span class="text-slate-500 text-xs">#{{ player.rank }}</span>
+                                    {% endif %}
+                                </td>
+
+                                <!-- Player Info -->
+                                <td class="py-2.5 px-3">
+                                    <a href="players/{{ player.steam_id }}.html" class="flex items-center gap-2.5 group">
+                                        <div class="shrink-0" title="{{ player.rank_tier.tier_name }}">
+                                            {{ player.rank_tier.badge_svg|safe }}
+                                        </div>
+                                        <div class="min-w-0">
+                                            <div class="font-bold text-white group-hover:text-indigo-300 transition text-xs md:text-sm flex items-center gap-1.5 truncate player-name-container">
+                                                <span>{{ player.name }}</span>
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-500/30">Гость</span>
+                                                {% if player.is_inactive %}
+                                                <span class="text-[8px] px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 border border-slate-700 font-semibold shrink-0">Неактивен</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="text-[10px] md:text-[11px] text-slate-400 font-medium truncate mt-0.5 flex items-center gap-1.5 flex-wrap">
+                                                <span>{{ player.roles[:2]|join(' / ') }}</span>
+                                                {% if player.momentum and player.momentum.label %}
+                                                <span class="text-[9px] px-1.5 py-0.2 rounded-full font-bold border {{ player.momentum.badge_class }}">
+                                                    {{ player.momentum.icon }} {{ player.momentum.label }}
+                                                </span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </td>
+
+                                <!-- FACEIT -->
+                                <td class="py-2.5 px-2.5 text-center">
+                                    {% if player.faceit and player.faceit.found %}
+                                    <div class="inline-flex items-center gap-1.5 bg-orange-950/20 px-2 py-0.5 rounded border border-orange-500/30">
+                                        <span class="shrink-0">{{ render_faceit_svg(player.faceit.skill_level, 18)|safe }}</span>
+                                        <div class="text-left font-mono leading-none">
+                                            <span class="text-xs font-bold text-orange-400 block">{{ player.faceit.elo }}</span>
+                                            {% if player.faceit.elo_delta and player.faceit.elo_delta != 0 %}
+                                            <span class="text-[9px] font-bold block {% if player.faceit.elo_delta > 0 %}text-emerald-400{% else %}text-rose-400{% endif %}">
+                                                {{ player.faceit.elo_delta_text }}
+                                            </span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <span class="text-slate-600 text-xs font-mono">—</span>
+                                    {% endif %}
+                                </td>
+
+                                <!-- MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-black text-sm {{ player.rank_tier.mmr_classes }}">
+                                    {{ player.current_mmr }}
+                                </td>
+
+                                <!-- Сессия ± -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded {% if player.session_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/40{% elif player.session_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/40{% else %}bg-slate-900 text-slate-400 border border-slate-800{% endif %}"
+                                          title="Суммарный MMR за сессию (матчей: {{ player.session_matches_count }}{% if player.session_date_display %}, {{ player.session_date_display }}{% endif %})">
+                                        {{ player.session_delta_text }}
+                                    </span>
+                                </td>
+
+                                <!-- HLTV 2.0 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-semibold text-xs {% if player.hltv_rating >= 1.15 %}text-emerald-400{% elif player.hltv_rating < 0.90 %}text-rose-400{% else %}text-slate-200{% endif %}">
+                                    {{ player.hltv_rating }}
+                                </td>
+
+                                <!-- Score 1-10 -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs">
+                                    <span class="inline-block px-1.5 py-0.5 rounded {% if player.rating >= 8.0 %}bg-amber-950 text-amber-300 border border-amber-500/50{% elif player.rating >= 7.0 %}bg-emerald-950 text-emerald-300 border border-emerald-500/50{% elif player.rating >= 5.0 %}bg-yellow-950 text-yellow-300 border border-yellow-500/50{% else %}bg-rose-950 text-rose-300 border border-rose-500/50{% endif %}">
+                                        {{ player.rating }}
+                                    </span>
+                                </td>
+
+                                <!-- K/D -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs font-semibold {% if player.kd_ratio >= 1.0 %}text-emerald-400{% else %}text-rose-400{% endif %}">
+                                    {{ player.kd_ratio }}
+                                </td>
+
+                                <!-- ADR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    {{ player.adr }}
+                                </td>
+
+                                <!-- Winrate -->
+                                <td class="py-2.5 px-2.5 text-center font-mono text-xs text-slate-300">
+                                    <span class="font-bold text-white">{{ player.win_rate }}%</span>
+                                    <span class="text-slate-500 text-[10px] block font-sans">({{ player.wins }}W-{{ player.losses }}L)</span>
+                                </td>
+
+                                <!-- Form (5) -->
+                                <td class="py-2.5 px-3 text-center">
+                                    <div class="inline-flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-full border border-slate-800">
+                                        {% for dot in player.form_dots %}
+                                            {% if dot == 'win_high' %}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" title="Победа (HLTV >= 1.10)"></span>
+                                            {% elif dot == 'win_low' %}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" title="Победа"></span>
+                                            {% elif dot == 'tie' %}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-slate-400 inline-block" title="Ничья"></span>
+                                            {% else %}
+                                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block" title="Поражение"></span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-[10px] text-slate-500 font-mono">—</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+
+                                <!-- Peak MMR -->
+                                <td class="py-2.5 px-2.5 text-center font-mono font-bold text-xs text-amber-400">
+                                    {{ player.peak_mmr }}
+                                </td>
+
+                                <!-- Profile link -->
+                                <td class="py-2.5 px-2 text-right">
+                                    <a href="players/{{ player.steam_id }}.html" class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-slate-400 hover:bg-indigo-600 hover:text-white transition text-xs font-bold" title="Открыть профиль игрока">
+                                        ➔
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Guest Mobile Cards (<768px) -->
+                <div class="block md:hidden space-y-3">
+                    {% for player in guest_players %}
+                    <details class="mobile-player-card glassmorphism rounded-xl border border-slate-800 overflow-hidden group {% if loop.index > 5 %}mobile-player-hidden{% endif %}"
+                             data-steamid="{{ player.steam_id }}"
+                             data-player-name="{{ player.name|lower }}"
+                             data-rating="{{ player.rating }}"
+                             data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                             data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                        <summary class="p-3 bg-slate-900/60 flex items-center justify-between cursor-pointer select-none">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-6 h-6 rounded-md font-mono font-bold text-xs flex items-center justify-center shrink-0 {% if player.rank == 1 %}bg-amber-500/20 text-amber-400 border border-amber-500/50{% elif player.rank == 2 %}bg-slate-400/20 text-slate-200 border border-slate-400/50{% elif player.rank == 3 %}bg-amber-700/20 text-amber-500 border border-amber-700/50{% else %}bg-slate-800 text-slate-400 border border-slate-700{% endif %}">
+                                    {{ player.rank }}
+                                </div>
+                                <div class="shrink-0" title="{{ player.rank_tier.tier_name }}">
+                                    {{ player.rank_tier.badge_svg|safe }}
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-white text-xs md:text-sm flex items-center gap-1.5 flex-wrap truncate player-name-container">
+                                        <span>{{ player.name }}</span>
+                                        <span class="text-[8px] px-1 py-0.2 rounded bg-indigo-950 text-indigo-300 border border-indigo-500/40">Гость</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5 truncate flex-wrap">
+                                        <span>{{ player.roles[:2]|join(' / ') }}</span>
+                                        <span>•</span>
+                                        <span>HLTV: <strong class="text-white">{{ player.hltv_rating }}</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2.5">
+                                <div class="text-right">
+                                    <span class="font-mono font-black text-sm {{ player.rank_tier.mmr_classes }} block">{{ player.current_mmr }}</span>
+                                    <span class="text-[10px] font-mono font-bold {% if player.session_delta > 0 %}text-emerald-400{% elif player.session_delta < 0 %}text-rose-400{% else %}text-slate-400{% endif %}">
+                                        {{ player.session_delta_text }}
+                                    </span>
+                                </div>
+                                <span class="text-slate-400 text-xs transition-transform group-open:rotate-180">▼</span>
+                            </div>
+                        </summary>
+
+                        <div class="p-3.5 bg-slate-950/70 border-t border-slate-800/80 space-y-3">
+                            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Оценка 1-10</span>
+                                    <span class="font-bold {% if player.rating >= 8.0 %}text-amber-400{% elif player.rating >= 7.0 %}text-emerald-400{% elif player.rating >= 5.0 %}text-yellow-400{% else %}text-rose-400{% endif %}">{{ player.rating }}</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">ADR</span>
+                                    <span class="font-bold text-slate-200">{{ player.adr }}</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Винрейт</span>
+                                    <span class="font-bold text-emerald-400">{{ player.win_rate }}%</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Матчи W-L</span>
+                                    <span class="font-bold text-slate-300">{{ player.wins }}W / {{ player.losses }}L</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Пиковый MMR</span>
+                                    <span class="font-bold text-amber-400">{{ player.peak_mmr }}</span>
+                                </div>
+                                <div class="bg-slate-900/90 p-2 rounded-lg border border-slate-800">
+                                    <span class="block text-[9px] uppercase text-slate-400 font-sans">Всего матчей</span>
+                                    <span class="font-bold text-white">{{ player.total_matches }}</span>
+                                </div>
+                            </div>
+                            <a href="players/{{ player.steam_id }}.html" class="block w-full py-2 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/40 rounded-lg text-center font-bold text-xs transition">
+                                Открыть полный профиль игрока ➔
+                            </a>
+                        </div>
+                    </details>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Guest Calibrating / Inactive Drawer -->
+                {% if guest_calibrating_players or guest_inactive_players %}
+                <details id="guest-calibrating-drawer" class="calibrating-inactive-drawer mt-4 rounded-xl border border-slate-800 bg-slate-900/60 overflow-hidden transition-all group/guestcal">
+                    <summary class="p-3.5 bg-slate-900/80 hover:bg-slate-900 cursor-pointer select-none flex items-center justify-between transition border-b border-slate-800/80 list-none">
+                        <div class="flex items-center gap-2.5">
+                            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-slate-800 text-sky-400 border border-slate-700 text-xs shrink-0">
+                                ⏳
+                            </span>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200 flex items-center gap-2">
+                                    <span>Приглашенные игроки на калибровке и в резерве</span>
+                                    <span class="text-[10px] px-2 py-0.2 rounded-full bg-slate-800 text-slate-400 border border-slate-700 font-mono">
+                                        {{ guest_secondary_count }}
+                                    </span>
+                                </div>
+                                <div class="text-[11px] text-slate-400">
+                                    Менее 5 матчей или неактивные (после 5 матчей попадают в рейтинг приглашенных игроков)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs font-semibold text-slate-400 shrink-0">
+                            <span class="drawer-state-text group-open/guestcal:hidden">Показать игроков</span>
+                            <span class="drawer-state-text hidden group-open/guestcal:inline">Свернуть</span>
+                            <span class="text-slate-500 transition-transform group-open/guestcal:rotate-180">▼</span>
+                        </div>
+                    </summary>
+
+                    <div class="p-4 space-y-4">
+                        {% if guest_calibrating_players %}
+                        <div class="space-y-2.5">
+                            <div class="text-xs font-bold text-sky-400 flex items-center gap-2 pb-1.5 border-b border-slate-800">
+                                <span>🧪</span> <span>На калибровке ({{ guest_calibrating_players|length }})</span>
+                            </div>
+                            <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-900/90 text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                                            <th class="py-2 px-3 text-center w-12">Прогресс</th>
+                                            <th class="py-2 px-3">Игрок</th>
+                                            <th class="py-2 px-2.5 text-center">Калибр. MMR</th>
+                                            <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                            <th class="py-2 px-2.5 text-center">Оценка</th>
+                                            <th class="py-2 px-2.5 text-center">K/D</th>
+                                            <th class="py-2 px-2.5 text-center">ADR</th>
+                                            <th class="py-2 px-2.5 text-center">Винрейт</th>
+                                            <th class="py-2 px-2 text-right"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60">
+                                        {% for player in guest_calibrating_players %}
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="{{ player.steam_id }}"
+                                            data-player-name="{{ player.name|lower }}"
+                                            data-rating="{{ player.rating }}"
+                                            data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                                            data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                                            <td class="py-2 px-3 text-center">
+                                                <span class="inline-flex items-center justify-center w-6 h-6 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[10px] font-mono font-bold">
+                                                    {{ player.total_matches }}/5
+                                                </span>
+                                            </td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/{{ player.steam_id }}.html" class="font-bold text-white hover:text-sky-300 transition">{{ player.name }}</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">{{ player.roles[:2]|join(' / ') }}</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-blue-300 text-xs">{{ player.current_mmr }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.hltv_rating }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">{{ player.rating }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.kd_ratio }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.adr }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-white font-bold">{{ player.win_rate }}%</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/{{ player.steam_id }}.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="block md:hidden space-y-2">
+                                {% for player in guest_calibrating_players %}
+                                <div class="drawer-player-card p-2.5 rounded-lg border border-slate-800 bg-slate-900 flex items-center justify-between"
+                                     data-steamid="{{ player.steam_id }}"
+                                     data-player-name="{{ player.name|lower }}"
+                                     data-rating="{{ player.rating }}"
+                                     data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                                     data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                                    <div class="flex items-center gap-2 min-w-0">
+                                        <span class="w-5 h-5 rounded bg-blue-950 text-blue-400 border border-blue-500/40 text-[9px] font-mono font-bold flex items-center justify-center shrink-0">
+                                            {{ player.total_matches }}/5
+                                        </span>
+                                        <a href="players/{{ player.steam_id }}.html" class="text-xs font-bold text-white truncate">{{ player.name }}</a>
+                                    </div>
+                                    <a href="players/{{ player.steam_id }}.html" class="text-xs text-sky-400 font-mono">Профиль ➔</a>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if guest_inactive_players %}
+                        <div class="space-y-2.5 pt-3 border-t border-slate-800">
+                            <div class="text-xs font-bold text-slate-400 flex items-center gap-2 pb-1.5 border-b border-slate-800">
+                                <span>💤</span> <span>Неактивные гостевые игроки ({{ guest_inactive_players|length }})</span>
+                            </div>
+                            <div class="hidden md:block overflow-x-auto glassmorphism rounded-xl border border-slate-800/80">
+                                <table class="w-full text-left border-collapse text-xs">
+                                    <thead>
+                                        <tr class="bg-slate-900/90 text-[10px] uppercase text-slate-400 border-b border-slate-800">
+                                            <th class="py-2 px-3 text-center w-12">Статус</th>
+                                            <th class="py-2 px-3">Игрок</th>
+                                            <th class="py-2 px-2.5 text-center">MMR</th>
+                                            <th class="py-2 px-2.5 text-center">HLTV 2.0</th>
+                                            <th class="py-2 px-2.5 text-center">Оценка</th>
+                                            <th class="py-2 px-2.5 text-center">K/D</th>
+                                            <th class="py-2 px-2.5 text-center">ADR</th>
+                                            <th class="py-2 px-2.5 text-center">Всего игр</th>
+                                            <th class="py-2 px-2 text-right"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-800/60">
+                                        {% for player in guest_inactive_players %}
+                                        <tr class="drawer-player-row hover:bg-slate-800/40 transition group"
+                                            data-steamid="{{ player.steam_id }}"
+                                            data-player-name="{{ player.name|lower }}"
+                                            data-rating="{{ player.rating }}"
+                                            data-has-faceit="{{ '1' if player.faceit and player.faceit.found else '0' }}"
+                                            data-is-gainer="{{ '1' if player.momentum and player.momentum.label and '🔥' in player.momentum.icon else '0' }}">
+                                            <td class="py-2 px-3 text-center text-slate-500">💤</td>
+                                            <td class="py-2 px-3">
+                                                <a href="players/{{ player.steam_id }}.html" class="font-bold text-white hover:text-amber-300 transition">{{ player.name }}</a>
+                                                <span class="text-[9px] text-slate-400 font-mono ml-1.5">{{ player.roles[:2]|join(' / ') }}</span>
+                                            </td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-slate-300 text-xs">{{ player.current_mmr }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.hltv_rating }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono font-bold text-xs">{{ player.rating }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.kd_ratio }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs">{{ player.adr }}</td>
+                                            <td class="py-2 px-2.5 text-center font-mono text-xs text-slate-400">{{ player.total_matches }}</td>
+                                            <td class="py-2 px-2 text-right">
+                                                <a href="players/{{ player.steam_id }}.html" class="text-slate-400 hover:text-white text-xs">➔</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </details>
+                {% endif %}
+            </div>
+        </details>
+    </section>
+    {% endif %}
     </div>
 
     <!-- 2. TAB: Latest Session Summary (Hall of Fame & Momentum) -->
@@ -1535,7 +1983,7 @@ function setupLeaderboardFilters() {
         });
         cards.forEach(c => checkItem(c));
 
-        // Filter and auto-open drawer if search matches secondary players
+        // Auto-open drawers if search matches players inside them
         const drawer = document.getElementById('calibrating-inactive-drawer');
         const drawerRows = document.querySelectorAll('.drawer-player-row');
         const drawerCards = document.querySelectorAll('.drawer-player-card');
@@ -1547,6 +1995,22 @@ function setupLeaderboardFilters() {
         drawerCards.forEach(c => {
             if (checkItem(c)) matchedInDrawer = true;
         });
+
+        if (drawer && query && matchedInDrawer) {
+            drawer.open = true;
+        }
+
+        const guestDrawer = document.getElementById('guest-players-drawer');
+        let matchedInGuest = false;
+        if (guestDrawer) {
+            const guestMatches = guestDrawer.querySelectorAll('.leaderboard-row:not(.filter-hidden), .mobile-player-card:not(.filter-hidden), .drawer-player-row:not(.filter-hidden), .drawer-player-card:not(.filter-hidden)');
+            if (guestMatches.length > 0) {
+                matchedInGuest = true;
+                if (query) {
+                    guestDrawer.open = true;
+                }
+            }
+        }
 
         const isFiltered = !!query || currentLeaderboardFilter !== 'all';
         const toggleBtn = document.getElementById('toggle-all-players-btn');
@@ -1563,7 +2027,7 @@ function setupLeaderboardFilters() {
 
         if (countSpan) countSpan.textContent = visibleCount;
         if (emptyState) {
-            emptyState.classList.toggle('hidden', (visibleCount > 0) || matchedInDrawer);
+            emptyState.classList.toggle('hidden', (visibleCount > 0) || matchedInDrawer || matchedInGuest);
         }
     }
 
