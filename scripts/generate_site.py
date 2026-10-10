@@ -1301,7 +1301,22 @@ def format_match_data(m: dict) -> dict:
                     curr_offset = video_offset_sec or match_highlight.get("video_offset_sec", 0)
                     g_sec = match_highlight.get("game_sec", 0)
                     lead_in = 6
-                    start_sec = max(0, curr_offset + g_sec - lead_in)
+                    round_n = match_highlight.get("round_num", 1)
+
+                    # Проверяем калибровку паузы при смене сторон (QEBL S7)
+                    qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
+                    r13_vid_start = qebl_calib.get("r13_video_start_sec")
+                    r13_tick = qebl_calib.get("r13_start_tick")
+
+                    if round_n >= 13 and r13_vid_start is not None and r13_tick is not None:
+                        m_tick = match_highlight.get("moment_tick") or match_highlight.get("tick") or r13_tick
+                        sec_from_r13 = max(0, round((m_tick - r13_tick) / 64.0))
+                        start_sec = max(0, r13_vid_start + sec_from_r13 - lead_in)
+                    elif "embed_start_sec" in match_highlight and curr_offset == match_highlight.get("video_offset_sec", 0):
+                        start_sec = match_highlight["embed_start_sec"]
+                    else:
+                        start_sec = max(0, curr_offset + g_sec - lead_in)
+
                     tc_disp = f"{start_sec // 60}:{start_sec % 60:02d}"
                     match_highlight["embed_start_sec"] = start_sec
                     match_highlight["timecode_display"] = tc_disp
@@ -1332,8 +1347,17 @@ def format_match_data(m: dict) -> dict:
                     formatted_top = []
                     for idx, th_item in enumerate(raw_top):
                         th = dict(th_item)
-                        th_g_sec = th.get("game_sec", 0)
-                        th_start = max(0, curr_offset + th_g_sec - lead_in)
+                        th_rn = th.get("round_num", 1)
+                        if th_rn >= 13 and r13_vid_start is not None and r13_tick is not None:
+                            th_m_tick = th.get("moment_tick") or th.get("tick") or r13_tick
+                            th_sec_from_r13 = max(0, round((th_m_tick - r13_tick) / 64.0))
+                            th_start = max(0, r13_vid_start + th_sec_from_r13 - lead_in)
+                        elif "embed_start_sec" in th and curr_offset == th.get("video_offset_sec", 0):
+                            th_start = th["embed_start_sec"]
+                        else:
+                            th_g_sec = th.get("game_sec", 0)
+                            th_start = max(0, curr_offset + th_g_sec - lead_in)
+
                         th_tc = f"{th_start // 60}:{th_start % 60:02d}"
                         th_embed, th_watch = build_highlight_embed_url(video_url, th_start)
                         th["embed_url"] = th_embed
@@ -1543,7 +1567,22 @@ def build_all_player_highlights() -> dict[str, list[dict]]:
                 continue
 
             g_sec = th.get("game_sec", 0)
-            start_sec = max(0, v_offset + g_sec - lead_in)
+            th_rn = th.get("round_num", 1)
+
+            # Проверяем калибровку паузы при смене сторон (QEBL S7)
+            qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
+            r13_vid_start = qebl_calib.get("r13_video_start_sec")
+            r13_tick = qebl_calib.get("r13_start_tick")
+
+            if th_rn >= 13 and r13_vid_start is not None and r13_tick is not None:
+                th_m_tick = th.get("moment_tick") or th.get("tick") or r13_tick
+                th_sec_from_r13 = max(0, round((th_m_tick - r13_tick) / 64.0))
+                start_sec = max(0, r13_vid_start + th_sec_from_r13 - lead_in)
+            elif "embed_start_sec" in th and v_offset == th.get("video_offset_sec", 0):
+                start_sec = th["embed_start_sec"]
+            else:
+                start_sec = max(0, v_offset + g_sec - lead_in)
+
             tc_disp = f"{start_sec // 60}:{start_sec % 60:02d}"
             embed_url, watch_url = build_highlight_embed_url(v_url, start_sec) if v_url else ("", "")
 

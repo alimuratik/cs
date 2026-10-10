@@ -687,7 +687,7 @@
                             Хайлайты в матчах
                         </h2>
                         <span class="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 border border-amber-500/40 px-2.5 py-0.5 rounded-full shadow-sm">
-                            30 моментов
+                            32 моментов
                         </span>
                     </div>
                     <p class="text-xs text-slate-400 mt-0.5">
@@ -736,7 +736,7 @@
         <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3.5 font-mono text-xs scrollbar-none -mx-1 px-1" id="hl-filter-bar">
             <button type="button" onclick="filterHighlights('all', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-amber-500 text-slate-950 font-bold border border-amber-400 transition shrink-0 cursor-pointer shadow-sm">
-                Все (30)
+                Все (32)
             </button>
             
             
@@ -764,14 +764,75 @@
             
             <button type="button" onclick="filterHighlights('special', this)"
                     class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-purple-300 border border-purple-500/30 hover:border-purple-400/60 transition shrink-0 cursor-pointer">
-                🔪 Нож/Zeus (8)
+                🔪 Нож/Zeus (6)
             </button>
             
+            
+            <button type="button" onclick="filterHighlights('multi', this)"
+                    class="hl-filter-btn px-3 py-1 rounded-lg bg-slate-900/80 text-emerald-300 border border-emerald-500/30 hover:border-emerald-400/60 transition shrink-0 cursor-pointer">
+                🎯 3K (4)
+            </button>
             
         </div>
 
         <!-- Cards Container: Horizontal Snap Carousel (Default) or Expanded Grid -->
         <div id="hl-cards-track" class="hl-cards-carousel overflow-x-auto snap-x snap-mandatory flex items-stretch gap-3 pb-3 pt-1 scrollbar-thin scrollbar-thumb-emerald-600/40 custom-scrollbar -mx-1 px-1">
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="multi"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 17 (13:3)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">01 октября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AK-47</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 26:43</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 17 (счёт 13:3). Alibonya оформляет 🎯 Тройной килл (3K) с AK-47.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 17 (счёт 13:3). Alibonya оформляет 🎯 Тройной килл (3K) с AK-47."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 25:06
+                    </span>
+                    
+
+                    <a href="../matches/01102026_dust2_129_kase_gra.html#round-17"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
                  data-category="wallbang"
@@ -803,7 +864,7 @@
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
                             <span>1 фрага (1 HS)</span>
-                            <span class="text-slate-500">⏱ 23:48</span>
+                            <span class="text-slate-500">⏱ 25:44</span>
                         </div>
                     </div>
 
@@ -823,6 +884,63 @@
                     
 
                     <a href="../matches/01102026_mirage_124_kase_mec.html#round-17"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="special"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Dust2
+                        </span>
+                        <span>Рд. 15 (12:2)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-purple-500/20 text-purple-300 border-purple-500/40
+                            ">
+                            🔪 Ножевой фраг
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">01 октября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">Нож</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>1 фрага (0 HS)</span>
+                            <span class="text-slate-500">⏱ 23:57</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 15 (счёт 12:2). Alibonya оформляет 🔪 Ножевой фраг с Нож.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 15 (счёт 12:2). Alibonya оформляет 🔪 Ножевой фраг с Нож."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 22:20
+                    </span>
+                    
+
+                    <a href="../matches/01102026_dust2_129_kase_gra.html#round-15"
                        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
                        title="Перейти к детальному разбору раунда в матче">
                         К матчу ↗
@@ -860,7 +978,7 @@
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
                             <span>1 фрага (0 HS)</span>
-                            <span class="text-slate-500">⏱ 18:19</span>
+                            <span class="text-slate-500">⏱ 20:02</span>
                         </div>
                     </div>
 
@@ -880,6 +998,62 @@
                     
 
                     <a href="../matches/01102026_dust2_129_kase_gra.html#round-13"
+                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
+                       title="Перейти к детальному разбору раунда в матче">
+                        К матчу ↗
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
+                 data-category="multi"
+                 data-has-video="false">
+                
+                <div>
+                    <!-- Card Top: Map & Round / Score -->
+                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
+                        <span class="flex items-center gap-1 font-semibold text-slate-300">
+                            🗺️ Mirage
+                        </span>
+                        <span>Рд. 9 (8:0)</span>
+                    </div>
+
+                    <!-- Moment Badge & Date -->
+                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
+                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
+                        </span>
+                        <span class="text-[10px] text-slate-500 font-mono">01 октября 2026</span>
+                    </div>
+
+                    <!-- Weapon & Kill Stats -->
+                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-amber-300 font-bold font-mono">AWP</span>
+                        </div>
+                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
+                            <span>3 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 11:41</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Commentary Quote (Line clamped) -->
+                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
+                         title="Раунд 9 (счёт 8:0). Alibonya оформляет 🎯 Тройной килл (3K) с AWP.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 9 (счёт 8:0). Alibonya оформляет 🎯 Тройной килл (3K) с AWP."
+                    </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
+                    
+                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
+                        <span>⏱</span> В игре: 11:47
+                    </span>
+                    
+
+                    <a href="../matches/01102026_mirage_124_kase_mec.html#round-9"
                        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
                        title="Перейти к детальному разбору раунда в матче">
                         К матчу ↗
@@ -945,64 +1119,7 @@
             </div>
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
-                 data-category="special"
-                 data-has-video="false">
-                
-                <div>
-                    <!-- Card Top: Map & Round / Score -->
-                    <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
-                        <span class="flex items-center gap-1 font-semibold text-slate-300">
-                            🗺️ Dust2
-                        </span>
-                        <span>Рд. 1 (0:0)</span>
-                    </div>
-
-                    <!-- Moment Badge & Date -->
-                    <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
-                        <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
-                            bg-purple-500/20 text-purple-300 border-purple-500/40
-                            ">
-                            🔪 Ножевой фраг
-                        </span>
-                        <span class="text-[10px] text-slate-500 font-mono">01 октября 2026</span>
-                    </div>
-
-                    <!-- Weapon & Kill Stats -->
-                    <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
-                        <div class="flex items-center gap-1.5">
-                            <span class="text-amber-300 font-bold font-mono">Нож</span>
-                        </div>
-                        <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
-                            <span>1 фрага (0 HS)</span>
-                            <span class="text-slate-500">⏱ 0:36</span>
-                        </div>
-                    </div>
-
-                    <!-- AI Commentary Quote (Line clamped) -->
-                    <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож."
-                    </div>
-                </div>
-
-                <!-- Footer Action Buttons -->
-                <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
-                    
-                    <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 0:42
-                    </span>
-                    
-
-                    <a href="../matches/01102026_dust2_129_kase_gra.html#round-1"
-                       class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
-                       title="Перейти к детальному разбору раунда в матче">
-                        К матчу ↗
-                    </a>
-                </div>
-            </div>
-            
-            <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
-                 data-category="special"
+                 data-category="multi"
                  data-has-video="false">
                 
                 <div>
@@ -1011,34 +1128,33 @@
                         <span class="flex items-center gap-1 font-semibold text-slate-300">
                             🗺️ Inferno
                         </span>
-                        <span>Рд. 1 (0:0)</span>
+                        <span>Рд. 17 (12:4)</span>
                     </div>
 
                     <!-- Moment Badge & Date -->
                     <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
                         <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
-                            bg-purple-500/20 text-purple-300 border-purple-500/40
-                            ">
-                            🔪 Ножевой фраг
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
                         </span>
-                        <span class="text-[10px] text-slate-500 font-mono">01 октября 2026</span>
+                        <span class="text-[10px] text-slate-500 font-mono">30 сентября 2026</span>
                     </div>
 
                     <!-- Weapon & Kill Stats -->
                     <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
                         <div class="flex items-center gap-1.5">
-                            <span class="text-amber-300 font-bold font-mono">Нож</span>
+                            <span class="text-amber-300 font-bold font-mono">M4A1-S</span>
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
-                            <span>2 фрага (0 HS)</span>
-                            <span class="text-slate-500">⏱ 0:26</span>
+                            <span>3 фрага (1 HS)</span>
+                            <span class="text-slate-500">⏱ 29:39</span>
                         </div>
                     </div>
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож."
+                         title="Раунд 17 (счёт 12:4). Alibonya оформляет 🎯 Тройной килл (3K) с M4A1-S.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 17 (счёт 12:4). Alibonya оформляет 🎯 Тройной килл (3K) с M4A1-S."
                     </div>
                 </div>
 
@@ -1046,11 +1162,11 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 0:32
+                        <span>⏱</span> В игре: 27:25
                     </span>
                     
 
-                    <a href="../matches/01102026_inferno_127_innoforc.html#round-1"
+                    <a href="../matches/30092026_inferno_116_krisha_t.html#round-17"
                        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
                        title="Перейти к детальному разбору раунда в матче">
                         К матчу ↗
@@ -1088,7 +1204,7 @@
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
                             <span>1 фрага (1 HS)</span>
-                            <span class="text-slate-500">⏱ 22:42</span>
+                            <span class="text-slate-500">⏱ 25:03</span>
                         </div>
                     </div>
 
@@ -1116,24 +1232,23 @@
             </div>
             
             <div class="hl-card w-[275px] sm:w-[310px] shrink-0 snap-start bg-slate-900/80 backdrop-blur-md rounded-xl border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900/95 transition-all p-3.5 flex flex-col justify-between shadow-lg group relative"
-                 data-category="special"
+                 data-category="multi"
                  data-has-video="false">
                 
                 <div>
                     <!-- Card Top: Map & Round / Score -->
                     <div class="flex items-center justify-between text-[11px] text-slate-400 font-mono mb-2">
                         <span class="flex items-center gap-1 font-semibold text-slate-300">
-                            🗺️ Mirage
+                            🗺️ Inferno
                         </span>
-                        <span>Рд. 1 (0:0)</span>
+                        <span>Рд. 2 (1:0)</span>
                     </div>
 
                     <!-- Moment Badge & Date -->
                     <div class="mb-2.5 flex items-center justify-between gap-1.5 flex-wrap">
                         <span class="text-xs font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border shadow-sm
-                            bg-purple-500/20 text-purple-300 border-purple-500/40
-                            ">
-                            🔪 Ножевой фраг
+                            bg-emerald-500/20 text-emerald-300 border-emerald-500/40">
+                            🎯 Тройной килл (3K)
                         </span>
                         <span class="text-[10px] text-slate-500 font-mono">30 сентября 2026</span>
                     </div>
@@ -1141,18 +1256,18 @@
                     <!-- Weapon & Kill Stats -->
                     <div class="bg-slate-950/60 rounded-lg p-2 mb-2.5 border border-slate-800/80 flex items-center justify-between text-xs">
                         <div class="flex items-center gap-1.5">
-                            <span class="text-amber-300 font-bold font-mono">Нож</span>
+                            <span class="text-amber-300 font-bold font-mono">Glock-18</span>
                         </div>
                         <div class="text-[11px] text-slate-300 font-mono flex items-center gap-2">
-                            <span>2 фрага (0 HS)</span>
-                            <span class="text-slate-500">⏱ 0:51</span>
+                            <span>3 фрага (3 HS)</span>
+                            <span class="text-slate-500">⏱ 1:43</span>
                         </div>
                     </div>
 
                     <!-- AI Commentary Quote (Line clamped) -->
                     <div class="text-xs text-slate-300/90 leading-relaxed italic line-clamp-2 mb-3 bg-emerald-950/20 border border-emerald-800/30 rounded-lg p-2"
-                         title="Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож.">
-                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 1 (счёт 0:0). Alibonya оформляет 🔪 Ножевой фраг с Нож."
+                         title="Раунд 2 (счёт 1:0). Alibonya оформляет 🎯 Тройной килл (3K) с Glock-18.">
+                        <span class="not-italic text-emerald-400 font-semibold mr-1">🎙️</span>"Раунд 2 (счёт 1:0). Alibonya оформляет 🎯 Тройной килл (3K) с Glock-18."
                     </div>
                 </div>
 
@@ -1160,11 +1275,11 @@
                 <div class="pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2 text-xs">
                     
                     <span class="text-[11px] text-slate-500 font-mono flex items-center gap-1">
-                        <span>⏱</span> В игре: 0:57
+                        <span>⏱</span> В игре: 1:49
                     </span>
                     
 
-                    <a href="../matches/30092026_mirage_110_kase_vtb.html#round-1"
+                    <a href="../matches/30092026_inferno_116_krisha_t.html#round-2"
                        class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/80 font-mono transition text-[11px] flex items-center gap-1 no-underline ml-auto"
                        title="Перейти к детальному разбору раунда в матче">
                         К матчу ↗
@@ -2611,6 +2726,10 @@
     <!-- Highlights Interactive Script & Manual Playlist Engine -->
     <script>
         var playerVideoHighlights = [
+            
+            
+            
+            
             
             
             
@@ -7742,7 +7861,7 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 18:44</p>
+                <p class="footer-timestamp">Данные обновлены: 10.10.2026 19:19</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>

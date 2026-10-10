@@ -20,7 +20,7 @@ from scripts.config import (
     MAX_IMPACT_MODIFIER, MAX_REGULAR_DELTA, CALIBRATION_MATCH_LIMIT,
     CALIBRATION_VOLATILITY, MAX_CALIBRATION_DELTA, INACTIVITY_DAYS_THRESHOLD,
     AI_MODEL, MAP_DISPLAY_NAMES, MAP_ICONS, DATA_DIR, is_kase_team_member,
-    TOURNAMENT_DATES
+    TOURNAMENT_DATES, QEBL_MATCH_HALFTIME_CALIBRATION
 )
 
 
@@ -3028,10 +3028,18 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
     for k in kills:
         round_kills[k.get("round_num")].append(k)
 
+    # Детекция ножевого раунда (в турнирах QEBL r1 — это ножевой раунд за выбор стороны, не соревновательный)
+    r1_k = round_kills.get(1, [])
+    is_r1_knife_round = len(r1_k) >= 3 and all("knife" in str(k.get("weapon", "")).lower() or "bayonet" in str(k.get("weapon", "")).lower() for k in r1_k)
+
     candidates = []
 
     for r_evt in rounds:
         r_n = r_evt.get("round_num")
+        # Исключаем ножевой разминочный раунд r1 из соревновательных хайлайтов
+        if r_n == 1 and is_r1_knife_round:
+            continue
+
         rk = round_kills.get(r_n, [])
         if not rk:
             continue
@@ -3276,7 +3284,7 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
     # Выбираем топ-5 лучших моментов матча
     top_candidates = deduped_candidates[:5]
 
-    # Обработка видео и таймкода
+    # Обработка видео и таймкода с учетом паузы при смене сторон (halftime)
     if isinstance(video_info, dict):
         v_url = (video_info.get("url", "") or "").strip()
         v_offset = int(video_info.get("offset_sec", 0) or 0)
@@ -3284,13 +3292,28 @@ def detect_match_highlight(m_data: dict, start_tick: int, video_info: Any = None
         v_url = (str(video_info) if video_info else "").strip()
         v_offset = 0
 
+    # Проверка наличия ручной калибровки паузы при смене сторон (QEBL S7)
+    qebl_calib = QEBL_MATCH_HALFTIME_CALIBRATION.get(mid, {})
+    halftime_sw = qebl_calib.get("halftime_switch_sec")
+    r13_vid_start = qebl_calib.get("r13_video_start_sec")
+    r13_tick = qebl_calib.get("r13_start_tick")
+
     lead_in_sec = 6
     processed_top = []
     for idx, cand in enumerate(top_candidates):
         c_item = dict(cand)
         moment_t = c_item.get("tick") or start_tick
+        round_n = c_item.get("round_num", 1)
+
         game_sec = max(0, round((moment_t - start_tick) / 64.0))
-        embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
+
+        # Если раунд во 2-й половине (>=13) и есть калибровка смены сторон:
+        if round_n >= 13 and r13_vid_start is not None and r13_tick is not None:
+            sec_from_r13 = max(0, round((moment_t - r13_tick) / 64.0))
+            embed_start_sec = max(0, r13_vid_start + sec_from_r13 - lead_in_sec)
+        else:
+            embed_start_sec = max(0, v_offset + game_sec - lead_in_sec)
+
         timecode_display = f"{embed_start_sec // 60}:{embed_start_sec % 60:02d}"
         timecode_game = f"{game_sec // 60}:{game_sec % 60:02d}"
 
@@ -3933,8 +3956,8 @@ def run_analysis(force_ai: bool = False):
                 elif "gra" in m_id.lower(): opp_name = "Grand Games"
                 else: opp_name = "Соперник"
 
-            t1_kase_c = sum(1 for p in t1_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
-            t2_kase_c = sum(1 for p in t2_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), clean_name(p.get("name", ""))))
+            t1_kase_c = sum(1 for p in t1_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), str(p.get("name", ""))))
+            t2_kase_c = sum(1 for p in t2_pls if is_kase_team_member(clean_steamid(p.get("steam_id")), str(p.get("name", ""))))
             if t1_kase_c >= t2_kase_c:
                 m_data["team1_name"] = "Team KASE"
                 m_data["team2_name"] = opp_name
