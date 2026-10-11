@@ -3701,7 +3701,7 @@ def run_analysis(force_ai: bool = False):
             p_stat["name"] = p_name
 
             # Проверяем турнирный контекст (QEBL S7) и канонический состав Team KASE
-            is_match_tourn = bool(m_data.get("tournament")) or "kase" in m_id.lower() or m_date in ("30092026", "01102026")
+            is_match_tourn = bool(m_data.get("tournament")) or "kase" in m_id.lower() or m_date in ("30092026", "01102026") or m_date in TOURNAMENT_DATES
             is_known_kase = is_kase_team_member(clean_sid, name_lower)
 
             # Честный расчет HLTV 2.0 и приведенного балла 1.0 - 10.0 для всех участников матча
@@ -3718,13 +3718,108 @@ def run_analysis(force_ai: bool = False):
             p_stat["hltv_rating"] = hltv
             p_stat["score_10"] = score_10
 
-            # В турнирных матчах в общий рейтинг игроков и профили добавляем ТОЛЬКО игроков Team KASE
-            if is_match_tourn and not is_known_kase:
+            # В турнирных матчах турнир не влияет на общий MMR (MMR только для регулярных командных сессий)
+            if is_match_tourn:
+                # Соперники турнира не добавляются в общий рейтинг игроков
+                if not is_known_kase:
+                    p_stat["mmr_delta"] = 0
+                    p_stat["mmr_before"] = STARTING_MMR
+                    p_stat["mmr_after"] = STARTING_MMR
+                    p_stat["mmr_breakdown"] = "Матч соперника турнира (вне зачёта MMR)"
+                    p_stat["is_calibrating"] = False
+                    continue
+
+                # Игроки Team KASE: учитываются в профилях, но MMR дельта = 0 (не влияет на общий MMR)
+                if clean_sid not in players_mmr:
+                    players_mmr[clean_sid] = {
+                        "steam_id": clean_sid,
+                        "name": p_name,
+                        "current_mmr": STARTING_MMR,
+                        "peak_mmr": STARTING_MMR,
+                        "history": [],
+                        "wins": 0,
+                        "losses": 0,
+                        "ties": 0,
+                        "total_matches": 0,
+                        "all_hltv": [],
+                        "latest_date": match_dt
+                    }
+
+                p_mmr = players_mmr[clean_sid]
+                p_mmr["latest_date"] = max(p_mmr["latest_date"], match_dt)
+                p_team = p_stat.get("team", "team1")
+
+                if s1 > s2:
+                    team_won = (p_team == "team1")
+                    team_lost = (p_team != "team1")
+                elif s2 > s1:
+                    team_won = (p_team == "team2")
+                    team_lost = (p_team != "team2")
+                else:
+                    team_won = False
+                    team_lost = False
+
+                curr_mmr = p_mmr["current_mmr"]
+                breakdown_str = "Турнирный матч QEBL S7 (не влияет на MMR сессий)"
+
+                p_stat["hltv_rating"] = hltv
+                p_stat["score_10"] = score_10
                 p_stat["mmr_delta"] = 0
-                p_stat["mmr_before"] = STARTING_MMR
-                p_stat["mmr_after"] = STARTING_MMR
-                p_stat["mmr_breakdown"] = "Матч соперника турнира"
+                p_stat["mmr_before"] = curr_mmr
+                p_stat["mmr_after"] = curr_mmr
+                p_stat["mmr_breakdown"] = breakdown_str
                 p_stat["is_calibrating"] = False
+
+                p_mmr["history"].append({
+                    "match_id": m_id,
+                    "date": m_date,
+                    "map": m_map,
+                    "team_result": "win" if team_won else ("loss" if team_lost else "tie"),
+                    "delta": 0,
+                    "base_delta": 0,
+                    "modifier": 0.0,
+                    "mmr_before": curr_mmr,
+                    "mmr_after": curr_mmr,
+                    "hltv": hltv,
+                    "score_10": score_10,
+                    "is_calibrating": False,
+                    "is_tournament": True,
+                    "breakdown": breakdown_str
+                })
+
+                if clean_sid not in raw_db:
+                    raw_db[clean_sid] = {"steam_id": clean_sid, "name": p_name, "matches": []}
+
+                raw_db[clean_sid]["matches"].append({
+                    "match_id": m_id,
+                    "date": m_date,
+                    "map": m_map,
+                    "kills": k,
+                    "deaths": d,
+                    "assists": a,
+                    "adr": adr_val,
+                    "kast": kast_val,
+                    "hs_percent": p_stat.get("hs_percent", 0.0),
+                    "first_kills": fk,
+                    "first_deaths": fd,
+                    "clutch_wins": clutches,
+                    "clutch_attempts": p_stat.get("clutch_attempts", 0),
+                    "utility_damage": p_stat.get("utility_damage", 0),
+                    "flash_assists": p_stat.get("flash_assists", 0),
+                    "trades": p_stat.get("trades", 0),
+                    "weapon_kills": p_stat.get("weapon_kills", {}),
+                    "pistol_round_kills": p_stat.get("pistol_round_kills", 0),
+                    "pistol_round_deaths": p_stat.get("pistol_round_deaths", 0),
+                    "hltv_rating": hltv,
+                    "score_10": score_10,
+                    "mmr_delta": 0,
+                    "mmr_breakdown": breakdown_str,
+                    "team_result": "win" if team_won else ("loss" if team_lost else "tie"),
+                    "is_tournament": True,
+                    "score_team1": s1,
+                    "score_team2": s2,
+                    "team_share_status": "regular"
+                })
                 continue
 
             if clean_sid not in players_mmr:
@@ -4152,10 +4247,11 @@ def run_analysis(force_ai: bool = False):
         pistols = analyze_pistol_rounds(matches)
         economy_stats = analyze_vs_economy(matches, metrics=metrics)
 
-        # Вычисление формы (последние 5 матчей)
+        # Вычисление формы (последние 5 матчей регулярных командных сессий)
         p_history = p_mmr.get("history", [])
+        session_history = [h for h in p_history if not h.get("is_tournament")]
         form_dots = []
-        for h in p_history[-5:]:
+        for h in session_history[-5:]:
             if h.get("team_result") == "win":
                 form_dots.append("win_high" if h.get("hltv", 1.0) >= 1.10 else "win_low")
             elif h.get("team_result") == "tie":
@@ -4170,7 +4266,7 @@ def run_analysis(force_ai: bool = False):
 
         all_hltv = p_mmr.get("all_hltv", [])
         avg_hltv = round(sum(all_hltv) / max(1, len(all_hltv)), 2) if all_hltv else 1.00
-        last_delta = p_history[-1]["delta"] if p_history else 0
+        last_delta = session_history[-1]["delta"] if session_history else 0
 
         # Новые расширенные модули: 2D Архетип, Барометр формы, Связи и Ачивки
         archetype = calculate_archetype_matrix(metrics, style)
@@ -4309,12 +4405,13 @@ def run_analysis(force_ai: bool = False):
                 "wins": p_mmr.get("wins", 0),
                 "losses": p_mmr.get("losses", 0),
                 "ties": p_mmr.get("ties", 0),
-                "win_rate": round((p_mmr.get("wins", 0) / max(1, total_m)) * 100, 1),
+                "total_matches": p_mmr.get("total_matches", len(session_history)),
+                "win_rate": round((p_mmr.get("wins", 0) / max(1, p_mmr.get("total_matches", len(session_history)))) * 100, 1),
                 "avg_hltv": avg_hltv,
-                "is_calibrating": total_m <= CALIBRATION_MATCH_LIMIT,
+                "is_calibrating": p_mmr.get("total_matches", len(session_history)) <= CALIBRATION_MATCH_LIMIT,
                 "is_inactive": is_inactive,
                 "form_dots": form_dots,
-                "sparkline": [h["mmr_after"] for h in p_history],
+                "sparkline": [h["mmr_after"] for h in session_history] if session_history else [STARTING_MMR],
                 "history": p_history
             },
             "strengths": strengths,

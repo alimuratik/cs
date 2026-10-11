@@ -1746,9 +1746,13 @@ def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
 
     # Сортируем матчи по дате (DDMMYYYY) — хронологически, старые первыми
     matches_sorted_chrono = sorted(matches, key=lambda m: parse_date_key(m.get("date", "")))
-    total_matches_count = len(matches_sorted_chrono)
+    session_matches_chrono = [
+        m for m in matches_sorted_chrono 
+        if not (m.get("is_tournament") or m.get("tournament") or m.get("date") in TOURNAMENT_DATES or "kase" in m.get("match_id", "").lower())
+    ]
+    total_matches_count = len(session_matches_chrono) if session_matches_chrono else len(matches_sorted_chrono)
 
-    # Калибровка = первые 5 матчей по хронологии, не по количеству всех матчей
+    # Калибровка = первые 5 регулярных сессионных матчей по хронологии
     is_calibrating = mmr_data.get("is_calibrating", total_matches_count <= CALIBRATION_MATCH_LIMIT)
 
     win_rate = mmr_data.get("win_rate", round((wins / max(1, total_matches_count)) * 100, 1))
@@ -1766,6 +1770,7 @@ def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
     for idx, m in enumerate(matches_for_display, start=1):
         m_id = m.get("match_id", "")
         m_date = m.get("date", "10072026")
+        is_t = bool(m.get("is_tournament") or m.get("tournament") or m_date in TOURNAMENT_DATES or "kase" in m_id.lower())
         date_disp = format_date_display(m_date)
         date_short = f"{m_date[:2]}.{m_date[2:4]}" if len(m_date) >= 4 else m_date
         map_n = m.get("map_display") or m.get("map", "")
@@ -1789,8 +1794,8 @@ def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
         if r_val is None or h_val is None:
             h_val, r_val = compute_hltv_rating(k, d, a, adr_val, kast_val, fk, fd, 24)
             
-        m_delta = m.get("mmr_delta", 0)
-        m_breakdown = m.get("mmr_breakdown", "")
+        m_delta = 0 if is_t else m.get("mmr_delta", 0)
+        m_breakdown = "Турнирный матч QEBL S7 (не влияет на MMR сессий)" if is_t else m.get("mmr_breakdown", "")
         
         # Подпись точки графика для Chart.js: Карта и Дата (без номера матча)
         labels.append([f"{map_n}", f"📅 {date_short}"])
@@ -1801,9 +1806,9 @@ def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
 
         team_res = m.get("team_result")
         if not team_res:
-            if m.get("is_win") is True or m_delta > 0:
+            if m.get("is_win") is True or (not is_t and m_delta > 0):
                 team_res = "win"
-            elif m.get("is_loss") is True or m_delta < 0:
+            elif m.get("is_loss") is True or (not is_t and m_delta < 0):
                 team_res = "loss"
             else:
                 team_res = "tie"
@@ -1824,30 +1829,36 @@ def format_player_data(p: dict, player_highlights: list[dict] = None) -> dict:
             "hltv": round(h_val, 2),
             "rating": round(r_val, 1),
             "mmr_delta": m_delta,
-            "mmr_delta_text": f"{m_delta:+d}" if m_delta != 0 else "0",
+            "mmr_delta_text": "—" if is_t else (f"{m_delta:+d}" if m_delta != 0 else "0"),
             "mmr_breakdown": m_breakdown,
             "team_result": team_res,
             "is_win": team_res == "win",
             "is_loss": team_res == "loss",
-            "is_tie": team_res == "tie"
+            "is_tie": team_res == "tie",
+            "is_tournament": is_t
         }
 
         match_history_table.append(match_obj)
         
-        if m_date not in session_matches_dict:
-            session_matches_dict[m_date] = []
-        session_matches_dict[m_date].append(match_obj)
+        group_key = f"tourn_{m_date}" if is_t else m_date
+        if group_key not in session_matches_dict:
+            session_matches_dict[group_key] = {
+                "date": m_date,
+                "date_display": date_disp,
+                "is_tournament": is_t,
+                "matches": []
+            }
+        session_matches_dict[group_key]["matches"].append(match_obj)
 
     # Сортируем дни сессий строго по реальной дате (самые свежие первыми)
     session_groups = []
-    sorted_dates = sorted(session_matches_dict.keys(), key=parse_date_key, reverse=True)
-    for d_key in sorted_dates:
-        m_list = session_matches_dict[d_key]
-        session_groups.append({
-            "date": d_key,
-            "date_display": format_date_display(d_key),
-            "matches": m_list
-        })
+    sorted_group_keys = sorted(
+        session_matches_dict.keys(), 
+        key=lambda gk: parse_date_key(session_matches_dict[gk]["date"]), 
+        reverse=True
+    )
+    for gk in sorted_group_keys:
+        session_groups.append(session_matches_dict[gk])
 
     # Сортируем историю матчей: самые недавние первыми
     match_history_table.sort(key=lambda x: parse_date_key(x.get("date", "")), reverse=True)
@@ -2410,7 +2421,7 @@ def generate_site(output_dir=None):
 
         overall_rating = p.get("ratings", {}).get("Overall Impact", 5.0)
         avg_hltv = mmr_data.get("avg_hltv", 1.00)
-        tot_m = len(p.get("matches", []))
+        tot_m = mmr_data.get("total_matches", len([m for m in p.get("matches", []) if not (m.get("is_tournament") or m.get("date") in TOURNAMENT_DATES or "kase" in m.get("match_id", "").lower())]))
         wins = mmr_data.get("wins", 0)
         losses = mmr_data.get("losses", 0)
         ties = mmr_data.get("ties", 0)

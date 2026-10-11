@@ -2149,9 +2149,16 @@
 
         <div class="space-y-6">
             {% for session in player.session_groups %}
-            <div class="session-match-group glassmorphism p-5 rounded-2xl border border-slate-800">
-                <h3 class="text-sm font-bold text-emerald-300 uppercase tracking-wider mb-3 flex items-center gap-2 border-b border-slate-800/80 pb-2">
-                    📅 Игровой день: {{ session.date_display }}
+            <div class="session-match-group glassmorphism p-5 rounded-2xl {% if session.is_tournament %}border border-amber-500/40 bg-gradient-to-r from-amber-950/20 via-slate-900/60 to-slate-900/60{% else %}border border-slate-800{% endif %}">
+                <h3 class="text-sm font-bold {% if session.is_tournament %}text-amber-300{% else %}text-emerald-300{% endif %} uppercase tracking-wider mb-3 flex items-center justify-between border-b {% if session.is_tournament %}border-amber-500/30{% else %}border-slate-800/80{% endif %} pb-2">
+                    <span class="flex items-center gap-2">
+                        {% if session.is_tournament %}🏆 Турнир QEBL Season 7: {{ session.date_display }}{% else %}📅 Игровая сессия: {{ session.date_display }}{% endif %}
+                    </span>
+                    {% if session.is_tournament %}
+                    <span class="text-[10px] uppercase font-bold text-amber-400 bg-amber-950/80 border border-amber-500/50 px-2.5 py-0.5 rounded-full font-mono">
+                        Вне зачёта MMR
+                    </span>
+                    {% endif %}
                 </h3>
 
                 <div class="space-y-3">
@@ -2170,6 +2177,9 @@
                             <div>
                                 <div class="font-bold text-white text-base group-hover:text-emerald-300 transition flex items-center gap-2">
                                     🗺️ {{ m.map }}
+                                    {% if m.is_tournament %}
+                                    <span class="text-[10px] font-normal uppercase px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-500/30 font-mono">Турнир</span>
+                                    {% endif %}
                                 </div>
                                 <div class="text-xs text-slate-400 font-mono mt-0.5 flex items-center gap-2 flex-wrap">
                                     <span>KDA: <strong class="text-white">{{ m.kda }}</strong></span>
@@ -2184,6 +2194,12 @@
                             <!-- MMR Delta Pill -->
                             <div class="text-center font-mono">
                                 <span class="block text-[9px] text-slate-400 uppercase">MMR</span>
+                                {% if m.is_tournament %}
+                                <span class="inline-block px-2 py-0.5 rounded font-bold text-xs bg-slate-800/90 text-amber-300 border border-amber-500/40 cursor-help"
+                                    title="{{ m.mmr_breakdown }}">
+                                    —
+                                </span>
+                                {% else %}
                                 <span class="inline-block px-2 py-0.5 rounded font-bold text-xs cursor-help
                                     {% if m.mmr_delta > 0 %}bg-emerald-950/80 text-emerald-400 border border-emerald-500/50
                                     {% elif m.mmr_delta < 0 %}bg-rose-950/80 text-rose-400 border border-rose-500/50
@@ -2191,6 +2207,7 @@
                                     title="{{ m.mmr_breakdown }}">
                                     {{ m.mmr_delta_text }}
                                 </span>
+                                {% endif %}
                             </div>
 
                             <!-- Rating 1-10 Pill -->

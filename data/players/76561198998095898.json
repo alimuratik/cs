@@ -64,9 +64,9 @@
         "late_round_kills": 15.0,
         "awp_kills_percent": 4.8,
         "rifle_kills_percent": 63.5,
-        "avg_damage_share": 21.5,
-        "avg_kill_share": 21.6,
-        "titan_matches": 1,
+        "avg_damage_share": 17.8,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
         "passive_matches": 1
     },
     "overall_stats": {
@@ -87,28 +87,29 @@
         "total_flash_assists": 4,
         "total_trades": 24,
         "pistol_round_kills": 27,
-        "avg_damage_share": 21.5,
-        "avg_kill_share": 21.6,
-        "titan_matches": 1,
+        "avg_damage_share": 17.8,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
         "passive_matches": 1
     },
     "mmr": {
-        "current_mmr": 1098,
+        "current_mmr": 1120,
         "peak_mmr": 1120,
-        "last_delta": -13,
+        "last_delta": 6,
         "wins": 10,
-        "losses": 4,
+        "losses": 2,
         "ties": 0,
-        "win_rate": 71.4,
-        "avg_hltv": 1.14,
+        "total_matches": 12,
+        "win_rate": 83.3,
+        "avg_hltv": 1.18,
         "is_calibrating": false,
         "is_inactive": false,
         "form_dots": [
             "win_high",
             "win_low",
+            "win_high",
             "win_low",
-            "loss",
-            "loss"
+            "win_low"
         ],
         "sparkline": [
             1022,
@@ -122,9 +123,7 @@
             1094,
             1110,
             1114,
-            1120,
-            1111,
-            1098
+            1120
         ],
         "history": [
             {
@@ -312,30 +311,32 @@
                 "date": "30092026",
                 "map": "de_inferno",
                 "team_result": "loss",
-                "delta": -9,
-                "base_delta": -10,
-                "modifier": 1.4,
+                "delta": 0,
+                "base_delta": 0,
+                "modifier": 0.0,
                 "mmr_before": 1120,
-                "mmr_after": 1111,
+                "mmr_after": 1120,
                 "hltv": 1.12,
                 "score_10": 5.6,
                 "is_calibrating": false,
-                "breakdown": "База (-10) + Импакт (+1.4) = Итог (-9 MMR)"
+                "is_tournament": true,
+                "breakdown": "Турнирный матч QEBL S7 (не влияет на MMR сессий)"
             },
             {
                 "match_id": "30092026_mirage_110_kase_vtb",
                 "date": "30092026",
                 "map": "de_mirage",
                 "team_result": "loss",
-                "delta": -13,
-                "base_delta": -10,
-                "modifier": -2.9,
-                "mmr_before": 1111,
-                "mmr_after": 1098,
+                "delta": 0,
+                "base_delta": 0,
+                "modifier": 0.0,
+                "mmr_before": 1120,
+                "mmr_after": 1120,
                 "hltv": 0.76,
                 "score_10": 3.8,
                 "is_calibrating": false,
-                "breakdown": "База (-10) + Импакт (-2.9) = Итог (-13 MMR)"
+                "is_tournament": true,
+                "breakdown": "Турнирный матч QEBL S7 (не влияет на MMR сессий)"
             }
         ]
     },
@@ -575,9 +576,9 @@
         ],
         "team_context": [
             {
-                "icon": "👑",
-                "title": "Одинокий титан (1 матчей с долей урона ≥30%)",
-                "desc": "В проигранных матчах ты давал ≥30% командного урона (в среднем 21.5%). Личная форма отличная: поражение обусловлено провалом общекомандного контроля карты или эко-раундов, а не твоей стрельбой."
+                "icon": "💤",
+                "title": "Замаскированная пассивность (1 побед с уроном ≤11%)",
+                "desc": "В ряде победных матчей твой урон был минимальным (17.8%). Победы скрывают избегание дуэлей; в плотном равном матче это станет критической брешью."
             },
             {
                 "icon": "💰",
@@ -590,12 +591,12 @@
                 "desc": "Надежная позиционная игра при численном преимуществе без лишнего риска."
             }
         ],
-        "verdict_summary": "Агрессивный наконечник атаки с ключевой ставкой на AK-47. Главный соревновательный козырь — выдающаяся реализация опенинг-дуэлей (59.7% выигранных первых стычек). Главный резерв для роста — тайминг размена тиммейтов (сокращать задержку пика до 1.5 сек). Органично вписан в командный баланс (21.5% урона состава, 71.4% побед на дистанции 14 матчей).",
-        "coach_verdict": "Агрессивный наконечник атаки с ключевой ставкой на AK-47. Главный соревновательный козырь — выдающаяся реализация опенинг-дуэлей (59.7% выигранных первых стычек). Главный резерв для роста — тайминг размена тиммейтов (сокращать задержку пика до 1.5 сек). Органично вписан в командный баланс (21.5% урона состава, 71.4% побед на дистанции 14 матчей).",
+        "verdict_summary": "Семьдесят один процент общего винрейта и стабильный вклад с AK-47 на Mirage показывают, что ты умеешь побеждать вместе со структурой, но твой K/D 0.7 на фулл-бае и провальный Ancient требуют серьезной работы над механикой перестрелок. При высоком базовом ADR под 88 и солидных 8.6 баллах за клатчи, твой винрейт в ситуациях 1vX застрял на отметке 36%, а импакт порой растворяется из-за критически слабого использования гранат на уровне 3.2. Чтобы выйти на тир-1 уровень, тебе нужно перестать полагаться исключительно на агрессивные энтри-дуэли с почти 60% побед и наконец-то научиться системно читать игру в защите, а не только выигрывать за счет индивидуального разгона.",
+        "coach_verdict": "Семьдесят один процент общего винрейта и стабильный вклад с AK-47 на Mirage показывают, что ты умеешь побеждать вместе со структурой, но твой K/D 0.7 на фулл-бае и провальный Ancient требуют серьезной работы над механикой перестрелок. При высоком базовом ADR под 88 и солидных 8.6 баллах за клатчи, твой винрейт в ситуациях 1vX застрял на отметке 36%, а импакт порой растворяется из-за критически слабого использования гранат на уровне 3.2. Чтобы выйти на тир-1 уровень, тебе нужно перестать полагаться исключительно на агрессивные энтри-дуэли с почти 60% побед и наконец-то научиться системно читать игру в защите, а не только выигрывать за счет индивидуального разгона.",
         "coach_verdict_matches_count": 14,
-        "avg_damage_share": 21.5,
-        "avg_kill_share": 21.6,
-        "titan_matches": 1,
+        "avg_damage_share": 17.8,
+        "avg_kill_share": 17.8,
+        "titan_matches": 0,
         "passive_matches": 1
     },
     "stability": {
@@ -820,12 +821,12 @@
     },
     "momentum": {
         "status": "cooling",
-        "delta": -0.09,
+        "delta": -0.13,
         "icon": "📉",
-        "label": "Спад (-0.09)",
+        "label": "Спад (-0.13)",
         "badge_class": "momentum-cooling",
         "session_hltv": 1.05,
-        "career_hltv": 1.14
+        "career_hltv": 1.18
     },
     "connections": {
         "teammates": {
@@ -3603,21 +3604,13 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 1.12,
             "score_10": 5.6,
-            "mmr_delta": -9,
-            "mmr_breakdown": "База (-10) + Импакт (+1.4) = Итог (-9 MMR)",
+            "mmr_delta": 0,
+            "mmr_breakdown": "Турнирный матч QEBL S7 (не влияет на MMR сессий)",
             "team_result": "loss",
-            "is_win": false,
-            "is_loss": true,
-            "is_tie": false,
-            "player_team": "team1",
+            "is_tournament": true,
             "score_team1": 6,
             "score_team2": 13,
-            "rounds_count": 19,
-            "vs_full_buy_kd": 0.83,
-            "tactical_kills": 0,
-            "damage_share": 31.2,
-            "kill_share": 29.1,
-            "team_share_status": "titan"
+            "team_share_status": "regular"
         },
         {
             "match_id": "30092026_mirage_110_kase_vtb",
@@ -3648,21 +3641,13 @@
             "pistol_round_deaths": 2,
             "hltv_rating": 0.76,
             "score_10": 3.8,
-            "mmr_delta": -13,
-            "mmr_breakdown": "База (-10) + Импакт (-2.9) = Итог (-13 MMR)",
+            "mmr_delta": 0,
+            "mmr_breakdown": "Турнирный матч QEBL S7 (не влияет на MMR сессий)",
             "team_result": "loss",
-            "is_win": false,
-            "is_loss": true,
-            "is_tie": false,
-            "player_team": "team2",
+            "is_tournament": true,
             "score_team1": 13,
             "score_team2": 5,
-            "rounds_count": 18,
-            "vs_full_buy_kd": 0.46,
-            "tactical_kills": 1,
-            "damage_share": 20.2,
-            "kill_share": 22.9,
-            "team_share_status": "normal"
+            "team_share_status": "regular"
         }
     ]
 }
