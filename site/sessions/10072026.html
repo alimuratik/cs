@@ -608,13 +608,37 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 22:26</p>
+                <p class="footer-timestamp">Данные обновлены: 11.10.2026 14:06</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation Bar (Glassmorphic Thumb Ergonomics) -->
+    <nav class="mobile-bottom-bar md:hidden" aria-label="Быстрая навигация">
+        <a href="../index.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">🏆</span>
+            <span class="bottom-nav-label">Рейтинг</span>
+        </a>
+        <a href="../index.html#tab-sessions-archive" class="bottom-nav-item active">
+            <span class="bottom-nav-icon">📅</span>
+            <span class="bottom-nav-label">Сессии</span>
+        </a>
+        <a href="../compare.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">⚔️</span>
+            <span class="bottom-nav-label">Дуэли</span>
+        </a>
+        <a href="../achievements.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">🎖️</span>
+            <span class="bottom-nav-label">Зал Славы</span>
+        </a>
+        <button type="button" id="mobile-bottom-menu-btn" class="bottom-nav-item" aria-label="Открыть полное меню">
+            <span class="bottom-nav-icon">☰</span>
+            <span class="bottom-nav-label">Меню</span>
+        </button>
+    </nav>
 
     <!-- Theme Manager & Chart.js Integration -->
     <script>
@@ -774,9 +798,10 @@
         // Mobile Navigation Drawer Toggle
         (function() {
             const btn = document.getElementById('mobile-menu-btn');
+            const bottomBtn = document.getElementById('mobile-bottom-menu-btn');
             const drawer = document.getElementById('mobile-nav-drawer');
             const closeBtn = document.getElementById('mobile-menu-close');
-            if (btn && drawer) {
+            if (drawer) {
                 function setOpen(isOpen) {
                     if (isOpen) {
                         drawer.classList.remove('hidden');
@@ -788,10 +813,18 @@
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => {
-                    const isOpen = !drawer.classList.contains('hidden');
-                    setOpen(!isOpen);
-                });
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        const isOpen = !drawer.classList.contains('hidden');
+                        setOpen(!isOpen);
+                    });
+                }
+                if (bottomBtn) {
+                    bottomBtn.addEventListener('click', () => {
+                        const isOpen = !drawer.classList.contains('hidden');
+                        setOpen(!isOpen);
+                    });
+                }
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));

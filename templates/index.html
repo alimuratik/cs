@@ -46,21 +46,20 @@
 
 
     
-    <!-- Main Modes Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
-    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
-        <div class="segmented-nav-track site-tab-nav">
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-200 dark:border-slate-800/80 shadow-sm w-full">
+        <div class="segmented-nav-track site-tab-nav w-full">
             <button type="button" class="segmented-nav-btn site-tab-btn active" data-index-tab="tab-leaderboard">
-                <span>🏆</span> <span>Рейтинг игроков</span>
+                <span>🏆</span> <span class="hidden sm:inline">Рейтинг игроков</span><span class="sm:hidden">Рейтинг</span>
                 <span class="tab-badge">{{ active_players_count }}</span>
             </button>
             <button type="button" class="segmented-nav-btn site-tab-btn" data-index-tab="tab-session-summary">
-                <span>⚡</span> <span>Итоги сессии</span>
+                <span>⚡</span> <span class="hidden sm:inline">Итоги сессии</span><span class="sm:hidden">Итоги</span>
                 {% if session_awards and session_awards.session_date %}
                 <span class="tab-badge">{{ session_awards.session_date[:2] }}.{{ session_awards.session_date[2:4] }}</span>
                 {% endif %}
             </button>
             <button type="button" class="segmented-nav-btn site-tab-btn" data-index-tab="tab-sessions-archive">
-                <span>📅</span> <span>Архив сессий</span>
+                <span>📅</span> <span class="hidden sm:inline">Архив сессий</span><span class="sm:hidden">Архив</span>
                 <span class="tab-badge">{{ stats.total_sessions }}</span>
             </button>
         </div>

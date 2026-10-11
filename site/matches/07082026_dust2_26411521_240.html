@@ -166,17 +166,17 @@
         
 <div class="container mx-auto px-4 py-6">
     <!-- Match Header Banner -->
-    <header class="match-header glassmorphism relative overflow-hidden rounded-2xl p-6 md:p-8 mb-8 border border-emerald-500/20 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-emerald-950/30">
+    <header class="match-header glassmorphism relative overflow-hidden rounded-2xl p-4 sm:p-6 md:p-8 mb-6 sm:mb-8 border border-emerald-500/20 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-emerald-950/30">
         <div class="absolute -right-6 -bottom-10 opacity-10 font-black text-8xl md:text-9xl text-white pointer-events-none select-none">
             DUST2
         </div>
         
-        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
             <div class="text-center md:text-left">
                 <span class="inline-block px-3 py-1 bg-slate-800 text-emerald-400 rounded-full text-xs font-mono font-semibold uppercase tracking-wider mb-2 border border-slate-700">
                     DE_DUST2
                 </span>
-                <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight">Dust2</h1>
+                <h1 class="text-2xl sm:text-3xl md:text-5xl font-black text-white tracking-tight">Dust2</h1>
                 <div class="text-xs text-slate-400 mt-1 flex items-center gap-3 justify-center md:justify-start">
                     <span>📅 07 августа 2026</span>
                     <span>⚖️ Половины: 10:2</span>
@@ -184,19 +184,19 @@
             </div>
 
             <!-- Big Score Display -->
-            <div class="score-board-banner flex flex-col items-center bg-slate-900/90 border border-slate-800 p-4 md:p-6 rounded-2xl shadow-2xl">
-                <div class="flex items-center gap-6">
-                    <div class="text-center min-w-[120px]">
-                        <span class="block text-xs uppercase tracking-wider text-blue-400 font-bold mb-1">Команда 1 (c kaifom)</span>
-                        <span class="text-4xl md:text-6xl font-black text-blue-400 font-mono">13</span>
+            <div class="score-board-banner flex flex-col items-center bg-slate-900/90 border border-slate-800 p-3 sm:p-4 md:p-6 rounded-2xl shadow-2xl w-full sm:w-auto">
+                <div class="flex items-center gap-3 sm:gap-6">
+                    <div class="text-center min-w-[80px] sm:min-w-[120px]">
+                        <span class="block text-xs uppercase tracking-wider text-blue-400 font-bold mb-1 truncate">Команда 1 (c kaifom)</span>
+                        <span class="text-3xl sm:text-5xl md:text-6xl font-black text-blue-400 font-mono">13</span>
                     </div>
                     <div class="text-2xl font-bold text-slate-600 font-mono">:</div>
-                    <div class="text-center min-w-[120px]">
-                        <span class="block text-xs uppercase tracking-wider text-amber-400 font-bold mb-1">Команда 2 (matadorra)</span>
-                        <span class="text-4xl md:text-6xl font-black text-amber-400 font-mono">5</span>
+                    <div class="text-center min-w-[80px] sm:min-w-[120px]">
+                        <span class="block text-xs uppercase tracking-wider text-amber-400 font-bold mb-1 truncate">Команда 2 (matadorra)</span>
+                        <span class="text-3xl sm:text-5xl md:text-6xl font-black text-amber-400 font-mono">5</span>
                     </div>
                 </div>
-                <div class="mt-2 text-xs font-bold uppercase tracking-wider">
+                <div class="mt-2 text-xs font-bold uppercase tracking-wider text-center">
                     
                     <span class="text-emerald-400">🏆 Победитель: Команда 1 (c kaifom)</span>
                     
@@ -387,17 +387,17 @@
 
     
     <!-- Match Navigation Tabs (Mobile-Friendly & Ergonomic Segmented Controls) -->
-    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2.5 -mx-4 px-4 border-b border-slate-200 dark:border-slate-800/80 shadow-sm flex justify-center">
-        <div class="segmented-nav-track site-tab-nav">
+    <div class="mb-6 sticky top-[72px] z-30 bg-white/95 dark:bg-slate-950/90 backdrop-blur-md py-2 border-b border-slate-200 dark:border-slate-800/80 shadow-sm w-full">
+        <div class="segmented-nav-track site-tab-nav w-full">
             <button type="button" class="segmented-nav-btn site-tab-btn active" data-match-tab="match-tab-coach">
-                <span>🧠</span> <span>Разбор тренера и ИИ</span>
+                <span class="shrink-0">🧠</span> <span class="hidden sm:inline">Разбор тренера и ИИ</span><span class="sm:hidden truncate">Разбор</span>
             </button>
             <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-scoreboard">
-                <span>📋</span> <span>Табло и дуэли 5v5</span>
+                <span class="shrink-0">📋</span> <span class="hidden sm:inline">Табло и дуэли 5v5</span><span class="sm:hidden truncate">Табло</span>
             </button>
             <button type="button" class="segmented-nav-btn site-tab-btn" data-match-tab="match-tab-rounds">
-                <span>⏱️</span> <span>Хроника раундов</span>
-                <span class="tab-badge">18</span>
+                <span class="shrink-0">⏱️</span> <span class="hidden sm:inline">Хроника раундов</span><span class="sm:hidden truncate">Раунды</span>
+                <span class="tab-badge shrink-0">18</span>
             </button>
         </div>
     </div>
@@ -7117,13 +7117,37 @@
                     </svg>
                     <span>CS2 Demo Analytics Platform</span>
                 </p>
-                <p class="footer-timestamp">Данные обновлены: 10.10.2026 22:26</p>
+                <p class="footer-timestamp">Данные обновлены: 11.10.2026 14:06</p>
             </div>
             <div class="footer-nav">
                 <a href="#" class="back-to-top">⬆️ Наверх</a>
             </div>
         </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation Bar (Glassmorphic Thumb Ergonomics) -->
+    <nav class="mobile-bottom-bar md:hidden" aria-label="Быстрая навигация">
+        <a href="../index.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">🏆</span>
+            <span class="bottom-nav-label">Рейтинг</span>
+        </a>
+        <a href="../index.html#tab-sessions-archive" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">📅</span>
+            <span class="bottom-nav-label">Сессии</span>
+        </a>
+        <a href="../compare.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">⚔️</span>
+            <span class="bottom-nav-label">Дуэли</span>
+        </a>
+        <a href="../achievements.html" class="bottom-nav-item ">
+            <span class="bottom-nav-icon">🎖️</span>
+            <span class="bottom-nav-label">Зал Славы</span>
+        </a>
+        <button type="button" id="mobile-bottom-menu-btn" class="bottom-nav-item" aria-label="Открыть полное меню">
+            <span class="bottom-nav-icon">☰</span>
+            <span class="bottom-nav-label">Меню</span>
+        </button>
+    </nav>
 
     <!-- Theme Manager & Chart.js Integration -->
     <script>
@@ -7549,9 +7573,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mobile Navigation Drawer Toggle
         (function() {
             const btn = document.getElementById('mobile-menu-btn');
+            const bottomBtn = document.getElementById('mobile-bottom-menu-btn');
             const drawer = document.getElementById('mobile-nav-drawer');
             const closeBtn = document.getElementById('mobile-menu-close');
-            if (btn && drawer) {
+            if (drawer) {
                 function setOpen(isOpen) {
                     if (isOpen) {
                         drawer.classList.remove('hidden');
@@ -7563,10 +7588,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         document.body.style.overflow = '';
                     }
                 }
-                btn.addEventListener('click', () => {
-                    const isOpen = !drawer.classList.contains('hidden');
-                    setOpen(!isOpen);
-                });
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        const isOpen = !drawer.classList.contains('hidden');
+                        setOpen(!isOpen);
+                    });
+                }
+                if (bottomBtn) {
+                    bottomBtn.addEventListener('click', () => {
+                        const isOpen = !drawer.classList.contains('hidden');
+                        setOpen(!isOpen);
+                    });
+                }
                 if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
                 drawer.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => setOpen(false));
